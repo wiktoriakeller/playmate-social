@@ -10,8 +10,8 @@ namespace Playmate.Social.WebAPI.Extensions
             {
                 cfg.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "GoCode API",
-                    Description = "An ASP.NET Core Web API for managing courses",
+                    Title = "Playmate API",
+                    Description = "Playmate social platform and game integration",
                     Version = "v1"
                 });
 
