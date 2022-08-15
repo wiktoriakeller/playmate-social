@@ -10,12 +10,12 @@ namespace Playmate.Social.WebAPI.Controllers
     [ApiController]
     public class IdentityController : ControllerBase
     {
-        private readonly IMediator _medaitor;
+        private readonly IMediator _mediator;
         private readonly IMapper _mapper;
 
         public IdentityController(IMediator mediator, IMapper mapper)
         {
-            _medaitor = mediator;
+            _mediator = mediator;
             _mapper = mapper;
         }
 
@@ -25,7 +25,7 @@ namespace Playmate.Social.WebAPI.Controllers
         public async Task<IActionResult> Register([FromBody] CreateUserRequest request)
         {
             var command = _mapper.Map<CreateUserCommand>(request);
-            var response = await _medaitor.Send(command);
+            var response = await _mediator.Send(command);
 
             if (!response.Succeeded)
             {
@@ -41,7 +41,7 @@ namespace Playmate.Social.WebAPI.Controllers
         public async Task<IActionResult> Login([FromBody] AuthenticateUserRequest request)
         {
             var command = _mapper.Map<AuthenticateUserCommand>(request);
-            var response = await _medaitor.Send(command);
+            var response = await _mediator.Send(command);
 
             if (!response.Succeeded)
             {
@@ -57,7 +57,7 @@ namespace Playmate.Social.WebAPI.Controllers
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
         {
             var command = _mapper.Map<RefreshTokenCommand>(request);
-            var response = await _medaitor.Send(command);
+            var response = await _mediator.Send(command);
 
             if (!response.Succeeded)
             {
