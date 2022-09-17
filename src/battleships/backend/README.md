@@ -2,4 +2,6 @@ swagger
 http://127.0.0.1:8000/docs
 
 api
-http://127.0.0.1:8000
+http://127.0.0.1:8000/battleships
+
+http://localhost:8000/battleships/test2
