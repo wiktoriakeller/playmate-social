@@ -3,6 +3,7 @@ import useWebSocket, { ReadyState } from 'react-use-websocket';
 import {SendMessageBox} from './SendMessageBox';
 import {ReceiveMessageBox} from './ReceiveMessageBox';
 import {JsonValue, WebSocketOptions} from '../types';
+import {mockMessages} from './mockMessages';
 const options: WebSocketOptions = {
     share: true,
     shouldReconnect: (e)=>{return true}
@@ -39,13 +40,18 @@ export const WebSocketWrapper = () => {
         }[readyState];
         
     const handleSendJsonMessage = useCallback((jsonMessage: JsonValue, keep: boolean ) => {
-        // sendJsonMessage(jsonMessage, true); TODO
-        const mock = {
-            type: 'haha',
-            data: [0,1] 
-        };
-        sendJsonMessage(JSON.stringify(mock), true);
-        alert(`Websocekt wyslal JSON ${jsonMessage}`);
+        const mockEnum = jsonMessage || 'hello';
+        sendJsonMessage(JSON.stringify(mockMessages[new String(mockEnum).toLowerCase()]), true);
+        alert(`Websocekt wyslal JSON ${JSON.stringify(mockMessages[new String(mockEnum).toLowerCase()])}`);
+    }, []);
+
+    const handleSendObjectMessage = useCallback((message: Object, keep: boolean ) => {
+        // const mock = {
+        //     type: 'haha',
+        //     data: [0,1] 
+        // };
+        sendJsonMessage(JSON.stringify(message), true);
+        alert(`Websocekt wyslal object JSON ${message}`);
     }, []);
     
     
@@ -67,6 +73,7 @@ export const WebSocketWrapper = () => {
                         eventLastJsonMessage={lastJsonMessage}
                         eventLastParsedMessage={JSON.parse(lastJsonMessage?.toString()||"\{\}")}
                         triggerSendJsonMessage={handleSendJsonMessage}
+                        triggerSendObjectMessage={handleSendObjectMessage}
                         readyState={readyState}
                     ></SendMessageBox>
                     <br></br>
@@ -76,6 +83,7 @@ export const WebSocketWrapper = () => {
                         eventLastJsonMessage={lastJsonMessage}
                         eventLastParsedMessage={JSON.parse(lastJsonMessage?.toString()||"\{\}")}
                         triggerSendJsonMessage={handleSendJsonMessage}
+                        triggerSendObjectMessage={handleSendObjectMessage}
                         readyState={readyState}
                     ></ReceiveMessageBox>
                     

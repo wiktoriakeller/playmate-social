@@ -1,3 +1,4 @@
+from email import message
 from sys import prefix
 from urllib import response
 import uuid, json
@@ -6,6 +7,7 @@ from fastapi.responses import HTMLResponse
 from typing import List
 
 from ..models.create_game import CreateGameRequest, CreateGameResponse
+from ..models.websocket_message import WebSocketMessageIn
 from ..dependencies import *
 from ..data import game_session_register, SessionGamePlayers
 router = APIRouter(
@@ -65,18 +67,41 @@ async def get():
     return HTMLResponse(html)
 
 
+
+@router.websocket("/ws/test")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        await websocket.send_text(data)
+
+        # data = await websocket.receive_json()
+        # await websocket.send_json(data) # json.dump
+        
+        # print(json.loads(data,))
+        # print( type(json.loads(data)))
+
+
+
 @router.websocket("/ws/echo")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
-        # data = await websocket.receive_text()
-        # await websocket.send_text(data)
+        message = await websocket.receive_json()
+        decodedMessage = json.loads(message)
+        try:
+            messageIn = WebSocketMessageIn(**decodedMessage)
+            print('dobra mesin')
+            print(messageIn)
+            # await websocket.send_json(data) # json.dump
+            await websocket.send_json(json.dumps(messageIn.json())) # json.dump
 
-        data = await websocket.receive_json()
-        await websocket.send_json(data)
-        
-        print(json.loads(data))
-        print( type(json.loads(data)))
+        except:
+            print('niepoprwane meessIn ')
+            await websocket.send_json(json.dumps({
+                type: "error"
+            })) # json.dump
+            
 
 
 

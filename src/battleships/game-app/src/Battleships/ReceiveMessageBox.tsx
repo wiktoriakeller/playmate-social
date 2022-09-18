@@ -18,7 +18,7 @@ export function ReceiveMessageBox({
     
     useEffect(() => {
         if (eventLastParsedMessage !== null) {
-            console.log(eventLastParsedMessage);
+            console.log('eventLastParsedMessage: ' + eventLastParsedMessage);
             // alert('Otrzymano JSON parse : ' + eventLastJsonMessage?.toString());
         }
         setCount(count+1);
