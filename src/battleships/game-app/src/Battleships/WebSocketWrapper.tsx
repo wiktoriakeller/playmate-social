@@ -5,6 +5,7 @@ import {ReceiveMessageBox} from './ReceiveMessageBox';
 import {JsonValue, WebSocketOptions} from '../types';
 const options: WebSocketOptions = {
     share: true,
+    shouldReconnect: (e)=>{return true}
 };
 
 export const WebSocketWrapper = () => {
