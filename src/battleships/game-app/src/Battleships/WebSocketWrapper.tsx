@@ -22,19 +22,12 @@ export const WebSocketWrapper = () => {
         socketUrl, 
         options
     );
-
-    // useEffect(() => {
-    //     console.log(`lastJsonMessage ${lastJsonMessage}`);
-    //     if (lastJsonMessage !== null) {
-    //     setMessageHistory((prev) => prev.concat(lastJsonMessage));
-    //     }
-    // }, [lastJsonMessage, setMessageHistory]);
     useEffect(() => {
-        console.log(`lastMessage ${lastMessage}`);
+        console.log(`lastJsonMessage ${lastJsonMessage}`);
         if (lastJsonMessage !== null) {
         setMessageHistory((prev) => prev.concat(lastJsonMessage));
         }
-    }, [lastMessage, setMessageHistory]);
+    }, [lastMessage, lastJsonMessage, setMessageHistory]);
 
     const connectionStatus = {
         [ReadyState.CONNECTING]: 'Connecting',
@@ -53,14 +46,10 @@ export const WebSocketWrapper = () => {
         sendJsonMessage(JSON.stringify(mock), true);
         alert(`Websocekt wyslal JSON ${jsonMessage}`);
     }, []);
-    const handleSendMessage = useCallback((message: string, keep: boolean ) => {
-        //sendMessage('Hello');
-        sendMessage(message, true);
-        alert(`Websocekt wyslal ble ${message}`);
-    }, []);
+    
     
     function handleOnSomething(){
-        alert('ja pierdole');
+        alert('alert');
     }
 
     return (
@@ -75,9 +64,8 @@ export const WebSocketWrapper = () => {
                         disabled={false}
                         onSomething={handleOnSomething} 
                         eventLastJsonMessage={lastJsonMessage}
-                        eventLastMessage={lastMessage}
+                        eventLastParsedMessage={JSON.parse(lastJsonMessage?.toString()||"\{\}")}
                         triggerSendJsonMessage={handleSendJsonMessage}
-                        triggerSendMessage={handleSendMessage}
                         readyState={readyState}
                     ></SendMessageBox>
                     <br></br>
@@ -85,8 +73,7 @@ export const WebSocketWrapper = () => {
                         disabled={false} 
                         onSomething={handleOnSomething}
                         eventLastJsonMessage={lastJsonMessage}
-                        eventLastMessage={lastMessage}
-                        triggerSendMessage={handleSendMessage}
+                        eventLastParsedMessage={JSON.parse(lastJsonMessage?.toString()||"\{\}")}
                         triggerSendJsonMessage={handleSendJsonMessage}
                         readyState={readyState}
                     ></ReceiveMessageBox>

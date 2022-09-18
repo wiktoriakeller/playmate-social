@@ -6,23 +6,24 @@ import {ReceiveMessageBoxProps} from '../types'
 
 
 
-export function ReceiveMessageBox({triggerSendJsonMessage,triggerSendMessage, eventLastMessage, eventLastJsonMessage, readyState, disabled, onSomething}: ReceiveMessageBoxProps) {
+export function ReceiveMessageBox({
+        disabled, 
+        onSomething,
+        readyState, 
+        triggerSendJsonMessage,
+        eventLastJsonMessage,
+        eventLastParsedMessage
+    }: ReceiveMessageBoxProps) {
     const [count, setCount] = useState(0);
-    const [text, setText] = useState("");
-
-
-    function handleChange(event:React.ChangeEvent<HTMLTextAreaElement>) {
-        setText( event.target.value);
-    }
+    
     useEffect(() => {
-        if (eventLastMessage !== null) {
-            console.log(eventLastJsonMessage);
-            console.log(typeof(JSON.parse(eventLastJsonMessage?.toString())));
-            alert('Otrzymano JSON parse : ' + eventLastJsonMessage?.toString());
+        if (eventLastParsedMessage !== null) {
+            console.log(eventLastParsedMessage);
+            // alert('Otrzymano JSON parse : ' + eventLastJsonMessage?.toString());
         }
         setCount(count+1);
         
-    }, [eventLastMessage, eventLastJsonMessage]);
+    }, [eventLastJsonMessage]);
     
     return (
         <div className="MessageBox">
@@ -31,7 +32,7 @@ export function ReceiveMessageBox({triggerSendJsonMessage,triggerSendMessage, ev
             </p>
             <label>
                 Box:
-                <textarea  disabled={true} className="BoxTextArea" value={eventLastMessage?.data} onChange={handleChange} />
+                <textarea  disabled={true} className="BoxTextArea" value={JSON.stringify(eventLastParsedMessage)}  />
             </label>
         </div>
     );
