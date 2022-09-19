@@ -41,8 +41,9 @@ export const WebSocketWrapper = () => {
         
     const handleSendJsonMessage = useCallback((jsonMessage: JsonValue, keep: boolean ) => {
         const mockEnum = jsonMessage || 'hello';
-        sendJsonMessage(JSON.stringify(mockMessages[new String(mockEnum).toLowerCase()]), true);
-        alert(`Websocekt wyslal JSON ${JSON.stringify(mockMessages[new String(mockEnum).toLowerCase()])}`);
+        const mockMessage = JSON.stringify(mockMessages[new String(mockEnum).toLowerCase()]) || JSON.stringify({"type": "error",data: ["invalid_mock"]});
+        sendJsonMessage(mockMessage, true);
+        console.log(`Websocekt wyslal JSON ${mockMessage}`);
     }, []);
 
     const handleSendObjectMessage = useCallback((message: Object, keep: boolean ) => {
@@ -51,7 +52,7 @@ export const WebSocketWrapper = () => {
         //     data: [0,1] 
         // };
         sendJsonMessage(JSON.stringify(message), true);
-        alert(`Websocekt wyslal object JSON ${message}`);
+        console.log(`Websocekt wyslal object JSON ${message}`);
     }, []);
     
     

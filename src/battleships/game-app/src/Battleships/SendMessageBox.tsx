@@ -16,7 +16,7 @@ export function SendMessageBox({
     const [text, setText] = useState("");
     const [count, setCount] = useState(0);
 
-    function handleChange(event:React.ChangeEvent<HTMLTextAreaElement>) {
+    function handleChange(event:React.ChangeEvent<HTMLInputElement>) {
         
         setText( event.target.value);
     }
@@ -39,7 +39,7 @@ export function SendMessageBox({
                 </p>
                 <label>
                 Box:
-                <textarea className="BoxTextArea" value={text} onChange={handleChange} />
+                <input  value={text} onChange={handleChange} />
                 </label>
                 <input type="submit" value="Wyślij" />
             </form>
