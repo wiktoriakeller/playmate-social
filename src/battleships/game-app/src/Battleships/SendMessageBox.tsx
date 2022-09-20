@@ -15,11 +15,12 @@ export function SendMessageBox({
     }: SendMessageBoxProps) {
     const [text, setText] = useState("");
     const [count, setCount] = useState(0);
+    
 
     function handleChange(event:React.ChangeEvent<HTMLInputElement>) {
-        
         setText( event.target.value);
     }
+    
     function handleSubmit(event:React.SyntheticEvent) {
         event.preventDefault();
         triggerSendJsonMessage(text, true);
@@ -34,9 +35,6 @@ export function SendMessageBox({
     return (
         <div className="MessageBox">
             <form onSubmit={handleSubmit}>
-                <p>
-                    count: {count}
-                </p>
                 <label>
                 Box:
                 <input  value={text} onChange={handleChange} />

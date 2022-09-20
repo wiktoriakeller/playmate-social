@@ -171,7 +171,8 @@ async def get():
 
 
 @router.websocket("/ws/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id: int):
+async def websocket_endpoint(websocket: WebSocket, client_id: str):
+    print('websocket clientid')
     await manager.connect(websocket)
     try:
         while True:

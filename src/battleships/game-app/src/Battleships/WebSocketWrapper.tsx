@@ -6,13 +6,16 @@ import {JsonValue, WebSocketOptions} from '../types';
 import {mockMessages} from './mockMessages';
 const options: WebSocketOptions = {
     share: true,
-    shouldReconnect: (e)=>{return true}
+    shouldReconnect: (e)=>{return true},
+    onOpen: () => console.log('opened soket')
+
 };
 
 export const WebSocketWrapper = () => {
     //Public API that will echo messages sent to it back to the client
-    const [socketUrl, setSocketUrl] = useState('ws://localhost:8000/battleships/ws/echo');
     const [messageHistory, setMessageHistory] = useState([]);
+    const [userId, setUserId] = useState("user" + Math.floor(Math.random()*100));
+    const [socketUrl, setSocketUrl] = useState(`ws://localhost:8000/battleships/ws/${userId}`); //TODO
 
     const { 
         sendMessage, 
@@ -25,11 +28,12 @@ export const WebSocketWrapper = () => {
         options
     );
     useEffect(() => {
+        console.log('re-render wrapper socket:' + socketUrl);
         console.log(`lastJsonMessage ${lastJsonMessage}`);
         if (lastJsonMessage !== null) {
         setMessageHistory((prev) => prev.concat(lastJsonMessage));
         }
-    }, [lastMessage, lastJsonMessage, setMessageHistory]);
+    }, [lastMessage, lastJsonMessage, setMessageHistory,socketUrl]);
 
     const connectionStatus = {
         [ReadyState.CONNECTING]: 'Connecting',
@@ -43,7 +47,7 @@ export const WebSocketWrapper = () => {
         const mockEnum = jsonMessage || 'hello';
         const mockMessage = JSON.stringify(mockMessages[new String(mockEnum).toLowerCase()]) || JSON.stringify({"type": "error",data: ["invalid_mock"]});
         sendJsonMessage(mockMessage, true);
-        console.log(`Websocekt wyslal JSON ${mockMessage}`);
+        console.log(`Websocekt wyslal na: ${socketUrl}, mock: ${mockMessage}`);
     }, []);
 
     const handleSendObjectMessage = useCallback((message: Object, keep: boolean ) => {
@@ -52,12 +56,27 @@ export const WebSocketWrapper = () => {
         //     data: [0,1] 
         // };
         sendJsonMessage(JSON.stringify(message), true);
-        console.log(`Websocekt wyslal object JSON ${message}`);
+        console.log(`Websocekt wyslal na: ${socketUrl}, object: ${message}`);
     }, []);
     
     
     function handleOnSomething(){
         alert('alert');
+    }
+
+    const handleSetSocketUrl = useCallback((userId: string) => {
+        setSocketUrl(`ws://localhost:8000/battleships/ws/${userId}`); //TODO
+        console.log(`zmiana socektUrl na
+        ,: ws://localhost:8000/battleships/ws/${userId}`);
+    }, []);
+
+    function handleChangeUserId(event:React.ChangeEvent<HTMLInputElement>) {
+        setUserId( event.target.value);
+    }
+    function handleSubmit(event:React.SyntheticEvent) {
+        event.preventDefault();
+        setSocketUrl(`ws://localhost:8000/battleships/ws/${userId}`); //TODO
+        console.log(`zmiana socektUrl na: ws://localhost:8000/battleships/ws/${userId}`);
     }
 
     return (
@@ -68,6 +87,18 @@ export const WebSocketWrapper = () => {
                 readyState !== ReadyState.OPEN
                 ? <span> Waiting for reconnecting...</span>
                 : <div>
+                    <div>
+                    <form onSubmit={handleSubmit}>                           
+                        <label>
+                        UserId:
+                        <input  value={userId} onChange={handleChangeUserId} />
+                        </label>
+                        <input type="submit" value="Change" />
+                    </form>
+                    <p>
+                        socket:{socketUrl}
+                    </p>
+                    </div>
                     <SendMessageBox  
                         disabled={false}
                         onSomething={handleOnSomething} 
