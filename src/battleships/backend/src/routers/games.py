@@ -7,7 +7,8 @@ from fastapi.responses import HTMLResponse
 from typing import List
 
 from ..models.create_game import CreateGameRequest, CreateGameResponse
-from ..models.websocket_message import WebSocketMessageIn
+from ..models.websocket_message import WebSocketMessageIn, WebSocketMessageOut
+from ..models.connection_manager import ConnectionManager
 from ..dependencies import *
 from ..data import game_session_register, SessionGamePlayers
 router = APIRouter(
@@ -143,23 +144,7 @@ html2 = """
 """
 
 
-class ConnectionManager:
-    def __init__(self):
-        self.active_connections: List[WebSocket] = []
 
-    async def connect(self, websocket: WebSocket):
-        await websocket.accept()
-        self.active_connections.append(websocket)
-
-    def disconnect(self, websocket: WebSocket):
-        self.active_connections.remove(websocket)
-
-    async def send_personal_message(self, message: str, websocket: WebSocket):
-        await websocket.send_text(message)
-
-    async def broadcast(self, message: str):
-        for connection in self.active_connections:
-            await connection.send_text(message)
 
 
 manager = ConnectionManager()
@@ -176,11 +161,23 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
     await manager.connect(websocket)
     try:
         while True:
-            data = await websocket.receive_text()
-            await manager.send_personal_message(f"You wrote: {data}", websocket)
-            await manager.broadcast(f"Client #{client_id} says: {data}")
+            message = await websocket.receive_json()
+            decodedMessage = json.loads(message)
+            try:
+                messageIn = WebSocketMessageIn(**decodedMessage)
+
+            except:
+                await manager.send_personal_message_json({
+                    type: "error"
+                }, websocket) 
+            else:
+                messageOut = WebSocketMessageOut(**messageIn.dict(), source=client_id)
+                await manager.send_personal_message_json(messageOut, websocket)
+                await manager.broadcast_json(messageOut)
+    
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-        await manager.broadcast(f"Client #{client_id} left the chat")
+        await manager.broadcast_json(messageOut = WebSocketMessageOut(type="error_disconnect_opponent", source=client_id, data=[]))
 
 
+        
