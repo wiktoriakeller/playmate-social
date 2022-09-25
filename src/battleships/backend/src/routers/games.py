@@ -10,7 +10,7 @@ from ..models.create_game import CreateGameRequest, CreateGameResponse
 from ..models.websocket_message import WebSocketMessageIn, WebSocketMessageOut
 from ..models.connection_manager import ConnectionManager
 from ..dependencies import *
-from ..data import game_session_register, SessionGamePlayers
+from ..data import game_session_register, SessionGamePlayers, Players
 router = APIRouter(
     prefix="/battleships",
     tags=["games"]
@@ -20,7 +20,7 @@ router = APIRouter(
 @router.post("/session/create/", response_model=CreateGameResponse)
 async def create_game_session(req: CreateGameRequest):
     session_id=str(uuid.uuid1())
-    game_session_register[session_id] = SessionGamePlayers(req.usr_id_sender, req.usr_id_sender)
+    game_session_register[session_id] = SessionGamePlayers(players=Players(req.usr_id_sender, req.usr_id_receiver))
     print(f"register: {game_session_register}")
     return CreateGameResponse(
         **req.dict(), 
@@ -155,10 +155,10 @@ async def get():
     return HTMLResponse(html2)
 
 
-@router.websocket("/ws/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id: str):
-    print('websocket clientid')
-    await manager.connect(websocket)
+@router.websocket("/ws/{game_session_id}/{client_id}")
+async def websocket_endpoint(websocket: WebSocket, game_session_id:str, client_id: str):
+    print(f"open ws game_session_id:{game_session_id}, client_id:{client_id}")
+    await manager.connect(websocket, client_id)
     try:
         while True:
             message = await websocket.receive_json()
@@ -173,11 +173,22 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
             else:
                 messageOut = WebSocketMessageOut(**messageIn.dict(), source=client_id)
                 await manager.send_personal_message_json(messageOut, websocket)
-                await manager.broadcast_json(messageOut)
+                await manager.broadcast_without_sender_json(
+                    websocket=websocket,
+                    message=messageOut,
+                    game_session_id=game_session_id,
+                    sender=client_id
+                )
     
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        await manager.broadcast_json(messageOut = WebSocketMessageOut(type="error_disconnect_opponent", source=client_id, data=[]))
+        print (f"Disconnect {game_session_id}")
+        manager.disconnect(websocket, client_id)
+        await manager.broadcast_without_sender_json(
+            websocket=websocket,
+            message=WebSocketMessageOut(type="error_disconnect_opponent", source=client_id, data=[]),
+            game_session_id=game_session_id,
+            sender=client_id
+        )
 
 
         
