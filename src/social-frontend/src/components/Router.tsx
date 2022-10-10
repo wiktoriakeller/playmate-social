@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import AuthRedirector from "./AuthRedirector";
+import AuthRedirector from "./form/AuthRedirector";
 import Header from "./Header";
-import SignupForm from "./SignupForm";
+import SignupForm from "./form/SignupForm";
 
 function Router() {
   return (

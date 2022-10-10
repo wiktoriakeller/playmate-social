@@ -1,5 +1,5 @@
 import React from 'react'
-import { useToken } from '../hooks/UserContext'
+import { useToken } from '../../hooks/UserContext'
 
 const AuthRedirector = ({children}) => {
   const {token} = useToken();
