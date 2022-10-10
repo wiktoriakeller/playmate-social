@@ -100,7 +100,7 @@ const SignupForm = () => {
         name="confirmPassword"
       />
 
-      <input type="submit" value={"Sign up"}/>
+      <input type="submit" value={"Sign up"} className={"form-input submit"}/>
     </form>
   );
 };

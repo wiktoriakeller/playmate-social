@@ -1,6 +1,6 @@
 .form {
   display: flex;
-  width: 20%;
+  width: 25%;
   min-width: 200px;
   flex-direction: column;
   align-items: center;
@@ -13,15 +13,20 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  .form-input {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    border-radius: 7px;
-    border: 1px solid #eee;
-  }
   .form-error {
     font-size: 0.8em;
     color: red;
   }
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border-radius: 7px;
+  border: 1px solid #eee;
+}
+
+.submit {
+  width: 150px;
 }
