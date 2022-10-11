@@ -1,5 +1,5 @@
 import React from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { IFormProps } from "../../types/formTypes";
 import FormField from "./FormField";
 
