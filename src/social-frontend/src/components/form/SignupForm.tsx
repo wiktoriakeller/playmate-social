@@ -1,5 +1,6 @@
 import React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { IFormProps } from "../../types/formTypes";
 import FormField from "./FormField";
 
 interface IFormInputs {
@@ -9,9 +10,11 @@ interface IFormInputs {
   confirmPassword: string;
 }
 
-const onSubmit: SubmitHandler<IFormInputs> = (data) => console.log(data);
-
-const SignupForm = () => {
+const onSubmit = (data: IFormInputs, submit: () => void) => {
+  console.log(data);
+  submit();
+}
+const SignupForm = (props: IFormProps) => {
   const {
     control,
     handleSubmit,
@@ -27,7 +30,7 @@ const SignupForm = () => {
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="form">
+    <form onSubmit={handleSubmit(async (data) => onSubmit(data, props.onSubmit))} className="form">
       <Controller
         control={control}
         rules={{

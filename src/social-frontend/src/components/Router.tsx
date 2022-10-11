@@ -1,14 +1,14 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthRedirector from "./form/AuthRedirector";
 import Header from "./Header";
-import SignupForm from "./form/SignupForm";
+import SignupPage from "../pages/SignupPage";
 
 function Router() {
   return (
     <BrowserRouter>
       <Header />
       <Routes>
-        <Route path="signup" element={<SignupForm />} />
+        <Route path="signup" element={<SignupPage />} />
         <Route
           path="secret"
           element={
