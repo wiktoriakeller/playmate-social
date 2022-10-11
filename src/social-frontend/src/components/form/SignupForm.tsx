@@ -1,5 +1,7 @@
+import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useApi } from "../../hooks/useApi";
 import { IFormProps } from "../../types/formTypes";
 import FormField from "./FormField";
 
@@ -10,10 +12,6 @@ interface IFormInputs {
   confirmPassword: string;
 }
 
-const onSubmit = (data: IFormInputs, submit: () => void) => {
-  console.log(data);
-  submit();
-}
 const SignupForm = (props: IFormProps) => {
   const {
     control,
@@ -29,8 +27,22 @@ const SignupForm = (props: IFormProps) => {
     },
   });
 
+  const { signup } = useApi().user;
+
+  const { mutate, isLoading } = useMutation(
+    (values: IFormInputs) => signup(values),
+    {
+      onSuccess() {
+        props.onSubmit();
+      },
+      onError() {
+        console.log("api error");
+      }
+    }
+  );
+
   return (
-    <form onSubmit={handleSubmit(async (data) => onSubmit(data, props.onSubmit))} className="form">
+    <form onSubmit={handleSubmit((data) => {mutate(data);})} className="form">
       <Controller
         control={control}
         rules={{
