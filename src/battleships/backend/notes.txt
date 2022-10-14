@@ -1,0 +1,8 @@
+\battleships\backend> .\venv\Scripts\Activate.ps1
+(venv) PS G:\Inne komputery\Mój laptop\tterm77_loc\inzynierka\playmate\src\battleships\backend> uvicorn src.main:app --reload
+battleships\backend> pip freeze >  requirements.txt
+
+docker build  -t sample:dev .  
+docker run -t --rm -v ${PWD}:/usr/src/app  -v /usr/src/app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true sample:dev
+
+docker run -t -v ${PWD}:/usr/src/app  -v /usr/src/app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true game_app:dev
