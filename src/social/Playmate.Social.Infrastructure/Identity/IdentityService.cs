@@ -1,179 +1,192 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using Playmate.Social.Infrastructure.Identity.Entities;
-using Playmate.Social.Infrastructure.Interfaces;
-using Playmate.Social.Infrastructure.Constants;
-using Playmate.Social.Application.Dtos.Responses;
-using Playmate.Social.Application.Dtos;
-using Playmate.Social.Application.Contracts.Identity;
-using Playmate.Social.Application.Contracts.DataAccess;
+using Playmate.Social.Application.Common.BaseResponse;
+using Playmate.Social.Application.Common.Constants;
+using Playmate.Social.Application.Common.Contracts.Identity;
+using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.Identity.Commands;
+using Playmate.Social.Application.Identity.Responses;
+using Playmate.Social.Domain.Entities;
+using Playmate.Social.Infrastructure.Configuration;
+using Playmate.Social.Infrastructure.Identity.Entities;
+using Playmate.Social.Infrastructure.Identity.Interfaces;
+using System.Security.Cryptography;
 
-namespace Playmate.Social.Infrastructure.Identity
+namespace Playmate.Social.Infrastructure.Identity;
+
+public class IdentityService : IIdentityService
 {
-    public class IdentityService : IIdentityService
+    private readonly UserManager<User> _userManager;
+    private readonly IJwtTokenService _jwtTokenService;
+    private readonly IRepository<RefreshToken> _refreshTokenRepository;
+    private readonly IMapper _mapper;
+    private readonly JwtOptions _jwtOptions;
+
+    public IdentityService(
+        UserManager<User> userManager,
+        IJwtTokenService jwtTokenService,
+        IRepository<RefreshToken> refreshTokenRepository,
+        IOptions<JwtOptions> jwtOptions,
+        IMapper mapper)
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IJwtService _jwtService;
-        private readonly IRepository<RefreshToken> _refreshTokenRepository;
-        private readonly JwtOptions _jwtOptions;
+        _userManager = userManager;
+        _jwtTokenService = jwtTokenService;
+        _refreshTokenRepository = refreshTokenRepository;
+        _mapper = mapper;
+        _jwtOptions = jwtOptions.Value;
+    }
 
-        public IdentityService(UserManager<ApplicationUser> userManager,
-            IJwtService jwtService,
-            IRepository<RefreshToken> refreshTokenRepository,
-            IOptions<JwtOptions> jwtOptions)
+    public async Task<Response<IUser>> GetUserByEmail(string email)
+    {
+        var user = await _userManager.FindByEmailAsync(email);
+
+        if (user == null)
         {
-            _userManager = userManager;
-            _jwtService = jwtService;
-            _refreshTokenRepository = refreshTokenRepository;
-            _jwtOptions = jwtOptions.Value;
+            return ResponseResult.NotFound<IUser>(ErrorMessages.Identity.UserNotFound);
         }
 
-        public async Task<Response<CreateUserResponse>> CreateUserAsync(CreateUserCommand createUserCommand)
+        return ResponseResult.Ok<IUser>(user);
+    }
+
+    public async Task<Response<IUser>> GetUserByJwtTokenAsync(string jwtToken)
+    {
+        var result = _jwtTokenService.IsJwtTokenValid(jwtToken, true);
+
+        if (!result.success)
         {
-            var newUser = new ApplicationUser
-            {
-                Email = createUserCommand.Email,
-                UserName = createUserCommand.Email,
-                FirstName = createUserCommand.FirstName,
-                LastName = createUserCommand.LastName
-            };
-
-            var result = await _userManager.CreateAsync(newUser, createUserCommand.Password);
-
-            if (!result.Succeeded)
-            {
-                var errors = result.Errors.Select(e => e.Description);
-                var errorResponse = new Response<CreateUserResponse>(false);
-                errorResponse.AddErrorMessage("Identity", errors);
-                return errorResponse;
-            }
-
-            var response = new CreateUserResponse
-            {
-                UserId = newUser.Id
-            };
-
-            return new Response<CreateUserResponse>(true, response);
+            return ResponseResult.Unauthorized<IUser>(ErrorMessages.Identity.InvalidToken);
         }
 
-        public async Task<Response<AuthenticateUserResponse>> AuthenticateUserAync(AuthenticateUserCommand authenticateUserCommand)
+        var user = await _userManager.FindByIdAsync(result.userId);
+
+        if (user == null)
         {
-            var errorResponse = new Response<AuthenticateUserResponse>(false);
-            var user = await _userManager.FindByEmailAsync(authenticateUserCommand.Email);
-
-            if (user == null)
-            {
-                errorResponse.AddErrorMessage("Identity", ErrorMessages.Identity.IncorrectCredentials);
-                return errorResponse;
-            }
-
-            var userPasswordIsValid = await _userManager.CheckPasswordAsync(user, authenticateUserCommand.Password);
-
-            if (!userPasswordIsValid)
-            {
-                errorResponse.AddErrorMessage("Identity", ErrorMessages.Identity.IncorrectCredentials);
-                return errorResponse;
-            }
-
-            var (jwtToken, jti) = _jwtService.CreateJwtToken(user);
-            var storedRefresh = await _refreshTokenRepository.FirstOrDefaultAsync(t => t.UserId == user.Id);
-            var refreshToken = await CreateRefreshToken(jti, user, storedRefresh);
-
-            var response = new AuthenticateUserResponse
-            {
-                Token = jwtToken,
-                RefreshToken = refreshToken
-            };
-
-            return new Response<AuthenticateUserResponse>(true, response);
+            return ResponseResult.NotFound<IUser>(ErrorMessages.Identity.UserNotFound);
         }
 
-        public async Task<Response<RefreshTokenResponse>> RefreshTokenAsync(RefreshTokenCommand refreshTokenCommand)
+        return ResponseResult.Ok<IUser>(user);
+    }
+
+    public async Task<Response<CreateUserResponse>> CreateUserAsync(CreateUserCommand createUserCommand)
+    {
+        var newUser = new User
         {
-            var errorResponse = new Response<RefreshTokenResponse>(false);
-            var validatedJwt = _jwtService.GetPrincipalFromJwtToken(refreshTokenCommand.Token);
+            Email = createUserCommand.Email,
+            UserName = createUserCommand.UserName ?? createUserCommand.Email
+        };
 
-            if (validatedJwt == null)
-            {
-                errorResponse.AddErrorMessage("Identity", ErrorMessages.Identity.InvalidJwt);
-                return errorResponse;
-            }
+        var result = await _userManager.CreateAsync(newUser, createUserCommand.Password);
 
-            var jti = validatedJwt.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
-            var userId = validatedJwt.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-
-            if (jti == null || userId == null)
-            {
-                errorResponse.AddErrorMessage("Identity", ErrorMessages.Identity.InvalidJwt);
-                return errorResponse;
-            }
-
-            var storedTokens = await _refreshTokenRepository.GetWhereAsync(x => x.Token == refreshTokenCommand.RefreshToken);
-
-            if (storedTokens.Count() != 1)
-            {
-                errorResponse.AddErrorMessage("Identity", ErrorMessages.Identity.InvalidJwt);
-                return errorResponse;
-            }
-
-            var storedToken = storedTokens.First();
-
-            if (storedToken.ExpiryDate >= DateTime.UtcNow ||
-                storedToken.JwtId != jti)
-            {
-                errorResponse.AddErrorMessage("Identity", ErrorMessages.Identity.InvalidRefreshToken);
-                return errorResponse;
-            }
-
-            var user = await _userManager.FindByIdAsync(userId);
-            var (jwtToken, newJti) = _jwtService.CreateJwtToken(user);
-            var refreshToken = await CreateRefreshToken(newJti, user, storedToken);
-
-            var result = new RefreshTokenResponse
-            {
-                Token = jwtToken,
-                RefreshToken = refreshToken
-            };
-
-            return new Response<RefreshTokenResponse>(true, result);
+        if (!result.Succeeded)
+        {
+            var errors = result.Errors.Select(e => e.Description);
+            return ResponseResult.ValidationError<CreateUserResponse>(errors);
         }
 
-        private async Task<string> CreateRefreshToken(string jti, ApplicationUser user, RefreshToken? storedRefresh = null)
+        var response = _mapper.Map<CreateUserResponse>(newUser);
+        return ResponseResult.Ok(response);
+    }
+
+    public async Task<Response<AuthenticateUserResponse>> AuthenticateUserAync(AuthenticateUserCommand authenticateUserCommand)
+    {
+        var user = await _userManager.FindByEmailAsync(authenticateUserCommand.Email);
+
+        if (user == null)
         {
-            if (storedRefresh != null)
-            {
-                await _refreshTokenRepository.DeleteAsync(storedRefresh);
-            }
-
-            var refreshToken = new RefreshToken
-            {
-                Token = GetUniqueToken(),
-                JwtId = jti,
-                CreationDate = DateTime.UtcNow,
-                ExpiryDate = DateTime.UtcNow.AddDays(_jwtOptions.RefreshTokenExpirationInDays),
-                UserId = user.Id,
-                User = user
-            };
-
-            await _refreshTokenRepository.AddAsync(refreshToken);
-            return refreshToken.Token;
+            return ResponseResult.ValidationError<AuthenticateUserResponse>(ErrorMessages.Identity.IncorrectCredentials);
         }
 
-        private string GetUniqueToken()
+        var userPasswordIsValid = await _userManager.CheckPasswordAsync(user, authenticateUserCommand.Password);
+
+        if (!userPasswordIsValid)
         {
-            var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-            var tokenIsUsed = _userManager.Users.Any(u => u.RefreshToken != null && u.RefreshToken.Token == token);
-
-            if (tokenIsUsed)
-            {
-                return GetUniqueToken();
-            }
-
-            return token;
+            return ResponseResult.ValidationError<AuthenticateUserResponse>(ErrorMessages.Identity.IncorrectCredentials);
         }
+
+        var newJwt = await _jwtTokenService.CreateJwtToken(user);
+        var newRefreshToken = await CreateRefreshToken(newJwt.Jti, user);
+
+        var response = new AuthenticateUserResponse
+        {
+            JwtToken = newJwt.JwtToken,
+            RefreshToken = newRefreshToken
+        };
+
+        return ResponseResult.Ok(response);
+    }
+
+    public async Task<Response<RefreshTokenResponse>> RefreshTokenAsync(RefreshTokenCommand refreshTokenCommand)
+    {
+        var result = _jwtTokenService.IsJwtTokenValid(refreshTokenCommand.JwtToken, false);
+
+        if (!result.success)
+        {
+            return ResponseResult.Unauthorized<RefreshTokenResponse>(ErrorMessages.Identity.InvalidToken);
+        }
+
+        var refreshTokens = _refreshTokenRepository
+            .GetWhere(x => x.Token == refreshTokenCommand.RefreshToken)
+            .ToList();
+
+        if (refreshTokens.Count != 1)
+        {
+            return ResponseResult.Unauthorized<RefreshTokenResponse>(ErrorMessages.Identity.InvalidToken);
+        }
+
+        var currentRefreshToken = refreshTokens.First();
+
+        if (currentRefreshToken.ExpiryDate >= DateTime.UtcNow || currentRefreshToken.JwtId != result.jti)
+        {
+            return ResponseResult.Unauthorized<RefreshTokenResponse>(ErrorMessages.Identity.InvalidToken);
+        }
+
+        var user = await _userManager.FindByIdAsync(result.userId);
+        var newJwt = await _jwtTokenService.CreateJwtToken(user);
+        var newRefreshToken = await CreateRefreshToken(newJwt.Jti, user);
+
+        var response = new RefreshTokenResponse
+        {
+            JwtToken = newJwt.JwtToken,
+            RefreshToken = newRefreshToken
+        };
+
+        return ResponseResult.Ok(response);
+    }
+
+    private async Task<string> CreateRefreshToken(string jti, User user)
+    {
+        var currentRefresh = await _refreshTokenRepository.FirstOrDefaultAsync(t => t.UserId == user.Id);
+
+        if (currentRefresh != null)
+        {
+            await _refreshTokenRepository.DeleteAsync(currentRefresh);
+        }
+
+        var refreshToken = new RefreshToken
+        {
+            Token = GetUniqueToken(),
+            JwtId = jti,
+            CreationDate = DateTime.UtcNow,
+            ExpiryDate = DateTime.UtcNow.AddDays(_jwtOptions.RefreshTokenExpirationInDays),
+            UserId = user.Id,
+            User = user
+        };
+
+        await _refreshTokenRepository.AddAsync(refreshToken);
+        return refreshToken.Token;
+    }
+
+    private string GetUniqueToken()
+    {
+        var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        var tokenIsUsed = _userManager.Users.Any(u => u.RefreshToken != null && u.RefreshToken.Token == token);
+
+        if (tokenIsUsed)
+        {
+            return GetUniqueToken();
+        }
+
+        return token;
     }
 }

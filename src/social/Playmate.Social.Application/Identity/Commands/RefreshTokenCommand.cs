@@ -1,12 +1,10 @@
-﻿using MediatR;
-using Playmate.Social.Application.Dtos;
-using Playmate.Social.Application.Dtos.Responses;
+﻿using Playmate.Social.Application.Common;
+using Playmate.Social.Application.Identity.Responses;
 
-namespace Playmate.Social.Application.Identity.Commands
+namespace Playmate.Social.Application.Identity.Commands;
+
+public class RefreshTokenCommand : IRequestWrapper<RefreshTokenResponse>
 {
-    public class RefreshTokenCommand : IRequest<Response<RefreshTokenResponse>>
-    {
-        public string Token { get; set; }
-        public string RefreshToken { get; set; }
-    }
+    public string JwtToken { get; set; }
+    public string RefreshToken { get; set; }
 }

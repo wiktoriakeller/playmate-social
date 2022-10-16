@@ -1,12 +1,10 @@
-﻿using MediatR;
-using Playmate.Social.Application.Dtos;
-using Playmate.Social.Application.Dtos.Responses;
+﻿using Playmate.Social.Application.Common;
+using Playmate.Social.Application.Identity.Responses;
 
-namespace Playmate.Social.Application.Identity.Commands
+namespace Playmate.Social.Application.Identity.Commands;
+
+public class AuthenticateUserCommand : IRequestWrapper<AuthenticateUserResponse>
 {
-    public class AuthenticateUserCommand : IRequest<Response<AuthenticateUserResponse>>
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
+    public string Email { get; set; }
+    public string Password { get; set; }
 }

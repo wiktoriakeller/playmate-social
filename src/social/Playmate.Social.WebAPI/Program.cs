@@ -1,30 +1,23 @@
-using Playmate.Social.Application.Extensions;
+using Playmate.Social.Application.Common.Extensions;
 using Playmate.Social.Infrastructure.Extensions;
-using Playmate.Social.Infrastructure.Persistence;
 using Playmate.Social.WebAPI.Extensions;
-using Microsoft.EntityFrameworkCore;
+using Playmate.Social.WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddApplicationServices(builder.Configuration);
-builder.Services.AddInfrastructureServices(builder.Configuration);
-
+builder.Services.AddApiServices();
+builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerDoc();
+builder.Services.ConfigureCors();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
+app.UseCors();
 
-    var context = services.GetRequiredService<ApplicationDbContext>();
-    if (context.Database.GetPendingMigrations().Any())
-    {
-        context.Database.Migrate();
-    }
-}
+app.ApplyMigrations();
 
 app.UseSwagger();
 
@@ -35,6 +28,10 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseIdentityMiddleware();
+
+app.UseErrorHandlingMiddleware();
 
 app.MapControllers();
 

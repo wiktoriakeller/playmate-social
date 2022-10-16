@@ -3,19 +3,24 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playmate.Social.Domain", "Playmate.Social.Domain\Playmate.Social.Domain.csproj", "{BBB31219-EC9E-4970-A144-A7E5D7E93A67}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Playmate.Social.Domain", "Playmate.Social.Domain\Playmate.Social.Domain.csproj", "{BBB31219-EC9E-4970-A144-A7E5D7E93A67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playmate.Social.Application", "Playmate.Social.Application\Playmate.Social.Application.csproj", "{DAC27BDD-79B2-41C1-BCCC-3B053239F8FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Playmate.Social.Application", "Playmate.Social.Application\Playmate.Social.Application.csproj", "{DAC27BDD-79B2-41C1-BCCC-3B053239F8FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playmate.Social.Infrastructure", "Playmate.Social.Infrastructure\Playmate.Social.Infrastructure.csproj", "{BFE5D9FA-E1FD-459A-8537-328E79E0E47F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playmate.Social.WebAPI", "Playmate.Social.WebAPI\Playmate.Social.WebAPI.csproj", "{6F29FD17-3F51-4EE1-B4C8-C45FCE86966E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Playmate.Social.Infrastructure", "Playmate.Social.Infrastructure\Playmate.Social.Infrastructure.csproj", "{BFE5D9FA-E1FD-459A-8537-328E79E0E47F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CB039696-8812-479B-912A-C1F6AEC3D2A2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3B75F048-12D0-4124-ABF7-1D2DD9910427}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playmate.Social.UnitTests", "Playmate.Social.UnitTests\Playmate.Social.UnitTests.csproj", "{82B2FC59-EB46-4FEE-8AF4-C3310C045A17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Playmate.Social.UnitTests", "Playmate.Social.UnitTests\Playmate.Social.UnitTests.csproj", "{82B2FC59-EB46-4FEE-8AF4-C3310C045A17}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3841CC3E-3DEE-4547-BCCB-D8DB0AF0ADDF}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Playmate.Social.WebAPI", "Playmate.Social.WebAPI\Playmate.Social.WebAPI.csproj", "{612B6122-79D8-45A9-8B7A-209E23D06CD7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,14 +40,14 @@ Global
 		{BFE5D9FA-E1FD-459A-8537-328E79E0E47F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFE5D9FA-E1FD-459A-8537-328E79E0E47F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFE5D9FA-E1FD-459A-8537-328E79E0E47F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6F29FD17-3F51-4EE1-B4C8-C45FCE86966E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6F29FD17-3F51-4EE1-B4C8-C45FCE86966E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6F29FD17-3F51-4EE1-B4C8-C45FCE86966E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6F29FD17-3F51-4EE1-B4C8-C45FCE86966E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{82B2FC59-EB46-4FEE-8AF4-C3310C045A17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{82B2FC59-EB46-4FEE-8AF4-C3310C045A17}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82B2FC59-EB46-4FEE-8AF4-C3310C045A17}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82B2FC59-EB46-4FEE-8AF4-C3310C045A17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{612B6122-79D8-45A9-8B7A-209E23D06CD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{612B6122-79D8-45A9-8B7A-209E23D06CD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{612B6122-79D8-45A9-8B7A-209E23D06CD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{612B6122-79D8-45A9-8B7A-209E23D06CD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -51,8 +56,8 @@ Global
 		{BBB31219-EC9E-4970-A144-A7E5D7E93A67} = {3B75F048-12D0-4124-ABF7-1D2DD9910427}
 		{DAC27BDD-79B2-41C1-BCCC-3B053239F8FA} = {3B75F048-12D0-4124-ABF7-1D2DD9910427}
 		{BFE5D9FA-E1FD-459A-8537-328E79E0E47F} = {3B75F048-12D0-4124-ABF7-1D2DD9910427}
-		{6F29FD17-3F51-4EE1-B4C8-C45FCE86966E} = {3B75F048-12D0-4124-ABF7-1D2DD9910427}
 		{82B2FC59-EB46-4FEE-8AF4-C3310C045A17} = {CB039696-8812-479B-912A-C1F6AEC3D2A2}
+		{612B6122-79D8-45A9-8B7A-209E23D06CD7} = {3B75F048-12D0-4124-ABF7-1D2DD9910427}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A1D8B986-D131-4E11-A40F-04558F5FAC6F}

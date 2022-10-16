@@ -1,70 +1,45 @@
-﻿using MediatR;
-using AutoMapper;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Playmate.Social.Application.Identity.Commands;
-using Playmate.Social.Application.Dtos.Requests;
+using Playmate.Social.WebAPI.Requests.Users;
 
-namespace Playmate.Social.WebAPI.Controllers
+namespace Playmate.Social.WebAPI.Controllers;
+
+[Route("api/v1/identity")]
+public class IdentityController : BaseApiController
 {
-    [Route("api/v1/identity")]
-    [ApiController]
-    public class IdentityController : ControllerBase
+    public IdentityController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
     {
-        private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
+    }
 
-        public IdentityController(IMediator mediator, IMapper mapper)
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] CreateUserRequest request)
+    {
+        var command = _mapper.Map<CreateUserCommand>(request);
+        var response = await _medaitor.Send(command);
+
+        if (!response.Succeeded)
         {
-            _mediator = mediator;
-            _mapper = mapper;
+            return GetStatusCode(response);
         }
 
-        [HttpPost("register")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Register([FromBody] CreateUserRequest request)
-        {
-            var command = _mapper.Map<CreateUserCommand>(request);
-            var response = await _mediator.Send(command);
+        return Created($"api/v1/identity/{response.Data?.Id}", response);
+    }
 
-            if (!response.Succeeded)
-            {
-                return BadRequest(response);
-            }
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] AuthenticateUserRequest request)
+    {
+        var command = _mapper.Map<AuthenticateUserCommand>(request);
+        var response = await _medaitor.Send(command);
+        return GetStatusCode(response);
+    }
 
-            return Created($"api/v1/identity/{response.Value.UserId}", null);
-        }
-
-        [HttpPost("login")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Login([FromBody] AuthenticateUserRequest request)
-        {
-            var command = _mapper.Map<AuthenticateUserCommand>(request);
-            var response = await _mediator.Send(command);
-
-            if (!response.Succeeded)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
-
-        [HttpPost("refresh")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
-        {
-            var command = _mapper.Map<RefreshTokenCommand>(request);
-            var response = await _mediator.Send(command);
-
-            if (!response.Succeeded)
-            {
-                return BadRequest(response);
-            }
-
-            return Ok(response);
-        }
+    [HttpPost("refresh")]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
+    {
+        var command = _mapper.Map<RefreshTokenCommand>(request);
+        var response = await _medaitor.Send(command);
+        return GetStatusCode(response);
     }
 }

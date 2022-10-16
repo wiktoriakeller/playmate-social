@@ -1,28 +1,21 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Playmate.Social.Infrastructure.Identity.Entities;
+using System.Reflection.Emit;
 
-namespace Playmate.Social.Infrastructure.Persistence
+namespace Playmate.Social.Infrastructure.Persistence;
+
+public class ApplicationDbContext : IdentityDbContext<User, Role, Guid>
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
+    public ApplicationDbContext(DbContextOptions options) : base(options)
     {
-        public DbSet<RefreshToken> RefreshTokens { get; set; }
+    }
 
-        public ApplicationDbContext(DbContextOptions options) : base(options)
-        {
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-
-            modelBuilder.Entity<RefreshToken>(eb =>
-            {
-                eb.HasKey(x => x.Token);
-
-                eb.Property(x => x.Token)
-                    .HasMaxLength(100);
-            });
-        }
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+        builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
     }
 }
