@@ -1,4 +1,5 @@
 import React from 'react'
+import { Navigate } from 'react-router-dom';
 import { useToken } from '../../hooks/useToken'
 
 const AuthRedirector = ({children}) => {
@@ -11,7 +12,7 @@ const AuthRedirector = ({children}) => {
       </>
     )
   }
-  return (<div>no token</div>)
+  return <Navigate to={"/signin"}/>
 
 }
 
