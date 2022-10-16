@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AuthRedirector from "./form/AuthRedirector";
 import Header from "./Header";
 import SignupPage from "../pages/SignupPage";
+import SigninPage from "../pages/SigninPage";
 
 function Router() {
   return (
@@ -9,6 +10,7 @@ function Router() {
       <Header />
       <Routes>
         <Route path="signup" element={<SignupPage />} />
+        <Route path="signin" element={<SigninPage />} />
         <Route
           path="secret"
           element={

@@ -11,3 +11,9 @@ export const signupUser = async (data, config: AxiosRequestConfig<any>) => {
   const response = await playmateApi.post("/User/signup", data, config);
   return response.data;
 }
+
+export const signinUser = async (data, config: AxiosRequestConfig<any>) => {
+  //const response = await playmateApi.post("/User/signin", data, config);
+  //return response.data;
+  return true;
+}

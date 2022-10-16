@@ -1,6 +1,6 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import * as React from "react";
-import TokenProvider from "../hooks/UserContext";
+import TokenProvider from "../hooks/useToken";
 import { queryClient } from "../lib/react-query";
 
 interface AppProviderProps {

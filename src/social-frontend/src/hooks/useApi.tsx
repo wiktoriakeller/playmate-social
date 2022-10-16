@@ -1,5 +1,5 @@
-import { useToken } from "./UserContext";
-import { signupUser } from "../lib/playmateApi";
+import { useToken } from "./useToken";
+import { signinUser, signupUser } from "../lib/playmateApi";
 
 export const useApi = () => {
   const { token } = useToken();
@@ -18,5 +18,18 @@ export const useApi = () => {
     });
   }
 
-  return {user: { signup}}
+  const signin = (data) => {
+    return signinUser(
+      {
+        email: data.email,
+        password: data.password
+      },
+      {
+      headers: {
+        "Content-type": "application/json",
+      }
+    });
+  }
+
+  return {user: { signup, signin}}
 };
