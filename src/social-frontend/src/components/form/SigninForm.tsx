@@ -2,21 +2,15 @@ import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useApi } from "../../hooks/useApi";
-import { IFormProps } from "../../types/formTypes";
+import { IFormProps, ISigninFormData } from "../../types/formTypes";
 import FormField from "./FormField";
-
-interface IFormInputs {
-  email: string;
-  password: string;
-}
 
 const SigninForm = (props: IFormProps) => {
   const {
     control,
     handleSubmit,
-    getValues,
     formState: { errors },
-  } = useForm<IFormInputs>({
+  } = useForm<ISigninFormData>({
     defaultValues: {
       email: "",
       password: ""
@@ -26,7 +20,7 @@ const SigninForm = (props: IFormProps) => {
   const { signin } = useApi().user;
 
   const { mutate, isLoading } = useMutation(
-    (values: IFormInputs) => signin(values),
+    (values: ISigninFormData) => signin(values),
     {
       onSuccess() {
         props.onSubmit();
