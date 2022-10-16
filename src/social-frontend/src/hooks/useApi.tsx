@@ -35,7 +35,6 @@ export const useApi = () => {
       setToken(userToken);
       console.log("token set: " + userToken);
     }
-    return;
   }
 
   return {user: { signup, signin}}
