@@ -1,8 +1,8 @@
-import { useToken } from "./UserContext";
-import { signupUser } from "../lib/playmateApi";
+import { useToken } from "./useToken";
+import { signinUser, signupUser } from "../lib/playmateApi";
 
 export const useApi = () => {
-  const { token } = useToken();
+  const { token, setToken } = useToken();
 
   const signup = (data) => {
     return signupUser(
@@ -18,5 +18,24 @@ export const useApi = () => {
     });
   }
 
-  return {user: { signup}}
+  const signin = async (data) => {
+    data = await signinUser(
+      {
+        email: data.email,
+        password: data.password
+      },
+      {
+      headers: {
+        "Content-type": "application/json",
+      }
+    });
+
+    let userToken = data?.token
+    if(!!userToken) {
+      setToken(userToken);
+      console.log("token set: " + userToken);
+    }
+  }
+
+  return {user: { signup, signin}}
 };

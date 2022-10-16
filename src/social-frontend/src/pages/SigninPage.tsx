@@ -1,17 +1,16 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import SignupForm from '../components/form/SignupForm'
+import SigninForm from '../components/form/SigninForm';
 
-
-const SignupPage = () => {
+const SigninPage = () => {
 
   const navigate = useNavigate();
 
   return (
     <div className='form-page'>
-      <SignupForm onSubmit={() => navigate('/signin')}/>
+      <SigninForm onSubmit={() => navigate('/secret')}/>
     </div>
   )
 }
 
-export default SignupPage
+export default SigninPage
