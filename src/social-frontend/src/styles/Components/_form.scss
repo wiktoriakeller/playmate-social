@@ -1,0 +1,39 @@
+@use "../colors";
+
+.form {
+  display: flex;
+  width: 25%;
+  min-width: 300px;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid colors.$border;
+  border-radius: 10px;
+  padding: 40px;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  .form-error {
+    font-size: 0.8em;
+    color: colors.$error;
+  }
+}
+
+.form-input {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border-radius: 7px;
+  border: 1px solid colors.$border;
+}
+
+.submit {
+  width: 150px;
+}
+
+.form-page {
+  display: flex;
+  justify-content: center;
+}

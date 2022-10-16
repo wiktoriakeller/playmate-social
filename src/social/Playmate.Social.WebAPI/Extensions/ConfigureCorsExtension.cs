@@ -2,15 +2,16 @@
 
 public static class ConfigureCorsExtension
 {
-    public static IServiceCollection ConfigureCors(this IServiceCollection services)
+    public static IServiceCollection ConfigureCors(this IServiceCollection services, IConfiguration configuration)
     {
-        var policyName = "mobile";
+        var policyName = "social-frontend";
         services.AddCors(options =>
         {
             options.AddPolicy(policyName, builder =>
                 builder
                 .AllowAnyMethod()
                 .AllowAnyHeader()
+                .WithOrigins(configuration["AllowedOrigins"])
             );
         });
 

@@ -2,7 +2,7 @@
 
 public static class ConfigureServicesExtension
 {
-    public static IServiceCollection AddApiServices(this IServiceCollection services)
+    public static IServiceCollection AddApi(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(ConfigureServicesExtension).Assembly);
         return services;

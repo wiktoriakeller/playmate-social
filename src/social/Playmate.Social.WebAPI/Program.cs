@@ -5,13 +5,13 @@ using Playmate.Social.WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddApiServices();
+builder.Services.AddApi();
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerDoc();
-builder.Services.ConfigureCors();
+builder.Services.ConfigureCors(builder.Configuration);
 
 var app = builder.Build();
 
