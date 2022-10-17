@@ -1,28 +1,34 @@
+using Playmate.Social.Application.Common.Extensions;
+using Playmate.Social.Infrastructure.Extensions;
+using Playmate.Social.WebAPI.Extensions;
+using Playmate.Social.WebAPI.Middleware;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+builder.Services.AddPresentation(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("cors-policy", builder => builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("http://localhost:3000"));
-});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseCors();
 
-app.UseCors("cors-policy");
+app.ApplyMigrations();
+
 app.UseSwagger();
 
 app.UseSwaggerUI();
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseIdentityMiddleware();
+
+app.UseErrorHandlingMiddleware();
 
 app.MapControllers();
 
