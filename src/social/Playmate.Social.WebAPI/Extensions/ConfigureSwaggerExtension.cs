@@ -6,6 +6,7 @@ public static class ConfigureSwaggerExtension
 {
     public static IServiceCollection AddSwaggerDoc(this IServiceCollection services)
     {
+        services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(cfg =>
         {
             cfg.SwaggerDoc("v1", new OpenApiInfo

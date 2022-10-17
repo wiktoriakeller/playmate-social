@@ -73,7 +73,7 @@ public class IdentityService : IIdentityService
         var newUser = new User
         {
             Email = createUserCommand.Email,
-            UserName = createUserCommand.UserName ?? createUserCommand.Email
+            UserName = createUserCommand.UserName
         };
 
         var result = await _userManager.CreateAsync(newUser, createUserCommand.Password);
