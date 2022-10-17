@@ -13,7 +13,7 @@ public class AuthenticateUserCommandValidator : AbstractValidator<AuthenticateUs
         RuleFor(x => x.Email)
             .NotEmpty()
             .EmailAddress()
-            .EmailIsPresent(true, identityService)
+            .UserWithEmailShouldExist(true, identityService)
             .WithMessage(ErrorMessages.Identity.UserNotFound);
 
         RuleFor(x => x.Password)

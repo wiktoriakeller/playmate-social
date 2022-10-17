@@ -13,7 +13,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         RuleFor(x => x.Email)
             .NotEmpty()
             .EmailAddress()
-            .EmailIsPresent(false, identityService)
+            .UserWithEmailShouldExist(false, identityService)
             .WithMessage(ErrorMessages.Identity.UserWithEmailAlreadyExists);
 
         RuleFor(x => x.Password)
@@ -22,7 +22,6 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 
         RuleFor(x => x.UserName)
             .MinimumLength(2)
-            .MaximumLength(20)
-            .When(x => x.UserName?.Length > 0);
+            .MaximumLength(20);
     }
 }

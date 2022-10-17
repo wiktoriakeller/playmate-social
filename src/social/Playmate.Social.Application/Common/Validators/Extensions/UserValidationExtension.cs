@@ -5,14 +5,15 @@ namespace Playmate.Social.Application.Common.Validators.Extensions;
 
 public static class UserValidationExtension
 {
-    public static IRuleBuilderOptions<T, string> EmailIsPresent<T>(
-        this IRuleBuilder<T, string> ruleBuilder, bool isPresent,
+    public static IRuleBuilderOptions<T, string> UserWithEmailShouldExist<T>(
+        this IRuleBuilder<T, string> ruleBuilder, 
+        bool shouldExist,
         IIdentityService identityService)
     {
         return ruleBuilder.MustAsync(async (rootObject, email, cancellationToken) =>
         {
             var response = await identityService.GetUserByEmail(email);
-            if (isPresent && response.Succeeded || !isPresent && !response.Succeeded)
+            if (shouldExist && response.Succeeded || !shouldExist && !response.Succeeded)
             {
                 return true;
             }
