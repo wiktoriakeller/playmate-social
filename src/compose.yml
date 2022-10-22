@@ -28,5 +28,13 @@ services:
       - social-db-sql
     networks:
       - localdev
+
+  social-frontend:
+    container_name: social-frontend
+    build: 
+      context: ./social-frontend
+    depends_on:
+      - social-api
+
 volumes:
   db-data:
