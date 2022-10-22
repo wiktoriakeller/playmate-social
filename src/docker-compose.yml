@@ -1,0 +1,34 @@
+version: '3.9'
+
+networks:
+  localdev:
+    name: localdev
+
+services:
+  social-db-sql:
+    container_name: social-db-sql
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: ${SA_PASSWORD?err}
+    user: root
+    ports:
+      - "1433:1433"
+    networks:
+      - localdev
+    volumes:
+      - db-data:/var/opt/mssql/data
+        
+  social-api:
+    container_name: social-api
+    build:
+      context: ./social-api/
+    environment:
+      - "Authentication:JwtOptions:Key=${JWT_KEY?err}"
+    restart: always
+    depends_on:
+      - social-db-sql
+    networks:
+      - localdev
+volumes:
+  db-data:
