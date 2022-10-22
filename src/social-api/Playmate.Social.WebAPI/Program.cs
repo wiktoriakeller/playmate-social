@@ -16,9 +16,11 @@ app.UseCors();
 
 app.ApplyMigrations();
 
-app.UseSwagger();
-
-app.UseSwaggerUI();
+if(builder.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 
