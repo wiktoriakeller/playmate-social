@@ -13,9 +13,9 @@ public class CurrentUserService : ICurrentUserService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public IUser? User => GetCurrentUser();
+    public User? CurrentUser => GetCurrentUser();
 
-    private IUser? GetCurrentUser()
+    private User? GetCurrentUser()
     {
         if (_httpContextAccessor.HttpContext is null)
         {
@@ -24,7 +24,7 @@ public class CurrentUserService : ICurrentUserService
 
         if (_httpContextAccessor.HttpContext.Items.ContainsKey("User"))
         {
-            return _httpContextAccessor.HttpContext?.Items["User"] as IUser;
+            return _httpContextAccessor.HttpContext?.Items["User"] as User;
         }
 
         return null;

@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Playmate.Social.Domain.Entities;
 using Playmate.Social.Infrastructure.Configuration;
 using Playmate.Social.Infrastructure.Identity.Dto;
-using Playmate.Social.Infrastructure.Identity.Entities;
 using Playmate.Social.Infrastructure.Identity.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,16 +14,13 @@ public class JwtTokenService : IJwtTokenService
 {
     private readonly JwtOptions _jwtOptions;
     private readonly TokenValidationParameters _tokenValidationParameters;
-    private readonly UserManager<User> _userManager;
 
     public JwtTokenService(
         IOptions<JwtOptions> jwtOptions,
-        TokenValidationParameters tokenValidationParameters,
-        UserManager<User> userManager)
+        TokenValidationParameters tokenValidationParameters)
     {
         _jwtOptions = jwtOptions.Value;
         _tokenValidationParameters = tokenValidationParameters;
-        _userManager = userManager;
     }
 
     public async Task<JwtTokenInfoDto> CreateJwtToken(User user)
@@ -100,16 +96,6 @@ public class JwtTokenService : IJwtTokenService
             new Claim(JwtRegisteredClaimNames.Aud, _jwtOptions.Audience),
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
         };
-
-        var userClaims = await _userManager.GetClaimsAsync(user);
-        claims.AddRange(userClaims);
-
-        var userRoles = await _userManager.GetRolesAsync(user);
-
-        foreach (var role in userRoles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
-        }
 
         return (claims, jti);
     }

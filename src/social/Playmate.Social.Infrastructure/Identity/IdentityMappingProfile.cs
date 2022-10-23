@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Playmate.Social.Application.Identity.Responses;
-using Playmate.Social.Infrastructure.Identity.Entities;
+using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Infrastructure.Identity;
 

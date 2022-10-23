@@ -6,9 +6,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
+using Playmate.Social.Domain.Entities;
 using Playmate.Social.Infrastructure.Configuration;
 using Playmate.Social.Infrastructure.Identity;
-using Playmate.Social.Infrastructure.Identity.Entities;
 using Playmate.Social.Infrastructure.Identity.Interfaces;
 using Playmate.Social.Infrastructure.Persistence;
 using Playmate.Social.Infrastructure.Persistence.Repositories;
@@ -32,18 +32,9 @@ public static class ConfigureServicesExtension
 
         RegisterRepositories(services);
 
-        //Register identity and jwt
-        services.AddIdentity<User, Role>(options =>
-        {
-            options.Password.RequireDigit = true;
-            options.Password.RequireLowercase = true;
-            options.Password.RequireUppercase = true;
-            options.Password.RequireNonAlphanumeric = true;
-            options.Password.RequiredLength = 6;
-            options.User.RequireUniqueEmail = true;
-        })
-        .AddEntityFrameworkStores<ApplicationDbContext>()
-        .AddDefaultTokenProviders();
+        services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+        services.AddHttpContextAccessor();
 
         var tokenValidationParameters = new TokenValidationParameters
         {
@@ -79,5 +70,6 @@ public static class ConfigureServicesExtension
     private static void RegisterRepositories(IServiceCollection services)
     {
         services.AddScoped<IRepository<RefreshToken>, BaseRepository<RefreshToken>>();
+        services.AddScoped<IRepository<User>, BaseRepository<User>>();
     }
 }

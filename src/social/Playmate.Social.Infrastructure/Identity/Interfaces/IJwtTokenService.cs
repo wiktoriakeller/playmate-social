@@ -1,5 +1,5 @@
-﻿using Playmate.Social.Infrastructure.Identity.Dto;
-using Playmate.Social.Infrastructure.Identity.Entities;
+﻿using Playmate.Social.Domain.Entities;
+using Playmate.Social.Infrastructure.Identity.Dto;
 
 namespace Playmate.Social.Infrastructure.Identity.Interfaces;
 
