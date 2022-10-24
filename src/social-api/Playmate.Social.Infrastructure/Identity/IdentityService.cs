@@ -48,7 +48,7 @@ public class IdentityService : IIdentityService
             return Task.FromResult(ResponseResult.NotFound<User>(ErrorMessages.Identity.UserNotFound));
         }
 
-        return Task.FromResult(ResponseResult.Ok<User>(user));
+        return Task.FromResult(ResponseResult.Ok(user));
     }
 
     public async Task<Response<User>> GetUserByJwtTokenAsync(string jwtToken)

@@ -1,14 +1,16 @@
 ﻿using FluentValidation;
 using Playmate.Social.Application.Common.Constants;
 using Playmate.Social.Application.Common.Contracts.Identity;
+using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.Common.Validators.Extensions;
 using Playmate.Social.Application.Identity.Commands;
+using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Application.Common.Validators.Identity;
 
 public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
-    public CreateUserCommandValidator(IIdentityService identityService)
+    public CreateUserCommandValidator(IIdentityService identityService, IRepository<User> repository)
     {
         RuleFor(x => x.Email)
             .NotEmpty()
@@ -22,6 +24,8 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 
         RuleFor(x => x.UserName)
             .MinimumLength(2)
-            .MaximumLength(20);
+            .MaximumLength(20)
+            .UserWithUsernameShouldExist(false, repository)
+            .WithMessage(ErrorMessages.Identity.UserWithUsernameAlreadyExists);
     }
 }
