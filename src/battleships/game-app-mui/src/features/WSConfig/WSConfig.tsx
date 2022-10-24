@@ -19,7 +19,7 @@ const options: WebSocketOptions = {
 export function WSConfig() {
     const dispatch = useAppDispatch();
     const stateWSConfig = useAppSelector(selectWSConfig);
-    // const [messageHistory, setMessageHistory] = useState([]);
+    const [messageHistory, setMessageHistory] = useState([]);
 
     //WS
     const {
@@ -55,11 +55,12 @@ export function WSConfig() {
 
     useEffect(() => {
         if (lastJsonMessage !== null) {
-            //setMessageHistory((prev) => prev.concat(lastJsonMessage));
-            const parsedMessage = JSON.parse(lastJsonMessage?.toString() || "{}");
+            
+            const parsedMessage = JSON.parse(lastJsonMessage?.toString());
+            console.log(`Parsed message: ${parsedMessage}`);
             dispatch(receiveMessageToState(parsedMessage));
         }
-    }, [lastMessage, lastJsonMessage, /*setMessageHistory,*/ stateWSConfig.socketUrl]);
+    }, [lastMessage, lastJsonMessage, setMessageHistory, stateWSConfig.socketUrl]);
     const connectionStatus = {
         [ReadyState.CONNECTING]: "Connecting",
         [ReadyState.OPEN]: "Open",
@@ -71,16 +72,18 @@ export function WSConfig() {
 
     return (
       <div>
-          <div style={{border: "2px solid black", padding: "10px"}}>
-            <p>userId: {stateWSConfig.userId}</p>
-            <p>gameSessionId: {stateWSConfig.gameSessionId}</p>
-            <p>socketUrl: {stateWSConfig.socketUrl}</p>
-            <p>connection: {connectionStatus}</p>
+          <div>
+            <p>
+              userId: {stateWSConfig.userId}{" | "}
+              gameSessionId: {stateWSConfig.gameSessionId}{" | "}
+              socketUrl: {stateWSConfig.socketUrl}{" | "}
+              connection: {connectionStatus}
+            </p>
           </div>
           <Chat
             triggerSendMock={handleSendMock}
             triggerSendObject={handleSendObject}
-            ></Chat>
+          ></Chat>
       </div>
   );
 }

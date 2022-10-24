@@ -11,21 +11,18 @@ export interface WSConfigState extends IWSConfig  {
 }
 
 const initialState: WSConfigState = {
-    gameSessionId: queryString.parse(window.location.search).gameSesionId?.toString()||null,
+    gameSessionId: queryString.parse(window.location.search).gameSessionId?.toString()||null,
     userId: queryString.parse(window.location.search).userId?.toString()||null,
-    socketUrl: `ws://localhost:8000/battleships/ws/${queryString.parse(window.location.search).gameSesionId}/${queryString.parse(window.location.search).userId}`,
+    socketUrl: `ws://localhost:8000/battleships/ws/${queryString.parse(window.location.search).gameSessionId}/${queryString.parse(window.location.search).userId}`,
     stateLastParsedMessage: {}
 };
-
-
-
 
 export const WSConfigSlice = createSlice({
   name: 'WSConfig',
   initialState,
   reducers: {
-    receiveMessageToState: (state, action:PayloadAction<Pick<IWSConfig, 'stateLastParsedMessage'>>) =>{
-        state.stateLastParsedMessage = action.payload.stateLastParsedMessage||{}
+    receiveMessageToState: (state, action:PayloadAction<object>) =>{
+        state.stateLastParsedMessage = action.payload
     }
     
   },

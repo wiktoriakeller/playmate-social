@@ -28,7 +28,7 @@ class ConnectionManager:
         await websocket.send_json(json.dumps(message.json())) 
 
     async def broadcast_without_sender_json(self, websocket: WebSocket, message: str, game_session_id: str, sender: str):
-        # print(f"game_session_id: {game_session_id}")
+        print(f"game_session_id: {game_session_id}")
         game_session = game_session_register.get(game_session_id)
         
         if game_session is None:
