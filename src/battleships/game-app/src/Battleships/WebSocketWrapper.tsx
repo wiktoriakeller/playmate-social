@@ -147,9 +147,7 @@ export const WebSocketWrapper = () => {
             disabled={false}
             onSomething={handleOnSomething}
             eventLastJsonMessage={lastJsonMessage}
-            eventLastParsedMessage={JSON.parse(
-              lastJsonMessage?.toString() || "{}"
-            )}
+            eventLastParsedMessage={lastJsonMessage}
             triggerSendJsonMessage={handleSendJsonMessage}
             triggerSendObjectMessage={handleSendObjectMessage}
             readyState={readyState}

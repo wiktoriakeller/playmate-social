@@ -6,3 +6,5 @@ docker build  -t sample:dev .
 docker run -t --rm -v ${PWD}:/usr/src/app  -v /usr/src/app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true sample:dev
 
 docker run -t -v ${PWD}:/usr/src/app  -v /usr/src/app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true game_app:dev
+ npm start .env.local
+ REACT_APP_BATTLESHIPS_BACKEND_WS_URL='ws://localhost:8000/battleships/ws/';
