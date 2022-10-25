@@ -31,7 +31,7 @@ public static class UserValidationExtension
     {
         return ruleBuilder.Must((rootObject, username, cancellationToken) =>
         {
-            var user = repository.GetWhere(u => u.Username == username);
+            var user = repository.GetWhere(u => u.Username == username).FirstOrDefault();
             if (shouldExist && user != null || !shouldExist && user == null)
             {
                 return true;
