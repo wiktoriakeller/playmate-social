@@ -2,7 +2,7 @@
 using Playmate.Social.Application.Identity.Responses;
 using Playmate.Social.Domain.Entities;
 
-namespace Playmate.Social.Infrastructure.Identity;
+namespace Playmate.Social.Application.Identity;
 
 internal class IdentityMappingProfile : Profile
 {
