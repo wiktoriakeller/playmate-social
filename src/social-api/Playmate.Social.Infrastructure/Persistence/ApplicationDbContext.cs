@@ -8,6 +8,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Friend> Friends { get; set; }
+    public DbSet<FriendRequest> FriendRequests { get; set; }
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
