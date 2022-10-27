@@ -171,7 +171,7 @@ async def websocket_endpoint(websocket: WebSocket, game_session_id:str, client_i
                     type: "error"
                 }, websocket) 
             else:
-                messageOut = WebSocketMessageOut(**messageIn.dict(), source=client_id)
+                messageOut = WebSocketMessageOut(**messageIn.dict(), source=client_id, id_server_res=str(uuid.uuid1()))
                 await manager.send_personal_message_json(messageOut, websocket)
                 await manager.broadcast_without_sender_json(
                     websocket=websocket,

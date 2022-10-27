@@ -6,6 +6,7 @@ import { JsonValue, WebSocketOptions } from "../../types";
 import {receiveMessageToState} from './WSConfigSlice';
 import { mockMessages } from "../../app/mockMessages";
 import {Chat} from './../Chat/Chat';
+import { nanoid } from 'nanoid';
 
 
 const options: WebSocketOptions = {
@@ -39,6 +40,7 @@ export function WSConfig() {
       (jsonMessage: JsonValue, keep: boolean) => {
         const mockEnum = jsonMessage || "hello";
         const mockMessage = mockMessages[new String(mockEnum).toLowerCase()] || {
+          id: nanoid(),
           type: "error",
           data: ["invalid_mock"],
         };
