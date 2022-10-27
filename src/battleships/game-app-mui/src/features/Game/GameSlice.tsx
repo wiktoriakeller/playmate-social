@@ -1,29 +1,33 @@
 import { createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
-import {IWSConfig} from '../../types';
 
 
-export interface IChat  {
-    sendingEnabled: boolean
+export interface IGame  {
+    myBoardInfo: string,
+    opponentBoardInfo: string
 }
 
-const initialState: IChat = {
-    sendingEnabled: true
+const initialState: IGame = {
+  myBoardInfo: "START",
+  opponentBoardInfo: "START"
 };
 
-export const ChatSlice = createSlice({
-  name: 'Chat',
+export const GameSlice = createSlice({
+  name: 'Game',
   initialState,
   reducers: {
-    toggleSending: (state, action:PayloadAction<boolean>) =>{
-      state.sendingEnabled = action.payload
-    }
+    setMyBoardInfo: (state, action:PayloadAction<string>) =>{
+      state.myBoardInfo = action.payload
+    },
+    setOpponentBoardInfo: (state, action:PayloadAction<string>) =>{
+      state.opponentBoardInfo = action.payload
+    },
   },
 
 });
 
-export const {toggleSending} = ChatSlice.actions;
+export const {setMyBoardInfo, setOpponentBoardInfo} = GameSlice.actions;
 
-export const selectChat = (state: RootState) => state.chat;
+export const selectGame = (state: RootState) => state.game;
 
-export default ChatSlice.reducer;
+export default GameSlice.reducer;

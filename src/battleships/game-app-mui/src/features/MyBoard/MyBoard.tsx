@@ -1,12 +1,12 @@
 import React, { useState, useCallback, useEffect} from 'react';
-import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {selectStateLastParsedMessage} from '../WSConfig/WSConfigSlice';
-import {setMyBoardInfo, setOpponentBoardInfo, selectGame} from './GameSlice';
+import {setMyBoardInfo, selectGame} from '../Game/GameSlice';
+import {} from './MyBoardSlice';
 import {WebSocketServiceProps} from '../../types';
 
 
-export function Game({
+export function MyBoard({
         triggerSendMock,
         triggerSendObject
     }: WebSocketServiceProps
@@ -31,7 +31,7 @@ export function Game({
 
     return (
     <div>
-        Game component
+        MyBoard
     </div>
   );
 }
