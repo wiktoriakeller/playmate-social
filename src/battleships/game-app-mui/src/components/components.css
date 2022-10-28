@@ -28,3 +28,7 @@
     text-align: center;
     line-height: 34px;
 }
+
+.MyBoardShipSquare{
+    background-color:rgb(120, 136, 159);
+}

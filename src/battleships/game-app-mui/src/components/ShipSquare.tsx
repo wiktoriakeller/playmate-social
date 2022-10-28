@@ -2,6 +2,8 @@ interface IShipSquare{
     name:string
 }
 function ShipSquare(props:IShipSquare) {
-    return <h1>Hello, {props.name}</h1>;
+    return <div className="MyBoardShipSquare">
+
+    </div>;
 }
 export default ShipSquare;

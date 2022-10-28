@@ -6,6 +6,8 @@ import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import './components.css'
+import BlankSquare from './BlankSquare';
+
 interface IMyBoardItem{
   id: number
 }
@@ -32,9 +34,7 @@ export function MyBoardItem({id}: IMyBoardItem) {
     );
   }else{
     return (
-      <div className='Item'>
-          {id}
-      </div>
+      <BlankSquare className='Item' id={id}></BlankSquare>
     );
   }
   
