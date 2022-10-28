@@ -4,6 +4,7 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {selectWSConfig} from './WSConfigSlice';
 import { JsonValue, WebSocketOptions } from "../../types";
 import {receiveMessageToState} from './WSConfigSlice';
+import {toggleSending} from '../Game/GameSlice';
 import { mockMessages } from "../../app/mockMessages";
 import {Chat} from './../Chat/Chat';
 import {Game} from './../Game/Game';
@@ -62,6 +63,7 @@ export function WSConfig() {
             const parsedMessage = JSON.parse(lastJsonMessage?.toString());
             console.log(`Parsed message: ${parsedMessage}`);
             dispatch(receiveMessageToState(parsedMessage));
+            dispatch(toggleSending(true));
         }
     }, [lastMessage, lastJsonMessage, setMessageHistory, stateWSConfig.socketUrl]);
     const connectionStatus = {

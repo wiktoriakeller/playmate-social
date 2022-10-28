@@ -3,11 +3,13 @@ import {RootState} from '../../app/store';
 
 
 export interface IGame  {
+    sendingEnabled: boolean,
     myBoardInfo: string,
-    opponentBoardInfo: string
+    opponentBoardInfo: string,
 }
 
 const initialState: IGame = {
+  sendingEnabled: true,
   myBoardInfo: "START",
   opponentBoardInfo: "START"
 };
@@ -16,6 +18,9 @@ export const GameSlice = createSlice({
   name: 'Game',
   initialState,
   reducers: {
+    toggleSending: (state, action:PayloadAction<boolean>) =>{
+      state.sendingEnabled = action.payload
+    },
     setMyBoardInfo: (state, action:PayloadAction<string>) =>{
       state.myBoardInfo = action.payload
     },
@@ -26,7 +31,7 @@ export const GameSlice = createSlice({
 
 });
 
-export const {setMyBoardInfo, setOpponentBoardInfo} = GameSlice.actions;
+export const {setMyBoardInfo, setOpponentBoardInfo, toggleSending} = GameSlice.actions;
 
 export const selectGame = (state: RootState) => state.game;
 
