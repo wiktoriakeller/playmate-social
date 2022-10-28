@@ -39,7 +39,7 @@ export function MyBoard({
             {Array.from(Array(11)).map((_, rowIndex) => (
                Array.from(Array(11)).map((_, colIndex) => (
                     <div className='DivItem' key={rowIndex*11+colIndex}>
-                        <MyBoardItem key={rowIndex*11+colIndex}></MyBoardItem>
+                        <MyBoardItem id={rowIndex*11+colIndex} key={rowIndex*11+colIndex}></MyBoardItem>
                     </div>
                 ))
             ))}

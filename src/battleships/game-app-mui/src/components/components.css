@@ -25,5 +25,6 @@
     flex-direction: row;
     border: solid rgb(120, 136, 159) 2px;
     box-sizing: border-box;
-
+    text-align: center;
+    line-height: 34px;
 }
