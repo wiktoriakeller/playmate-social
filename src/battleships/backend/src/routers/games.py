@@ -194,7 +194,12 @@ async def websocket_endpoint(websocket: WebSocket, game_session_id:str, client_i
         manager.disconnect(websocket, client_id)
         await manager.broadcast_without_sender_json(
             websocket=websocket,
-            message=WebSocketMessageOut(type="error_disconnect_opponent", source=client_id, data=[]),
+            message=WebSocketMessageOut(
+                id='undefined',
+                type="error_disconnect_opponent", 
+                source=client_id, data=[],
+                id_server_res=str(uuid.uuid1())
+            ),
             game_session_id=game_session_id,
             sender=client_id
         )
