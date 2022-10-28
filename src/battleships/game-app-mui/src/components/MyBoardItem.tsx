@@ -1,18 +1,15 @@
 import React, { useState, useCallback, useEffect} from 'react';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
 import {WebSocketServiceProps} from '../types';
-import { experimentalStyled as styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
+
 import './components.css'
 import BlankSquare from './BlankSquare';
 
-interface IMyBoardItem{
+interface IMyBoardItem extends WebSocketServiceProps{
   id: number
 }
 
-export function MyBoardItem({id}: IMyBoardItem) {
+export function MyBoardItem({id, triggerSendMock, triggerSendObject}: IMyBoardItem) {
   if(id == 0){
     return (
       <div className='Item' >
@@ -34,7 +31,12 @@ export function MyBoardItem({id}: IMyBoardItem) {
     );
   }else{
     return (
-      <BlankSquare className='Item' id={id}></BlankSquare>
+      <BlankSquare 
+        className='Item' 
+        id={id}
+        triggerSendMock={triggerSendMock}
+        triggerSendObject={triggerSendObject}
+      ></BlankSquare>
     );
   }
   

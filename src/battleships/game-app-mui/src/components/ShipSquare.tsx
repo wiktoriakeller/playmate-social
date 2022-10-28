@@ -1,4 +1,5 @@
-interface IShipSquare{
+
+interface IShipSquare {
     name:string
 }
 function ShipSquare(props:IShipSquare) {
