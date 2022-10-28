@@ -1,0 +1,29 @@
+.MyBoardItem {
+    text-decoration: none;
+}
+.Grid11x11 {
+    /* min-height: 400px; */
+    /* min-width: 400px; */
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    border: solid rgb(120, 136, 159) 1px;
+    width: 440px;
+}
+.DivItem{
+    display: flex; 
+    flex-basis: 30px;  
+    justify-content: center;
+    flex-direction: column;
+}
+.Item {
+    background-color: #fff;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    border: solid rgb(120, 136, 159) 2px;
+    box-sizing: border-box;
+
+}

@@ -6,6 +6,7 @@ import { JsonValue, WebSocketOptions } from "../../types";
 import {receiveMessageToState} from './WSConfigSlice';
 import { mockMessages } from "../../app/mockMessages";
 import {Chat} from './../Chat/Chat';
+import {Game} from './../Game/Game';
 import { nanoid } from 'nanoid';
 
 
@@ -86,6 +87,10 @@ export function WSConfig() {
             triggerSendMock={handleSendMock}
             triggerSendObject={handleSendObject}
           ></Chat>
+          <Game
+            triggerSendMock={handleSendMock}
+            triggerSendObject={handleSendObject}
+        ></Game>
       </div>
   );
 }

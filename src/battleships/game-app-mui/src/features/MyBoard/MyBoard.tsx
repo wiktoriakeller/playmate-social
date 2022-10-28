@@ -4,6 +4,11 @@ import {selectStateLastParsedMessage} from '../WSConfig/WSConfigSlice';
 import {setMyBoardInfo, selectGame} from '../Game/GameSlice';
 import {} from './MyBoardSlice';
 import {WebSocketServiceProps} from '../../types';
+import Box from '@mui/material/Box';
+import Paper from '@mui/material/Paper';
+import Grid from '@mui/material/Grid';
+import {MyBoardItem} from '../../components';
+import '../../components/components.css';
 
 
 export function MyBoard({
@@ -30,8 +35,14 @@ export function MyBoard({
     }
 
     return (
-    <div>
-        MyBoard
-    </div>
-  );
+        <div className='Grid11x11'>
+            {Array.from(Array(11)).map((_, rowIndex) => (
+               Array.from(Array(11)).map((_, colIndex) => (
+                    <div className='DivItem' key={rowIndex*11+colIndex}>
+                        <MyBoardItem key={rowIndex*11+colIndex}></MyBoardItem>
+                    </div>
+                ))
+            ))}
+        </div>
+      );
 }

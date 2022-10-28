@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {selectStateLastParsedMessage} from '../WSConfig/WSConfigSlice';
 import {setMyBoardInfo, setOpponentBoardInfo, selectGame} from './GameSlice';
 import {WebSocketServiceProps} from '../../types';
-
+import {MyBoard} from '../MyBoard/MyBoard';
 
 export function Game({
         triggerSendMock,
@@ -31,7 +31,13 @@ export function Game({
 
     return (
     <div>
-        Game component
+        <p style={{"margin": '30px'}}>Game component</p>
+        <div style={{"margin": '30px'}}>
+            <MyBoard 
+                triggerSendMock={triggerSendMock}
+                triggerSendObject={triggerSendObject}
+            ></MyBoard>
+        </div>
     </div>
   );
 }
