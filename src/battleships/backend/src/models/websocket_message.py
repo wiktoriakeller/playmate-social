@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import TypedDict, List, Tuple, Union
+from typing import Dict, TypedDict, List, Tuple, Union
 from ..ships.constants import *
 
 class WebSocketMessageIn(BaseModel):
@@ -10,8 +10,8 @@ class WebSocketMessageIn(BaseModel):
 class ResponseData(TypedDict):
     session_game_state: SessionGameState
     player_game_state: PlayerGameState
-    my_board: List[Tuple[int, SquareItemState]]
-    opponent_board: List[Tuple[int, SquareItemState]]
+    my_board: Dict[int, SquareItemState]
+    opponent_board: Dict[int, SquareItemState]
 
 class WebSocketMessageOut(BaseModel):
     id: str

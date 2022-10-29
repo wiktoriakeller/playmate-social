@@ -61,7 +61,7 @@ export function WSConfig() {
         if (lastJsonMessage !== null) {
             
             const parsedMessage = JSON.parse(lastJsonMessage?.toString());
-            console.log(`Parsed message: ${parsedMessage}`);
+            // console.log(`Parsed message: ${parsedMessage}`);
             dispatch(receiveMessageToState(parsedMessage));
             dispatch(toggleSending(true));
         }

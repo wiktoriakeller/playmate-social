@@ -1,6 +1,6 @@
 
 interface IShipSquare {
-    name:string
+    className:string
 }
 function ShipSquare(props:IShipSquare) {
     return <div className="MyBoardShipSquare">

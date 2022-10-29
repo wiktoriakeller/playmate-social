@@ -1,5 +1,5 @@
 from ..ships.constants import *
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 class Board():
     _matrix_keys = sorted([i*11 + j for j in range(1,11) for i in range(1,11)])
     @property
@@ -15,8 +15,8 @@ class Board():
         else:
             self.matrix[index] = new_state
 
-    def get_matrix(self) -> List[Tuple[int, SquareItemState]]:
-        return list(self.matrix.items())
+    def get_matrix(self) -> Dict[int, SquareItemState]:
+        return self.matrix
 
 class MyBoard(Board):
     def __init__(self) -> None:

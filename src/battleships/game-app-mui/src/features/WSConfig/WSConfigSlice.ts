@@ -14,7 +14,13 @@ const initialState: WSConfigState = {
     gameSessionId: queryString.parse(window.location.search).gameSessionId?.toString()||null,
     userId: queryString.parse(window.location.search).userId?.toString()||null,
     socketUrl: `ws://localhost:8000/battleships/ws/${queryString.parse(window.location.search).gameSessionId}/${queryString.parse(window.location.search).userId}`,
-    stateLastParsedMessage: {}
+    stateLastParsedMessage: {
+      
+      data:{
+      'my_board' :[],
+      'opponent_board': []
+      }
+  }
 };
 
 export const WSConfigSlice = createSlice({

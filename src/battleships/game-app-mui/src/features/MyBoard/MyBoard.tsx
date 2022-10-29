@@ -22,7 +22,7 @@ export function MyBoard({
     const stateReceiveObject = useAppSelector(selectStateLastParsedMessage);
    
     useEffect(() => {
-        console.log("re-render "+JSON.stringify(stateReceiveObject));
+        console.log("re-render ");
       }, [stateReceiveObject]);
 
     const [text, setText] = useState("");

@@ -17,7 +17,7 @@ export function Chat({
     const stateReceiveObject = useAppSelector(selectStateLastParsedMessage);
    
     useEffect(() => {
-        console.log("re-render "+JSON.stringify(stateReceiveObject));
+        console.log("re-render "+ stateReceiveObject);
       }, [stateReceiveObject]);
 
     const [text, setText] = useState("");
