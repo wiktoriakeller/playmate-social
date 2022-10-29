@@ -18,8 +18,11 @@ class PlayerGame():
                 '''Dodaj ustawiony statek na swojej planszy'''
                 print(f"messageIn.data: {messageIn.data}")
                 for index in messageIn.data:
-                    self.my_board.set_item_state(index, SquareItemState.SET_SHIP)
-                    
+                    if self.my_board.check_set_ship_neighbours(index):
+                        print('dobry satek')
+                        self.my_board.set_item_state(index, SquareItemState.SET_SHIP)
+                    else:
+                        print('zly statek')
             else:
                 pass
         else:
@@ -40,3 +43,5 @@ class PlayerGame():
             id_server_res=str(uuid.uuid1())
         )
         return res
+
+    
