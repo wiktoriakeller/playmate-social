@@ -19,7 +19,7 @@ public class BaseRepository<TEntity> : IRepository<TEntity>
 
     public IEnumerable<TEntity> GetAll() => _dbContext.Set<TEntity>();
 
-    public IEnumerable<TEntity> GetWhere(Expression<Func<TEntity, bool>> predicate) =>
+    public virtual IEnumerable<TEntity> GetWhere(Expression<Func<TEntity, bool>> predicate) =>
         _dbContext.Set<TEntity>().Where(predicate);
 
     public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate) =>

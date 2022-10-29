@@ -71,7 +71,7 @@ public static class ConfigureServicesExtension
     {
         services.AddScoped<IRepository<RefreshToken>, BaseRepository<RefreshToken>>();
         services.AddScoped<IRepository<User>, BaseRepository<User>>();
-        services.AddScoped<IRepository<FriendRequest>, BaseRepository<FriendRequest>>();
+        services.AddScoped<IRepository<FriendRequest>, FriendRequestRepository>();
         services.AddScoped<IFriendRepository, FriendRepository>();
     }
 }

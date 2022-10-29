@@ -16,10 +16,18 @@ public class FriendsController : BaseApiController
     {
     }
 
+
     [HttpGet]
     public async Task<IActionResult> GetFriendsList()
     {
         var response = await _medaitor.Send(new GetFriendsListQuery());
+        return GetStatusCode(response);
+    }
+
+    [HttpGet("requests")]
+    public async Task<IActionResult> GetFriendRequests()
+    {
+        var response = await _medaitor.Send(new GetFriendRequestsQuery());
         return GetStatusCode(response);
     }
 
