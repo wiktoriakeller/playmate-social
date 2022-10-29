@@ -21,8 +21,15 @@ class SessionGamePlayers:
     sessionGameState: SessionGameState
     playerGame1: PlayerGame
     playerGame2: PlayerGame
-    
 
+    def get_player_game(self, player_id) -> PlayerGame:
+
+        if player_id == self.players.usr_id_sender:
+            '''Player_id is sender that is player1'''
+            return self.playerGame1
+        else:
+            '''Player_id is receiver that is player2'''
+            return self.playerGame2
 
 game_session_register:Dict[str, SessionGamePlayers] = {
     "game_session_0": SessionGamePlayers(
