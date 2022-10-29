@@ -13,8 +13,8 @@ interface IMyBoardItem extends WebSocketServiceProps{
 
 export function MyBoardItem({id, triggerSendMock, triggerSendObject}: IMyBoardItem) {
   const stateNewResponse = useAppSelector(selectStateLastParsedMessage);
-  
-  if(id == 0){
+  // console.log(typeof(stateNewResponse));
+  if(id === 0){
     return (
       <div className='Item' >
         
@@ -27,53 +27,44 @@ export function MyBoardItem({id, triggerSendMock, triggerSendObject}: IMyBoardIt
       </div>
     );
   }
-  else if(id%11 == 0){
+  else if(id%11 === 0){
     return (
       <div className='Item'>
           {String.fromCharCode( id/11 + 64 )}
       </div>
     );
-  }else{
-    return (
-          <BlankSquare 
-            className='Item' 
-            id={id}
-            triggerSendMock={triggerSendMock}
-            triggerSendObject={triggerSendObject}
-          ></BlankSquare>
-    );
-    // if(!stateNewResponse){
-    //   return (
-    //     <BlankSquare 
-    //       className='Item' 
-    //       id={id}
-    //       triggerSendMock={triggerSendMock}
-    //       triggerSendObject={triggerSendObject}
-    //     ></BlankSquare>
-    //   );
-    // }else if(stateNewResponse['data']['my_board'][id] == 1){
-    //   return (
-    //     <BlankSquare 
-    //       className='Item' 
-    //       id={id}
-    //       triggerSendMock={triggerSendMock}
-    //       triggerSendObject={triggerSendObject}
-    //     ></BlankSquare>
-    //   );
-    // }
-    // else if(stateNewResponse['data']['my_board'][id] == 2){
-    //   return(
-    //   <ShipSquare 
-    //     className='Item'
-    //   ></ShipSquare>
-    //   )
-    // }else{
-    //   return(
-    //     <div></div>
-    //   )
-    // }
-    
-  }  
+  }
+  // else{
+  //   return (
+  //         <BlankSquare 
+  //           className='Item' 
+  //           id={id}
+  //           triggerSendMock={triggerSendMock}
+  //           triggerSendObject={triggerSendObject}
+  //         ></BlankSquare>
+  //   );
+  //   }
+  else if(stateNewResponse['data']['my_board'][id] === 1){
+      return (
+        <BlankSquare 
+          className='Item' 
+          id={id}
+          triggerSendMock={triggerSendMock}
+          triggerSendObject={triggerSendObject}
+        ></BlankSquare>
+      );
+    }
+    else if(stateNewResponse['data']['my_board'][id] === 2){
+      return(
+      <ShipSquare 
+        className='Item'
+      ></ShipSquare>
+      )
+    }else{
+      return(
+        <div></div>
+      )
+    }
 }
 
 

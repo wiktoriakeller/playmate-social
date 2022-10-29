@@ -11,11 +11,15 @@ class PlayerGame():
         self.opponent_board = OpponentBoard()
 
     def handler_message(self, messageIn: WebSocketMessageIn) -> None:
+        
         if self.game_state in (PlayerGameState.START, PlayerGameState.SETTING_SHIPS):
-            if messageIn.type == MessageInType.BLANK_SQUARE_TO_SET:
+            print(f"messageIn.type: {messageIn.type}")
+            if MessageInType[messageIn.type] == MessageInType.BLANK_SQUARE_TO_SET:
                 '''Dodaj ustawiony statek na swojej planszy'''
+                print(f"messageIn.data: {messageIn.data}")
                 for index in messageIn.data:
                     self.my_board.set_item_state(index, SquareItemState.SET_SHIP)
+                    
             else:
                 pass
         else:

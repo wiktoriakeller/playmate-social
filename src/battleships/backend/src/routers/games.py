@@ -84,7 +84,7 @@ async def websocket_endpoint(websocket: WebSocket, game_session_id:str, client_i
                 player_game = game_session.get_player_game(client_id)
                 player_game.handler_message(messageIn)
                 res = player_game.get_res(messageIn)
-                print(f"res: {res}")
+                # print(f"res: {res}")
                 await manager.send_personal_message_json(res, websocket)
                 # await manager.broadcast_without_sender_json(
                 #     websocket=websocket,

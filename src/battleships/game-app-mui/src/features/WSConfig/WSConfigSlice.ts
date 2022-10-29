@@ -9,6 +9,12 @@ import {JsonValue} from '../../types/JsonValue';
 export interface WSConfigState extends IWSConfig  {
     
 }
+const boardInit = {};
+for(let i=1; i<11; i++){
+  for(let j=1; j<11; j++){
+    boardInit[i*11 + j] = 1;
+  }  
+}
 
 const initialState: WSConfigState = {
     gameSessionId: queryString.parse(window.location.search).gameSessionId?.toString()||null,
@@ -16,9 +22,9 @@ const initialState: WSConfigState = {
     socketUrl: `ws://localhost:8000/battleships/ws/${queryString.parse(window.location.search).gameSessionId}/${queryString.parse(window.location.search).userId}`,
     stateLastParsedMessage: {
       
-      data:{
-      'my_board' :[],
-      'opponent_board': []
+      'data':{
+      'my_board': boardInit,
+      'opponent_board': boardInit
       }
   }
 };
