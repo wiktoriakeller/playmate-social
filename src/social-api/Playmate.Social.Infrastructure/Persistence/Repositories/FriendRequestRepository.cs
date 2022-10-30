@@ -3,6 +3,7 @@ using Playmate.Social.Domain.Entities;
 using System.Linq.Expressions;
 
 namespace Playmate.Social.Infrastructure.Persistence.Repositories;
+
 public class FriendRequestRepository : BaseRepository<FriendRequest>
 {
     public FriendRequestRepository(ApplicationDbContext dbContext) : base(dbContext)

@@ -9,11 +9,13 @@ using Playmate.Social.Application.Friends.Responses;
 using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Application.Friends.Handlers;
+
 public class GetFriendRequestsQueryHandler : IHandlerWrapper<GetFriendRequestsQuery, GetFriendRequestsResponse>
 {
     private readonly IRepository<FriendRequest> _requestsRepository;
     private readonly ICurrentUserService _userService;
     private readonly IMapper _mapper;
+
     public GetFriendRequestsQueryHandler(IMapper mapper, ICurrentUserService userService, IRepository<FriendRequest> requestsRepository)
     {
         _mapper = mapper;

@@ -4,6 +4,7 @@ using Playmate.Social.Application.Friends.Queries;
 using Playmate.Social.WebAPI.Requests.Friends;
 
 namespace Playmate.Social.WebAPI.Requests.Mappings;
+
 public class FriendsMappingProfile : Profile
 {
     public FriendsMappingProfile()

@@ -1,5 +1,5 @@
-﻿
-namespace Playmate.Social.WebAPI.Requests.Friends;
+﻿namespace Playmate.Social.WebAPI.Requests.Friends;
+
 public class AnswerRequest
 {
     public bool Accept { get; set; }

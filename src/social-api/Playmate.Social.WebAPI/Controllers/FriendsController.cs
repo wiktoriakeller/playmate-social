@@ -16,7 +16,6 @@ public class FriendsController : BaseApiController
     {
     }
 
-
     [HttpGet]
     public async Task<IActionResult> GetFriendsList()
     {
@@ -38,7 +37,7 @@ public class FriendsController : BaseApiController
         var response = await _medaitor.Send(command);
         return GetStatusCode(response);
     }
-    
+
     [HttpPost("answer")]
     public async Task<IActionResult> AnswerFriendRequest([FromBody] AnswerRequest answerRequest)
     {
@@ -46,7 +45,6 @@ public class FriendsController : BaseApiController
         var response = await _medaitor.Send(command);
         return GetStatusCode(response);
     }
-
 
     [HttpDelete]
     public async Task<IActionResult> RemoveFriend([FromBody] RemoveFriendRequest removeFriendRequest)

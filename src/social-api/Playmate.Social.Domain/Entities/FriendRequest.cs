@@ -1,4 +1,5 @@
 ﻿namespace Playmate.Social.Domain.Entities;
+
 public class FriendRequest : IEntity
 {
     public Guid Id { get; set; }

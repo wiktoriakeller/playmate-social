@@ -7,6 +7,7 @@ using Playmate.Social.Application.Friends.Responses;
 using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Application.Friends.Handlers;
+
 public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCommand, AddFriendRequestResponse>
 {
     private readonly IRepository<FriendRequest> _requestRepository;
@@ -28,7 +29,6 @@ public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCo
     public async Task<Response<AddFriendRequestResponse>> Handle(AddFriendRequestCommand request, CancellationToken cancellationToken)
     {
         var currentUser = _userService.CurrentUser;
-
 
         var addressee = _userRepository.GetWhere(u => u.Username == request.Username).FirstOrDefault();
 

@@ -1,5 +1,5 @@
-﻿    
-namespace Playmate.Social.Application.Friends.Dtos;
+﻿namespace Playmate.Social.Application.Friends.Dtos;
+
 public class FriendRequestDto
 {
     public Guid RequestId { get; set; }

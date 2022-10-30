@@ -9,6 +9,7 @@ using Playmate.Social.Application.Friends.Responses;
 using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Application.Friends.Handlers;
+
 public class GetFriendsListQueryHandler : IHandlerWrapper<GetFriendsListQuery, GetFriendsListResponse>
 {
     private readonly IFriendRepository _friendsRepository;
@@ -28,7 +29,7 @@ public class GetFriendsListQueryHandler : IHandlerWrapper<GetFriendsListQuery, G
     {
         var user = _userService.CurrentUser;
 
-        if (user == null )
+        if (user == null)
         {
             return ResponseResult.NotFound<GetFriendsListResponse>("Could not find current user");
         }

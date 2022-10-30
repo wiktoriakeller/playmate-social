@@ -1,5 +1,4 @@
-﻿
-using Playmate.Social.Application.Common;
+﻿using Playmate.Social.Application.Common;
 using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
@@ -7,6 +6,7 @@ using Playmate.Social.Application.Friends.Commands;
 using Playmate.Social.Application.Friends.Responses;
 
 namespace Playmate.Social.Application.Friends.Handlers;
+
 public class RemoveFriendCommandHandler : IHandlerWrapper<RemoveFriendCommand, RemoveFriendResponse>
 {
     private readonly IFriendRepository _friendRepository;

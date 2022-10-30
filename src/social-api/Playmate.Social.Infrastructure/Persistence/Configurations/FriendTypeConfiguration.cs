@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Infrastructure.Persistence.Configurations;
+
 public class FriendTypeConfiguration : IEntityTypeConfiguration<Friend>
 {
     public void Configure(EntityTypeBuilder<Friend> builder)

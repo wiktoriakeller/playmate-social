@@ -7,6 +7,7 @@ using Playmate.Social.Application.Friends.Responses;
 using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Application.Friends.Handlers;
+
 public class AnswerFriendRequestCommandHandler : IHandlerWrapper<AnswerFriendRequestCommand, AnswerFriendRequestResponse>
 {
     private readonly IRepository<FriendRequest> _requestRepository;
@@ -36,7 +37,7 @@ public class AnswerFriendRequestCommandHandler : IHandlerWrapper<AnswerFriendReq
 
         if (request.Accept)
         {
-            var friend = new Friend() { AddresseeId = friendRequest.AddresseeId, RequesterId = friendRequest.RequesterId};
+            var friend = new Friend() { AddresseeId = friendRequest.AddresseeId, RequesterId = friendRequest.RequesterId };
             var createdFriend = await _friendRepository.AddAsync(friend);
             await _requestRepository.DeleteAsync(friendRequest);
             return ResponseResult.Created(new AnswerFriendRequestResponse(createdFriend.Id));

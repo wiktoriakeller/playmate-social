@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Infrastructure.Persistence.Configurations;
+
 public class FriendRequestTypeConfiguration : IEntityTypeConfiguration<FriendRequest>
 {
     public void Configure(EntityTypeBuilder<FriendRequest> builder)

@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Playmate.Social.Infrastructure.Persistence.Repositories;
 
-public class BaseRepository<TEntity> : IRepository<TEntity> 
+public class BaseRepository<TEntity> : IRepository<TEntity>
     where TEntity : class, IEntity
 {
     protected readonly ApplicationDbContext _dbContext;

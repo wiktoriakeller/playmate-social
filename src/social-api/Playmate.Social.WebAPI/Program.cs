@@ -16,7 +16,7 @@ app.UseCors();
 
 app.ApplyMigrations();
 
-if(builder.Environment.IsDevelopment())
+if (builder.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();

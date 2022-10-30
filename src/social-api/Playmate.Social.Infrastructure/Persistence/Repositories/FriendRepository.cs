@@ -1,9 +1,9 @@
-﻿using Playmate.Social.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Playmate.Social.Application.Common.Contracts.Persistence;
-using MediatR;
+using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Infrastructure.Persistence.Repositories;
+
 public class FriendRepository : BaseRepository<Friend>, IFriendRepository
 {
     public FriendRepository(ApplicationDbContext dbContext) : base(dbContext)
@@ -20,7 +20,8 @@ public class FriendRepository : BaseRepository<Friend>, IFriendRepository
         var friends2 = _dbContext.Set<Friend>()
             .Where(f => f.AddresseeId == user.Id)
             .Include(f => f.Requester)
-            .Select(f => f.Requester).Concat(friends);
+            .Select(f => f.Requester)
+            .Concat(friends);
 
         return await friends2.ToListAsync();
     }
