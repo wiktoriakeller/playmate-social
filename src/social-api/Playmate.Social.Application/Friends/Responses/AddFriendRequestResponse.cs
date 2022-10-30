@@ -2,10 +2,10 @@
 
 public class AddFriendRequestResponse
 {
+    public Guid Id { get; set; }
+
     public AddFriendRequestResponse(Guid id)
     {
         Id = id;
     }
-
-    public Guid Id { get; set; }
 }
