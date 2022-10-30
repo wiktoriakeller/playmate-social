@@ -30,7 +30,7 @@ public class AnswerFriendRequestCommandHandler : IHandlerWrapper<AnswerFriendReq
         }
 
         var currentUser = _userService.CurrentUser;
-        if (friendRequest.AddresseeId != currentUser?.Id)
+        if (friendRequest.AddresseeId != currentUser.Id)
         {
             ResponseResult.ValidationError<AnswerFriendRequestResponse>("Current user is not the addressee of request");
         }

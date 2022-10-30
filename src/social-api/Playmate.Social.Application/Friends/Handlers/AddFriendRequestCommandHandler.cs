@@ -32,7 +32,7 @@ public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCo
 
         var addressee = _userRepository.GetWhere(u => u.Username == request.Username).FirstOrDefault();
 
-        if (currentUser == null || addressee == null)
+        if (addressee == null)
         {
             return ResponseResult.NotFound<AddFriendRequestResponse>("Could not find user");
         }

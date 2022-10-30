@@ -29,11 +29,6 @@ public class GetFriendsListQueryHandler : IHandlerWrapper<GetFriendsListQuery, G
     {
         var user = _userService.CurrentUser;
 
-        if (user == null)
-        {
-            return ResponseResult.NotFound<GetFriendsListResponse>("Could not find current user");
-        }
-
         var friends = await _friendsRepository.GetFriends(user);
         var mappedFriends = _mapper.Map<IEnumerable<User>, IEnumerable<FriendDto>>(friends);
 

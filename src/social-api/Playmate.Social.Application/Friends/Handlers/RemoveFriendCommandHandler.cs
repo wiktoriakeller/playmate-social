@@ -22,11 +22,6 @@ public class RemoveFriendCommandHandler : IHandlerWrapper<RemoveFriendCommand, R
     {
         var currentUser = _userService.CurrentUser;
 
-        if (currentUser == null)
-        {
-            return ResponseResult.NotFound<RemoveFriendResponse>("Could not find current user");
-        }
-
         var friend = await _friendRepository.GetFriend(currentUser, request.FriendId);
 
         if (friend == null)

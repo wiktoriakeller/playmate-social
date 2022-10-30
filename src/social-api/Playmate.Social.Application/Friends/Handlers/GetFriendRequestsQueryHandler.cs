@@ -27,11 +27,6 @@ public class GetFriendRequestsQueryHandler : IHandlerWrapper<GetFriendRequestsQu
     {
         var user = _userService.CurrentUser;
 
-        if (user == null)
-        {
-            return Task.FromResult(ResponseResult.NotFound<GetFriendRequestsResponse>("Could not find current user"));
-        }
-
         var requests = _requestsRepository.GetWhere(r => r.AddresseeId == user.Id).ToList();
 
         var mappedRequests = _mapper.Map<IEnumerable<FriendRequest>, IEnumerable<FriendRequestDto>>(requests);
