@@ -1,5 +1,5 @@
-﻿
-namespace Playmate.Social.Domain.Entities;
+﻿namespace Playmate.Social.Domain.Entities;
+
 public class User : IEntity
 {
     public Guid Id { get; set; }

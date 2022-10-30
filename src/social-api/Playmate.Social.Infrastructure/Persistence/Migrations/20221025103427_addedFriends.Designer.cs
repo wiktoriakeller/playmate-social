@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Playmate.Social.Infrastructure.Persistence;
 
@@ -11,9 +12,10 @@ using Playmate.Social.Infrastructure.Persistence;
 namespace Playmate.Social.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221025103427_addedFriends")]
+    partial class addedFriends
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,27 +43,6 @@ namespace Playmate.Social.Infrastructure.Persistence.Migrations
                     b.HasIndex("RequesterId");
 
                     b.ToTable("Friends");
-                });
-
-            modelBuilder.Entity("Playmate.Social.Domain.Entities.FriendRequest", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("AddresseeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("RequesterId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddresseeId");
-
-                    b.HasIndex("RequesterId");
-
-                    b.ToTable("FriendRequests");
                 });
 
             modelBuilder.Entity("Playmate.Social.Domain.Entities.RefreshToken", b =>
@@ -122,25 +103,6 @@ namespace Playmate.Social.Infrastructure.Persistence.Migrations
                 });
 
             modelBuilder.Entity("Playmate.Social.Domain.Entities.Friend", b =>
-                {
-                    b.HasOne("Playmate.Social.Domain.Entities.User", "Addressee")
-                        .WithMany()
-                        .HasForeignKey("AddresseeId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.HasOne("Playmate.Social.Domain.Entities.User", "Requester")
-                        .WithMany()
-                        .HasForeignKey("RequesterId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.Navigation("Addressee");
-
-                    b.Navigation("Requester");
-                });
-
-            modelBuilder.Entity("Playmate.Social.Domain.Entities.FriendRequest", b =>
                 {
                     b.HasOne("Playmate.Social.Domain.Entities.User", "Addressee")
                         .WithMany()
