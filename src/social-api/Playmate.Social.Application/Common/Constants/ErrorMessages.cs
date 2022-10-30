@@ -9,5 +9,6 @@ public static class ErrorMessages
         public const string IncorrectCredentials = "Incorrect credentials";
         public const string UserNotFound = "User was not found";
         public const string UserWithEmailAlreadyExists = "User with that email already exists";
+        public const string UserWithUsernameAlreadyExists = "User with that username already exists";
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Domain.Entities;
+using Playmate.Social.Infrastructure.Exceptions;
 
 namespace Playmate.Social.Infrastructure.Identity;
 
@@ -13,9 +14,20 @@ public class CurrentUserService : ICurrentUserService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public IUser? User => GetCurrentUser();
+    public User CurrentUser
+    {
+        get
+        {
+            var user = GetCurrentUser();
+            if (user == null)
+            {
+                throw new CurrentUserException("Error during getting current user");
+            }
+            return user;
+        }
+    }
 
-    private IUser? GetCurrentUser()
+    private User? GetCurrentUser()
     {
         if (_httpContextAccessor.HttpContext is null)
         {
@@ -24,7 +36,7 @@ public class CurrentUserService : ICurrentUserService
 
         if (_httpContextAccessor.HttpContext.Items.ContainsKey("User"))
         {
-            return _httpContextAccessor.HttpContext?.Items["User"] as IUser;
+            return _httpContextAccessor.HttpContext?.Items["User"] as User;
         }
 
         return null;

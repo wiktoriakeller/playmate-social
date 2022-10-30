@@ -8,13 +8,13 @@ namespace Playmate.Social.Application.Identity.Handlers;
 
 public class CreateUserCommandHandler : IHandlerWrapper<CreateUserCommand, CreateUserResponse>
 {
-    private readonly IIdentityService _identitySerivce;
+    private readonly IIdentityService _identityService;
 
     public CreateUserCommandHandler(IIdentityService identitySerivce)
     {
-        _identitySerivce = identitySerivce;
+        _identityService = identitySerivce;
     }
 
     public async Task<Response<CreateUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken) =>
-        await _identitySerivce.CreateUserAsync(request);
+        await _identityService.CreateUserAsync(request);
 }

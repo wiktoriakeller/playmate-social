@@ -7,8 +7,8 @@ namespace Playmate.Social.Application.Common.Contracts.Identity;
 
 public interface IIdentityService
 {
-    Task<Response<IUser>> GetUserByEmail(string email);
-    Task<Response<IUser>> GetUserByJwtTokenAsync(string token);
+    Task<Response<User>> GetUserByEmail(string email);
+    Task<Response<User>> GetUserByJwtTokenAsync(string token);
     Task<Response<CreateUserResponse>> CreateUserAsync(CreateUserCommand createUserCommand);
     Task<Response<AuthenticateUserResponse>> AuthenticateUserAync(AuthenticateUserCommand authenticateUserCommand);
     Task<Response<RefreshTokenResponse>> RefreshTokenAsync(RefreshTokenCommand refreshTokenCommand);

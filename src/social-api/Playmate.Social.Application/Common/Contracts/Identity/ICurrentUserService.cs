@@ -4,5 +4,5 @@ namespace Playmate.Social.Application.Common.Contracts.Identity;
 
 public interface ICurrentUserService
 {
-    IUser? User { get; }
+    User CurrentUser { get; }
 }

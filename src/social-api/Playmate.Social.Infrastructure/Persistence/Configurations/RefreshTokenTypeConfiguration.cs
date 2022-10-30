@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Playmate.Social.Infrastructure.Identity.Entities;
+using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Infrastructure.Persistence.Configurations;
 
