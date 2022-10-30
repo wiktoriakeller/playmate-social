@@ -21,6 +21,7 @@ class PlayerGame():
                     if self.my_board.check_set_ship_neighbours(index):
                         print('dobry satek')
                         self.my_board.set_item_state(index, SquareItemState.SET_SHIP)
+                        self.my_board.detect_ship()
                     else:
                         print('zly statek')
             else:

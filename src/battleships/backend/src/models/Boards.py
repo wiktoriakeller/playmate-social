@@ -65,6 +65,16 @@ class Board():
         if count > 0:
             print(f"index: {index} has count: {count} in corners")
         return count
+    
+    def count_set_ship_cross(self, index):
+        cross = self.get_neighbours_cross(index)
+        count = 0
+        for c in cross:
+            if SquareItemState(self.get_item_state(c)) == SquareItemState.SET_SHIP:
+                count += 1
+        if count > 0:
+            print(f"index: {index} has count: {count} in cross")
+        return count
 
     def check_set_ship_neighbours(self, index) -> bool:
         item_index_state = self.get_item_state(index)
@@ -86,6 +96,54 @@ class Board():
 class MyBoard(Board):
     def __init__(self) -> None:
         super().__init__()
+        self.fleet = {}
+        
+
+    def detect_ship_horizontally(self) -> List[int]:
+        def gen_line(row):
+            count = 0
+            for j in range(1,11):
+                if SquareItemState(self.get_item_state(row*11+j)) == SquareItemState.SET_SHIP:
+                    count += 1
+                elif count != 0:
+                    detected_ship = count
+                    count = 0
+                    if detected_ship > 1:
+                        yield detected_ship
+                    # jednomasztowiec
+                    else:
+                        print(f'jednomasztoweic {row*11 + j - 1};;{self.count_set_ship_cross(row*11 + j - 1)}')
+                        if self.count_set_ship_cross(row*11 + j - 1) == 0:
+                            yield detected_ship
+        ships = []
+        for i in range(1,11):
+            for detected_ship in gen_line(i):
+                ships.append(detected_ship) 
+        print(f'horizontal {ships}')       
+        return ships
+    def detect_ship_vertically(self) -> List[int]:
+        def gen_line(col):
+            count = 0
+            for i in range(1,11):
+                if SquareItemState(self.get_item_state(i*11+col)) == SquareItemState.SET_SHIP:
+                    count += 1
+                elif count != 0:
+                    detected_ship = count
+                    count = 0
+                    if detected_ship > 1:
+                        yield detected_ship
+
+        ships = []
+        for j in range(1,11):
+            for detected_ship in gen_line(j):
+                ships.append(detected_ship)  
+        print(f'vertival {ships}')      
+        return ships
+    def detect_ship(self):
+        self.fleet = {}
+        for ship_len in self.detect_ship_horizontally() + self.detect_ship_vertically():
+            self.fleet[ship_len] = self.fleet.get(ship_len, 0) + 1
+        print(f'detected_ship: {self.fleet}')
 
 class OpponentBoard(Board):
     def __init__(self) -> None:

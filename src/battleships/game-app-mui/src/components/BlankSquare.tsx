@@ -13,7 +13,7 @@ function BlankSquare(props:IBlankSquare) {
 
     function handleClick(e:React.MouseEvent<HTMLElement>){
         if(stateGame.sendingEnabled == true){
-            alert('clcik blank div');
+            // alert('clcik blank div');
             const data = JSON.stringify({
                 id: nanoid(),
                 type: 'BLANK_SQUARE_TO_SET',
