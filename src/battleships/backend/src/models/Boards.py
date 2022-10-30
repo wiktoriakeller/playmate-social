@@ -24,17 +24,17 @@ class Board():
     def get_matrix(self) -> Dict[int, SquareItemState]:
         return self.matrix
 
+    @classmethod
+    def get_neighbours(cls, index: int) -> List[int]:
+        return cls.get_neighbours_corners(index) + cls.get_neighbours_cross(index)
+    
     @staticmethod
-    def get_neighbours(index: int) -> List[int]:
+    def get_neighbours_cross(index: int) -> List[int]:
         n = []
         n.append(index-1) if (index-1)%11 != 0 else None #lewy
-        n.append(index-12) if (index-1)%11 != 0 and (index-12) >= 12 else None #lewy gora
         n.append(index-11) if (index-11) >= 12 else None #gora
-        n.append(index-10) if (index-10)%11 != 0 and (index-10) >= 13 else None #prawy gora
         n.append(index+1) if (index+1)%11 != 0 else None #prawy
-        n.append(index+12) if (index+12)%11 != 0  and (index+12) <= 120 else None #prawy dol
         n.append(index+11) if (index+11) <= 120 else None #dol
-        n.append(index+10) if (index+10)%11 != 0 and (index+10) <=119  else None #dol lewy
         return n
 
     @staticmethod
@@ -81,6 +81,8 @@ class Board():
         self.set_item_state(index, item_index_state)
         return flag
     
+
+
 class MyBoard(Board):
     def __init__(self) -> None:
         super().__init__()
