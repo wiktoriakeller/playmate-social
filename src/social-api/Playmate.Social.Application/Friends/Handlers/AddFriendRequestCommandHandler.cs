@@ -41,7 +41,7 @@ public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCo
 
         if (friend != null)
         {
-            return ResponseResult.Fail<AddFriendRequestResponse>("Users are friends");
+            return ResponseResult.ValidationError<AddFriendRequestResponse>("Users are friends");
         }
 
         var friendRequest = new FriendRequest() { Requester = currentUser, Addressee = addressee };
