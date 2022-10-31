@@ -14,11 +14,11 @@ export function Game({
 
     const dispatch = useAppDispatch();
     const stateChat = useAppSelector(selectGame);
-    const stateReceiveObject = useAppSelector(selectStateLastParsedMessage);
+    const stateNewResponse = useAppSelector(selectStateLastParsedMessage);
    
     useEffect(() => {
         console.log("re-render ");
-      }, [stateReceiveObject]);
+      }, [stateNewResponse]);
 
     const [text, setText] = useState("");
     function handleChange(event:React.ChangeEvent<HTMLInputElement>) {
@@ -29,15 +29,29 @@ export function Game({
         triggerSendMock(text, true);
     }
 
-    return (
-    <div>
-        <p style={{"margin": '30px'}}>Game component</p>
-        <div style={{"margin": '30px'}}>
-            <MyBoard 
-                triggerSendMock={triggerSendMock}
-                triggerSendObject={triggerSendObject}
-            ></MyBoard>
-        </div>
-    </div>
-  );
+    // Game component - opponent connected
+    console.log(`stateNewRes.type ${stateNewResponse['type']}`)
+    console.log(`stateNewRes.type ${typeof(stateNewResponse['type'])}`)
+    if(stateNewResponse['type'] === 2 || stateNewResponse['type'] === 1){
+        return (
+            <div>
+                <p style={{"margin": '30px'}}>Game component</p>
+                <div style={{"margin": '30px'}}>
+                    <MyBoard 
+                        triggerSendMock={triggerSendMock}
+                        triggerSendObject={triggerSendObject}
+                    ></MyBoard>
+                </div>
+            </div>
+          );
+    }
+    // Waiting component - opponent disconnected
+    else if(stateNewResponse['type'] === 3){
+        return (
+            <div>
+                <p style={{"margin": '30px'}}>Waiting for opponent</p>
+            </div>
+          );
+    }
+    
 }

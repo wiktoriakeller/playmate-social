@@ -7,7 +7,7 @@ import uuid, json
 from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 from typing import List
-from ..ships.constants import SessionGameState
+from ..ships.constants import MessageOutType, SessionGameState
 from ..models.player_game import PlayerGame
 
 from ..models.create_game import CreateGameRequest, CreateGameResponse
@@ -73,7 +73,7 @@ async def websocket_endpoint(websocket: WebSocket, game_session_id:str, client_i
     game_session = game_session_register.get(game_session_id)
     player_game = game_session.get_player_game(client_id)
     player_game_manager = PlayerGameManager(game_session, manager, player_game)
-
+    await player_game_manager.handler_connection()
     try:
         while True:
             message = await websocket.receive_json()
@@ -88,8 +88,8 @@ async def websocket_endpoint(websocket: WebSocket, game_session_id:str, client_i
             else:
                 player_game_manager.handler_message(messageIn)
                 res = player_game_manager.get_res(messageIn)
-                # print(f"res: {res}")
                 await manager.send_personal_message_json(res, websocket)
+                # print(f"res: {res}")
                 # await manager.broadcast_without_sender_json(
                 #     websocket=websocket,
                 #     message=res,
@@ -111,18 +111,20 @@ async def websocket_endpoint(websocket: WebSocket, game_session_id:str, client_i
     except WebSocketDisconnect:
         print (f"Disconnect {game_session_id}")
         manager.disconnect(websocket, client_id)
-        await manager.broadcast_without_sender_json(
-            websocket=websocket,
-            message=WebSocketErrorOut(
-                id='undefined',
-                type="error_disconnect_opponent", 
-                source=client_id, data=[],
-                id_server_res=str(uuid.uuid1()),
-                date=None
-            ),
-            game_session_id=game_session_id,
-            sender=client_id
-        )
+        player_game_manager.set_disconnect_opponent()
+        await manager.send_short_info(player_game.opponent_id, MessageOutType.OPPONENT_DISCONNECTED, "server")
+        # await manager.broadcast_without_sender_json(
+        #     websocket=websocket,
+        #     message=WebSocketErrorOut(
+        #         id='undefined',
+        #         type="error_disconnect_opponent", 
+        #         source=client_id, data=[],
+        #         id_server_res=str(uuid.uuid1()),
+        #         date=None
+        #     ),
+        #     game_session_id=game_session_id,
+        #     sender=client_id
+        # )
 
 
         

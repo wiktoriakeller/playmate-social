@@ -1,3 +1,4 @@
+import enum
 from pydantic import BaseModel
 from typing import Dict, TypedDict, List, Tuple, Union
 from ..ships.constants import *
@@ -16,12 +17,12 @@ class ResponseData(TypedDict):
 class WebSocketMessageOut(BaseModel):
     id: str
     id_server_res: str
-    type: str
+    type: int
     source: str
     data: ResponseData
 
 class WebSocketErrorOut(BaseModel):
     id: str
     id_server_res: str
-    type: str
+    type: int
     source: str

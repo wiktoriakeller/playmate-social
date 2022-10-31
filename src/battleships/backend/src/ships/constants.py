@@ -2,10 +2,9 @@ from enum import Enum
 
 class SessionGameState(Enum):
     CREATED = 1 
-    HALF_CONNECTED = 2
-    CONNECTED = 3
-    DISCONNECTED = 4
-    FINISHED = 5
+    CONNECTED = 2
+    DISCONNECTED = 3
+    FINISHED = 4
 
 class PlayerGameState(Enum):
     START = 1
@@ -19,7 +18,10 @@ class MessageInType(Enum):
     BLANK_SQUARE_TO_SET = 1
 
 class MessageOutType(Enum):
-    SETTING_SHIP = 1
+    SETTING_SHIP = 1 #####################################
+    OPPONENT_CONNECTED = 2 ###############################
+    OPPONENT_DISCONNECTED = 3 ############################
+    
 
 SHIPS_FLEET = {
     1: 2,

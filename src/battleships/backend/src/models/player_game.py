@@ -7,6 +7,7 @@ class PlayerGame():
     def __init__(self, player_id: str, opponent_id: str) -> None:
         self.player_id = player_id
         self.opponent_id = opponent_id
+        self.opponent_connected = False
         self.game_state: PlayerGameState = PlayerGameState.START
         self.my_board = MyBoard()
         self.opponent_board = OpponentBoard()

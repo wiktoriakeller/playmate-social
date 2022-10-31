@@ -29,6 +29,18 @@ class SessionGamePlayers:
         else:
             '''Player_id is receiver that is player2'''
             return self.playerGame2
+    
+    def get_opponent_game(self, player_id) -> PlayerGame:
+        if player_id == self.players.usr_id_sender:
+            return self.playerGame2
+        else:
+            return self.playerGame1
+        
+    def set_state_opponent_player_game(self, player_id, state: bool) -> None:
+        if player_id == self.players.usr_id_sender:
+            self.playerGame2.opponent_connected = state
+        else:
+            self.playerGame1.opponent_connected = state
 
 game_session_register:Dict[str, SessionGamePlayers] = {
     "game_session_0": SessionGamePlayers(
