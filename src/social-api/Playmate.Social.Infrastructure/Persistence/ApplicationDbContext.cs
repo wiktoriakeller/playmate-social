@@ -9,6 +9,7 @@ public class ApplicationDbContext : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Friend> Friends { get; set; }
     public DbSet<FriendRequest> FriendRequests { get; set; }
+    public DbSet<Game> Games { get; set; }
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
