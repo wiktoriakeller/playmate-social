@@ -8,6 +8,7 @@ using Playmate.Social.WebAPI.Requests.Games;
 
 namespace Playmate.Social.WebAPI.Controllers;
 
+[Authorize]
 [Route("api/v1/games")]
 public class GamesController : BaseApiController
 {
