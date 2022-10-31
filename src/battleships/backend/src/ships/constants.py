@@ -1,21 +1,23 @@
 from enum import Enum
 
 class SessionGameState(Enum):
-    CREATED = 1 
-    CONNECTED = 2
-    DISCONNECTED = 3
+    CREATED = 1 ################
+    CONNECTED = 2 ###################
+    DISCONNECTED = 3 ###############
     FINISHED = 4
 
 class PlayerGameState(Enum):
-    START = 1
-    SETTING_SHIPS = 2
+    START = 1 #######
+    SETTING_SHIPS = 2 #########
+    END_SETTING_SHIPS = 3 #########
+
 
 class SquareItemState(Enum):
-    BLANK = 1
-    SET_SHIP = 2
+    BLANK = 1 ##############
+    SET_SHIP = 2 ###########
 
 class MessageInType(Enum):
-    BLANK_SQUARE_TO_SET = 1
+    BLANK_SQUARE_TO_SET = 1 ########################
 
 class MessageOutType(Enum):
     SETTING_SHIP = 1 #####################################

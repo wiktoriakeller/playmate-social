@@ -25,6 +25,11 @@ class PlayerGame():
                     self.my_board.set_item_state(index, SquareItemState.SET_SHIP)
                 else:
                     print('zly statek')
+            
+            # TODO
+            if self.my_board.check_all_fleet_setting() == True:
+                self.game_state = PlayerGameState.END_SETTING_SHIPS
+                
         else:
             pass
     

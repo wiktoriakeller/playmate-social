@@ -44,6 +44,8 @@ class PlayerGameManager():
                 await self.connection_manager.send_short_info(self.player_game.player_id, MessageOutType.OPPONENT_DISCONNECTED, self.player_game.player_id)
 
         else:
+            ## sesja gry zakonczona link niepoprawny
+            ## TODO
             print('XD')
     
     def set_disconnect_opponent(self):
@@ -56,12 +58,15 @@ class PlayerGameManager():
         else:
             pass
 
+    
     def get_res(self, messageIn: WebSocketMessageIn) -> WebSocketMessageOut:
         print(type(self.player_game.my_board.get_matrix()))
         res = WebSocketMessageOut(
             data=ResponseData(
-                session_game_state=SessionGameState.CONNECTED,
-                player_game_state=PlayerGameState.SETTING_SHIPS,
+                session_game_state=self.session_game_players.sessionGameState,
+                player_game_state=self.player_game.game_state,
+                # session_game_state=SessionGameState.CONNECTED,
+                # player_game_state=PlayerGameState.SETTING_SHIPS,
                 my_board=self.player_game.my_board.get_matrix(),
                 opponent_board=self.player_game.opponent_board.get_matrix()
             ),

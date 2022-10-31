@@ -154,6 +154,11 @@ class MyBoard(Board):
         self.set_item_state(index, item_index_state)
         return flag
 
+    def check_all_fleet_setting(self) -> bool:
+        self.detect_ship()
+        flag = compare_fleet(self.fleet, SHIPS_FLEET)
+        return flag
+
 class OpponentBoard(Board):
     def __init__(self) -> None:
         super().__init__()

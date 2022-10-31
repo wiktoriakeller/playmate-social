@@ -23,3 +23,13 @@ def check_fleet_setting_descending_order(board_fleet:Dict, param_fleet:Dict) -> 
         flag=False
     
     return flag
+
+def compare_fleet(board_fleet:Dict, param_fleet:Dict) -> bool:
+    flag=True
+    if len(board_fleet) != len(param_fleet):
+        flag=False
+    for (k, v) in param_fleet.items():
+        if v != board_fleet.get(k, 0):
+            flag=False
+            break
+    return flag
