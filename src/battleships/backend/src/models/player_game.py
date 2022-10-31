@@ -13,19 +13,7 @@ class PlayerGame():
     def handler_message(self, messageIn: WebSocketMessageIn) -> None:
         
         if self.game_state in (PlayerGameState.START, PlayerGameState.SETTING_SHIPS):
-            print(f"messageIn.type: {messageIn.type}")
-            if MessageInType[messageIn.type] == MessageInType.BLANK_SQUARE_TO_SET:
-                '''Dodaj ustawiony statek na swojej planszy'''
-                print(f"messageIn.data: {messageIn.data}")
-                for index in messageIn.data:
-                    if self.my_board.check_set_ship_neighbours(index):
-                        print('dobry satek')
-                        self.my_board.set_item_state(index, SquareItemState.SET_SHIP)
-                        self.my_board.detect_ship()
-                    else:
-                        print('zly statek')
-            else:
-                pass
+            self.__handler_start_or_setting_ships(messageIn=messageIn)
         else:
             pass
 
@@ -45,4 +33,25 @@ class PlayerGame():
         )
         return res
 
+    def __handler_start_or_setting_ships(self, messageIn: WebSocketMessageIn) -> None:
+        print(f"messageIn.type: {messageIn.type}")
+        if MessageInType[messageIn.type] == MessageInType.BLANK_SQUARE_TO_SET:
+            '''Dodaj ustawiony statek na swojej planszy'''
+            print(f"messageIn.data: {messageIn.data}")
+            for index in messageIn.data:
+                if self.__verification_setting_item_to_ship(index):
+                    print('dobry statek')
+                    self.my_board.set_item_state(index, SquareItemState.SET_SHIP)
+                else:
+                    print('zly statek')
+        else:
+            pass
     
+    def __verification_setting_item_to_ship(self, index: int) -> bool:
+        if self.my_board.check_set_ship_neighbours(index) == False:
+            print('zly statek: sasiedzi')
+            return False
+        if self.my_board.check_set_ship_fleet_descending(index) == False:
+            print('zly statek: kolejnosc')
+            return False
+        return True

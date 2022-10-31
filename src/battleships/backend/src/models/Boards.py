@@ -1,4 +1,5 @@
 from ..ships.constants import *
+from ..ships.helper_methods import *
 from typing import Dict, List, Tuple
 class Board():
     _matrix_keys = sorted([i*11 + j for j in range(1,11) for i in range(1,11)])
@@ -119,7 +120,7 @@ class MyBoard(Board):
         for i in range(1,11):
             for detected_ship in gen_line(i):
                 ships.append(detected_ship) 
-        print(f'horizontal {ships}')       
+        #print(f'horizontal {ships}')       
         return ships
     def detect_ship_vertically(self) -> List[int]:
         def gen_line(col):
@@ -137,13 +138,21 @@ class MyBoard(Board):
         for j in range(1,11):
             for detected_ship in gen_line(j):
                 ships.append(detected_ship)  
-        print(f'vertival {ships}')      
+        #print(f'vertival {ships}')      
         return ships
     def detect_ship(self):
         self.fleet = {}
         for ship_len in self.detect_ship_horizontally() + self.detect_ship_vertically():
             self.fleet[ship_len] = self.fleet.get(ship_len, 0) + 1
         print(f'detected_ship: {self.fleet}')
+    
+    def check_set_ship_fleet_descending(self, index) -> bool:
+        item_index_state = self.get_item_state(index)
+        self.set_item_state(index, SquareItemState.SET_SHIP)
+        self.detect_ship()
+        flag = check_fleet_setting_descending_order(self.fleet, SHIPS_FLEET)
+        self.set_item_state(index, item_index_state)
+        return flag
 
 class OpponentBoard(Board):
     def __init__(self) -> None:
