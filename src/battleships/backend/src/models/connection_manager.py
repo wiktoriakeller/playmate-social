@@ -1,8 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
 import uuid, json
 from typing import Dict
-from ..data import game_session_register, Players
-from .websocket_message import WebSocketMessageOut
+from ..data import game_session_register
 
 class ConnectionManager:
     def __init__(self):

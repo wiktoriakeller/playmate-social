@@ -15,6 +15,8 @@ from ..models.websocket_message import WebSocketMessageIn, WebSocketMessageOut, 
 from ..models.connection_manager import ConnectionManager
 from ..dependencies import *
 from ..data import game_session_register, SessionGamePlayers, Players
+from ..models.player_game_manager import PlayerGameManager
+
 router = APIRouter(
     prefix="/battleships",
     tags=["games"]
@@ -68,6 +70,10 @@ manager = ConnectionManager()
 async def websocket_endpoint(websocket: WebSocket, game_session_id:str, client_id: str):
     print(f"open ws game_session_id:{game_session_id}, client_id:{client_id}")
     await manager.connect(websocket, client_id)
+    game_session = game_session_register.get(game_session_id)
+    player_game = game_session.get_player_game(client_id)
+    player_game_manager = PlayerGameManager(game_session, manager, player_game)
+
     try:
         while True:
             message = await websocket.receive_json()
@@ -80,10 +86,8 @@ async def websocket_endpoint(websocket: WebSocket, game_session_id:str, client_i
                     type: "error"
                 }, websocket) 
             else:
-                game_session = game_session_register.get(game_session_id)
-                player_game = game_session.get_player_game(client_id)
-                player_game.handler_message(messageIn)
-                res = player_game.get_res(messageIn)
+                player_game_manager.handler_message(messageIn)
+                res = player_game_manager.get_res(messageIn)
                 # print(f"res: {res}")
                 await manager.send_personal_message_json(res, websocket)
                 # await manager.broadcast_without_sender_json(
