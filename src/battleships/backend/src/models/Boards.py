@@ -113,7 +113,7 @@ class MyBoard(Board):
                         yield detected_ship
                     # jednomasztowiec
                     else:
-                        print(f'jednomasztoweic {row*11 + j - 1};;{self.count_set_ship_cross(row*11 + j - 1)}')
+                        #print(f'jednomasztoweic {row*11 + j - 1};;{self.count_set_ship_cross(row*11 + j - 1)}')
                         if self.count_set_ship_cross(row*11 + j - 1) == 0:
                             yield detected_ship
         ships = []
@@ -144,7 +144,7 @@ class MyBoard(Board):
         self.fleet = {}
         for ship_len in self.detect_ship_horizontally() + self.detect_ship_vertically():
             self.fleet[ship_len] = self.fleet.get(ship_len, 0) + 1
-        print(f'detected_ship: {self.fleet}')
+        #print(f'detected_ship: {self.fleet}')
     
     def check_set_ship_fleet_descending(self, index) -> bool:
         item_index_state = self.get_item_state(index)

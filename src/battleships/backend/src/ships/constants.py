@@ -2,7 +2,10 @@ from enum import Enum
 
 class SessionGameState(Enum):
     CREATED = 1 
-    CONNECTED = 2
+    HALF_CONNECTED = 2
+    CONNECTED = 3
+    DISCONNECTED = 4
+    FINISHED = 5
 
 class PlayerGameState(Enum):
     START = 1
