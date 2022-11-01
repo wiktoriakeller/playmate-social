@@ -79,6 +79,22 @@ class PlayerGameManager():
         )
         return res
 
+    def get_res_in_wait_for_opponent_end_setting_ships(self, messageIn: WebSocketMessageIn) -> WebSocketMessageOut:
+        print(' get_res_in_wait_for_opponent_end_setting_ships')
+        res = WebSocketMessageOut(
+            data=ResponseData(
+                session_game_state=self.session_game_players.sessionGameState,
+                player_game_state=self.player_game.game_state,
+                my_board=self.player_game.my_board.get_matrix(),
+                opponent_board=self.player_game.opponent_board.get_matrix()
+            ),
+            id=messageIn.id,
+            type=MessageOutType.OPPONENT_ROUND.value,
+            source=self.player_game.player_id, 
+            id_server_res=str(uuid.uuid1())
+        )
+        return res
+
     async def handler_end_setting_ships(self):
         print('handler_end_setting_ships')
         # wszystkie statki zaznaczone
@@ -105,6 +121,8 @@ class PlayerGameManager():
         result: WebSocketMessageOut = None
         if self.player_game.game_state in (PlayerGameState.START, PlayerGameState.SETTING_SHIPS):
             result = self.get_res_in_setting_ship(messageIn)
+        elif self.player_game.game_state == PlayerGameState.WAIT_FOR_OPPONENT_END_SETTING_SHIPS:
+            result = self.get_res_in_wait_for_opponent_end_setting_ships(messageIn)
         else:
             print('!!!!!!!!!! get res in other state')
         return result

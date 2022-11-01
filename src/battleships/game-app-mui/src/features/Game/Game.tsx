@@ -32,10 +32,12 @@ export function Game({
     // Game component - opponent connected
     console.log(`stateNewRes.type ${stateNewResponse['type']}`)
     console.log(`stateNewRes.type ${typeof(stateNewResponse['type'])}`)
+    
+    // connected or setting_ship
     if(stateNewResponse['type'] === 2 || stateNewResponse['type'] === 1){
         return (
             <div>
-                <p style={{"margin": '30px'}}>Game component</p>
+                <p style={{"margin": '30px'}}>SETTING SHIPS</p>
                 <div style={{"margin": '30px'}}>
                     <MyBoard 
                         triggerSendMock={triggerSendMock}
@@ -50,6 +52,17 @@ export function Game({
         return (
             <div>
                 <p style={{"margin": '30px'}}>Waiting for opponent</p>
+            </div>
+          );
+    }
+    // opponent round
+    else if(stateNewResponse['type'] === 4){
+        return (
+            <div>
+                <p style={{"margin": '30px'}}>OPPONENT ROUND</p>
+                <div style={{"margin": '30px'}}>
+                    <MyBoard></MyBoard>
+                </div>
             </div>
           );
     }

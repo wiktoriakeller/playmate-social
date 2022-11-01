@@ -32,7 +32,7 @@ class PlayerGame():
                 self.game_state = PlayerGameState.END_SETTING_SHIPS
                 
         else:
-            pass
+            print('ignore message')
     
     def __verification_setting_item_to_ship(self, index: int) -> bool:
         if self.my_board.check_set_ship_neighbours(index) == False:
