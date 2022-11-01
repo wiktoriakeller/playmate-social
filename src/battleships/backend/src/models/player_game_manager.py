@@ -55,11 +55,6 @@ class PlayerGameManager():
 
     async def ping_opponent_new_state(self, messageOutType: MessageOutType):
         print('ping_opponent')
-        # await self.connection_manager.send_short_info(
-        #     addressee=self.player_game.opponent_id,
-        #     res_type=messageOutType,
-        #     sender="server"
-        # )
         await self.connection_manager.send_data_info(
             addressee=self.player_game.opponent_id,
              res_type=messageOutType,
@@ -80,22 +75,6 @@ class PlayerGameManager():
             player_game=self.player_game
             )
 
-        # res = WebSocketMessageOut(
-        #     data=ResponseData(
-        #         session_game_state=self.session_game_players.sessionGameState,
-        #         player_game_state=self.player_game.game_state,
-        #         # session_game_state=SessionGameState.CONNECTED,
-        #         # player_game_state=PlayerGameState.SETTING_SHIPS,
-        #         my_board=self.player_game.my_board.get_matrix(),
-        #         opponent_board=self.player_game.opponent_board.get_matrix()
-        #     ),
-        #     id=messageIn.id,
-        #     type=MessageOutType.SETTING_SHIP.value,
-        #     source=self.player_game.player_id, 
-        #     id_server_res=str(uuid.uuid1())
-        # )
-        # return res
-
     async def send_res_in_wait_for_opponent_end_setting_ships(self, messageIn: WebSocketMessageIn) -> None:
         print('get_res_in_wait_for_opponent_end_setting_ships')
         await self.connection_manager.send_data_info(
@@ -106,19 +85,6 @@ class PlayerGameManager():
             session_game=self.session_game_players,
             player_game=self.player_game
             )
-        # res = WebSocketMessageOut(
-        #     data=ResponseData(
-        #         session_game_state=self.session_game_players.sessionGameState,
-        #         player_game_state=self.player_game.game_state,
-        #         my_board=self.player_game.my_board.get_matrix(),
-        #         opponent_board=self.player_game.opponent_board.get_matrix()
-        #     ),
-        #     id=messageIn.id,
-        #     type=MessageOutType.OPPONENT_ROUND.value,
-        #     source=self.player_game.player_id, 
-        #     id_server_res=str(uuid.uuid1())
-        # )
-        # return res
     
     async def send_res_in_opponent_round(self, messageIn: WebSocketMessageIn) -> None:
         print('get_res_in_opponent_round')
@@ -130,20 +96,6 @@ class PlayerGameManager():
             session_game=self.session_game_players,
             player_game=self.player_game
             )
-
-        # res = WebSocketMessageOut(
-        #     data=ResponseData(
-        #         session_game_state=self.session_game_players.sessionGameState,
-        #         player_game_state=self.player_game.game_state,
-        #         my_board=self.player_game.my_board.get_matrix(),
-        #         opponent_board=self.player_game.opponent_board.get_matrix()
-        #     ),
-        #     id=messageIn.id,
-        #     type=MessageOutType.OPPONENT_ROUND.value,
-        #     source=self.player_game.player_id, 
-        #     id_server_res=str(uuid.uuid1())
-        # )
-        # return res
 
     async def handler_end_setting_ships(self):
         print('handler_end_setting_ships')
