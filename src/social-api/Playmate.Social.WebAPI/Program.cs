@@ -12,7 +12,7 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
-app.UseCors();
+app.UseCors("social-frontend");
 
 app.ApplyMigrations();
 
@@ -22,7 +22,7 @@ if (builder.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthentication();
 

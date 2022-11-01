@@ -1,15 +1,52 @@
 import { Button, Divider, Link } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useCreateUserMutation } from "../api/identity/identityApi";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
+  const [createUser, result] = useCreateUserMutation();
+
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const handleRegister = () => {
+    createUser({
+      email: email,
+      username: username,
+      password: password
+    })
+      .unwrap()
+      .then(() => {
+        navigate("/login");
+      });
+  };
+
   return (
     <div className="register-page">
       <div className="form-container">
-        <TextField label="Email" variant="filled" />
-        <TextField label="Username" variant="filled" />
-        <TextField label="Password" variant="filled" />
-        <TextField label="Confirm" variant="filled" />
-        <Button variant="contained">Register</Button>
+        <TextField
+          label="Email"
+          variant="filled"
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <TextField
+          label="Username"
+          variant="filled"
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <TextField
+          label="Password"
+          variant="filled"
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <TextField label="Confirm password" variant="filled" />
+        <Button variant="contained" onClick={handleRegister}>
+          Register
+        </Button>
         <Divider variant="middle" />
         <Link href="/login" underline="hover">
           Already have an account?

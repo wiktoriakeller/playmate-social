@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
+import _ from "lodash";
 
 export interface IUserState {
   id?: string;
@@ -28,10 +29,10 @@ export const userSlice = createSlice({
   initialState: userInitialState,
   reducers: {
     setUser(state: IUserState, action: PayloadAction<IUserState>) {
-      state = action.payload;
+      _.assign(state, action.payload);
     },
     setUserTokens(state: IUserState, action: PayloadAction<IUserTokens>) {
-      state.userTokens = action.payload;
+      _.assign(state.userTokens, action.payload);
     }
   }
 });

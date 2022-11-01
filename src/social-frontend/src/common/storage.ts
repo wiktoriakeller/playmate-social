@@ -10,8 +10,15 @@ export const getData = (key: string): string | null =>
 export const storeUser = (user: IUserState): void =>
   storeData("user", JSON.stringify(user));
 
-export const getUserFromStorage = (): IUserState | null =>
-  JSON.parse(getData("user"));
+export const getUserFromStorage = (): IUserState | null => {
+  const user = getData("user");
+
+  if (typeof user === "string" || user === null) {
+    return null;
+  }
+
+  return JSON.parse(user);
+};
 
 export const clearUserFromStorage = (): void => storeData("user", null);
 

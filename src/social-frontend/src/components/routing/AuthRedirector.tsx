@@ -1,4 +1,3 @@
-import React from "react";
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
 import { selectUserTokens } from "../../slices/userSlice";
@@ -6,11 +5,11 @@ import { selectUserTokens } from "../../slices/userSlice";
 const AuthRedirector = ({ children }) => {
   const userTokens = useAppSelector(selectUserTokens);
 
-  if (!!userTokens) {
+  if (!!userTokens.jwtToken) {
     return <>{children}</>;
   }
 
-  return <Navigate to={"/signin"} />;
+  return <Navigate to={"/login"} />;
 };
 
 export default AuthRedirector;

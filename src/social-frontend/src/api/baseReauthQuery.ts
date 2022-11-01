@@ -12,6 +12,7 @@ const baseUrl = `${apiUrl}/api/v1`;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: baseUrl,
+  mode: "cors",
   prepareHeaders: (headers, { endpoint }) => {
     const user = getUserFromStorage();
 
