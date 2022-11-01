@@ -87,8 +87,8 @@ async def websocket_endpoint(websocket: WebSocket, game_session_id:str, client_i
                 }, websocket) 
             else:
                 await player_game_manager.handler_message(messageIn)
-                res = await player_game_manager.handler_get_res_or_ping_opponent(messageIn)
-                await manager.send_personal_message_json(res, websocket)
+                await player_game_manager.send_res_or_ping_opponent(messageIn)
+            
                 print('-----------------------------------------------------------------------')
     
     except WebSocketDisconnect:

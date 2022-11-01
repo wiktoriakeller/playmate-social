@@ -66,5 +66,16 @@ export function Game({
             </div>
           );
     }
+    // shooting
+    else if(stateNewResponse['type'] === 5){
+        return (
+            <div>
+                <p style={{"margin": '30px'}}>SHOOTING</p>
+                <div style={{"margin": '30px'}}>
+                    <MyBoard></MyBoard>
+                </div>
+            </div>
+          );
+    }
     
 }
