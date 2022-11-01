@@ -106,7 +106,9 @@ class MyBoard(Board):
             for j in range(1,11):
                 if SquareItemState(self.get_item_state(row*11+j)) == SquareItemState.SET_SHIP:
                     count += 1
-                elif count != 0:
+                # print(f'id:{row*11+j} j:{j} count:{count}')
+                if (SquareItemState(self.get_item_state(row*11+j)) != SquareItemState.SET_SHIP and count != 0) \
+                    or (j == 10 and  count != 0):
                     detected_ship = count
                     count = 0
                     if detected_ship > 1:
@@ -114,8 +116,12 @@ class MyBoard(Board):
                     # jednomasztowiec
                     else:
                         #print(f'jednomasztoweic {row*11 + j - 1};;{self.count_set_ship_cross(row*11 + j - 1)}')
-                        if self.count_set_ship_cross(row*11 + j - 1) == 0:
-                            yield detected_ship
+                        if j < 10:
+                            if self.count_set_ship_cross(row*11 + j - 1) == 0:
+                                yield detected_ship
+                        else:
+                            if self.count_set_ship_cross(row*11 + j) == 0:
+                                yield detected_ship
         ships = []
         for i in range(1,11):
             for detected_ship in gen_line(i):
@@ -128,7 +134,9 @@ class MyBoard(Board):
             for i in range(1,11):
                 if SquareItemState(self.get_item_state(i*11+col)) == SquareItemState.SET_SHIP:
                     count += 1
-                elif count != 0:
+
+                if (count != 0  and SquareItemState(self.get_item_state(i*11+col)) != SquareItemState.SET_SHIP) \
+                    or (i == 10 and count != 0):
                     detected_ship = count
                     count = 0
                     if detected_ship > 1:
@@ -156,7 +164,8 @@ class MyBoard(Board):
         return flag
 
     def check_all_fleet_setting(self) -> bool:
-        # self.detect_ship()
+        self.detect_ship()
+        print(self.fleet, SHIPS_FLEET)
         flag = compare_fleet(self.fleet, SHIPS_FLEET)
         return flag
 

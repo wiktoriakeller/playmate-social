@@ -28,6 +28,7 @@ class PlayerGame():
             
             # TODO
             if self.my_board.check_all_fleet_setting() == True:
+                print('usatwe end_setting_ships')
                 self.game_state = PlayerGameState.END_SETTING_SHIPS
                 
         else:

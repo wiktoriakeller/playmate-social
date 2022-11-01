@@ -82,10 +82,12 @@ class PlayerGameManager():
     async def handler_end_setting_ships(self):
         print('handler_end_setting_ships')
         # wszystkie statki zaznaczone
-        if self.player_game.my_board.check_all_fleet_setting() == True:
+        if self.player_game.game_state == PlayerGameState.END_SETTING_SHIPS: #ustawione w metodzie handler_start_or_setting_ships
+            print('wszystkie statki')
             #przeciwnik juz mial ustawione wszystkie statki
             if self.session_game_players.get_opponent_game(self.player_game.player_id).game_state == PlayerGameState.END_SETTING_SHIPS:
                 #ustaw sobie ze tura przeciwnika
+                print(f'{self.player_game.player_id}: tura przeciwnika ')
                 self.player_game.game_state = PlayerGameState.OPPONENT_ROUND
                 #ustaw przeciwnikowi stan gry strzelanie
                 self.session_game_players.get_opponent_game(self.player_game.player_id).game_state = PlayerGameState.SHOOTING
@@ -93,6 +95,7 @@ class PlayerGameManager():
             #przeciwnik nie ma ustawionych wszystkich statkow
             else:
                 #ustaw ze ma wszystkie ustawione
+                print(f'{self.player_game.player_id}: masz wszystkei ustawione czekaj na prczeiwnka')
                 self.player_game.game_state = PlayerGameState.WAIT_FOR_OPPONENT_END_SETTING_SHIPS
         else:
             pass
@@ -110,7 +113,7 @@ class PlayerGameManager():
         print('handler_message')
         if self.player_game.game_state in (PlayerGameState.START, PlayerGameState.SETTING_SHIPS):
             self.player_game.handler_start_or_setting_ships(messageIn=messageIn)
-            # await self.handler_end_setting_ships()
+            await self.handler_end_setting_ships()
         else:
-            print('handler message in other state')
+            print('!!!!!!!handler message in other state')
             
