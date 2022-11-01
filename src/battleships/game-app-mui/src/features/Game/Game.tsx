@@ -5,6 +5,7 @@ import {selectStateLastParsedMessage} from '../WSConfig/WSConfigSlice';
 import {setMyBoardInfo, setOpponentBoardInfo, selectGame} from './GameSlice';
 import {WebSocketServiceProps} from '../../types';
 import {MyBoard} from '../MyBoard/MyBoard';
+import {OpponentBoard} from '../OpponentBoard/OpponentBoard';
 
 export function Game({
         triggerSendMock,
@@ -44,6 +45,12 @@ export function Game({
                         triggerSendObject={triggerSendObject}
                     ></MyBoard>
                 </div>
+                <div style={{"margin": '30px'}}>
+                    <OpponentBoard 
+                        triggerSendMock={triggerSendMock}
+                        triggerSendObject={triggerSendObject}
+                    ></OpponentBoard>
+                </div>
             </div>
           );
     }
@@ -64,7 +71,14 @@ export function Game({
                 <div style={{"margin": '30px'}}>
                     <MyBoard></MyBoard>
                 </div>
+                <div style={{"margin": '30px'}}>
+                    <OpponentBoard 
+                        triggerSendMock={triggerSendMock}
+                        triggerSendObject={triggerSendObject}
+                    ></OpponentBoard>
+                </div>
             </div>
+
           );
     }
     // shooting
@@ -74,6 +88,12 @@ export function Game({
                 <p style={{"margin": '30px'}}>SHOOTING</p>
                 <div style={{"margin": '30px'}}>
                     <MyBoard></MyBoard>
+                </div>
+                <div style={{"margin": '30px'}}>
+                    <OpponentBoard 
+                        triggerSendMock={triggerSendMock}
+                        triggerSendObject={triggerSendObject}
+                    ></OpponentBoard>
                 </div>
             </div>
           );
