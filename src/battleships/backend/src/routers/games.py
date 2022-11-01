@@ -86,45 +86,16 @@ async def websocket_endpoint(websocket: WebSocket, game_session_id:str, client_i
                     type: "error"
                 }, websocket) 
             else:
-                player_game_manager.handler_message(messageIn)
-                res = player_game_manager.get_res(messageIn)
+                await player_game_manager.handler_message(messageIn)
+                res = await player_game_manager.handler_get_res_or_ping_opponent(messageIn)
                 await manager.send_personal_message_json(res, websocket)
-                # print(f"res: {res}")
-                # await manager.broadcast_without_sender_json(
-                #     websocket=websocket,
-                #     message=res,
-                #     game_session_id=game_session_id,
-                #     sender=client_id
-                # )
-
-                ### ECHOOOOOOOOOOOO
-                # messageOut = WebSocketMessageOut(**messageIn.dict(), source=client_id, id_server_res=str(uuid.uuid1()))
-                # await manager.send_personal_message_json(messageOut, websocket)
-                # await manager.broadcast_without_sender_json(
-                #     websocket=websocket,
-                #     message=messageOut,
-                #     game_session_id=game_session_id,
-                #     sender=client_id
-                # )
-                ### ECHOOOOOOOOOOOOOO
     
     except WebSocketDisconnect:
         print (f"Disconnect {game_session_id}")
         manager.disconnect(websocket, client_id)
         player_game_manager.set_disconnect_opponent()
         await manager.send_short_info(player_game.opponent_id, MessageOutType.OPPONENT_DISCONNECTED, "server")
-        # await manager.broadcast_without_sender_json(
-        #     websocket=websocket,
-        #     message=WebSocketErrorOut(
-        #         id='undefined',
-        #         type="error_disconnect_opponent", 
-        #         source=client_id, data=[],
-        #         id_server_res=str(uuid.uuid1()),
-        #         date=None
-        #     ),
-        #     game_session_id=game_session_id,
-        #     sender=client_id
-        # )
+        
 
 
         

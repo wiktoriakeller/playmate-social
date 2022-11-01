@@ -144,9 +144,10 @@ class MyBoard(Board):
         self.fleet = {}
         for ship_len in self.detect_ship_horizontally() + self.detect_ship_vertically():
             self.fleet[ship_len] = self.fleet.get(ship_len, 0) + 1
-        #print(f'detected_ship: {self.fleet}')
+        print(f'detected_ship: {self.fleet}')
     
     def check_set_ship_fleet_descending(self, index) -> bool:
+        print('check order')
         item_index_state = self.get_item_state(index)
         self.set_item_state(index, SquareItemState.SET_SHIP)
         self.detect_ship()
@@ -155,7 +156,7 @@ class MyBoard(Board):
         return flag
 
     def check_all_fleet_setting(self) -> bool:
-        self.detect_ship()
+        # self.detect_ship()
         flag = compare_fleet(self.fleet, SHIPS_FLEET)
         return flag
 

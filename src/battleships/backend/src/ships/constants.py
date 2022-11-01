@@ -9,7 +9,10 @@ class SessionGameState(Enum):
 class PlayerGameState(Enum):
     START = 1 #######
     SETTING_SHIPS = 2 #########
-    END_SETTING_SHIPS = 3 #########
+    END_SETTING_SHIPS = 0
+    WAIT_FOR_OPPONENT_END_SETTING_SHIPS = 3 #########
+    OPPONENT_ROUND = 4
+    SHOOTING = 5
 
 
 class SquareItemState(Enum):
@@ -23,6 +26,8 @@ class MessageOutType(Enum):
     SETTING_SHIP = 1 #####################################
     OPPONENT_CONNECTED = 2 ###############################
     OPPONENT_DISCONNECTED = 3 ############################
+    OPPONENT_ROUND = 4
+    SHOOTING = 5
     
 
 SHIPS_FLEET = {

@@ -7,15 +7,20 @@ def check_fleet_setting_descending_order(board_fleet:Dict, param_fleet:Dict) -> 
     flag=True
     counter_ship_in_construction=0
     enabled_count=False
+    if len(sorted_board_fleet) and len(sorted_param_fleet):
+        if sorted_param_fleet[0][0] < sorted_board_fleet[0][0]:
+            flag=False
     for (k, v) in sorted_param_fleet:
+        if flag == False:
+            break
         if enabled_count == False:
             if board_fleet.get(k, 0) > v:
                 flag=False
-                #print('masz juz za duzo statkow najwiekszych')
+                print('masz juz za duzo statkow najwiekszych')
                 break
             elif board_fleet.get(k, 0) < v:
                 enabled_count=True
-                #print(f'nie masz wystarczajco duzo statkwo {k}-masztowcyh, liczymy ile masz mniejszych')
+                print(f'nie masz wystarczajco duzo statkwo {k}-masztowcyh, liczymy ile masz mniejszych')
         else:    
             counter_ship_in_construction += board_fleet.get(k, 0)
     if counter_ship_in_construction > 1:

@@ -43,8 +43,8 @@ class ConnectionManager:
                     if connection is not None:
                         await connection.send_json(json.dumps(message.json()))
         
-    async def send_short_info(self, player_id: str, res_type: MessageOutType, sender: str):
-        connection = self.active_connections.get(player_id) # connection: WebSocket
+    async def send_short_info(self, addressee: str, res_type: MessageOutType, sender: str):
+        connection = self.active_connections.get(addressee) # connection: WebSocket
         message = WebSocketErrorOut(
             id = str(uuid.uuid1()),
             id_server_res =  str(uuid.uuid1()),

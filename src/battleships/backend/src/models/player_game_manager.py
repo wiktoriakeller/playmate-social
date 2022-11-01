@@ -13,6 +13,7 @@ class PlayerGameManager():
         self.player_game = playerGame
 
     async def handler_connection(self) -> None:
+        print('handler_connection')
         if self.session_game_players.sessionGameState in(SessionGameState.CREATED, SessionGameState.CONNECTED, SessionGameState.DISCONNECTED):
             #ustaw przeciwnikowi ze jego przeciwnik jest polaczony
             self.session_game_players.set_state_opponent_player_game(self.player_game.player_id, True)
@@ -52,15 +53,16 @@ class PlayerGameManager():
         self.session_game_players.sessionGameState = SessionGameState.DISCONNECTED
         self.session_game_players.set_state_opponent_player_game(self.player_game.player_id, False)
 
-    def handler_message(self, messageIn: WebSocketMessageIn) -> None:
-        if self.player_game.game_state in (PlayerGameState.START, PlayerGameState.SETTING_SHIPS):
-            self.player_game.handler_start_or_setting_ships(messageIn=messageIn)
-        else:
-            pass
-
+    async def ping_opponent_new_state(self, messageOutType: MessageOutType):
+        print('ping_opponent')
+        await self.connection_manager.send_short_info(
+            addressee=self.player_game.opponent_id,
+            res_type=messageOutType,
+            sender="server"
+        )
     
-    def get_res(self, messageIn: WebSocketMessageIn) -> WebSocketMessageOut:
-        print(type(self.player_game.my_board.get_matrix()))
+    def get_res_in_setting_ship(self, messageIn: WebSocketMessageIn) -> WebSocketMessageOut:
+        print('get_res_in_setting_ship')
         res = WebSocketMessageOut(
             data=ResponseData(
                 session_game_state=self.session_game_players.sessionGameState,
@@ -76,3 +78,39 @@ class PlayerGameManager():
             id_server_res=str(uuid.uuid1())
         )
         return res
+
+    async def handler_end_setting_ships(self):
+        print('handler_end_setting_ships')
+        # wszystkie statki zaznaczone
+        if self.player_game.my_board.check_all_fleet_setting() == True:
+            #przeciwnik juz mial ustawione wszystkie statki
+            if self.session_game_players.get_opponent_game(self.player_game.player_id).game_state == PlayerGameState.END_SETTING_SHIPS:
+                #ustaw sobie ze tura przeciwnika
+                self.player_game.game_state = PlayerGameState.OPPONENT_ROUND
+                #ustaw przeciwnikowi stan gry strzelanie
+                self.session_game_players.get_opponent_game(self.player_game.player_id).game_state = PlayerGameState.SHOOTING
+                await self.ping_opponent_new_state(MessageOutType.SHOOTING)
+            #przeciwnik nie ma ustawionych wszystkich statkow
+            else:
+                #ustaw ze ma wszystkie ustawione
+                self.player_game.game_state = PlayerGameState.WAIT_FOR_OPPONENT_END_SETTING_SHIPS
+        else:
+            pass
+
+    async def handler_get_res_or_ping_opponent(self, messageIn: WebSocketMessageIn) -> WebSocketMessageOut:
+        print('handler_get_res_or_ping_opponent')
+        result: WebSocketMessageOut = None
+        if self.player_game.game_state in (PlayerGameState.START, PlayerGameState.SETTING_SHIPS):
+            result = self.get_res_in_setting_ship(messageIn)
+        else:
+            print('!!!!!!!!!! get res in other state')
+        return result
+
+    async def handler_message(self, messageIn: WebSocketMessageIn) -> None:
+        print('handler_message')
+        if self.player_game.game_state in (PlayerGameState.START, PlayerGameState.SETTING_SHIPS):
+            self.player_game.handler_start_or_setting_ships(messageIn=messageIn)
+            # await self.handler_end_setting_ships()
+        else:
+            print('handler message in other state')
+            
