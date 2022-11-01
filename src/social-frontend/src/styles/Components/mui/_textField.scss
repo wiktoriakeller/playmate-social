@@ -1,0 +1,18 @@
+.form-container {
+  .MuiTextField-root {
+    min-width: 100%;
+
+    .MuiInputBase-root {
+      color: var(--text-thetridiary-color);
+    }
+
+    label {
+      color: var(--text-thetridiary-color);
+    }
+
+    .MuiFilledInput-underline::after {
+      border-width: 2px;
+      border-color: var(--text-thetridiary-color);
+    }
+  }
+}

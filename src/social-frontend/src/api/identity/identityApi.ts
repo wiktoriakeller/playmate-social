@@ -31,3 +31,5 @@ export const identityApi = createApi({
 
 export const { useAuthenticateUserMutation, useCreateUserMutation } =
   identityApi;
+
+export default identityApi.reducer;

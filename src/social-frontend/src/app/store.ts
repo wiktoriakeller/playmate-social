@@ -1,17 +1,21 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { identityApi } from "../api/identity/identityApi";
-import { userListenerMiddleware } from "../api/userListenerMiddleware";
+import { themeListenerMiddleware } from "../middleware/themeListenerMiddleware";
+import { userListenerMiddleware } from "../middleware/userListenerMiddleware";
+import { themeSlice } from "../slices/themeSlice";
 import { userSlice } from "../slices/userSlice";
 
 export const store = configureStore({
   reducer: {
     [userSlice.name]: userSlice.reducer,
+    [themeSlice.name]: themeSlice.reducer,
     [identityApi.reducerPath]: identityApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
-      .prepend(userListenerMiddleware.middleware)
-      .prepend(identityApi.middleware)
+      .concat(userListenerMiddleware.middleware)
+      .concat(themeListenerMiddleware.middleware)
+      .concat(identityApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

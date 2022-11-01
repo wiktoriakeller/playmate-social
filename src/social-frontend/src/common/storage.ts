@@ -1,3 +1,4 @@
+import { ThemeType } from "../slices/themeSlice";
 import { IUserState } from "../slices/userSlice";
 
 export const storeData = (key: string, value: string | null): void =>
@@ -13,3 +14,8 @@ export const getUserFromStorage = (): IUserState | null =>
   JSON.parse(getData("user"));
 
 export const clearUserFromStorage = (): void => storeData("user", null);
+
+export const storeTheme = (theme: ThemeType): void => storeData("theme", theme);
+
+export const getThemeFromStore = (): ThemeType | null =>
+  getData("theme") as ThemeType;

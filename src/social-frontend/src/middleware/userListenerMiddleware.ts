@@ -1,5 +1,5 @@
 import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
-import { getUserFromStorage } from "../common/storage";
+import { getUserFromStorage, storeUser } from "../common/storage";
 import {
   IUserState,
   IUserTokens,
@@ -11,18 +11,19 @@ export const userListenerMiddleware = createListenerMiddleware();
 
 userListenerMiddleware.startListening({
   actionCreator: setUser,
-  effect: (action: PayloadAction<IUserState>, listenerApi) => {
-    setUser(action.payload);
+  effect: (action: PayloadAction<IUserState>) => {
+    storeUser(action.payload);
   }
 });
 
 userListenerMiddleware.startListening({
   actionCreator: setUserTokens,
-  effect: (action: PayloadAction<IUserTokens>, listenerApi) => {
+  effect: (action: PayloadAction<IUserTokens>, apiListener) => {
     const user = getUserFromStorage();
-    setUser({
+    const newUser = {
       ...user,
       userTokens: action.payload as IUserTokens
-    });
+    };
+    apiListener.dispatch(setUser(newUser));
   }
 });
