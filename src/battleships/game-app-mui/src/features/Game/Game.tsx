@@ -57,6 +57,7 @@ export function Game({
     }
     // opponent round
     else if(stateNewResponse['type'] === 4){
+        dispatch(setMyBoardInfo("DISABLED"));
         return (
             <div>
                 <p style={{"margin": '30px'}}>OPPONENT ROUND</p>

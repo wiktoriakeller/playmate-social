@@ -86,10 +86,10 @@ export function WSConfig() {
               connection: {connectionStatus}
             </p>
           </div>
-          <Chat
+          {/* <Chat
             triggerSendMock={handleSendMock}
             triggerSendObject={handleSendObject}
-          ></Chat>
+          ></Chat> */}
           <Game
             triggerSendMock={handleSendMock}
             triggerSendObject={handleSendObject}
