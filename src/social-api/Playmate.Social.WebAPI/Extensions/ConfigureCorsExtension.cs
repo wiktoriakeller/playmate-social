@@ -2,9 +2,8 @@
 
 public static class ConfigureCorsExtension
 {
-    public static IServiceCollection AddCorsConfiguration(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddCorsConfiguration(this IServiceCollection services, IConfiguration configuration, string policyName)
     {
-        var policyName = "social-frontend";
         var origins = configuration.GetSection("AllowedOrigins").Get<string[]>();
 
         services.AddCors(options =>

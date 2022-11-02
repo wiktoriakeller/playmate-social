@@ -8,11 +8,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddPresentation(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddInfrastructure(builder.Configuration);
+
+var policyName = "social-frontend";
+builder.Services.AddCorsConfiguration(builder.Configuration, policyName);
+builder.Services.AddSwaggerDoc();
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
-app.UseCors("social-frontend");
+app.UseCors(policyName);
 
 app.ApplyMigrations();
 
