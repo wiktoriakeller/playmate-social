@@ -12,6 +12,7 @@
   margin-bottom: auto;
   background-color: var(--primary-background-color);
   border-bottom: 1px solid var(--border-color);
+  z-index: 2;
 
   .main-logo {
     margin-left: 30px;
@@ -23,5 +24,15 @@
 
   .icon-button {
     margin-right: 30px;
+  }
+
+  @media screen and (max-width: 500px) {
+    .main-logo {
+      display: none;
+    }
+
+    .icon-button {
+      margin-left: auto;
+    }
   }
 }

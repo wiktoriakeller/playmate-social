@@ -39,10 +39,25 @@ body {
   height: 100%;
   box-sizing: border-box;
   background-color: colors.$grey-200;
+  scrollbar-gutter: stable;
+  overflow-x: hidden;
 }
 
 .main-layout {
   display: flex;
   flex-direction: column;
   align-content: center;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
 }
