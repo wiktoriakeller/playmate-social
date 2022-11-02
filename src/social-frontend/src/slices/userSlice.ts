@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
 import _ from "lodash";
+import { getUserFromStorage } from "../common/storage";
 
 export interface IUserState {
   id?: string;
@@ -15,17 +16,25 @@ export interface IUserTokens {
   refreshToken?: string;
 }
 
-const userInitialState: IUserState = {
-  id: null,
-  email: null,
-  username: null,
-  jwtToken: null,
-  refreshToken: null
+const getUserInitialState = () => {
+  const user = getUserFromStorage();
+
+  if (user === null) {
+    return {
+      id: null,
+      email: null,
+      username: null,
+      jwtToken: null,
+      refreshToken: null
+    };
+  }
+
+  return user;
 };
 
 export const userSlice = createSlice({
   name: "user",
-  initialState: userInitialState,
+  initialState: getUserInitialState(),
   reducers: {
     setUser(state: IUserState, action: PayloadAction<IUserState>) {
       _.assign(state, action.payload);

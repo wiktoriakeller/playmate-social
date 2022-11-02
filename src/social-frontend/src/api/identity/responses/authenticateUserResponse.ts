@@ -1,4 +1,6 @@
-export interface IAuthenticateUserResponse {
+import { IResponse } from "../../baseApiResponse";
+
+export interface IAuthenticateUserResponse extends IResponse {
   data: {
     id: string;
     email: string;

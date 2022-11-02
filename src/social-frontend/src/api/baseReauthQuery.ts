@@ -1,9 +1,9 @@
-import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
 import type {
   BaseQueryFn,
   FetchArgs,
   FetchBaseQueryError
 } from "@reduxjs/toolkit/dist/query";
+import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
 import { getUserFromStorage } from "../common/storage";
 import { setUserTokens } from "../slices/userSlice";
 
