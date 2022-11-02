@@ -108,6 +108,9 @@ public class IdentityService : IIdentityService
 
         var response = new AuthenticateUserResponse
         {
+            Id = user.Id,
+            Username = user.Username,
+            Email = user.Email,
             JwtToken = newJwt.JwtToken,
             RefreshToken = newRefreshToken
         };

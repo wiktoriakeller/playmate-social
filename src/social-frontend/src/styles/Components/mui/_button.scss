@@ -1,0 +1,28 @@
+@use "../../properties";
+
+.form-container {
+  & .MuiButton-root {
+    min-width: 100%;
+    background-color: var(--primary-color);
+
+    &:hover {
+      background-color: var(--primary-color-hover);
+    }
+  }
+}
+
+.icon-button {
+  &.MuiButton-root {
+    min-width: 34px;
+    min-height: 34px;
+    padding: 5px;
+    border-radius: properties.$secondary-border-radius;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+
+    &:hover {
+      border-color: var(--primary-color-hover);
+      color: var(--primary-color-hover);
+    }
+  }
+}
