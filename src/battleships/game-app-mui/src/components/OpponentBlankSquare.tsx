@@ -24,7 +24,7 @@ function OpponentBlankSquare(props:IOpponentBlankSquare) {
         }
     }
     return <div className={props.className} onClick={handleClick}>
-        .{props.id}
+        {props.id}
     </div>;
 }
 export default OpponentBlankSquare;

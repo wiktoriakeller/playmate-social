@@ -4,3 +4,4 @@ export * from './BlankSquare';
 
 export * from './OpponentBoardItem'; 
 export * from './OpponentBlankSquare';
+export * from './OpponentMishitSquare';
