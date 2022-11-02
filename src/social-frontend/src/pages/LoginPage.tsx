@@ -3,10 +3,13 @@ import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthenticateUserMutation } from "../api/identity/identityApi";
+import { useAppDispatch } from "../app/hooks";
+import { setUser } from "../slices/userSlice";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [authenticate, result] = useAuthenticateUserMutation();
+  const dispatch = useAppDispatch();
+  const [authenticate] = useAuthenticateUserMutation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -17,8 +20,12 @@ const LoginPage = () => {
       password: password
     })
       .unwrap()
-      .then(() => {
+      .then((e) => {
+        dispatch(setUser(e.data));
         navigate("/");
+      })
+      .catch((e) => {
+        console.log(e);
       });
   };
 

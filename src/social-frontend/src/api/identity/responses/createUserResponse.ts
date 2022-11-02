@@ -1,3 +1,5 @@
 export interface ICreateUserResponse {
-  id: string;
+  data: {
+    id: string;
+  };
 }

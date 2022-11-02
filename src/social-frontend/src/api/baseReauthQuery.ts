@@ -16,8 +16,8 @@ const baseQuery = fetchBaseQuery({
   prepareHeaders: (headers, { endpoint }) => {
     const user = getUserFromStorage();
 
-    if (user && user.userTokens.jwtToken && endpoint !== "refresh") {
-      headers.set("Authorization", `Bearer ${user.userTokens.jwtToken}`);
+    if (user && user.jwtToken && endpoint !== "refresh") {
+      headers.set("Authorization", `Bearer ${user.jwtToken}`);
     }
 
     return headers;
@@ -33,13 +33,15 @@ export const baseReauthQuery: BaseQueryFn<
 
   if (result.error && result.error.status === 401) {
     const user = getUserFromStorage();
-    const userTokens = user?.userTokens;
 
     const refreshResponse = await baseQuery(
       {
         url: "/identity/refresh",
         method: "POST",
-        body: userTokens
+        body: {
+          jwtToken: user.jwtToken,
+          refreshToken: user.refreshToken
+        }
       },
       api,
       extraOptions

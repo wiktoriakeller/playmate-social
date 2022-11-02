@@ -6,7 +6,7 @@ import { useCreateUserMutation } from "../api/identity/identityApi";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
-  const [createUser, result] = useCreateUserMutation();
+  const [createUser] = useCreateUserMutation();
 
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -22,6 +22,9 @@ const RegisterPage = () => {
       .unwrap()
       .then(() => {
         navigate("/login");
+      })
+      .catch((e) => {
+        console.log(e);
       });
   };
 
@@ -41,9 +44,15 @@ const RegisterPage = () => {
         <TextField
           label="Password"
           variant="filled"
+          type="password"
           onChange={(e) => setPassword(e.target.value)}
         />
-        <TextField label="Confirm password" variant="filled" />
+        <TextField
+          label="Confirm password"
+          variant="filled"
+          type="password"
+          onChange={(e) => setConfirmPassword(e.target.value)}
+        />
         <Button variant="contained" onClick={handleRegister}>
           Register
         </Button>

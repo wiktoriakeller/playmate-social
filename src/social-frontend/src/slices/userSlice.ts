@@ -6,7 +6,8 @@ export interface IUserState {
   id?: string;
   email?: string;
   username?: string;
-  userTokens: IUserTokens;
+  jwtToken?: string;
+  refreshToken?: string;
 }
 
 export interface IUserTokens {
@@ -18,10 +19,8 @@ const userInitialState: IUserState = {
   id: null,
   email: null,
   username: null,
-  userTokens: {
-    jwtToken: null,
-    refreshToken: null
-  }
+  jwtToken: null,
+  refreshToken: null
 };
 
 export const userSlice = createSlice({
@@ -32,7 +31,8 @@ export const userSlice = createSlice({
       _.assign(state, action.payload);
     },
     setUserTokens(state: IUserState, action: PayloadAction<IUserTokens>) {
-      _.assign(state.userTokens, action.payload);
+      state.jwtToken = action.payload.jwtToken;
+      state.refreshToken = action.payload.refreshToken;
     }
   }
 });
@@ -40,7 +40,9 @@ export const userSlice = createSlice({
 export const { setUser, setUserTokens } = userSlice.actions;
 
 export const selectUser = (state: RootState): IUserState => state.user;
-export const selectUserTokens = (state: RootState): IUserTokens =>
-  state.user.userTokens;
+export const selectUserTokens = (state: RootState): IUserTokens => ({
+  jwtToken: state.user.jwtToken,
+  refreshToken: state.user.refreshToken
+});
 
 export default userSlice.reducer;

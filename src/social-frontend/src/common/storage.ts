@@ -13,7 +13,7 @@ export const storeUser = (user: IUserState): void =>
 export const getUserFromStorage = (): IUserState | null => {
   const user = getData("user");
 
-  if (typeof user === "string" || user === null) {
+  if (user === null || user === "") {
     return null;
   }
 

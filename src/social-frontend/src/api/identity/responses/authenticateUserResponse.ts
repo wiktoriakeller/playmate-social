@@ -1,4 +1,9 @@
 export interface IAuthenticateUserResponse {
-  jwtToken: string;
-  refreshToken: string;
+  data: {
+    id: string;
+    email: string;
+    username: string;
+    jwtToken: string;
+    refreshToken: string;
+  };
 }
