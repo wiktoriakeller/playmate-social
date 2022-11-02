@@ -6,6 +6,7 @@ import {selectStateLastParsedMessage} from '../features/WSConfig/WSConfigSlice';
 import './components.css'
 import OpponentBlankSquare from './OpponentBlankSquare';
 import OpponentMishitSquare from './OpponentMishitSquare';
+import OpponentHitSquare from './OpponentHitSquare';
 
 interface IOpponentBoardItem extends WebSocketServiceProps{
   id: number
@@ -44,12 +45,12 @@ export function OpponentBoardItem({id, triggerSendMock, triggerSendObject}: IOpp
       //   ></OpponentBlankSquare>
       // );
       return (
-        <OpponentMishitSquare 
+        <OpponentHitSquare 
           className='Item' 
           id={id}
           triggerSendMock={triggerSendMock}
           triggerSendObject={triggerSendObject}
-        ></OpponentMishitSquare>
+        ></OpponentHitSquare>
       );
     }
     // else if(stateNewResponse['data']['opponent_board'][id] === 2){

@@ -46,3 +46,11 @@
     line-height: 34px;
     text-align: center;
   }
+
+  .cross {
+    color: rgb(120, 136, 159);
+    display: inline-block;
+  content: "\00d7";
+    font-size: 30px;
+    font-family: Arial, sans-serif;
+ }
