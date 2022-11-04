@@ -116,7 +116,7 @@ class MyBoard(Board):
                     # jednomasztowiec
                     else:
                         #print(f'jednomasztoweic {row*11 + j - 1};;{self.count_set_ship_cross(row*11 + j - 1)}')
-                        if j < 10:
+                        if j < 10 or (j==10 and SquareItemState(self.get_item_state(row*11+j)) != SquareItemState.SET_SHIP):
                             if self.count_set_ship_cross(row*11 + j - 1) == 0:
                                 yield detected_ship
                         else:

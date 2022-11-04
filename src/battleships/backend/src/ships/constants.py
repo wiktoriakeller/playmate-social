@@ -21,6 +21,7 @@ class SquareItemState(Enum):
 
 class MessageInType(Enum):
     BLANK_SQUARE_TO_SET = 1 ########################
+    OPPONENT_BLANK_SQUARE_TO_SHOOT = 2
 
 class MessageOutType(Enum):
     SETTING_SHIP = 1 #####################################
