@@ -9,6 +9,7 @@ class Board():
 
     def __init__(self) -> None:
         self.matrix: dict[int, SquareItemState] = {index: SquareItemState.BLANK for index in self.matrix_keys} 
+        self.ships_indexes_on_board = []
 
     def set_item_state(self, index: int, new_state: SquareItemState) -> None:
         if index not in self.matrix.keys():
@@ -99,60 +100,79 @@ class MyBoard(Board):
         super().__init__()
         self.fleet = {}
         
+        
 
     def detect_ship_horizontally(self) -> List[int]:
         def gen_line(row):
-            count = 0
+            count, ship_indexes = 0, []
             for j in range(1,11):
                 if SquareItemState(self.get_item_state(row*11+j)) == SquareItemState.SET_SHIP:
                     count += 1
+                    ship_indexes.append(row*11+j)
                 # print(f'id:{row*11+j} j:{j} count:{count}')
                 if (SquareItemState(self.get_item_state(row*11+j)) != SquareItemState.SET_SHIP and count != 0) \
                     or (j == 10 and  count != 0):
-                    detected_ship = count
-                    count = 0
+                    detected_ship, detected_ship_indexes = count, ship_indexes
+                    count, ship_indexes = 0, []
                     if detected_ship > 1:
-                        yield detected_ship
+                        yield (detected_ship, detected_ship_indexes)
                     # jednomasztowiec
                     else:
                         #print(f'jednomasztoweic {row*11 + j - 1};;{self.count_set_ship_cross(row*11 + j - 1)}')
                         if j < 10 or (j==10 and SquareItemState(self.get_item_state(row*11+j)) != SquareItemState.SET_SHIP):
                             if self.count_set_ship_cross(row*11 + j - 1) == 0:
-                                yield detected_ship
+                                yield (detected_ship, detected_ship_indexes)
                         else:
                             if self.count_set_ship_cross(row*11 + j) == 0:
-                                yield detected_ship
+                                yield (detected_ship, detected_ship_indexes)
         ships = []
+        ships_indexes = []
         for i in range(1,11):
-            for detected_ship in gen_line(i):
+            for (detected_ship, detected_ship_indexes) in gen_line(i):
                 ships.append(detected_ship) 
+                ships_indexes.append(detected_ship_indexes) 
+ 
         #print(f'horizontal {ships}')       
-        return ships
+        return (ships, ships_indexes)
+
     def detect_ship_vertically(self) -> List[int]:
         def gen_line(col):
-            count = 0
+            count, ship_indexes = 0, []
             for i in range(1,11):
                 if SquareItemState(self.get_item_state(i*11+col)) == SquareItemState.SET_SHIP:
                     count += 1
+                    ship_indexes.append(i*11+col)
 
                 if (count != 0  and SquareItemState(self.get_item_state(i*11+col)) != SquareItemState.SET_SHIP) \
                     or (i == 10 and count != 0):
-                    detected_ship = count
-                    count = 0
+                    detected_ship, detected_ship_indexes = count, ship_indexes
+                    count, ship_indexes = 0, []
                     if detected_ship > 1:
-                        yield detected_ship
+                        yield (detected_ship, detected_ship_indexes)
 
         ships = []
+        ships_indexes = []
         for j in range(1,11):
-            for detected_ship in gen_line(j):
-                ships.append(detected_ship)  
+            for (detected_ship, detected_ship_indexes) in gen_line(j):
+                ships.append(detected_ship) 
+                ships_indexes.append(detected_ship_indexes) 
         #print(f'vertival {ships}')      
-        return ships
+        return (ships, ships_indexes)
+
     def detect_ship(self):
         self.fleet = {}
-        for ship_len in self.detect_ship_horizontally() + self.detect_ship_vertically():
+        self.ships_indexes_on_board = []
+        h_ship_count, h_ship_indexes = self.detect_ship_horizontally()
+        v_ship_count, v_ship_indexes = self.detect_ship_vertically()
+        print(f'ship counters: {h_ship_count + v_ship_count}')
+        print(f'ship indexes: {h_ship_indexes + v_ship_indexes}')
+
+        for ship_len in h_ship_count + v_ship_count:
             self.fleet[ship_len] = self.fleet.get(ship_len, 0) + 1
+        for ship_indexes in h_ship_indexes + v_ship_indexes:
+            self.ships_indexes_on_board.append(sorted(ship_indexes))
         print(f'detected_ship: {self.fleet}')
+        print(f'detected indexes: {self.ships_indexes_on_board}')
     
     def check_set_ship_fleet_descending(self, index) -> bool:
         print('check order')
