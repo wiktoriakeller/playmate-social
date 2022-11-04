@@ -4,4 +4,5 @@ export * from './BlankSquare';
 
 export * from './OpponentBoardItem'; 
 export * from './OpponentBlankSquare';
-export * from './OpponentMishitSquare';
+export * from './MishitSquare';
+export * from './SunkShipSquare';
