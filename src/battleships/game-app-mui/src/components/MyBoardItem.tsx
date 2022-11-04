@@ -6,6 +6,8 @@ import {selectStateLastParsedMessage} from '../features/WSConfig/WSConfigSlice';
 import './components.css'
 import BlankSquare from './BlankSquare';
 import ShipSquare from './ShipSquare';
+import MishitSquare from './MishitSquare';
+import SunkShipSquare from './SunkShipSquare';
 
 interface IMyBoardItem extends WebSocketServiceProps{
   id: number
@@ -60,9 +62,26 @@ export function MyBoardItem({id, triggerSendMock, triggerSendObject}: IMyBoardIt
         className='Item'
       ></ShipSquare>
       )
-    }else{
+    }
+    else if(stateNewResponse['data']['my_board'][id] === 3){
       return(
-        <div></div>
+      <MishitSquare 
+        className='Item'
+        id={id}
+      ></MishitSquare>
+      )
+    }
+    else if(stateNewResponse['data']['my_board'][id] === 5){
+      return(
+      <SunkShipSquare 
+        className='Item'
+        id={id}
+      ></SunkShipSquare>
+      )
+    }
+    else{
+      return(
+        <div>blad</div>
       )
     }
 }

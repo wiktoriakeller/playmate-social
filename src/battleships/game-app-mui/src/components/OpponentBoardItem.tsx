@@ -5,7 +5,7 @@ import {selectStateLastParsedMessage} from '../features/WSConfig/WSConfigSlice';
 
 import './components.css'
 import OpponentBlankSquare from './OpponentBlankSquare';
-import OpponentMishitSquare from './MishitSquare';
+import MishitSquare from './MishitSquare';
 import OpponentHitSquare from './OpponentHitSquare';
 import SunkShipSquare from './SunkShipSquare';
 
@@ -54,17 +54,35 @@ export function OpponentBoardItem({id, triggerSendMock, triggerSendObject}: IOpp
       //   ></SunkShipSquare>
       // );
     }
-    // else if(stateNewResponse['data']['opponent_board'][id] === 2){
-    //   return(
-    //   <OpponentShipSquare 
-    //     className='Item'
-    //   ></OpponentShipSquare>
-    //   )
-    // }else{
-    //   return(
-    //     <div></div>
-    //   )
-    // }
+    else if(stateNewResponse['data']['opponent_board'][id] === 3){
+      return(
+      <MishitSquare 
+        className='Item'
+        id={id}
+      ></MishitSquare>
+      )
+    }
+    else if(stateNewResponse['data']['opponent_board'][id] === 4){
+      return(
+      <OpponentHitSquare 
+        className='Item'
+        id={id}
+      ></OpponentHitSquare>
+      )
+    }
+    else if(stateNewResponse['data']['opponent_board'][id] === 5){
+      return(
+      <SunkShipSquare 
+        className='Item'
+        id={id}
+      ></SunkShipSquare>
+      )
+    }
+    else{
+      return(
+        <div>BLAD</div>
+      )
+    }
 }
 
 
