@@ -20,7 +20,7 @@ class SquareItemState(Enum):
     SET_SHIP = 2 ###########
     MISHIT = 3 
     HIT = 4
-    SUNK_SHIP = 5
+    SUNKEN_SHIP = 5
 
 class MessageInType(Enum):
     BLANK_SQUARE_TO_SET = 1 ########################
@@ -38,7 +38,7 @@ class MessageOutType(Enum):
 
 SHIPS_FLEET = {
     1: 2,
-    2: 1
+    # 2: 1
     # 1: 4,# 4 jednomasztowce
     # 2: 3,
     # 3: 2,

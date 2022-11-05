@@ -11,7 +11,7 @@ class PlayerGame():
         self.game_state: PlayerGameState = PlayerGameState.START
         self.my_board = MyBoard()
         self.opponent_board = OpponentBoard()
-        self.ships_to_guess = {}
+        self.ships_to_guess:Dict [tuple, set] = {}
 
     
 
@@ -34,33 +34,13 @@ class PlayerGame():
                 self.game_state = PlayerGameState.END_SETTING_SHIPS
                 
                 for ship_indexes in self.my_board.ships_indexes_on_board:
-                    data[tuple(ship_indexes)] = []
+                    data[tuple(ship_indexes)] = set()
                 
                 
         else:
             print('ignore message')
         return data
 
-    def handler_shooting(self, messageIn: WebSocketMessageIn) -> None:
-        print(f"messageIn.type: {messageIn.type}")
-        if MessageInType[messageIn.type] == MessageInType.OPPONENT_BLANK_SQUARE_TO_SHOOT:
-            '''Dodaj ustawiony statek na swojej planszy'''
-            print(f"messageIn.data: {messageIn.data}")
-            for index in messageIn.data:
-                # for ship_indexes in self.opponent_board.
-                if self.__verification_setting_item_to_ship(index):
-                    print('dobry statek')
-                    self.my_board.set_item_state(index, SquareItemState.SET_SHIP)
-                else:
-                    print('zly statek')
-            
-            # TODO
-            if self.my_board.check_all_fleet_setting() == True:
-                print('usatwe end_setting_ships')
-                self.game_state = PlayerGameState.END_SETTING_SHIPS
-                
-        else:
-            print('ignore message')
     
     def __verification_setting_item_to_ship(self, index: int) -> bool:
         if self.my_board.check_set_ship_neighbours(index) == False:

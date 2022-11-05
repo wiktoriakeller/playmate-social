@@ -68,6 +68,8 @@ class ConnectionManager:
                 opponent_board = player_game.opponent_board.get_matrix()
             )
         )
+        print(f'send_data_info to {addressee} {player_game}')
+        
         if connection is not None:
             await connection.send_json(json.dumps(message.json()))
                     
