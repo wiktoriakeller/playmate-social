@@ -48,7 +48,10 @@ class PlayerGameManager():
                     )
             else:
                 await self.connection_manager.send_short_info(self.player_game.player_id, MessageOutType.OPPONENT_DISCONNECTED, self.player_game.player_id)
-
+        elif self.session_game_players.sessionGameState == SessionGameState.FINISHED:
+            print('handler connection within finished game')
+            ## sesja gry zakonczona link niepoprawny
+            ## TODO
         else:
             ## sesja gry zakonczona link niepoprawny
             ## TODO
@@ -105,7 +108,17 @@ class PlayerGameManager():
         print('send_res_in_shooting')
         await self.connection_manager.send_data_info(
             addressee=self.player_game.player_id,
-            res_type=MessageOutType.OPPONENT_ROUND,
+            res_type=MessageOutType.SHOOTING,
+            sender=self.player_game.player_id,
+            id_req=messageIn.id,
+            session_game=self.session_game_players,
+            player_game=self.player_game
+            )
+    async def send_res_in_win(self, messageIn: WebSocketMessageIn) -> None:
+        print('send_res_in_win')
+        await self.connection_manager.send_data_info(
+            addressee=self.player_game.player_id,
+            res_type=MessageOutType.WIN,
             sender=self.player_game.player_id,
             id_req=messageIn.id,
             session_game=self.session_game_players,
@@ -131,7 +144,7 @@ class PlayerGameManager():
                         counter_guessed = 1  
                         
                         #sprawdz czy caly statek zatopiony
-                        if tuple(guessed) == ship_indexes_to_guess:
+                        if tuple(sorted(guessed)) == ship_indexes_to_guess:
                             print(f'zatopiony zaly statek {guessed}')
                             counter_sunken_ship = 1
                             for id in guessed:
@@ -156,6 +169,7 @@ class PlayerGameManager():
                 self.player_game.game_state = PlayerGameState.OPPONENT_ROUND
                 self.session_game_players.get_opponent_game(self.player_game.player_id).game_state = PlayerGameState.SHOOTING
                 await self.ping_opponent_new_state(MessageOutType.SHOOTING)
+                await self.handler_end_shooting() #sprawdz czy wszystkie zatopione 
             elif counter_guessed == 0 and counter_sunken_ship == 0:
                 print(f'index:{index} nietrafiony')
                 self.player_game.opponent_board.set_item_state(index, SquareItemState.MISHIT)
@@ -169,6 +183,30 @@ class PlayerGameManager():
                 print('ERROR')
         else:
             print('ignore message')
+
+    async def handler_end_game(self):
+        print('handler_end_game')
+        # TODO wyslij wyniki
+        self.session_game_players.sessionGameState = SessionGameState.FINISHED
+    
+    async def handler_end_shooting(self):
+        print('handler_end_shooting')
+        all_ships_sunken = True
+        for ship_indexes_to_guess, guessed in self.player_game.ships_to_guess.items():
+            if ship_indexes_to_guess != tuple(sorted(guessed)):
+                all_ships_sunken = False
+                break
+        
+        # wszystkie statki zatopione
+        if all_ships_sunken:
+            self.player_game.game_state = PlayerGameState.WIN
+            self.session_game_players\
+                .get_opponent_game(self.player_game.player_id)\
+                .game_state = PlayerGameState.LOSS
+            await self.ping_opponent_new_state(messageOutType=MessageOutType.LOSS)
+            self.player_game.game_state = PlayerGameState.WIN
+
+        
 
     async def handler_end_setting_ships(self):
         print('handler_end_setting_ships')
@@ -202,6 +240,9 @@ class PlayerGameManager():
             await self.send_res_in_opponent_round(messageIn)
         elif self.player_game.game_state == PlayerGameState.SHOOTING:
             await self.send_res_in_shooting(messageIn)
+        elif self.player_game.game_state == PlayerGameState.WIN:
+            await self.send_res_in_win(messageIn)
+            await self.handler_end_game()
         else:
             print(f'!!!!!!!!!! get res in other state: {self.player_game.game_state}')
         return result

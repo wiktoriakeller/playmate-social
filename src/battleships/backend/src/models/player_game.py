@@ -34,7 +34,7 @@ class PlayerGame():
                 self.game_state = PlayerGameState.END_SETTING_SHIPS
                 
                 for ship_indexes in self.my_board.ships_indexes_on_board:
-                    data[tuple(ship_indexes)] = set()
+                    data[tuple(sorted(ship_indexes))] = set()
                 
                 
         else:

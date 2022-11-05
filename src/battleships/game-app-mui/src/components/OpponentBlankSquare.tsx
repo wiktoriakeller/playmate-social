@@ -13,7 +13,7 @@ function OpponentBlankSquare(props:IOpponentBlankSquare) {
 
     function handleClick(e:React.MouseEvent<HTMLElement>){
         if(stateGame.sendingEnabled == true && stateGame.opponentBoardInfo != "DISABLED"){
-            alert('click shoot');
+            // alert('click shoot');
             const data = JSON.stringify({
                 id: nanoid(),
                 type: 'OPPONENT_BLANK_SQUARE_TO_SHOOT',

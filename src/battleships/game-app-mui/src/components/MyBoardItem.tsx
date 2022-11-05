@@ -50,6 +50,8 @@ export function MyBoardItem({
     return <ShipSquare className="Item"></ShipSquare>;
   } else if (stateNewResponse["data"]["my_board"][id] === 3) {
     return <MishitSquare className="Item" id={id}></MishitSquare>;
+  } else if (stateNewResponse["data"]["my_board"][id] === 4) {
+    return <SunkShipSquare className="Item" id={id}></SunkShipSquare>;
   } else if (stateNewResponse["data"]["my_board"][id] === 5) {
     return <SunkShipSquare className="Item" id={id}></SunkShipSquare>;
   } else {

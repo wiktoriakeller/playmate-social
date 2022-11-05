@@ -15,7 +15,7 @@ function BlankSquare(props:IBlankSquare) {
         console.log(`stateGame.myBoardInfo != "DISABLED: ${stateGame.myBoardInfo != "DISABLED"}`);
         console.log(`stateGame.sendingEnabled == true: ${stateGame.sendingEnabled == true}`);
         if(stateGame.sendingEnabled == true && stateGame.myBoardInfo != "DISABLED"){
-            alert('clcik blank div');
+            // alert('clcik blank div');
             const data = JSON.stringify({
                 id: nanoid(),
                 type: 'BLANK_SQUARE_TO_SET',

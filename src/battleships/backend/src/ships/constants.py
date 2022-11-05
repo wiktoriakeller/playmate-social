@@ -11,8 +11,11 @@ class PlayerGameState(Enum):
     SETTING_SHIPS = 2 #########
     END_SETTING_SHIPS = 0
     WAIT_FOR_OPPONENT_END_SETTING_SHIPS = 3 #########
-    OPPONENT_ROUND = 4
-    SHOOTING = 5
+    OPPONENT_ROUND = 4 #####
+    SHOOTING = 5 ###########
+    WIN = 6 ################
+    LOSS = 7 ###############
+
 
 
 class SquareItemState(Enum):
@@ -32,13 +35,14 @@ class MessageOutType(Enum):
     OPPONENT_DISCONNECTED = 3 ############################
     OPPONENT_ROUND = 4 #####################################
     SHOOTING = 5 #########################################
-    DATA_SHIPS_TO_GUESS = 6 ##########
+    WIN = 6  #########################
+    LOSS = 7 #########################
 
     
 
 SHIPS_FLEET = {
     1: 2,
-    # 2: 1
+    2: 1
     # 1: 4,# 4 jednomasztowce
     # 2: 3,
     # 3: 2,

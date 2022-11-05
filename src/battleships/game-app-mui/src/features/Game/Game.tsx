@@ -98,5 +98,41 @@ export function Game({
             </div>
           );
     }
+    // WIN
+    else if(stateNewResponse['type'] === 6){
+        dispatch(setOpponentBoardInfo("DISABLED"));
+        return (
+            <div>
+                <p style={{"margin": '30px'}}>WIN</p>
+                <div style={{"margin": '30px'}}>
+                    <MyBoard></MyBoard>
+                </div>
+                <div style={{"margin": '30px'}}>
+                    <OpponentBoard 
+                        triggerSendMock={triggerSendMock}
+                        triggerSendObject={triggerSendObject}
+                    ></OpponentBoard>
+                </div>
+            </div>
+          );
+    }
+    // LOSS
+    else if(stateNewResponse['type'] === 7){
+        dispatch(setOpponentBoardInfo("DISABLED"));
+        return (
+            <div>
+                <p style={{"margin": '30px'}}>LOSS</p>
+                <div style={{"margin": '30px'}}>
+                    <MyBoard></MyBoard>
+                </div>
+                <div style={{"margin": '30px'}}>
+                    <OpponentBoard 
+                        triggerSendMock={triggerSendMock}
+                        triggerSendObject={triggerSendObject}
+                    ></OpponentBoard>
+                </div>
+            </div>
+          );
+    }
     
 }
