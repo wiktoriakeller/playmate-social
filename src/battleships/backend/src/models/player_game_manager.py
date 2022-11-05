@@ -57,7 +57,7 @@ class PlayerGameManager():
         print('ping_opponent')
         await self.connection_manager.send_data_info(
             addressee=self.player_game.opponent_id,
-             res_type=messageOutType,
+            res_type=messageOutType,
             sender="server",
             id_req="ping",
             session_game=self.session_game_players,
@@ -96,6 +96,10 @@ class PlayerGameManager():
             session_game=self.session_game_players,
             player_game=self.player_game
             )
+    
+    async def set_opponenet_ships_to_guess(self, data: Dict) -> None:
+        print('send_ships_to_guess_to_opponent')
+        self.session_game_players.get_opponent_game(self.player_game.player_id).ships_to_guess = data
 
     async def handler_end_setting_ships(self):
         print('handler_end_setting_ships')
@@ -134,8 +138,14 @@ class PlayerGameManager():
     async def handler_message(self, messageIn: WebSocketMessageIn) -> None:
         print('handler_message')
         if self.player_game.game_state in (PlayerGameState.START, PlayerGameState.SETTING_SHIPS):
-            self.player_game.handler_start_or_setting_ships(messageIn=messageIn)
+            data = self.player_game.handler_start_or_setting_ships(messageIn=messageIn)
+            if data != {}:
+                await self.set_opponenet_ships_to_guess(data=data)
+            await self.handler_end_setting_ships()
+        elif self.player_game.game_state == PlayerGameState.SHOOTING:
+            self.player_game.handler_shooting(messageIn=messageIn)
             await self.handler_end_setting_ships()
         else:
-            print('!!!!!!!handler message in other state')
+            print(f'!!!!!!!handler message in other state:{self.player_game.game_state}; clinet_id: {self.player_game.player_id}')
+            
             

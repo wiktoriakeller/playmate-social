@@ -32,6 +32,7 @@ class MessageOutType(Enum):
     OPPONENT_DISCONNECTED = 3 ############################
     OPPONENT_ROUND = 4 #####################################
     SHOOTING = 5 #########################################
+    DATA_SHIPS_TO_GUESS = 6 ##########
 
     
 
