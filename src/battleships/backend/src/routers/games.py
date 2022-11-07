@@ -29,13 +29,15 @@ async def create_game_session(req: CreateGameRequest):
     game_session_register[session_id] = SessionGamePlayers(
         players=Players(req.usr_id_sender, req.usr_id_receiver),
         sessionGameState=SessionGameState.CREATED,
-        playerGame1=PlayerGame(player_id=req.usr_id_sender, opponent_id=req.usr_id_receiver),
-        playerGame2=PlayerGame(player_id=req.usr_id_receiver, opponent_id=req.usr_id_sender)
+        playerGame1=PlayerGame(player_id=req.usr_id_sender, player_name=req.name_sender, opponent_id=req.usr_id_receiver, opponent_name=req.name_receiver),
+        playerGame2=PlayerGame(player_id=req.usr_id_receiver, player_name=req.name_receiver, opponent_id=req.usr_id_sender, opponent_name=req.name_sender)
     )
     print(f"register: {game_session_register}")
     return CreateGameResponse(
         **req.dict(), 
-        session_id=session_id
+        session_id=session_id,
+        game_url_link_sender=f'http://localhost:3000/?userId={req.usr_id_sender}&gameSessionId={session_id}', #TODO
+        game_url_link_receiver=f'http://localhost:3000/?userId={req.usr_id_receiver}&gameSessionId={session_id}'#TODO
     )
 
 

@@ -46,8 +46,8 @@ game_session_register:Dict[str, SessionGamePlayers] = {
     "game_session_0": SessionGamePlayers(
         players=Players("user0", "user1"),
         sessionGameState=SessionGameState.CREATED,
-        playerGame1=PlayerGame(player_id="user0", opponent_id="user1"),
-        playerGame2=PlayerGame(player_id="user1", opponent_id="user0")
+        playerGame1=PlayerGame(player_id="user0", player_name="Ferdek0", opponent_id="user1", opponent_name="Ferdek1"),
+        playerGame2=PlayerGame(player_id="user1", player_name="Ferdek1", opponent_id="user0", opponent_name="Ferdek0")
     )
 }
 
