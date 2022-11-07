@@ -1,7 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginPage from "../../pages/LoginPage";
 import RegisterPage from "../../pages/RegisterPage";
-import { Header } from "../Header";
+import { Header } from "../header/Header";
+import HomeTabs from "../home/HomeTabs";
 import AuthRedirector from "./AuthRedirector";
 
 function Router() {
@@ -10,13 +11,27 @@ function Router() {
       <div className="main-layout">
         <Header />
         <Routes>
-          <Route path="/login" element={<LoginPage />}></Route>
-          <Route path="/register" element={<RegisterPage />}></Route>
+          <Route
+            path="/login"
+            element={
+              <AuthRedirector redirectToHome={true}>
+                <LoginPage />
+              </AuthRedirector>
+            }
+          ></Route>
+          <Route
+            path="/register"
+            element={
+              <AuthRedirector redirectToHome={true}>
+                <RegisterPage />
+              </AuthRedirector>
+            }
+          ></Route>
           <Route
             path="/"
             element={
               <AuthRedirector>
-                <div>Home page</div>
+                <HomeTabs />
               </AuthRedirector>
             }
           />

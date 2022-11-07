@@ -25,15 +25,15 @@ const AppThemeProvider = ({ children }) => {
             secondary: indigo,
             divider: grey[600],
             background: {
-              default: grey[100],
-              paper: grey[200]
+              default: grey[50],
+              paper: grey[100]
             },
             text: {
               primary: "#000000",
               secondary: grey[800]
             },
-            header: grey[200],
-            border: grey[300],
+            header: grey[100],
+            border: grey[200],
             link: grey[600],
             linkHover: grey[700]
           }

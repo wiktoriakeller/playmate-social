@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../app/store";
 import _ from "lodash";
+import { RootState } from "../app/store";
 import { getUserFromStorage } from "../common/storage";
 
 export interface IUserState {
