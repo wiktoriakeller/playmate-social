@@ -1,10 +1,15 @@
-import { Button, Divider, Link } from "@mui/material";
-import TextField from "@mui/material/TextField";
+import Paper from "@mui/material/Paper";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthenticateUserMutation } from "../api/identity/identityApi";
 import { useAppDispatch } from "../app/hooks";
 import { setUser } from "../slices/userSlice";
+import { StyledButton } from "../styled/components/mui/StyledButton";
+import { StyledDivider } from "../styled/components/mui/StyledDivider";
+import { StyledLink } from "../styled/components/mui/StyledLink";
+import { StyledTextField } from "../styled/components/mui/StyledTextField";
+import { FormBox } from "../styled/pages/FormBox";
+import { FormContainer } from "../styled/pages/FormContainer";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -30,28 +35,30 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="login-page">
-      <div className="form-container">
-        <TextField
-          label="Email"
-          variant="filled"
-          onChange={(event) => setEmail(event.target.value)}
-        />
-        <TextField
-          label="Password"
-          variant="filled"
-          type={"password"}
-          onChange={(event) => setPassword(event.target.value)}
-        />
-        <Button variant="contained" onClick={handleLogin}>
-          Login
-        </Button>
-        <Divider variant="middle" />
-        <Link href="/register" underline="hover">
-          Do you want to register?
-        </Link>
-      </div>
-    </div>
+    <FormContainer>
+      <Paper elevation={3}>
+        <FormBox>
+          <StyledTextField
+            label="Email"
+            variant="outlined"
+            onChange={(event) => setEmail(event.target.value)}
+          />
+          <StyledTextField
+            label="Password"
+            variant="outlined"
+            type={"password"}
+            onChange={(event) => setPassword(event.target.value)}
+          />
+          <StyledButton variant="contained" onClick={handleLogin}>
+            Login
+          </StyledButton>
+          <StyledDivider variant="middle" />
+          <StyledLink href="/register" underline="hover">
+            Do you want to register?
+          </StyledLink>
+        </FormBox>
+      </Paper>
+    </FormContainer>
   );
 };
 
