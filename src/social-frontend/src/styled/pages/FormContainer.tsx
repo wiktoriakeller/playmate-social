@@ -1,14 +1,12 @@
 import styled from "@emotion/styled";
 
 export const FormContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
-  padding: 30px;
-  margin: 100px 20%;
-  border: 1px solid ${(props) => props.theme.palette.border};
-  border-radius: ${(props) => props.theme.shape.borderRadius}px;
-  background-color: ${(props) => props.theme.palette.background.paper};
+  margin-top: 80px;
+  margin-left: 20%;
+  margin-right: 20%;
+
+  @media (min-width: 1200px) {
+    margin-left: 30%;
+    margin-right: 30%;
+  }
 `;

@@ -4,8 +4,12 @@ import "@emotion/react";
 interface CustomTheme {}
 
 interface CustomPalette {
+  white: string;
+  black: string;
   header: string;
   border: string;
+  link: string;
+  linkHover: string;
 }
 
 declare module "@mui/material/styles" {
