@@ -74,5 +74,6 @@ public static class ConfigureServicesExtension
         services.AddScoped<IRepository<FriendRequest>, FriendRequestRepository>();
         services.AddScoped<IFriendRepository, FriendRepository>();
         services.AddScoped<IRepository<Game>, BaseRepository<Game>>();
-    }
+        services.AddScoped<IRepository<GameResult>, BaseRepository<GameResult>>();
+    }                                                                 
 }
