@@ -32,19 +32,22 @@ export function OpponentBoard({
     }
 
     return (
-        <div className='Grid11x11'>
-            {Array.from(Array(11)).map((_, rowIndex) => (
-               Array.from(Array(11)).map((_, colIndex) => (
-                    <div className='DivItem' key={rowIndex*11+colIndex}>
-                        <OpponentBoardItem 
-                            id={rowIndex*11+colIndex} 
-                            key={rowIndex*11+colIndex}
-                            triggerSendMock={triggerSendMock}
-                            triggerSendObject={triggerSendObject}
-                        ></OpponentBoardItem>
-                    </div>
-                ))
-            ))}
+        <div>
+            <p style={{"margin": '10px'}}>{stateGame.opponentBoardName}'s ships     Info:{stateGame.opponentBoardInfo}</p>
+            <div className='Grid11x11'>
+                {Array.from(Array(11)).map((_, rowIndex) => (
+                Array.from(Array(11)).map((_, colIndex) => (
+                        <div className='DivItem' key={rowIndex*11+colIndex}>
+                            <OpponentBoardItem 
+                                id={rowIndex*11+colIndex} 
+                                key={rowIndex*11+colIndex}
+                                triggerSendMock={triggerSendMock}
+                                triggerSendObject={triggerSendObject}
+                            ></OpponentBoardItem>
+                        </div>
+                    ))
+                ))}
+            </div>
         </div>
       );
 }

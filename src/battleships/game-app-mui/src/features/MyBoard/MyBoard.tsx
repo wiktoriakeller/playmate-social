@@ -33,21 +33,24 @@ export function MyBoard({
         event.preventDefault();
         triggerSendMock(text, true);
     }
-
     return (
-        <div className='Grid11x11'>
-            {Array.from(Array(11)).map((_, rowIndex) => (
-               Array.from(Array(11)).map((_, colIndex) => (
-                    <div className='DivItem' key={rowIndex*11+colIndex}>
-                        <MyBoardItem 
-                            id={rowIndex*11+colIndex} 
-                            key={rowIndex*11+colIndex}
-                            triggerSendMock={triggerSendMock}
-                            triggerSendObject={triggerSendObject}
-                        ></MyBoardItem>
-                    </div>
-                ))
-            ))}
+        <div>
+            <p style={{"margin": '10px'}}>{stateGame.myBoardName}'s ships    Info: {stateGame.myBoardInfo} </p>
+
+            <div className='Grid11x11'>
+                {Array.from(Array(11)).map((_, rowIndex) => (
+                Array.from(Array(11)).map((_, colIndex) => (
+                        <div className='DivItem' key={rowIndex*11+colIndex}>
+                            <MyBoardItem 
+                                id={rowIndex*11+colIndex} 
+                                key={rowIndex*11+colIndex}
+                                triggerSendMock={triggerSendMock}
+                                triggerSendObject={triggerSendObject}
+                            ></MyBoardItem>
+                        </div>
+                    ))
+                ))}
+            </div>
         </div>
       );
 }
