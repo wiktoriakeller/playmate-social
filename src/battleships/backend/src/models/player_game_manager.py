@@ -1,6 +1,6 @@
 from ..ships.constants import *
 from .Boards import *
-from .websocket_message import WebSocketMessageIn, WebSocketMessageOut, ResponseData
+from .websocket_message import WebSocketMessageIn, WebSocketMessageOut
 from .connection_manager import ConnectionManager
 from .player_game import PlayerGame
 from ..data import SessionGamePlayers

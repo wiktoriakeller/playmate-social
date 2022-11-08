@@ -13,6 +13,13 @@ class ResponseData(TypedDict):
     player_game_state: PlayerGameState
     my_board: Dict[int, SquareItemState]
     opponent_board: Dict[int, SquareItemState]
+    my_board_info: str
+    my_board_name: str
+    my_board_enabled: bool
+    opponent_board_info: str
+    opponent_board_name: str
+    opponent_board_enabled: bool
+
 
 class WebSocketMessageOut(BaseModel):
     id: str

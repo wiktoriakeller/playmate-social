@@ -65,7 +65,13 @@ class ConnectionManager:
                 session_game_state = session_game.sessionGameState,
                 player_game_state = player_game.game_state,
                 my_board = player_game.my_board.get_matrix(),
-                opponent_board = player_game.opponent_board.get_matrix()
+                opponent_board = player_game.opponent_board.get_matrix(),
+                my_board_name=player_game.player_name,
+                my_board_info=player_game.my_board_info,
+                my_board_enabled=player_game.my_board_enabled,
+                opponent_board_info=player_game.opponent_board_info,
+                opponent_board_name=player_game.opponent_name,
+                opponent_board_enabled=player_game.opponent_board_enabled
             )
         )
         print(f'send_data_info to {addressee} {player_game}')

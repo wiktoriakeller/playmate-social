@@ -1,15 +1,19 @@
 from ..ships.constants import *
 from .Boards import *
-from .websocket_message import WebSocketMessageIn, WebSocketMessageOut, ResponseData
+from .websocket_message import WebSocketMessageIn
 
 import uuid
 class PlayerGame():
     def __init__(self, player_id: str, player_name:str, opponent_id: str, opponent_name: str) -> None:
         self.player_id = player_id
         self.player_name = player_name
+        self.my_board_info: str = "Start setting"
+        self.my_board_enabled: bool = True
         self.opponent_id = opponent_id
         self.opponent_name = opponent_name
-        self.opponent_connected = False
+        self.opponent_board_info: str = "Wait for shooting"
+        self.opponent_board_enabled: bool = False
+        self.opponent_connected: bool = False
         self.game_state: PlayerGameState = PlayerGameState.START
         self.my_board = MyBoard()
         self.opponent_board = OpponentBoard()
