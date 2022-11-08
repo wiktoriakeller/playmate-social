@@ -38,7 +38,9 @@ class PlayerGame():
             if self.my_board.check_all_fleet_setting() == True:
                 print('usatwe end_setting_ships')
                 self.game_state = PlayerGameState.END_SETTING_SHIPS
-                
+                self.my_board_enabled, self.opponent_board_enabled = False, True
+                self.my_board_info, self.opponent_board_info = BoradInfo.END_SETTING_SHIP.value, BoradInfo.START_SHOOTING.value
+
                 for ship_indexes in self.my_board.ships_indexes_on_board:
                     data[tuple(sorted(ship_indexes))] = set()
                 
