@@ -37,12 +37,16 @@ class MessageOutType(Enum):
     SHOOTING = 5 #########################################
     WIN = 6  #########################
     LOSS = 7 #########################
+    BEFORE_WIN = 8
 
 class BoradInfo(Enum):
     END_SETTING_SHIP = 'END_SETTING_SHIP'
     START_SHOOTING = 'START_SHOOTING'
     WAIT_FOR_OPPONENT = 'WAIT_FOR_OPPONENT'
-    
+    OPPONENT_ROUND = 'OPPONENT_ROUND'
+    SHOOT = 'SHOOT'
+    WIN = 'WIN'
+    LOSS = 'LOSS'
 
 SHIPS_FLEET = {
     1: 2,

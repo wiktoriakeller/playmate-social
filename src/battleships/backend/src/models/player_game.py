@@ -19,9 +19,11 @@ class PlayerGame():
         self.opponent_board = OpponentBoard()
         self.ships_to_guess:Dict [tuple, set] = {}
 
-    def set_boards_info(self, my_board_info: BoradInfo, opponent_board_info: BoradInfo) -> None:
-        self.my_board_info = my_board_info.value
-        self.opponent_board_info = opponent_board_info.value
+    def set_boards_info(self, my_board_info: BoradInfo = None, opponent_board_info: BoradInfo = None) -> None:
+        if my_board_info != None:
+            self.my_board_info = my_board_info.value 
+        if opponent_board_info != None:
+            self.opponent_board_info = opponent_board_info.value
 
     def handler_start_or_setting_ships(self, messageIn: WebSocketMessageIn) -> Dict:
         print(f"messageIn.type: {messageIn.type}")

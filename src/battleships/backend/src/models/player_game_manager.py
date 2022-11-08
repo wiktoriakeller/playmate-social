@@ -5,6 +5,7 @@ from .connection_manager import ConnectionManager
 from .player_game import PlayerGame
 from ..data import SessionGamePlayers
 import uuid
+from time import sleep
 
 class PlayerGameManager():
     def __init__(self, sessionGamePlayers: SessionGamePlayers, connectionManager: ConnectionManager, playerGame: PlayerGame) -> None:
@@ -124,6 +125,16 @@ class PlayerGameManager():
             session_game=self.session_game_players,
             player_game=self.player_game
             )
+    async def send_res_before_win(self, messageIn: WebSocketMessageIn) -> None:
+        print('send_res_before_win')
+        await self.connection_manager.send_data_info(
+            addressee=self.player_game.player_id,
+            res_type=MessageOutType.BEFORE_WIN,
+            sender=self.player_game.player_id,
+            id_req=messageIn.id,
+            session_game=self.session_game_players,
+            player_game=self.player_game
+            )
     
     async def set_opponenet_ships_to_guess(self, data: Dict) -> None:
         print('send_ships_to_guess_to_opponent')
@@ -169,7 +180,7 @@ class PlayerGameManager():
                 self.player_game.game_state = PlayerGameState.OPPONENT_ROUND
                 self.session_game_players.get_opponent_game(self.player_game.player_id).game_state = PlayerGameState.SHOOTING
                 await self.ping_opponent_new_state(MessageOutType.SHOOTING)
-                await self.handler_end_shooting() #sprawdz czy wszystkie zatopione 
+                await self.handler_end_shooting(messageIn) #sprawdz czy wszystkie zatopione 
             elif counter_guessed == 0 and counter_sunken_ship == 0:
                 print(f'index:{index} nietrafiony')
                 self.player_game.opponent_board.set_item_state(index, SquareItemState.MISHIT)
@@ -189,7 +200,7 @@ class PlayerGameManager():
         # TODO wyslij wyniki
         self.session_game_players.sessionGameState = SessionGameState.FINISHED
     
-    async def handler_end_shooting(self):
+    async def handler_end_shooting(self, messageIn: WebSocketMessageIn):
         print('handler_end_shooting')
         all_ships_sunken = True
         for ship_indexes_to_guess, guessed in self.player_game.ships_to_guess.items():
@@ -203,8 +214,14 @@ class PlayerGameManager():
             self.session_game_players\
                 .get_opponent_game(self.player_game.player_id)\
                 .game_state = PlayerGameState.LOSS
+            
+            self.player_game.opponent_board_enabled, self.session_game_players.get_opponent_game(self.player_game.player_id).opponent_board_enabled = False, False
             await self.ping_opponent_new_state(messageOutType=MessageOutType.LOSS)
+            await self.send_res_before_win(messageIn=messageIn)
+            sleep(3)
             self.player_game.game_state = PlayerGameState.WIN
+            self.player_game.set_boards_info(opponent_board_info=BoradInfo.WIN)
+            self.session_game_players.get_opponent_game(self.player_game.player_id).set_boards_info(opponent_board_info=BoradInfo.LOSS)
 
         
 
@@ -218,9 +235,10 @@ class PlayerGameManager():
                 #ustaw sobie ze tura przeciwnika
                 print(f'{self.player_game.player_id}: tura przeciwnika ')
                 self.player_game.game_state = PlayerGameState.OPPONENT_ROUND
-                
+                self.player_game.set_boards_info(opponent_board_info=BoradInfo.OPPONENT_ROUND)
                 #ustaw przeciwnikowi stan gry strzelanie
                 self.session_game_players.get_opponent_game(self.player_game.player_id).game_state = PlayerGameState.SHOOTING
+                self.session_game_players.get_opponent_game(self.player_game.player_id).set_boards_info(opponent_board_info=BoradInfo.START_SHOOTING)
                 await self.ping_opponent_new_state(MessageOutType.SHOOTING)
             #przeciwnik nie ma ustawionych wszystkich statkow
             else:

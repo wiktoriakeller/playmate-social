@@ -116,6 +116,24 @@ export function Game({
             </div>
           );
     }
+    // BEFORE WIN
+    else if(stateNewResponse['type'] === 8){
+        dispatch(setOpponentBoardInfo("DISABLED"));
+        return (
+            <div>
+                <p style={{"margin": '30px'}}> BEFORE WIN</p>
+                <div style={{"margin": '30px'}}>
+                    <MyBoard></MyBoard>
+                </div>
+                <div style={{"margin": '30px'}}>
+                    <OpponentBoard 
+                        triggerSendMock={triggerSendMock}
+                        triggerSendObject={triggerSendObject}
+                    ></OpponentBoard>
+                </div>
+            </div>
+          );
+    }
     // LOSS
     else if(stateNewResponse['type'] === 7){
         dispatch(setOpponentBoardInfo("DISABLED"));
