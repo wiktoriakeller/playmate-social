@@ -70,10 +70,18 @@ manager = ConnectionManager()
 
 @router.websocket("/ws/{game_session_id}/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, game_session_id:str, client_id: str):
-    print(f"open ws game_session_id:{game_session_id}, client_id:{client_id}")
-    await manager.connect(websocket, client_id)
-    game_session = game_session_register.get(game_session_id)
+    
+    game_session = game_session_register.get(game_session_id, None)
+    if game_session == None:
+        print('ERROR invalid game_session')
+        return
     player_game = game_session.get_player_game(client_id)
+    if player_game == None:
+        print('ERROR invalid client_id')
+        return
+
+    await manager.connect(websocket, client_id)
+    print(f"open ws game_session_id:{game_session_id}, client_id:{client_id}")
     player_game_manager = PlayerGameManager(game_session, manager, player_game)
     await player_game_manager.handler_connection()
     try:
