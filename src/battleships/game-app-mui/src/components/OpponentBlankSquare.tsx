@@ -12,7 +12,7 @@ function OpponentBlankSquare(props:IOpponentBlankSquare) {
     const stateGame = useAppSelector(selectGame);
 
     function handleClick(e:React.MouseEvent<HTMLElement>){
-        if(stateGame.sendingEnabled == true && stateGame.opponentBoardInfo != "DISABLED"){
+        if(stateGame.sendingEnabled == true && stateGame.opponentBoardEnabled){
             // alert('click shoot');
             const data = JSON.stringify({
                 id: nanoid(),

@@ -15,12 +15,12 @@ export function OpponentBoard({
     ) {
 
     const dispatch = useAppDispatch();
-    const stateChat = useAppSelector(selectGame);
+    const stateGame = useAppSelector(selectGame);
     const stateReceiveObject = useAppSelector(selectStateLastParsedMessage);
    
     useEffect(() => {
         console.log("re-render ");
-      }, [stateReceiveObject]);
+      }, [stateGame]);
 
     const [text, setText] = useState("");
     function handleChange(event:React.ChangeEvent<HTMLInputElement>) {

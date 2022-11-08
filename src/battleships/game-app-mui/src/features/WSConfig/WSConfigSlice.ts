@@ -23,8 +23,14 @@ const initialState: WSConfigState = {
     stateLastParsedMessage: {
       
       'data':{
-      'my_board': boardInit,
-      'opponent_board': boardInit
+        'my_board': boardInit,
+        'opponent_board': boardInit,
+        'my_board_info': "START",
+        'opponent_board_info': "START",
+        'my_board_enabled': true,
+        'opponent_board_enabled': false,
+        'my_board_name': "NAME",
+        'opponent_board_name': "NAME"
       }
   }
 };

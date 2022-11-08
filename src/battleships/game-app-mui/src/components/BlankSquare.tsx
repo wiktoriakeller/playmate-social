@@ -12,9 +12,9 @@ function BlankSquare(props:IBlankSquare) {
     const stateGame = useAppSelector(selectGame);
 
     function handleClick(e:React.MouseEvent<HTMLElement>){
-        console.log(`stateGame.myBoardInfo != "DISABLED: ${stateGame.myBoardInfo != "DISABLED"}`);
+        console.log(`stateGame.myBoardEnabled: ${stateGame.myBoardEnabled}`);
         console.log(`stateGame.sendingEnabled == true: ${stateGame.sendingEnabled == true}`);
-        if(stateGame.sendingEnabled == true && stateGame.myBoardInfo != "DISABLED"){
+        if(stateGame.sendingEnabled == true && stateGame.myBoardEnabled){
             // alert('clcik blank div');
             const data = JSON.stringify({
                 id: nanoid(),
