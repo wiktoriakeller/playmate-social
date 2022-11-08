@@ -41,6 +41,7 @@ class MessageOutType(Enum):
 class BoradInfo(Enum):
     END_SETTING_SHIP = 'END_SETTING_SHIP'
     START_SHOOTING = 'START_SHOOTING'
+    WAIT_FOR_OPPONENT = 'WAIT_FOR_OPPONENT'
     
 
 SHIPS_FLEET = {

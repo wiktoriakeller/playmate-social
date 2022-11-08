@@ -218,6 +218,7 @@ class PlayerGameManager():
                 #ustaw sobie ze tura przeciwnika
                 print(f'{self.player_game.player_id}: tura przeciwnika ')
                 self.player_game.game_state = PlayerGameState.OPPONENT_ROUND
+                
                 #ustaw przeciwnikowi stan gry strzelanie
                 self.session_game_players.get_opponent_game(self.player_game.player_id).game_state = PlayerGameState.SHOOTING
                 await self.ping_opponent_new_state(MessageOutType.SHOOTING)

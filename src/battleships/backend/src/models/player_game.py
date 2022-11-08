@@ -19,7 +19,9 @@ class PlayerGame():
         self.opponent_board = OpponentBoard()
         self.ships_to_guess:Dict [tuple, set] = {}
 
-    
+    def set_boards_info(self, my_board_info: BoradInfo, opponent_board_info: BoradInfo) -> None:
+        self.my_board_info = my_board_info.value
+        self.opponent_board_info = opponent_board_info.value
 
     def handler_start_or_setting_ships(self, messageIn: WebSocketMessageIn) -> Dict:
         print(f"messageIn.type: {messageIn.type}")
@@ -39,8 +41,7 @@ class PlayerGame():
                 print('usatwe end_setting_ships')
                 self.game_state = PlayerGameState.END_SETTING_SHIPS
                 self.my_board_enabled, self.opponent_board_enabled = False, True
-                self.my_board_info, self.opponent_board_info = BoradInfo.END_SETTING_SHIP.value, BoradInfo.START_SHOOTING.value
-
+                self.set_boards_info(BoradInfo.END_SETTING_SHIP, BoradInfo.WAIT_FOR_OPPONENT)
                 for ship_indexes in self.my_board.ships_indexes_on_board:
                     data[tuple(sorted(ship_indexes))] = set()
                 
