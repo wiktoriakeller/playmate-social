@@ -6,7 +6,7 @@ from .player_game import PlayerGame
 from ..data import SessionGamePlayers
 import uuid
 from time import sleep
-from ..ships.helper_methods import get_hit_and_sunk_info
+from ..ships.helper_methods import get_hit_and_sunk_info, get_message_out_type_by_game_state
 
 class PlayerGameManager():
     def __init__(self, sessionGamePlayers: SessionGamePlayers, connectionManager: ConnectionManager, playerGame: PlayerGame) -> None:
@@ -19,8 +19,13 @@ class PlayerGameManager():
         if self.session_game_players.sessionGameState in(SessionGameState.CREATED, SessionGameState.CONNECTED, SessionGameState.DISCONNECTED):
             #ustaw przeciwnikowi ze jego przeciwnik jest polaczony
             self.session_game_players.set_state_opponent_player_game(self.player_game.player_id, True)
-            #ustaw stan tury gracza na ustawianie statkow
-            self.player_game.game_state = PlayerGameState.SETTING_SHIPS
+            
+            #ustaw stan tury gracza na ustawianie statkow jezeli jest to poczatek gry
+            if self.player_game.game_state == PlayerGameState.START:
+                self.player_game.game_state = PlayerGameState.SETTING_SHIPS
+            #w innych przypadkach nie zmieniaj stanu gry
+            else:
+                print('nie zmienija stanu gry')
 
             #przeciwnik polaczony przed nami
             if self.player_game.opponent_connected == True:
@@ -32,7 +37,7 @@ class PlayerGameManager():
                 print('powiadom siebie')
                 await self.connection_manager.send_data_info(
                     addressee=self.player_game.player_id,
-                    res_type=MessageOutType.OPPONENT_CONNECTED,
+                    res_type=get_message_out_type_by_game_state(self.player_game.game_state),
                     sender=self.player_game.player_id,
                     id_req=str(uuid.uuid1()),
                     session_game=self.session_game_players,
@@ -42,7 +47,7 @@ class PlayerGameManager():
                 print('powiadom przeciwnka')
                 await self.connection_manager.send_data_info(
                     addressee=self.player_game.opponent_id,
-                    res_type=MessageOutType.OPPONENT_CONNECTED,
+                    res_type=get_message_out_type_by_game_state(self.session_game_players.get_opponent_game(self.player_game.player_id).game_state),
                     sender=self.player_game.player_id,
                     id_req=str(uuid.uuid1()),
                     session_game=self.session_game_players,

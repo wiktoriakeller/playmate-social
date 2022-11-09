@@ -1,6 +1,6 @@
 from typing import Dict
 import operator
-from  .constants import BoradInfo
+from  .constants import BoradInfo, PlayerGameState, MessageOutType
 def check_fleet_setting_descending_order(board_fleet:Dict, param_fleet:Dict) -> bool:
     sorted_board_fleet = sorted(board_fleet.items(), key=operator.itemgetter(0), reverse=True)
     sorted_param_fleet = sorted(param_fleet.items(), key=operator.itemgetter(0), reverse=True)
@@ -51,3 +51,19 @@ def get_hit_and_sunk_info(length: int) -> BoradInfo:
         return BoradInfo.HIT_AND_SUNK_4
     else:
         return BoradInfo.HIT_AND_SUNK_5
+
+def get_message_out_type_by_game_state(playerGameState: PlayerGameState) -> MessageOutType:
+    if playerGameState == PlayerGameState.SETTING_SHIPS:
+        return MessageOutType.SETTING_SHIP
+    elif playerGameState == PlayerGameState.END_SETTING_SHIPS:
+        return MessageOutType.SHOOTING
+    elif playerGameState == PlayerGameState.WAIT_FOR_OPPONENT_END_SETTING_SHIPS:
+        return MessageOutType.OPPONENT_ROUND
+    elif playerGameState == PlayerGameState.OPPONENT_ROUND:
+        return MessageOutType.OPPONENT_ROUND
+    elif playerGameState == PlayerGameState.SHOOTING:
+        return MessageOutType.SHOOTING
+    elif playerGameState == PlayerGameState.LOSS:
+        return MessageOutType.LOSS
+    elif playerGameState == PlayerGameState.WIN:
+        return MessageOutType.WIN     
