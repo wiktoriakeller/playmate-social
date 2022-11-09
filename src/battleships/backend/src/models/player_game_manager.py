@@ -146,9 +146,9 @@ class PlayerGameManager():
             player_game=self.player_game
             )
     
-    async def set_opponenet_ships_to_guess(self, data: Dict) -> None:
-        print('send_ships_to_guess_to_opponent')
-        self.session_game_players.get_opponent_game(self.player_game.player_id).ships_to_guess = data
+    def set_opponenet_ships_to_guess(self, data: Dict) -> None:
+        print('set_ships_to_guess_to_opponent')
+        self.session_game_players.get_opponent_game(self.player_game.player_id).ships_to_guess = self.player_game.my_board.fleet_indexes
 
     async def handler_shooting(self, messageIn: WebSocketMessageIn) -> None:
         
@@ -295,10 +295,14 @@ class PlayerGameManager():
     async def handler_message(self, messageIn: WebSocketMessageIn) -> None:
         print('handler_message')
         if self.player_game.game_state in (PlayerGameState.START, PlayerGameState.SETTING_SHIPS):
-            data = self.player_game.handler_start_or_setting_ships(messageIn=messageIn)
-            if data != {}:
-                await self.set_opponenet_ships_to_guess(data=data)
-            await self.handler_end_setting_ships()
+        #     data = self.player_game.handler_start_or_setting_ships(messageIn=messageIn)
+        #     if data != {}:
+        #         await self.set_opponenet_ships_to_guess(data=data)
+        #     await self.handler_end_setting_ships()
+            self.player_game.handler_start_or_setting_ships(messageIn=messageIn)
+            if self.player_game.game_state == PlayerGameState.END_SETTING_SHIPS:
+                self.set_opponenet_ships_to_guess()
+                await self.handler_end_setting_ships()
         elif self.player_game.game_state == PlayerGameState.SHOOTING:
             await self.handler_shooting(messageIn=messageIn)
         else:

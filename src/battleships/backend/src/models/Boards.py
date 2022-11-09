@@ -99,6 +99,7 @@ class MyBoard(Board):
     def __init__(self) -> None:
         super().__init__()
         self.fleet = {}
+        self.fleet_indexes: Dict[tuple, set] = {}
         self.next_ship_length_to_set = max(SHIPS_FLEET.keys())
         self.h_allowed_places = []
         self.v_allowed_places = []
