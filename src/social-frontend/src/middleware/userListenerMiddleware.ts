@@ -1,5 +1,9 @@
 import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
-import { getUserFromStorage, storeUser } from "../common/storage";
+import {
+  clearUserFromStorage,
+  getUserFromStorage,
+  storeUser
+} from "../common/storage";
 import {
   IUserState,
   IUserTokens,
@@ -12,6 +16,10 @@ export const userListenerMiddleware = createListenerMiddleware();
 userListenerMiddleware.startListening({
   actionCreator: setUser,
   effect: (action: PayloadAction<IUserState>) => {
+    if (action.payload.jwtToken === null) {
+      clearUserFromStorage();
+    }
+
     storeUser(action.payload);
   }
 });

@@ -16,17 +16,19 @@ export interface IUserTokens {
   refreshToken?: string;
 }
 
+export const getEmptyUser = () => ({
+  id: null,
+  email: null,
+  username: null,
+  jwtToken: null,
+  refreshToken: null
+});
+
 const getUserInitialState = () => {
   const user = getUserFromStorage();
 
   if (user === null) {
-    return {
-      id: null,
-      email: null,
-      username: null,
-      jwtToken: null,
-      refreshToken: null
-    };
+    return getEmptyUser();
   }
 
   return user;

@@ -1,8 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import HomePage from "../../pages/HomePage";
 import LoginPage from "../../pages/LoginPage";
 import RegisterPage from "../../pages/RegisterPage";
 import { Header } from "../header/Header";
-import HomeTabs from "../home/HomeTabs";
 import AuthRedirector from "./AuthRedirector";
 
 function Router() {
@@ -31,7 +31,7 @@ function Router() {
             path="/"
             element={
               <AuthRedirector>
-                <HomeTabs />
+                <HomePage />
               </AuthRedirector>
             }
           />

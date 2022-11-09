@@ -20,7 +20,7 @@ export const getUserFromStorage = (): IUserState | null => {
   return JSON.parse(user);
 };
 
-export const clearUserFromStorage = (): void => storeData("user", null);
+export const clearUserFromStorage = (): void => localStorage.removeItem("user");
 
 export const storeTheme = (theme: ThemeType): void => storeData("theme", theme);
 
