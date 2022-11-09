@@ -101,8 +101,8 @@ class MyBoard(Board):
         self.fleet = {}
         self.fleet_indexes: Dict[tuple, set] = {}
         self.next_ship_length_to_set = max(SHIPS_FLEET.keys())
-        self.h_allowed_places = []
-        self.v_allowed_places = []
+        self.h_allowed_places = {}
+        self.v_allowed_places = {}
 
     def set_next_ship_length(self) -> None:
         print('set_next_ship_length')
@@ -117,8 +117,8 @@ class MyBoard(Board):
 
     def set_allowed_places(self) -> None:
         print('set_allowed_places')
-        self.h_allowed_places = [i for i in self.matrix_keys if self.verify_ship_to_allowed_places(index=i, length=self.next_ship_length_to_set, orientation=Orientation.HORIZONTAL)]
-        self.v_allowed_places = [i for i in self.matrix_keys if self.verify_ship_to_allowed_places(index=i, length=self.next_ship_length_to_set, orientation=Orientation.VERTICAL)]
+        self.h_allowed_places = {i:(1 if self.verify_ship_to_allowed_places(index=i, length=self.next_ship_length_to_set, orientation=Orientation.HORIZONTAL) else 0) for i in self.matrix_keys }
+        self.v_allowed_places = {i:(1 if self.verify_ship_to_allowed_places(index=i, length=self.next_ship_length_to_set, orientation=Orientation.VERTICAL) else 0) for i in self.matrix_keys }
 
         print(self.h_allowed_places)
     def verify_ship_to_allowed_places(self, index, length, orientation: Orientation) -> bool:

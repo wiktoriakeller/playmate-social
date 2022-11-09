@@ -20,8 +20,8 @@ class ResponseData(TypedDict):
     opponent_board_name: str
     opponent_board_enabled: bool
     next_ship_length_to_set: int
-    h_allowed_places: List[int]
-    v_allowed_places: List[int]
+    h_allowed_places: Dict[int, int]
+    v_allowed_places: Dict[int, int]
 
 
 class WebSocketMessageOut(BaseModel):
