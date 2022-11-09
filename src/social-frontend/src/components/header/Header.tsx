@@ -1,30 +1,28 @@
-import Brightness3Icon from "@mui/icons-material/Brightness3";
-import ChatIcon from "@mui/icons-material/Chat";
-import PeopleIcon from "@mui/icons-material/People";
-import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
-import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectTheme, setTheme, ThemeType } from "../../slices/themeSlice";
-import { selectUserTokens } from "../../slices/userSlice";
+import { selectUser } from "../../slices/userSlice";
 import { HeaderCenter } from "../../styled/components/header/HeaderCenter";
 import { HeaderLeftSide } from "../../styled/components/header/HeaderLeftSide";
 import { HeaderRightSide } from "../../styled/components/header/HeaderRightSide";
 import { StyledHeader } from "../../styled/components/header/StyledHeader";
 import { StyledLogo } from "../../styled/components/header/StyledLogo";
 import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
+import UserMenu from "../user/UserMenu";
 import HeaderTabs from "./HeaderTabs";
 
 export const Header = () => {
   const theme = useAppSelector(selectTheme);
-  const userTokens = useAppSelector(selectUserTokens);
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
   const getCurrentThemeIcon = (theme: ThemeType) => {
     if (theme === "light") {
-      return <WbSunnyIcon sx={{ fontSize: "32px" }} />;
+      return <Brightness7Icon sx={{ fontSize: "32px" }} />;
     }
 
-    return <Brightness3Icon sx={{ fontSize: "32px" }} />;
+    return <Brightness4Icon sx={{ fontSize: "32px" }} />;
   };
 
   const toggleTheme = () => {
@@ -36,8 +34,16 @@ export const Header = () => {
   };
 
   const getHeaderCenter = () => {
-    if (userTokens.jwtToken) {
+    if (user.jwtToken) {
       return <HeaderTabs />;
+    }
+
+    return <></>;
+  };
+
+  const getUserMenu = () => {
+    if (user.jwtToken) {
+      return <UserMenu />;
     }
 
     return <></>;
@@ -53,6 +59,7 @@ export const Header = () => {
         <StyledIconButton onClick={toggleTheme}>
           {getCurrentThemeIcon(theme.theme)}
         </StyledIconButton>
+        {getUserMenu()}
       </HeaderRightSide>
     </StyledHeader>
   );
