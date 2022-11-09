@@ -37,16 +37,12 @@ export const Header = () => {
     if (user.jwtToken) {
       return <HeaderTabs />;
     }
-
-    return <></>;
   };
 
   const getUserMenu = () => {
     if (user.jwtToken) {
       return <UserMenu />;
     }
-
-    return <></>;
   };
 
   return (

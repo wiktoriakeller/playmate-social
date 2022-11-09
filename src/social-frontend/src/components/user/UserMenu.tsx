@@ -67,7 +67,7 @@ const UserMenu = () => {
           vertical: "top",
           horizontal: "center"
         }}
-        open={Boolean(anchorElUser)}
+        open={anchorElUser !== null}
         onClose={handleCloseUserMenu}
       >
         {settings.map((setting) => (
