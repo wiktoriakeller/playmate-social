@@ -9,10 +9,23 @@ import {JsonValue} from '../../types/JsonValue';
 export interface WSConfigState extends IWSConfig  {
     
 }
+const paramMaxShipLength = 2; //TODO
 const boardInit = {};
 for(let i=1; i<11; i++){
   for(let j=1; j<11; j++){
     boardInit[i*11 + j] = 1;
+  }  
+}
+const hPlacesInit = [];
+for(let i=1; i < 11 ; i++){
+  for(let j=1; j < 11 - paramMaxShipLength + 1; j++){
+    hPlacesInit.push(i * 11 + j)
+  }  
+}
+const vPlacesInit = [];
+for(let i=1; i < 11 - paramMaxShipLength + 1; i++){
+  for(let j=1; j < 11 ; j++){
+    vPlacesInit.push(i * 11 + j)
   }  
 }
 
@@ -30,7 +43,10 @@ const initialState: WSConfigState = {
         'my_board_enabled': true,
         'opponent_board_enabled': false,
         'my_board_name': "NAME",
-        'opponent_board_name': "NAME"
+        'opponent_board_name': "NAME",
+        'next_ship_length_to_set': paramMaxShipLength, // TODO
+        'h_allowed_places' : hPlacesInit,
+        'v_allowed_places' : vPlacesInit
       }
   }
 };
