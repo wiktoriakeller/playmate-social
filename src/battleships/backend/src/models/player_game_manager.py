@@ -6,6 +6,7 @@ from .player_game import PlayerGame
 from ..data import SessionGamePlayers
 import uuid
 from time import sleep
+from ..ships.helper_methods import get_hit_and_sunk_info
 
 class PlayerGameManager():
     def __init__(self, sessionGamePlayers: SessionGamePlayers, connectionManager: ConnectionManager, playerGame: PlayerGame) -> None:
@@ -64,6 +65,8 @@ class PlayerGameManager():
 
     async def ping_opponent_new_state(self, messageOutType: MessageOutType):
         print('ping_opponent')
+        if(MessageOutType.SHOOTING == messageOutType):
+            self.session_game_players.get_opponent_game(self.player_game.player_id).set_boards_info(opponent_board_info=BoradInfo.SHOOT)
         await self.connection_manager.send_data_info(
             addressee=self.player_game.opponent_id,
             res_type=messageOutType,
@@ -147,6 +150,8 @@ class PlayerGameManager():
             print(f"messageIn.data: {messageIn.data}")
             counter_guessed = 0
             counter_sunken_ship = 0
+            length_sunken_ship = 0
+
             for index in messageIn.data:
                 for ship_indexes_to_guess, guessed in self.player_game.ships_to_guess.items():
                     if index in ship_indexes_to_guess:
@@ -158,6 +163,7 @@ class PlayerGameManager():
                         if tuple(sorted(guessed)) == ship_indexes_to_guess:
                             print(f'zatopiony zaly statek {guessed}')
                             counter_sunken_ship = 1
+                            length_sunken_ship = len(guessed)
                             for id in guessed:
                                 self.player_game.opponent_board.set_item_state(id, SquareItemState.SUNKEN_SHIP)
                                 self.session_game_players\
@@ -175,14 +181,18 @@ class PlayerGameManager():
             if counter_guessed == 1 and counter_sunken_ship == 0:
                 ##zostaw sb state shooting
                 await self.ping_opponent_new_state(MessageOutType.OPPONENT_ROUND)
+                self.player_game.set_boards_info(opponent_board_info=BoradInfo.HIT)
             ## zatopiony statek
             elif counter_guessed == 1 and counter_sunken_ship == 1:
                 self.player_game.game_state = PlayerGameState.OPPONENT_ROUND
                 self.session_game_players.get_opponent_game(self.player_game.player_id).game_state = PlayerGameState.SHOOTING
                 await self.ping_opponent_new_state(MessageOutType.SHOOTING)
+                #ustaw info jaki statek zostal zatopiony
+                self.player_game.set_boards_info(opponent_board_info=get_hit_and_sunk_info(length_sunken_ship))
                 await self.handler_end_shooting(messageIn) #sprawdz czy wszystkie zatopione 
             elif counter_guessed == 0 and counter_sunken_ship == 0:
                 print(f'index:{index} nietrafiony')
+                self.player_game.set_boards_info(opponent_board_info=BoradInfo.MISHIT)
                 self.player_game.opponent_board.set_item_state(index, SquareItemState.MISHIT)
                 self.session_game_players\
                     .get_opponent_game(self.player_game.player_id)\
@@ -216,12 +226,12 @@ class PlayerGameManager():
                 .game_state = PlayerGameState.LOSS
             
             self.player_game.opponent_board_enabled, self.session_game_players.get_opponent_game(self.player_game.player_id).opponent_board_enabled = False, False
+            self.session_game_players.get_opponent_game(self.player_game.player_id).set_boards_info(opponent_board_info=BoradInfo.LOSS)
             await self.ping_opponent_new_state(messageOutType=MessageOutType.LOSS)
             await self.send_res_before_win(messageIn=messageIn)
             sleep(3)
             self.player_game.game_state = PlayerGameState.WIN
             self.player_game.set_boards_info(opponent_board_info=BoradInfo.WIN)
-            self.session_game_players.get_opponent_game(self.player_game.player_id).set_boards_info(opponent_board_info=BoradInfo.LOSS)
 
         
 

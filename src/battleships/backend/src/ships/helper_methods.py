@@ -1,5 +1,6 @@
 from typing import Dict
 import operator
+from  .constants import BoradInfo
 def check_fleet_setting_descending_order(board_fleet:Dict, param_fleet:Dict) -> bool:
     sorted_board_fleet = sorted(board_fleet.items(), key=operator.itemgetter(0), reverse=True)
     sorted_param_fleet = sorted(param_fleet.items(), key=operator.itemgetter(0), reverse=True)
@@ -38,3 +39,15 @@ def compare_fleet(board_fleet:Dict, param_fleet:Dict) -> bool:
             flag=False
             break
     return flag
+
+def get_hit_and_sunk_info(length: int) -> BoradInfo:
+    if length == 1:
+        return BoradInfo.HIT_AND_SUNK_1
+    elif length == 2:
+        return BoradInfo.HIT_AND_SUNK_2
+    elif length == 3:
+        return BoradInfo.HIT_AND_SUNK_3
+    elif length == 4:
+        return BoradInfo.HIT_AND_SUNK_4
+    else:
+        return BoradInfo.HIT_AND_SUNK_5

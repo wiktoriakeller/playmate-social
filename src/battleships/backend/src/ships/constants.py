@@ -47,12 +47,21 @@ class BoradInfo(Enum):
     SHOOT = 'SHOOT'
     WIN = 'WIN'
     LOSS = 'LOSS'
+    HIT = 'HIT'
+    MISHIT = 'MISHIT'
+    HIT_AND_SUNK_1 = 'HIT_AND_SUNK_1'
+    HIT_AND_SUNK_2 = 'HIT_AND_SUNK_2'
+    HIT_AND_SUNK_3 = 'HIT_AND_SUNK_3'
+    HIT_AND_SUNK_4 = 'HIT_AND_SUNK_4'
+    HIT_AND_SUNK_5 = 'HIT_AND_SUNK_5'
+
 
 SHIPS_FLEET = {
     1: 2,
     2: 1
-    # 1: 4,# 4 jednomasztowce
-    # 2: 3,
-    # 3: 2,
-    # 4: 1
+    # 1: 5,# 5 jednomasztowce
+    # 2: 4,
+    # 3: 3,
+    # 4: 2,
+    # 5: 1
 }
