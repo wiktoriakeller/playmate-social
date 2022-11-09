@@ -190,11 +190,16 @@ class PlayerGameManager():
             ## zatopiony statek
             elif counter_guessed == 1 and counter_sunken_ship == 1:
                 self.player_game.game_state = PlayerGameState.OPPONENT_ROUND
+                #zachlannie
                 self.session_game_players.get_opponent_game(self.player_game.player_id).game_state = PlayerGameState.SHOOTING
-                await self.ping_opponent_new_state(MessageOutType.SHOOTING)
                 #ustaw info jaki statek zostal zatopiony
                 self.player_game.set_boards_info(opponent_board_info=get_hit_and_sunk_info(length_sunken_ship))
-                await self.handler_end_shooting(messageIn) #sprawdz czy wszystkie zatopione 
+                #sprawdz czy wszystkie zatopione 
+                if await self.handler_end_shooting(messageIn) == True:
+                    pass
+                ## jezeli nie to wysle norlame zwrotke do przeciwnika
+                else:
+                    await self.ping_opponent_new_state(MessageOutType.SHOOTING)
             elif counter_guessed == 0 and counter_sunken_ship == 0:
                 print(f'index:{index} nietrafiony')
                 self.player_game.set_boards_info(opponent_board_info=BoradInfo.MISHIT)
@@ -215,7 +220,7 @@ class PlayerGameManager():
         # TODO wyslij wyniki
         self.session_game_players.sessionGameState = SessionGameState.FINISHED
     
-    async def handler_end_shooting(self, messageIn: WebSocketMessageIn):
+    async def handler_end_shooting(self, messageIn: WebSocketMessageIn) -> bool:
         print('handler_end_shooting')
         all_ships_sunken = True
         for ship_indexes_to_guess, guessed in self.player_game.ships_to_guess.items():
@@ -237,6 +242,10 @@ class PlayerGameManager():
             sleep(3)
             self.player_game.game_state = PlayerGameState.WIN
             self.player_game.set_boards_info(opponent_board_info=BoradInfo.WIN)
+
+            return True
+        else:
+            return False
 
         
 
