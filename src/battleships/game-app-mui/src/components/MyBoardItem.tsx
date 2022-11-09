@@ -19,6 +19,17 @@ export function MyBoardItem({
   triggerSendObject,
 }: IMyBoardItem) {
   const stateNewResponse = useAppSelector(selectStateLastParsedMessage);
+  function getAllowedHorizontal(index: number): boolean {
+    if (stateNewResponse["data"]["h_allowed_places"][index] == 1) return true;
+    else return false;
+  }
+  function getAllowedVertical(index: number): boolean {
+    if (stateNewResponse["data"]["v_allowed_places"][index] == 1) return true;
+    else {
+      // console.log(index);
+      return false;
+    }
+  }
   // console.log(typeof(stateNewResponse));
   if (id === 0) {
     return <div className="Item"></div>;
@@ -44,6 +55,8 @@ export function MyBoardItem({
         id={id}
         triggerSendMock={triggerSendMock}
         triggerSendObject={triggerSendObject}
+        isAllowedHorizontal={getAllowedHorizontal(id)}
+        isAllowedVertical={getAllowedVertical(id)}
       ></BlankSquare>
     );
   } else if (stateNewResponse["data"]["my_board"][id] === 2) {

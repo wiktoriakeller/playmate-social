@@ -9,7 +9,8 @@ export interface IGame  {
     myBoardEnabled: boolean,
     opponentBoardEnabled: boolean,
     myBoardName: string,
-    opponentBoardName: string
+    opponentBoardName: string,
+    orientation: string,
 }
 
 const initialState: IGame = {
@@ -19,7 +20,8 @@ const initialState: IGame = {
   myBoardEnabled: true,
   opponentBoardEnabled: false,
   myBoardName: "NAME",
-  opponentBoardName: "NAME"  
+  opponentBoardName: "NAME",
+  orientation: "HORIZONTAL",
 };
 
 export const GameSlice = createSlice({
@@ -47,11 +49,18 @@ export const GameSlice = createSlice({
     setOpponentBoardEnabled: (state, action:PayloadAction<boolean>) =>{
       state.opponentBoardEnabled = action.payload
     },
+    toggleOrientation: (state) =>{
+      if (state.orientation == "HORIZONTAL"){
+        state.orientation = "VERTICAL";
+      } else{
+        state.orientation = "HORIZONTAL";
+      }
+    },
   },
 
 });
 
-export const {setMyBoardInfo, setMyBoardEnabled, setMyBoardName, setOpponentBoardInfo, setOpponentBoardEnabled, setOpponentBoardName, toggleSending} = GameSlice.actions;
+export const {setMyBoardInfo, setMyBoardEnabled, setMyBoardName, setOpponentBoardInfo, setOpponentBoardEnabled, setOpponentBoardName, toggleSending, toggleOrientation} = GameSlice.actions;
 
 export const selectGame = (state: RootState) => state.game;
 
