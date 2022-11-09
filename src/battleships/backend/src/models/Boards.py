@@ -99,9 +99,52 @@ class MyBoard(Board):
     def __init__(self) -> None:
         super().__init__()
         self.fleet = {}
-        
-        
+        self.next_ship_length_to_set = max(SHIPS_FLEET.keys())
+        self.h_allowed_places = []
+        self.v_allowed_places = []
 
+    def set_next_ship_length(self) -> None:
+        print('set_next_ship_length')
+        sorted_param_fleet = sorted(SHIPS_FLEET.items(), key=operator.itemgetter(0), reverse=True)        
+        counted_length = 0 # jezeli juz sa wszystkie to zwroc len=0
+        for (k, v) in sorted_param_fleet:
+            if v > self.fleet.get(k, 0):
+                print(f'nie masz wystarczajco duzo statkwo {k}-masztowcyh')
+                counted_length = k
+                break
+        self.next_ship_length_to_set = counted_length
+
+    def set_allowed_places(self) -> None:
+        print('set_allowed_places')
+        self.h_allowed_places = [i for i in self.matrix_keys if self.verify_ship_to_allowed_places(index=i, length=self.next_ship_length_to_set, orientation=Orientation.HORIZONTAL)]
+        self.v_allowed_places = [i for i in self.matrix_keys if self.verify_ship_to_allowed_places(index=i, length=self.next_ship_length_to_set, orientation=Orientation.VERTICAL)]
+
+        print(self.h_allowed_places)
+    def verify_ship_to_allowed_places(self, index, length, orientation: Orientation) -> bool:
+        flag = True
+        if orientation == Orientation.HORIZONTAL:
+            for i in range(length):
+                checked_index = index + i
+                if checked_index not in self.matrix_keys:
+                    flag = False
+                    break
+                if self.count_set_ship_neighbours(checked_index) > 0:
+                    flag = False
+                    break
+        elif orientation == Orientation.VERTICAL:
+            for i in range(length):
+                checked_index = index + i*11
+                if checked_index not in self.matrix_keys:
+                    flag = False
+                    break
+                if self.count_set_ship_neighbours(checked_index) > 0:
+                    flag = False
+                    break
+        else:
+            print('ERROR')
+        return flag
+
+    
     def detect_ship_horizontally(self) -> List[int]:
         def gen_line(row):
             count, ship_indexes = 0, []

@@ -23,6 +23,8 @@ class PlayerGameManager():
             #ustaw stan tury gracza na ustawianie statkow jezeli jest to poczatek gry
             if self.player_game.game_state == PlayerGameState.START:
                 self.player_game.game_state = PlayerGameState.SETTING_SHIPS
+                self.player_game.my_board.set_next_ship_length()
+                self.player_game.my_board.set_allowed_places()
             #w innych przypadkach nie zmieniaj stanu gry
             else:
                 print('nie zmienija stanu gry')
