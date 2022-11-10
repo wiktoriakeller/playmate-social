@@ -31,6 +31,7 @@ async def create_game_session(req: CreateGameRequest):
         playerGame2=PlayerGame(player_id=req.usr_id_receiver, player_name=req.name_receiver, opponent_id=req.usr_id_sender, opponent_name=req.name_sender)
     )
     print(f"register: {game_session_register}")
+    print(f'CREATED GAME id:{session_id} users_id: {req.usr_id_sender} and {req.usr_id_receiver}')
     return CreateGameResponse(
         **req.dict(), 
         session_id=session_id,

@@ -58,7 +58,10 @@ class BoradInfo(Enum):
 
 SHIPS_FLEET = {
     1: 2,
-    2: 1
+    2: 1,
+    3: 1,
+    4: 1,
+    5: 1
     # 1: 5,# 5 jednomasztowce
     # 2: 4,
     # 3: 3,

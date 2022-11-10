@@ -8,7 +8,7 @@ import queryString from "query-string";
 export interface WSConfigState extends IWSConfig  {
     
 }
-const paramMaxShipLength = 2; //TODO
+const paramMaxShipLength = 5; //TODO
 const boardInit = {};
 for(let i=1; i<11; i++){
   for(let j=1; j<11; j++){
@@ -31,7 +31,7 @@ for(let i=1; i < 11 - paramMaxShipLength + 1; i++){
 const initialState: WSConfigState = {
     gameSessionId: queryString.parse(window.location.search).gameSessionId?.toString()||null,
     userId: queryString.parse(window.location.search).userId?.toString()||null,
-    socketUrl: `ws://localhost:8000/battleships/ws/${queryString.parse(window.location.search).gameSessionId}/${queryString.parse(window.location.search).userId}`,
+    socketUrl: `ws://localhost:8000/battleships/ws/${queryString.parse(window.location.search).gameSessionId}/${queryString.parse(window.location.search).userId}`, //TODO
     stateLastParsedMessage: {
       
       'data':{
