@@ -1,9 +1,9 @@
 from ..ships.constants import *
-from .Boards import *
+from .boards import *
 from .websocket_message import WebSocketMessageIn, WebSocketMessageOut
 from .connection_manager import ConnectionManager
 from .player_game import PlayerGame
-from ..data import SessionGamePlayers
+from ..ships.data import SessionGamePlayers
 import uuid
 from time import sleep
 from ..ships.helper_methods import get_hit_and_sunk_info, get_message_out_type_by_game_state
@@ -183,7 +183,6 @@ class PlayerGameManager():
                                 .my_board.set_item_state(index, SquareItemState.HIT)
                     
 
-            # TODO
             ## strzelil pole i kontynuje
             if counter_guessed == 1 and counter_sunken_ship == 0:
                 ##zostaw sb state shooting

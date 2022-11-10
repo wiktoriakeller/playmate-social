@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 
 from .routers import games
-from .data import game_session_register
+from .ships.data import game_session_register
 
 app = FastAPI()
 

@@ -16,7 +16,6 @@ import { MyBoard } from "../MyBoard/MyBoard";
 import { OpponentBoard } from "../OpponentBoard/OpponentBoard";
 
 export function Game({
-  triggerSendMock,
   triggerSendObject,
 }: WebSocketServiceProps) {
   const dispatch = useAppDispatch();
@@ -73,13 +72,11 @@ export function Game({
         <p style={{ margin: "30px" }}>SETTING SHIPS</p>
         <div style={{ margin: "30px" }}>
           <MyBoard
-            triggerSendMock={triggerSendMock}
             triggerSendObject={triggerSendObject}
           ></MyBoard>
         </div>
         <div style={{ margin: "30px" }}>
           <OpponentBoard
-            triggerSendMock={triggerSendMock}
             triggerSendObject={triggerSendObject}
           ></OpponentBoard>
         </div>
@@ -105,7 +102,6 @@ export function Game({
         </div>
         <div style={{ margin: "30px" }}>
           <OpponentBoard
-            triggerSendMock={triggerSendMock}
             triggerSendObject={triggerSendObject}
           ></OpponentBoard>
         </div>
@@ -122,7 +118,6 @@ export function Game({
         </div>
         <div style={{ margin: "30px" }}>
           <OpponentBoard
-            triggerSendMock={triggerSendMock}
             triggerSendObject={triggerSendObject}
           ></OpponentBoard>
         </div>
@@ -140,7 +135,6 @@ export function Game({
         </div>
         <div style={{ margin: "30px" }}>
           <OpponentBoard
-            triggerSendMock={triggerSendMock}
             triggerSendObject={triggerSendObject}
           ></OpponentBoard>
         </div>
@@ -158,7 +152,6 @@ export function Game({
         </div>
         <div style={{ margin: "30px" }}>
           <OpponentBoard
-            triggerSendMock={triggerSendMock}
             triggerSendObject={triggerSendObject}
           ></OpponentBoard>
         </div>
@@ -176,7 +169,6 @@ export function Game({
         </div>
         <div style={{ margin: "30px" }}>
           <OpponentBoard
-            triggerSendMock={triggerSendMock}
             triggerSendObject={triggerSendObject}
           ></OpponentBoard>
         </div>

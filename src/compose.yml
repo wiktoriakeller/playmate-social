@@ -36,5 +36,30 @@ services:
     depends_on:
       - social-api
 
+  battleships-server:
+    container_name: battleships-server
+    build:
+      context: ./battleships/backend
+    # environment:
+    restart: always
+    depends_on:
+      - social-api
+    ports:
+      - "8000:8000"
+    networks:
+      - localdev
+  
+  battleships-client:
+    container_name: battleships-client
+    build:
+      context: ./battleships/game-app-mui
+    environment:
+    depends_on:
+      - battleships-server
+    ports:
+      - "3001:3000"
+    networks:
+      - localdev
+
 volumes:
   db-data:

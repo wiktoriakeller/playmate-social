@@ -2,7 +2,6 @@ import { createSlice, nanoid, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
 import {IWSConfig} from '../../types';
 import queryString from "query-string";
-import {JsonValue} from '../../types/JsonValue';
 // import * as dotenv from 'dotenv';
 // dotenv.config();
 

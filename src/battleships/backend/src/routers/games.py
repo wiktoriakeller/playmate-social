@@ -4,8 +4,7 @@ from http.client import CREATED
 from sys import prefix
 from urllib import response
 import uuid, json
-from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
-from fastapi.responses import HTMLResponse
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 from typing import List
 from ..ships.constants import MessageOutType, SessionGameState
 from ..models.player_game import PlayerGame
@@ -13,8 +12,7 @@ from ..models.player_game import PlayerGame
 from ..models.create_game import CreateGameRequest, CreateGameResponse
 from ..models.websocket_message import WebSocketMessageIn, WebSocketMessageOut, WebSocketErrorOut
 from ..models.connection_manager import ConnectionManager
-from ..dependencies import *
-from ..data import game_session_register, SessionGamePlayers, Players
+from ..ships.data import game_session_register, SessionGamePlayers, Players
 from ..models.player_game_manager import PlayerGameManager
 
 router = APIRouter(

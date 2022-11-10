@@ -11,7 +11,6 @@ import '../../components/components.css';
 
 
 export function MyBoard({
-        triggerSendMock,
         triggerSendObject
     }: WebSocketServiceProps
     ) {
@@ -44,7 +43,6 @@ export function MyBoard({
                             <MyBoardItem 
                                 id={rowIndex*11+colIndex} 
                                 key={rowIndex*11+colIndex}
-                                triggerSendMock={triggerSendMock}
                                 triggerSendObject={triggerSendObject}
                             ></MyBoardItem>
                         </div>

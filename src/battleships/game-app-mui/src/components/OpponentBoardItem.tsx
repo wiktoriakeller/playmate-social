@@ -15,7 +15,6 @@ interface IOpponentBoardItem extends WebSocketServiceProps {
 
 export function OpponentBoardItem({
   id,
-  triggerSendMock,
   triggerSendObject,
 }: IOpponentBoardItem) {
   const stateNewResponse = useAppSelector(selectStateLastParsedMessage);
@@ -31,7 +30,6 @@ export function OpponentBoardItem({
       <OpponentBlankSquare
         className="Item"
         id={id}
-        triggerSendMock={triggerSendMock}
         triggerSendObject={triggerSendObject}
       ></OpponentBlankSquare>
     );

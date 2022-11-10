@@ -9,7 +9,6 @@ import '../../components/components.css';
 
 
 export function OpponentBoard({
-        triggerSendMock,
         triggerSendObject
     }: WebSocketServiceProps
     ) {
@@ -22,14 +21,6 @@ export function OpponentBoard({
         console.log("re-render ");
       }, [stateGame]);
 
-    const [text, setText] = useState("");
-    function handleChange(event:React.ChangeEvent<HTMLInputElement>) {
-        setText( event.target.value);
-    }
-    function handleSubmit(event:React.SyntheticEvent) {
-        event.preventDefault();
-        triggerSendMock(text, true);
-    }
 
     return (
         <div>
@@ -41,7 +32,6 @@ export function OpponentBoard({
                             <OpponentBoardItem 
                                 id={rowIndex*11+colIndex} 
                                 key={rowIndex*11+colIndex}
-                                triggerSendMock={triggerSendMock}
                                 triggerSendObject={triggerSendObject}
                             ></OpponentBoardItem>
                         </div>

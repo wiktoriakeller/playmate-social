@@ -16,7 +16,6 @@ interface IMyBoardItem extends WebSocketServiceProps {
 
 export function MyBoardItem({
   id,
-  triggerSendMock,
   triggerSendObject,
 }: IMyBoardItem) {
   const stateGame = useAppSelector(selectGame);
@@ -45,7 +44,6 @@ export function MyBoardItem({
       <BlankSquare
         className={stateGame.myBoardItemsStyles[id]}
         id={id}
-        triggerSendMock={triggerSendMock}
         triggerSendObject={triggerSendObject}
         isAllowedHorizontal={getAllowedHorizontal(id)}
         isAllowedVertical={getAllowedVertical(id)}

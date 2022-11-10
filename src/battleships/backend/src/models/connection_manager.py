@@ -3,7 +3,7 @@ from .player_game import PlayerGame
 from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
 import uuid, json
 from typing import Dict
-from ..data import game_session_register, SessionGamePlayers
+from ..ships.data import game_session_register, SessionGamePlayers
 from ..ships.constants import *
 from .websocket_message import *
 

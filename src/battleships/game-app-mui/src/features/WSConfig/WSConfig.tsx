@@ -2,10 +2,9 @@ import React, { useState, useCallback, useEffect} from 'react';
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {selectWSConfig} from './WSConfigSlice';
-import { JsonValue, WebSocketOptions } from "../../types";
+import { WebSocketOptions } from "../../types";
 import {receiveMessageToState} from './WSConfigSlice';
 import {toggleSending} from '../Game/GameSlice';
-import { mockMessages } from "../../app/mockMessages";
 import {Chat} from './../Chat/Chat';
 import {Game} from './../Game/Game';
 import { nanoid } from 'nanoid';
@@ -38,21 +37,7 @@ export function WSConfig() {
         console.log(`Websocekt wyslal na: ${stateWSConfig.socketUrl}, object: ${message}`);
       }, []
     );
-    const handleSendMock = useCallback(
-      (jsonMessage: JsonValue, keep: boolean) => {
-        const mockEnum = jsonMessage || "hello";
-        const mockMessage = mockMessages[new String(mockEnum).toLowerCase()] || {
-          id: nanoid(),
-          type: "error",
-          data: ["invalid_mock"],
-        };
-        const jsonData = JSON.stringify(mockMessage);
-  
-        sendJsonMessage(JSON.parse(JSON.stringify(jsonData)), true);
-        console.log(`Websocekt wyslal na: ${stateWSConfig.socketUrl}, mock: ${jsonData}`);
-      },
-      []
-    );
+    
     useEffect(() => {
       console.log('socket:', stateWSConfig.socketUrl);
     }, []);
@@ -91,7 +76,6 @@ export function WSConfig() {
             triggerSendObject={handleSendObject}
           ></Chat> */}
           <Game
-            triggerSendMock={handleSendMock}
             triggerSendObject={handleSendObject}
         ></Game>
       </div>

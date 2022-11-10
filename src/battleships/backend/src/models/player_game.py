@@ -1,5 +1,5 @@
 from ..ships.constants import *
-from .Boards import *
+from .boards import *
 from .websocket_message import WebSocketMessageIn
 
 import uuid
