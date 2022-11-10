@@ -146,7 +146,7 @@ class PlayerGameManager():
             player_game=self.player_game
             )
     
-    def set_opponenet_ships_to_guess(self, data: Dict) -> None:
+    def set_opponenet_ships_to_guess(self) -> None:
         print('set_ships_to_guess_to_opponent')
         self.session_game_players.get_opponent_game(self.player_game.player_id).ships_to_guess = self.player_game.my_board.fleet_indexes
 

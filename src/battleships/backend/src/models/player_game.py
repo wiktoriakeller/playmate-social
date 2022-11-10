@@ -68,6 +68,7 @@ class PlayerGame():
                 #dodaj statek we flocie i indeksach 
                 self.my_board.fleet[self.my_board.next_ship_length_to_set] = self.my_board.fleet.get(self.my_board.next_ship_length_to_set, 0) + 1
                 self.my_board.fleet_indexes[tuple(sorted(messageIn.data))] = set()
+                print(self.my_board.fleet_indexes)
                 #oblicz nowa dlugosc statku
                 self.my_board.set_next_ship_length()
                 #oblicz nowe dozwolone miejsce
@@ -77,7 +78,7 @@ class PlayerGame():
             
             # sprawdz czy juz wszystkie ustawione
             if self.my_board.next_ship_length_to_set == 0:
-                print('usatwe end_setting_ships')
+                print('ustaw end_setting_ships')
                 self.game_state = PlayerGameState.END_SETTING_SHIPS
                 self.my_board_enabled, self.opponent_board_enabled = False, True
                 self.set_boards_info(BoradInfo.END_SETTING_SHIP, BoradInfo.WAIT_FOR_OPPONENT)

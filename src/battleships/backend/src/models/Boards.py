@@ -110,7 +110,6 @@ class MyBoard(Board):
         counted_length = 0 # jezeli juz sa wszystkie to zwroc len=0
         for (k, v) in sorted_param_fleet:
             if v > self.fleet.get(k, 0):
-                print(f'nie masz wystarczajco duzo statkwo {k}-masztowcyh')
                 counted_length = k
                 break
         self.next_ship_length_to_set = counted_length
