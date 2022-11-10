@@ -48,7 +48,7 @@ function BlankSquare(props: IBlankSquare) {
         }else{
           console.log("ERROR");
         }
-        alert('clcik and send ' + places.toString());
+        // alert('clcik and send ' + places.toString());
         const data = JSON.stringify({
           id: nanoid(),
           type: "BLANK_SQUARE_TO_SET",

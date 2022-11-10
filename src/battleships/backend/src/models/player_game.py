@@ -25,32 +25,6 @@ class PlayerGame():
         if opponent_board_info != None:
             self.opponent_board_info = opponent_board_info.value
 
-    # def handler_start_or_setting_ships(self, messageIn: WebSocketMessageIn) -> Dict:
-    #     print(f"messageIn.type: {messageIn.type}")
-    #     data = {}
-    #     if MessageInType[messageIn.type] == MessageInType.BLANK_SQUARE_TO_SET:
-    #         '''Dodaj ustawiony statek na swojej planszy'''
-    #         print(f"messageIn.data: {messageIn.data}")
-    #         for index in messageIn.data:
-    #             if self.__verification_setting_item_to_ship(index):
-    #                 print('dobry statek')
-    #                 self.my_board.set_item_state(index, SquareItemState.SET_SHIP)
-    #             else:
-    #                 print('zly statek')
-            
-    #         # TODO
-    #         if self.my_board.check_all_fleet_setting() == True:
-    #             print('usatwe end_setting_ships')
-    #             self.game_state = PlayerGameState.END_SETTING_SHIPS
-    #             self.my_board_enabled, self.opponent_board_enabled = False, True
-    #             self.set_boards_info(BoradInfo.END_SETTING_SHIP, BoradInfo.WAIT_FOR_OPPONENT)
-    #             for ship_indexes in self.my_board.ships_indexes_on_board:
-    #                 data[tuple(sorted(ship_indexes))] = set()
-                
-                
-    #     else:
-    #         print('ignore message')
-    #     return data
 
     def handler_start_or_setting_ships(self, messageIn: WebSocketMessageIn) -> None:
         print(f"messageIn.type: {messageIn.type}")
@@ -85,13 +59,3 @@ class PlayerGame():
                                 
         else:
             print('ignore message')
-
-    
-    def __verification_setting_item_to_ship(self, index: int) -> bool:
-        if self.my_board.check_set_ship_neighbours(index) == False:
-            print('zly statek: sasiedzi')
-            return False
-        if self.my_board.check_set_ship_fleet_descending(index) == False:
-            print('zly statek: kolejnosc')
-            return False
-        return True

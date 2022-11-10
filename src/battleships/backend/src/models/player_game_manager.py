@@ -27,7 +27,7 @@ class PlayerGameManager():
                 self.player_game.my_board.set_allowed_places()
             #w innych przypadkach nie zmieniaj stanu gry
             else:
-                print('nie zmienija stanu gry')
+                print('nie zmieniaj stanu gry')
 
             #przeciwnik polaczony przed nami
             if self.player_game.opponent_connected == True:
@@ -295,10 +295,6 @@ class PlayerGameManager():
     async def handler_message(self, messageIn: WebSocketMessageIn) -> None:
         print('handler_message')
         if self.player_game.game_state in (PlayerGameState.START, PlayerGameState.SETTING_SHIPS):
-        #     data = self.player_game.handler_start_or_setting_ships(messageIn=messageIn)
-        #     if data != {}:
-        #         await self.set_opponenet_ships_to_guess(data=data)
-        #     await self.handler_end_setting_ships()
             self.player_game.handler_start_or_setting_ships(messageIn=messageIn)
             if self.player_game.game_state == PlayerGameState.END_SETTING_SHIPS:
                 self.set_opponenet_ships_to_guess()
