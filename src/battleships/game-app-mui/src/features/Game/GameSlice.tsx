@@ -58,6 +58,7 @@ export const GameSlice = createSlice({
       state.opponentBoardEnabled = action.payload
     },
     toggleOrientation: (state) =>{
+      console.log('toggle orinettion');
       if (state.orientation == "HORIZONTAL"){
         state.orientation = "VERTICAL";
       } else{

@@ -1,12 +1,11 @@
 import React, { useState, useCallback, useEffect} from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {selectStateLastParsedMessage} from '../WSConfig/WSConfigSlice';
-import {setMyBoardInfo, selectGame} from '../Game/GameSlice';
+import {setMyBoardInfo, selectGame, toggleOrientation} from '../Game/GameSlice';
 import {} from './MyBoardSlice';
 import {WebSocketServiceProps} from '../../types';
-import Box from '@mui/material/Box';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Grid';
+
+import Button from '@mui/material/Button';
 import {MyBoardItem} from '../../components';
 import '../../components/components.css';
 
@@ -26,17 +25,18 @@ export function MyBoard({
       }, [stateGame]);
 
     const [text, setText] = useState("");
-    function handleChange(event:React.ChangeEvent<HTMLInputElement>) {
-        setText( event.target.value);
-    }
-    function handleSubmit(event:React.SyntheticEvent) {
-        event.preventDefault();
-        triggerSendMock(text, true);
+    function handleClick(e: React.MouseEvent<HTMLElement>) {
+        e.preventDefault();
+        console.log('click swap');
+        
+        dispatch(toggleOrientation());
     }
     return (
         <div>
+            <Button  variant="outlined" size="small" onClick={handleClick}>
+                Swap orientation
+            </Button>
             <p style={{"margin": '10px'}}>{stateGame.myBoardName}'s ships    Info: {stateGame.myBoardInfo} </p>
-
             <div className='Grid11x11'>
                 {Array.from(Array(11)).map((_, rowIndex) => (
                 Array.from(Array(11)).map((_, colIndex) => (
