@@ -71,7 +71,10 @@ class ConnectionManager:
                 my_board_enabled=player_game.my_board_enabled,
                 opponent_board_info=player_game.opponent_board_info,
                 opponent_board_name=player_game.opponent_name,
-                opponent_board_enabled=player_game.opponent_board_enabled
+                opponent_board_enabled=player_game.opponent_board_enabled,
+                next_ship_length_to_set=player_game.my_board.next_ship_length_to_set,
+                h_allowed_places=player_game.my_board.h_allowed_places,
+                v_allowed_places=player_game.my_board.v_allowed_places
             )
         )
         print(f'send_data_info to {addressee} {player_game}')

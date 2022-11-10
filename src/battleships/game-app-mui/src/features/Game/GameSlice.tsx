@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
 
+const boardInit = {};
+for(let i=1; i<11; i++){
+  for(let j=1; j<11; j++){
+    boardInit[i*11 + j] = "Item";
+  }  
+}
 
 export interface IGame  {
     sendingEnabled: boolean,
@@ -9,7 +15,9 @@ export interface IGame  {
     myBoardEnabled: boolean,
     opponentBoardEnabled: boolean,
     myBoardName: string,
-    opponentBoardName: string
+    opponentBoardName: string,
+    orientation: string,
+    myBoardItemsStyles: object,
 }
 
 const initialState: IGame = {
@@ -19,7 +27,9 @@ const initialState: IGame = {
   myBoardEnabled: true,
   opponentBoardEnabled: false,
   myBoardName: "NAME",
-  opponentBoardName: "NAME"  
+  opponentBoardName: "NAME",
+  orientation: "HORIZONTAL",
+  myBoardItemsStyles: boardInit
 };
 
 export const GameSlice = createSlice({
@@ -47,11 +57,26 @@ export const GameSlice = createSlice({
     setOpponentBoardEnabled: (state, action:PayloadAction<boolean>) =>{
       state.opponentBoardEnabled = action.payload
     },
+    toggleOrientation: (state) =>{
+      console.log('toggle orinettion');
+      if (state.orientation == "HORIZONTAL"){
+        state.orientation = "VERTICAL";
+      } else{
+        state.orientation = "HORIZONTAL";
+      }
+    },
+    toggleFillingClassNameByIndex: (state, action:PayloadAction<number>) =>{
+      if (state.myBoardItemsStyles[action.payload] == "Item"){
+        state.myBoardItemsStyles[action.payload] = "Item MyBoardShipSquare";
+      } else{
+        state.myBoardItemsStyles[action.payload] = "Item";
+      }
+    },
   },
 
 });
 
-export const {setMyBoardInfo, setMyBoardEnabled, setMyBoardName, setOpponentBoardInfo, setOpponentBoardEnabled, setOpponentBoardName, toggleSending} = GameSlice.actions;
+export const {setMyBoardInfo, setMyBoardEnabled, setMyBoardName, setOpponentBoardInfo, setOpponentBoardEnabled, setOpponentBoardName, toggleSending, toggleOrientation, toggleFillingClassNameByIndex} = GameSlice.actions;
 
 export const selectGame = (state: RootState) => state.game;
 

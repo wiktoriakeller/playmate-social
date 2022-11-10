@@ -99,95 +99,51 @@ class MyBoard(Board):
     def __init__(self) -> None:
         super().__init__()
         self.fleet = {}
-        
-        
+        self.fleet_indexes: Dict[tuple, set] = {}
+        self.next_ship_length_to_set = max(SHIPS_FLEET.keys())
+        self.h_allowed_places = {}
+        self.v_allowed_places = {}
 
-    def detect_ship_horizontally(self) -> List[int]:
-        def gen_line(row):
-            count, ship_indexes = 0, []
-            for j in range(1,11):
-                if SquareItemState(self.get_item_state(row*11+j)) == SquareItemState.SET_SHIP:
-                    count += 1
-                    ship_indexes.append(row*11+j)
-                # print(f'id:{row*11+j} j:{j} count:{count}')
-                if (SquareItemState(self.get_item_state(row*11+j)) != SquareItemState.SET_SHIP and count != 0) \
-                    or (j == 10 and  count != 0):
-                    detected_ship, detected_ship_indexes = count, ship_indexes
-                    count, ship_indexes = 0, []
-                    if detected_ship > 1:
-                        yield (detected_ship, detected_ship_indexes)
-                    # jednomasztowiec
-                    else:
-                        #print(f'jednomasztoweic {row*11 + j - 1};;{self.count_set_ship_cross(row*11 + j - 1)}')
-                        if j < 10 or (j==10 and SquareItemState(self.get_item_state(row*11+j)) != SquareItemState.SET_SHIP):
-                            if self.count_set_ship_cross(row*11 + j - 1) == 0:
-                                yield (detected_ship, detected_ship_indexes)
-                        else:
-                            if self.count_set_ship_cross(row*11 + j) == 0:
-                                yield (detected_ship, detected_ship_indexes)
-        ships = []
-        ships_indexes = []
-        for i in range(1,11):
-            for (detected_ship, detected_ship_indexes) in gen_line(i):
-                ships.append(detected_ship) 
-                ships_indexes.append(detected_ship_indexes) 
- 
-        #print(f'horizontal {ships}')       
-        return (ships, ships_indexes)
+    def set_next_ship_length(self) -> None:
+        print('set_next_ship_length')
+        sorted_param_fleet = sorted(SHIPS_FLEET.items(), key=operator.itemgetter(0), reverse=True)        
+        counted_length = 0 # jezeli juz sa wszystkie to zwroc len=0
+        for (k, v) in sorted_param_fleet:
+            if v > self.fleet.get(k, 0):
+                counted_length = k
+                break
+        self.next_ship_length_to_set = counted_length
 
-    def detect_ship_vertically(self) -> List[int]:
-        def gen_line(col):
-            count, ship_indexes = 0, []
-            for i in range(1,11):
-                if SquareItemState(self.get_item_state(i*11+col)) == SquareItemState.SET_SHIP:
-                    count += 1
-                    ship_indexes.append(i*11+col)
+    def set_allowed_places(self) -> None:
+        print('set_allowed_places')
+        self.h_allowed_places = {i:(1 if self.verify_ship_to_allowed_places(index=i, length=self.next_ship_length_to_set, orientation=Orientation.HORIZONTAL) else 0) for i in self.matrix_keys }
+        self.v_allowed_places = {i:(1 if self.verify_ship_to_allowed_places(index=i, length=self.next_ship_length_to_set, orientation=Orientation.VERTICAL) else 0) for i in self.matrix_keys }
 
-                if (count != 0  and SquareItemState(self.get_item_state(i*11+col)) != SquareItemState.SET_SHIP) \
-                    or (i == 10 and count != 0):
-                    detected_ship, detected_ship_indexes = count, ship_indexes
-                    count, ship_indexes = 0, []
-                    if detected_ship > 1:
-                        yield (detected_ship, detected_ship_indexes)
-
-        ships = []
-        ships_indexes = []
-        for j in range(1,11):
-            for (detected_ship, detected_ship_indexes) in gen_line(j):
-                ships.append(detected_ship) 
-                ships_indexes.append(detected_ship_indexes) 
-        #print(f'vertival {ships}')      
-        return (ships, ships_indexes)
-
-    def detect_ship(self):
-        self.fleet = {}
-        self.ships_indexes_on_board = []
-        h_ship_count, h_ship_indexes = self.detect_ship_horizontally()
-        v_ship_count, v_ship_indexes = self.detect_ship_vertically()
-        print(f'ship counters: {h_ship_count + v_ship_count}')
-        print(f'ship indexes: {h_ship_indexes + v_ship_indexes}')
-
-        for ship_len in h_ship_count + v_ship_count:
-            self.fleet[ship_len] = self.fleet.get(ship_len, 0) + 1
-        for ship_indexes in h_ship_indexes + v_ship_indexes:
-            self.ships_indexes_on_board.append(sorted(ship_indexes))
-        print(f'detected_ship: {self.fleet}')
-        print(f'detected indexes: {self.ships_indexes_on_board}')
-    
-    def check_set_ship_fleet_descending(self, index) -> bool:
-        print('check order')
-        item_index_state = self.get_item_state(index)
-        self.set_item_state(index, SquareItemState.SET_SHIP)
-        self.detect_ship()
-        flag = check_fleet_setting_descending_order(self.fleet, SHIPS_FLEET)
-        self.set_item_state(index, item_index_state)
+        print(self.h_allowed_places)
+    def verify_ship_to_allowed_places(self, index, length, orientation: Orientation) -> bool:
+        flag = True
+        if orientation == Orientation.HORIZONTAL:
+            for i in range(length):
+                checked_index = index + i
+                if checked_index not in self.matrix_keys:
+                    flag = False
+                    break
+                if self.count_set_ship_neighbours(checked_index) > 0:
+                    flag = False
+                    break
+        elif orientation == Orientation.VERTICAL:
+            for i in range(length):
+                checked_index = index + i*11
+                if checked_index not in self.matrix_keys:
+                    flag = False
+                    break
+                if self.count_set_ship_neighbours(checked_index) > 0:
+                    flag = False
+                    break
+        else:
+            print('ERROR')
         return flag
 
-    def check_all_fleet_setting(self) -> bool:
-        self.detect_ship()
-        print(self.fleet, SHIPS_FLEET)
-        flag = compare_fleet(self.fleet, SHIPS_FLEET)
-        return flag
 
 class OpponentBoard(Board):
     def __init__(self) -> None:

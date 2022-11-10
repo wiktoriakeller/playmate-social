@@ -65,3 +65,7 @@ SHIPS_FLEET = {
     # 4: 2,
     # 5: 1
 }
+
+class Orientation(Enum):
+    VERTICAL = 1 ########################
+    HORIZONTAL = 2 ############
