@@ -35,8 +35,8 @@ async def create_game_session(req: CreateGameRequest):
     return CreateGameResponse(
         **req.dict(), 
         session_id=session_id,
-        game_url_link_sender=f'http://localhost:3000/?userId={req.usr_id_sender}&gameSessionId={session_id}', #TODO
-        game_url_link_receiver=f'http://localhost:3000/?userId={req.usr_id_receiver}&gameSessionId={session_id}'#TODO
+        game_url_link_sender=f'http://localhost:3001/?userId={req.usr_id_sender}&gameSessionId={session_id}', #TODO
+        game_url_link_receiver=f'http://localhost:3001/?userId={req.usr_id_receiver}&gameSessionId={session_id}'#TODO
     )
 
 
