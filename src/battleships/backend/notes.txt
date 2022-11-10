@@ -8,3 +8,13 @@ docker run -t --rm -v ${PWD}:/usr/src/app  -v /usr/src/app/node_modules -p 3001:
 docker run -t -v ${PWD}:/usr/src/app  -v /usr/src/app/node_modules -p 3001:3000 -e CHOKIDAR_USEPOLLING=true game_app:dev
  npm start .env.local
  REACT_APP_BATTLESHIPS_BACKEND_WS_URL='ws://localhost:8000/battleships/ws/';
+
+
+
+## GAME-APP-MUI
+ docker build --rm -t playmate-battleships-game-app-mui:latest .  
+ docker run -it --rm  --name battleship-game -p 3001:3000 playmate-battleships-game-app-mui 
+
+## FastAPI
+docker build --rm -t playmate-battleships-backend:latest . 
+docker run -it --rm --name battleship-server -p 8000:8000 playmate-battleships-backend 
