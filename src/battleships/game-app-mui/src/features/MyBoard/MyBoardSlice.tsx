@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
 
 
@@ -22,7 +22,7 @@ export const MyBoardSlice = createSlice({
 
 });
 
-export const {} = MyBoardSlice.actions;
+// export const {} = MyBoardSlice.actions;
 
 export const selectMyBoard = (state: RootState) => state.myBoard;
 

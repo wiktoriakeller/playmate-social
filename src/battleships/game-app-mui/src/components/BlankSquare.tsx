@@ -3,8 +3,6 @@ import { WebSocketServiceProps } from "../types";
 import { useAppSelector, useAppDispatch } from "../app/hooks";
 import {
   toggleSending,
-  setMyBoardInfo,
-  setOpponentBoardInfo,
   selectGame,
   toggleFillingClassNameByIndex,
   toggleOrientation
@@ -28,18 +26,18 @@ function BlankSquare(props: IBlankSquare) {
     if(e.type === 'click'){
       console.log(`stateGame.myBoardEnabled: ${stateGame.myBoardEnabled}`);
       console.log(
-        `stateGame.sendingEnabled == true: ${stateGame.sendingEnabled == true}`
+        `stateGame.sendingEnabled === true: ${stateGame.sendingEnabled === true}`
       );
-      if (stateGame.sendingEnabled == true && stateGame.myBoardEnabled) {
+      if (stateGame.sendingEnabled === true && stateGame.myBoardEnabled) {
         const places = [];
-        if(stateGame.orientation == "HORIZONTAL"){
+        if(stateGame.orientation === "HORIZONTAL"){
           if(props.isAllowedHorizontal){
             for(let i=0; i< props.shipLength; i++){
               places.push(props.id + i);
             }
           }
         }
-        else if(stateGame.orientation == "VERTICAL"){
+        else if(stateGame.orientation === "VERTICAL"){
           if(props.isAllowedVertical){
             for(let i=0; i< props.shipLength; i++){
               places.push(props.id + i*11);
@@ -63,7 +61,7 @@ function BlankSquare(props: IBlankSquare) {
     }
   }
   function handleOnMouseEnter(e: React.MouseEvent<HTMLElement>) {
-    if(stateGame.orientation == "HORIZONTAL"){
+    if(stateGame.orientation === "HORIZONTAL"){
       console.log(props.shipLength + typeof(props.shipLength));
       if(props.isAllowedHorizontal){
         for(let i=0; i< props.shipLength; i++){
@@ -71,7 +69,7 @@ function BlankSquare(props: IBlankSquare) {
         }
       }
     }
-    else if(stateGame.orientation == "VERTICAL"){
+    else if(stateGame.orientation === "VERTICAL"){
       if(props.isAllowedVertical){
         for(let i=0; i< props.shipLength; i++){
           dispatch(toggleFillingClassNameByIndex(props.id + i*11))

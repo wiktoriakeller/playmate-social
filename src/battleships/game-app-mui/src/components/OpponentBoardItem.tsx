@@ -1,5 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "../app/hooks";
+import { useAppSelector } from "../app/hooks";
 import { WebSocketServiceProps } from "../types";
 import { selectStateLastParsedMessage } from "../features/WSConfig/WSConfigSlice";
 

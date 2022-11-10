@@ -59,14 +59,14 @@ export const GameSlice = createSlice({
     },
     toggleOrientation: (state) =>{
       console.log('toggle orinettion');
-      if (state.orientation == "HORIZONTAL"){
+      if (state.orientation === "HORIZONTAL"){
         state.orientation = "VERTICAL";
       } else{
         state.orientation = "HORIZONTAL";
       }
     },
     toggleFillingClassNameByIndex: (state, action:PayloadAction<number>) =>{
-      if (state.myBoardItemsStyles[action.payload] == "Item"){
+      if (state.myBoardItemsStyles[action.payload] === "Item"){
         state.myBoardItemsStyles[action.payload] = "Item MyBoardShipSquare";
       } else{
         state.myBoardItemsStyles[action.payload] = "Item";

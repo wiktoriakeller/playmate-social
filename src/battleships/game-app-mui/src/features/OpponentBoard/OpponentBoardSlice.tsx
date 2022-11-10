@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction} from '@reduxjs/toolkit';
+import { createSlice} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
 
 
@@ -20,7 +20,7 @@ export const OpponentBoardSlice = createSlice({
 
 });
 
-export const {} = OpponentBoardSlice.actions;
+// export const {} = OpponentBoardSlice.actions;
 
 export const selectOpponentBoard = (state: RootState) => state.opponentBoard;
 

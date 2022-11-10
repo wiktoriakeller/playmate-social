@@ -1,11 +1,9 @@
-import React, { useState, useCallback, useEffect } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
+import  {  useEffect } from "react";
 import { useAppSelector, useAppDispatch } from "../../app/hooks";
 import { selectStateLastParsedMessage } from "../WSConfig/WSConfigSlice";
 import {
   setMyBoardInfo,
   setOpponentBoardInfo,
-  selectGame,
   setMyBoardEnabled,
   setMyBoardName,
   setOpponentBoardEnabled,
@@ -19,7 +17,6 @@ export function Game({
   triggerSendObject,
 }: WebSocketServiceProps) {
   const dispatch = useAppDispatch();
-  const stateChat = useAppSelector(selectGame);
   const stateNewResponse = useAppSelector(selectStateLastParsedMessage);
 
   useEffect(() => {
@@ -48,7 +45,7 @@ export function Game({
   //console.log(`stateNewRes.type ${typeof(stateNewResponse['type'])}`);
   //console.log(stateNewResponse);
   //console.log(`stateNewResponse["data"]["my_board_name"] ${stateNewResponse["data"]["my_board_name"]}`);
-  if (stateNewResponse["type"] != undefined && stateNewResponse["type"] != 3) {
+  if (stateNewResponse["type"] !== undefined && stateNewResponse["type"] !== 3) {
     dispatch(setMyBoardName(stateNewResponse["data"]["my_board_name"]));
     dispatch(setMyBoardInfo(stateNewResponse["data"]["my_board_info"]));
     dispatch(setMyBoardEnabled(stateNewResponse["data"]["my_board_enabled"]));

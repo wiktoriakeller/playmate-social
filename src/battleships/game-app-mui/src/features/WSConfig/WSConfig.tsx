@@ -1,13 +1,11 @@
-import React, { useState, useCallback, useEffect} from 'react';
+import { useCallback, useEffect} from 'react';
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import {selectWSConfig} from './WSConfigSlice';
 import { WebSocketOptions } from "../../types";
 import {receiveMessageToState} from './WSConfigSlice';
 import {toggleSending} from '../Game/GameSlice';
-import {Chat} from './../Chat/Chat';
 import {Game} from './../Game/Game';
-import { nanoid } from 'nanoid';
 
 
 const options: WebSocketOptions = {
@@ -21,11 +19,9 @@ const options: WebSocketOptions = {
 export function WSConfig() {
     const dispatch = useAppDispatch();
     const stateWSConfig = useAppSelector(selectWSConfig);
-    const [messageHistory, setMessageHistory] = useState([]);
 
     //WS
     const {
-        sendMessage,
         lastMessage,
         readyState,
         sendJsonMessage,
@@ -40,7 +36,7 @@ export function WSConfig() {
     
     useEffect(() => {
       console.log('socket:', stateWSConfig.socketUrl);
-    }, []);
+    }, [stateWSConfig.socketUrl]);
 
     useEffect(() => {
         if (lastJsonMessage !== null) {
@@ -51,7 +47,7 @@ export function WSConfig() {
             dispatch(receiveMessageToState(JSON.parse(parsedMessage)));
             dispatch(toggleSending(true));
         }
-    }, [lastMessage, lastJsonMessage, setMessageHistory, stateWSConfig.socketUrl]);
+    }, [lastMessage, lastJsonMessage, stateWSConfig.socketUrl]);
     const connectionStatus = {
         [ReadyState.CONNECTING]: "Connecting",
         [ReadyState.OPEN]: "Open",
@@ -71,10 +67,6 @@ export function WSConfig() {
               connection: {connectionStatus}
             </p>
           </div>
-          {/* <Chat
-            triggerSendMock={handleSendMock}
-            triggerSendObject={handleSendObject}
-          ></Chat> */}
           <Game
             triggerSendObject={handleSendObject}
         ></Game>

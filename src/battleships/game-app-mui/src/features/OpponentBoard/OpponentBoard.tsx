@@ -1,7 +1,6 @@
-import React, { useState, useCallback, useEffect} from 'react';
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import {selectStateLastParsedMessage} from '../WSConfig/WSConfigSlice';
-import {setMyBoardInfo, selectGame} from '../Game/GameSlice';
+import { useEffect} from 'react';
+import { useAppSelector} from '../../app/hooks';
+import {selectGame} from '../Game/GameSlice';
 import {} from './OpponentBoardSlice';
 import {WebSocketServiceProps} from '../../types';
 import {OpponentBoardItem} from '../../components';
@@ -13,9 +12,7 @@ export function OpponentBoard({
     }: WebSocketServiceProps
     ) {
 
-    const dispatch = useAppDispatch();
     const stateGame = useAppSelector(selectGame);
-    const stateReceiveObject = useAppSelector(selectStateLastParsedMessage);
    
     useEffect(() => {
         console.log("re-render ");

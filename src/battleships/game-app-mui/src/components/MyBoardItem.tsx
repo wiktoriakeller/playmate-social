@@ -1,5 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { useAppSelector, useAppDispatch } from "../app/hooks";
+import { useAppSelector } from "../app/hooks";
 import { WebSocketServiceProps } from "../types";
 import { selectStateLastParsedMessage } from "../features/WSConfig/WSConfigSlice";
 import { selectGame} from '../features/Game/GameSlice';
@@ -21,11 +20,11 @@ export function MyBoardItem({
   const stateGame = useAppSelector(selectGame);
   const stateNewResponse = useAppSelector(selectStateLastParsedMessage);
   function getAllowedHorizontal(index: number): boolean {
-    if (stateNewResponse["data"]["h_allowed_places"][index] == 1) return true;
+    if (stateNewResponse["data"]["h_allowed_places"][index] === 1) return true;
     else return false;
   }
   function getAllowedVertical(index: number): boolean {
-    if (stateNewResponse["data"]["v_allowed_places"][index] == 1) return true;
+    if (stateNewResponse["data"]["v_allowed_places"][index] === 1) return true;
     else {
       // console.log(index);
       return false;

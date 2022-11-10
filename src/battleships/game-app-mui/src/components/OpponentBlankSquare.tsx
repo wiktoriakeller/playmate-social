@@ -1,7 +1,7 @@
 import { nanoid } from '@reduxjs/toolkit';
 import {WebSocketServiceProps} from '../types';
 import { useAppSelector, useAppDispatch } from '../app/hooks';
-import {toggleSending, setMyBoardInfo, setOpponentBoardInfo, selectGame} from './../features/Game/GameSlice';
+import {toggleSending, selectGame} from './../features/Game/GameSlice';
 
 interface IOpponentBlankSquare extends WebSocketServiceProps{
     id:number,
@@ -12,7 +12,7 @@ function OpponentBlankSquare(props:IOpponentBlankSquare) {
     const stateGame = useAppSelector(selectGame);
 
     function handleClick(e:React.MouseEvent<HTMLElement>){
-        if(stateGame.sendingEnabled == true && stateGame.opponentBoardEnabled){
+        if(stateGame.sendingEnabled === true && stateGame.opponentBoardEnabled){
             // alert('click shoot');
             const data = JSON.stringify({
                 id: nanoid(),

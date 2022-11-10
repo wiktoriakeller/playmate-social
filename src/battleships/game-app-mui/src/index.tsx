@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import { store } from './app/store';
 import App from './App';
 import './index.css';
-import CssBaseline from '@mui/material/CssBaseline';
 import Button from '@mui/material/Button';
 
 const container = document.getElementById('root')!;

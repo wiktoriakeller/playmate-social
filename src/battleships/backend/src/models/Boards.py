@@ -54,8 +54,8 @@ class Board():
         for neigh in neighbours:
             if SquareItemState(self.get_item_state(neigh)) == SquareItemState.SET_SHIP:
                 count += 1
-        if count > 2:
-            print(f"index: {index} has count: {count}")
+        # if count > 2:
+        #     print(f"index: {index} has count: {count}")
         return count
 
     def count_set_ship_corners(self, index):
@@ -64,8 +64,8 @@ class Board():
         for corner in corners:
             if SquareItemState(self.get_item_state(corner)) == SquareItemState.SET_SHIP:
                 count += 1
-        if count > 0:
-            print(f"index: {index} has count: {count} in corners")
+        # if count > 0:
+        #     print(f"index: {index} has count: {count} in corners")
         return count
     
     def count_set_ship_cross(self, index):
@@ -74,8 +74,8 @@ class Board():
         for c in cross:
             if SquareItemState(self.get_item_state(c)) == SquareItemState.SET_SHIP:
                 count += 1
-        if count > 0:
-            print(f"index: {index} has count: {count} in cross")
+        # if count > 0:
+        #     print(f"index: {index} has count: {count} in cross")
         return count
 
     def check_set_ship_neighbours(self, index) -> bool:

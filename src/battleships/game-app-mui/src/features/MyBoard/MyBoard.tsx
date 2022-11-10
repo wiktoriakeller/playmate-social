@@ -1,10 +1,7 @@
-import React, { useState, useCallback, useEffect} from 'react';
+import React, { useEffect} from 'react';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import {selectStateLastParsedMessage} from '../WSConfig/WSConfigSlice';
-import {setMyBoardInfo, selectGame, toggleOrientation} from '../Game/GameSlice';
-import {} from './MyBoardSlice';
+import {selectGame, toggleOrientation} from '../Game/GameSlice';
 import {WebSocketServiceProps} from '../../types';
-
 import Button from '@mui/material/Button';
 import {MyBoardItem} from '../../components';
 import '../../components/components.css';
@@ -17,13 +14,11 @@ export function MyBoard({
 
     const dispatch = useAppDispatch();
     const stateGame = useAppSelector(selectGame);
-    const stateReceiveObject = useAppSelector(selectStateLastParsedMessage);
    
     useEffect(() => {
         console.log("re-render ");
       }, [stateGame]);
 
-    const [text, setText] = useState("");
     function handleClick(e: React.MouseEvent<HTMLElement>) {
         e.preventDefault();
         console.log('click swap');
