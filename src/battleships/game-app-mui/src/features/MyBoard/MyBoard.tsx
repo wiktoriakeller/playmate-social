@@ -23,9 +23,6 @@ export function MyBoard({
    
     useEffect(() => {
         console.log("re-render ");
-        console.log(stateReceiveObject["data"]["next_ship_length_to_set"]);
-        console.log(typeof(stateReceiveObject["data"]["next_ship_length_to_set"]));
-
       }, [stateGame]);
 
     const [text, setText] = useState("");

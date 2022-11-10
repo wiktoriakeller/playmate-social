@@ -61,7 +61,7 @@ class PlayerGame():
             corner_index = min(messageIn.data)
             if (self.my_board.v_allowed_places.get(corner_index, 0) == 1 \
                 or self.my_board.h_allowed_places.get(corner_index, 0) == 1) \
-                and len(messageIn.data) == self.my_board.next_ship_length_to_set:
+                or len(messageIn.data) == self.my_board.next_ship_length_to_set:
                 print(f'DODAJE statek w miejscach: {messageIn.data}')
                 for index in messageIn.data:
                     self.my_board.set_item_state(index, SquareItemState.SET_SHIP)

@@ -6,6 +6,8 @@ import {
   setMyBoardInfo,
   setOpponentBoardInfo,
   selectGame,
+  toggleFillingClassNameByIndex,
+  toggleOrientation
 } from "./../features/Game/GameSlice";
 
 interface IBlankSquare extends WebSocketServiceProps {
@@ -13,6 +15,7 @@ interface IBlankSquare extends WebSocketServiceProps {
   className: string;
   isAllowedVertical: boolean;
   isAllowedHorizontal: boolean;
+  shipLength: number;
 }
 function BlankSquare(props: IBlankSquare) {
   const dispatch = useAppDispatch();
@@ -26,18 +29,55 @@ function BlankSquare(props: IBlankSquare) {
       `stateGame.sendingEnabled == true: ${stateGame.sendingEnabled == true}`
     );
     if (stateGame.sendingEnabled == true && stateGame.myBoardEnabled) {
-      // alert('clcik blank div');
+      const places = [];
+      if(stateGame.orientation == "HORIZONTAL"){
+        if(props.isAllowedHorizontal){
+          for(let i=0; i< props.shipLength; i++){
+            places.push(props.id + i);
+          }
+        }
+      }
+      else if(stateGame.orientation == "VERTICAL"){
+        if(props.isAllowedHorizontal){
+          for(let i=0; i< props.shipLength; i++){
+            places.push(props.id + i*11);
+          }
+        }
+      }else{
+        console.log("ERROR");
+      }
+      alert('clcik and send ' + places.toString());
       const data = JSON.stringify({
         id: nanoid(),
         type: "BLANK_SQUARE_TO_SET",
-        data: [props.id],
+        data: places,
       });
       props.triggerSendObject(data, true);
       dispatch(toggleSending(false));
     }
   }
+  function handleOnMouseEnter(e: React.MouseEvent<HTMLElement>) {
+    if(stateGame.orientation == "HORIZONTAL"){
+      console.log(props.shipLength + typeof(props.shipLength));
+      if(props.isAllowedHorizontal){
+        for(let i=0; i< props.shipLength; i++){
+          dispatch(toggleFillingClassNameByIndex(props.id + i))
+        }
+      }
+    }
+    else if(stateGame.orientation == "VERTICAL"){
+      if(props.isAllowedHorizontal){
+        for(let i=0; i< props.shipLength; i++){
+          dispatch(toggleFillingClassNameByIndex(props.id + i*11))
+        }
+      }
+    }else{
+      console.log("ERROR");
+    }
+  }
+
   return (
-    <div className={props.className} onClick={handleClick}>
+    <div className={props.className} onClick={handleClick} onMouseEnter={handleOnMouseEnter} onMouseLeave={handleOnMouseEnter}>
       {props.id}
     </div>
   );
