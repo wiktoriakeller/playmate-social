@@ -2,11 +2,13 @@ import { createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
 
 
+
 export interface IMyBoard  {
-    
+  
 }
 
 const initialState: IMyBoard = {
+  
 };
 
 export const MyBoardSlice = createSlice({

@@ -1,6 +1,12 @@
 import { createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../app/store';
 
+const boardInit = {};
+for(let i=1; i<11; i++){
+  for(let j=1; j<11; j++){
+    boardInit[i*11 + j] = "Item";
+  }  
+}
 
 export interface IGame  {
     sendingEnabled: boolean,
@@ -11,6 +17,7 @@ export interface IGame  {
     myBoardName: string,
     opponentBoardName: string,
     orientation: string,
+    myBoardItemsStyles: object,
 }
 
 const initialState: IGame = {
@@ -22,6 +29,7 @@ const initialState: IGame = {
   myBoardName: "NAME",
   opponentBoardName: "NAME",
   orientation: "HORIZONTAL",
+  myBoardItemsStyles: boardInit
 };
 
 export const GameSlice = createSlice({
@@ -56,11 +64,18 @@ export const GameSlice = createSlice({
         state.orientation = "HORIZONTAL";
       }
     },
+    toggleFillingClassNameByIndex: (state, action:PayloadAction<number>) =>{
+      if (state.myBoardItemsStyles[action.payload] == "Item"){
+        state.myBoardItemsStyles[action.payload] = "Item MyBoardShipSquare";
+      } else{
+        state.myBoardItemsStyles[action.payload] = "Item";
+      }
+    },
   },
 
 });
 
-export const {setMyBoardInfo, setMyBoardEnabled, setMyBoardName, setOpponentBoardInfo, setOpponentBoardEnabled, setOpponentBoardName, toggleSending, toggleOrientation} = GameSlice.actions;
+export const {setMyBoardInfo, setMyBoardEnabled, setMyBoardName, setOpponentBoardInfo, setOpponentBoardEnabled, setOpponentBoardName, toggleSending, toggleOrientation, toggleFillingClassNameByIndex} = GameSlice.actions;
 
 export const selectGame = (state: RootState) => state.game;
 
