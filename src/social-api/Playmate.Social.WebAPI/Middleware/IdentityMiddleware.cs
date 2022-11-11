@@ -19,7 +19,7 @@ public class IdentityMiddleware
 
         if (token is not null)
         {
-            var response = await identityService.GetUserByJwtTokenAsync(token);
+            var response = identityService.GetUserByJwtToken(token);
 
             if (response.Succeeded)
             {
