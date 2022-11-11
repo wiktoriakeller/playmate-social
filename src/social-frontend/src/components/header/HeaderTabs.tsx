@@ -13,9 +13,9 @@ const HeaderTabs = () => {
 
   const handleTabChange = (event: React.SyntheticEvent, newTab: number) => {
     let tabName = TabName.Chat;
-    if (newTab == 1) {
+    if (newTab === 1) {
       tabName = TabName.Games;
-    } else if (newTab == 2) {
+    } else if (newTab === 2) {
       tabName = TabName.Users;
     }
 

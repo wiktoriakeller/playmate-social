@@ -51,7 +51,8 @@ public static class ConfigureServicesExtension
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(cfg =>
+        })
+        .AddJwtBearer(cfg =>
         {
             cfg.RequireHttpsMetadata = false;
             cfg.SaveToken = true;

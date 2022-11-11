@@ -23,9 +23,9 @@ public class JwtTokenService : IJwtTokenService
         _tokenValidationParameters = tokenValidationParameters;
     }
 
-    public async Task<JwtTokenInfoDto> CreateJwtToken(User user)
+    public JwtTokenInfoDto CreateJwtToken(User user)
     {
-        var (claims, jti) = await GetJwtTokenClaims(user);
+        var (claims, jti) = GetJwtTokenClaims(user);
 
         var key = Encoding.UTF8.GetBytes(_jwtOptions.Key);
         var signingCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256);
@@ -86,7 +86,7 @@ public class JwtTokenService : IJwtTokenService
         validatedToken is JwtSecurityToken jwtSecurityToken &&
         jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase);
 
-    private async Task<(IEnumerable<Claim> claims, string jti)> GetJwtTokenClaims(User user)
+    private (IEnumerable<Claim> claims, string jti) GetJwtTokenClaims(User user)
     {
         var jti = Guid.NewGuid().ToString();
         var claims = new List<Claim>()
