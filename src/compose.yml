@@ -8,7 +8,7 @@ services:
     image: mcr.microsoft.com/mssql/server:2022-latest
     environment:
       ACCEPT_EULA: "Y"
-      # SA_PASSWORD: ${SA_PASSWORD?err}
+      SA_PASSWORD: ${SA_PASSWORD?err}
     user: root
     ports:
       - "1433:1433"
@@ -21,8 +21,8 @@ services:
     container_name: social-api
     build:
       context: ./social-api/
-    # environment:
-    #   - "Authentication:JwtOptions:Key=${JWT_KEY?err}"
+    environment:
+      - "Authentication:JwtOptions:Key=${JWT_KEY?err}"
     restart: always
     depends_on:
       - social-db-sql
@@ -35,31 +35,6 @@ services:
       context: ./social-frontend
     depends_on:
       - social-api
-
-  battleships-server:
-    container_name: battleships-server
-    build:
-      context: ./battleships/backend
-    # environment:
-    restart: always
-    depends_on:
-      - social-api
-    ports:
-      - "8001:8000"
-    networks:
-      - localdev
-  
-  battleships-client:
-    container_name: battleships-client
-    build:
-      context: ./battleships/game-app-mui
-    #environment:
-    depends_on:
-      - battleships-server
-    ports:
-      - "3001:3000"
-    networks:
-      - localdev
 
 volumes:
   db-data:
