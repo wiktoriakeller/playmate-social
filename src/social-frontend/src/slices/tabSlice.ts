@@ -13,6 +13,21 @@ export interface ITabState {
   index: number;
 }
 
+export const tabsDictionary: ITabState[] = [
+  {
+    name: TabName.Chat,
+    index: 0
+  },
+  {
+    name: TabName.Games,
+    index: 1
+  },
+  {
+    name: TabName.Users,
+    index: 2
+  }
+];
+
 const tabInitialState: ITabState = {
   name: TabName.Chat,
   index: 0
@@ -22,13 +37,13 @@ export const tabSlice = createSlice({
   name: "tab",
   initialState: tabInitialState,
   reducers: {
-    setTabIndex(state: ITabState, action: PayloadAction<ITabState>) {
+    setCurrentTab(state: ITabState, action: PayloadAction<ITabState>) {
       _.assign(state, action.payload);
     }
   }
 });
 
-export const { setTabIndex } = tabSlice.actions;
+export const { setCurrentTab } = tabSlice.actions;
 
 export const selectCurrentTab = (state: RootState): ITabState => state.tab;
 

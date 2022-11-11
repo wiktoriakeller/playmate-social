@@ -1,6 +1,8 @@
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+import Brightness2Icon from "@mui/icons-material/Brightness2";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { setCurrentTab, TabName, tabsDictionary } from "../../slices/tabSlice";
 import { selectTheme, setTheme, ThemeType } from "../../slices/themeSlice";
 import { selectUser } from "../../slices/userSlice";
 import { HeaderCenter } from "../../styled/components/header/HeaderCenter";
@@ -15,14 +17,15 @@ import HeaderTabs from "./HeaderTabs";
 export const Header = () => {
   const theme = useAppSelector(selectTheme);
   const user = useAppSelector(selectUser);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const getCurrentThemeIcon = (theme: ThemeType) => {
     if (theme === "light") {
-      return <Brightness7Icon sx={{ fontSize: "32px" }} />;
+      return <WbSunnyIcon sx={{ fontSize: "32px" }} />;
     }
 
-    return <Brightness4Icon sx={{ fontSize: "32px" }} />;
+    return <Brightness2Icon sx={{ fontSize: "32px" }} />;
   };
 
   const toggleTheme = () => {
@@ -45,10 +48,15 @@ export const Header = () => {
     }
   };
 
+  const onLogoClick = () => {
+    navigate("/");
+    dispatch(setCurrentTab(tabsDictionary[0]));
+  };
+
   return (
     <StyledHeader>
       <HeaderLeftSide>
-        <StyledLogo>Playmate</StyledLogo>
+        <StyledLogo onClick={onLogoClick}>Playmate</StyledLogo>
       </HeaderLeftSide>
       <HeaderCenter>{getHeaderCenter()}</HeaderCenter>
       <HeaderRightSide>
