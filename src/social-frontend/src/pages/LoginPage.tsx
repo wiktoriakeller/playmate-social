@@ -1,3 +1,4 @@
+import { Divider, TextField } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +8,6 @@ import { setUser } from "../slices/userSlice";
 import { StyledButton } from "../styled/components/mui/StyledButton";
 import { StyledDivider } from "../styled/components/mui/StyledDivider";
 import { StyledLink } from "../styled/components/mui/StyledLink";
-import { StyledTextField } from "../styled/components/mui/StyledTextField";
 import { FormBox } from "../styled/pages/FormBox";
 import { FormContainer } from "../styled/pages/FormContainer";
 
@@ -38,16 +38,18 @@ const LoginPage = () => {
     <FormContainer>
       <Paper elevation={3}>
         <FormBox>
-          <StyledTextField
+          <TextField
             label="Email"
             variant="outlined"
             onChange={(event) => setEmail(event.target.value)}
+            fullWidth
           />
-          <StyledTextField
+          <TextField
             label="Password"
             variant="outlined"
             type={"password"}
             onChange={(event) => setPassword(event.target.value)}
+            fullWidth
           />
           <StyledButton variant="contained" onClick={handleLogin}>
             Login

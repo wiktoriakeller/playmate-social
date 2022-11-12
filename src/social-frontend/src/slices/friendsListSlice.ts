@@ -1,0 +1,45 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "../app/store";
+
+export interface IFriend {
+  id: string;
+  username: string;
+}
+
+export interface IFriendsListState {
+  friends?: IFriend[];
+  selectedFriend?: IFriend;
+}
+
+const friendsListInitialState: IFriendsListState = {
+  friends: null,
+  selectedFriend: null
+};
+
+export const friendsListSlice = createSlice({
+  name: "friendsList",
+  initialState: friendsListInitialState,
+  reducers: {
+    setFriendsList(
+      state: IFriendsListState,
+      action: PayloadAction<IFriend[] | null>
+    ) {
+      state.friends = action.payload;
+    },
+    setSelectedFriend(
+      state: IFriendsListState,
+      action: PayloadAction<IFriend | null>
+    ) {
+      state.selectedFriend = action.payload;
+    }
+  }
+});
+
+export const { setFriendsList, setSelectedFriend } = friendsListSlice.actions;
+
+export const selectFriendsList = (state: RootState): IFriend[] | null =>
+  state.friendsList.friends;
+export const selectSelectedFriend = (state: RootState): IFriend | null =>
+  state.friendsList.selectedFriend;
+
+export default friendsListSlice.reducer;

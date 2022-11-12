@@ -13,6 +13,7 @@ import { StyledLogo } from "../../styled/components/header/StyledLogo";
 import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
 import UserMenu from "../user/UserMenu";
 import HeaderTabs from "./HeaderTabs";
+import PeopleIcon from "@mui/icons-material/People";
 
 export const Header = () => {
   const theme = useAppSelector(selectTheme);
@@ -56,10 +57,13 @@ export const Header = () => {
   return (
     <StyledHeader>
       <HeaderLeftSide>
-        <StyledLogo onClick={onLogoClick}>Playmate</StyledLogo>
+        <StyledLogo onClick={onLogoClick}>
+          <PeopleIcon sx={{ fontSize: "32px" }} />
+          <span>playmate</span>
+        </StyledLogo>
       </HeaderLeftSide>
       <HeaderCenter>{getHeaderCenter()}</HeaderCenter>
-      <HeaderRightSide>
+      <HeaderRightSide isHomePage={user.jwtToken !== null}>
         <StyledIconButton onClick={toggleTheme}>
           {getCurrentThemeIcon(theme.theme)}
         </StyledIconButton>
