@@ -6,6 +6,7 @@ import type {
 import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
 import { getUserFromStorage } from "../common/storage";
 import { setUserTokens } from "../slices/userIdentitySlice";
+import { IRefreshTokenResponse } from "./identity/responses/refreshTokenResponse";
 
 const apiUrl = process.env.REACT_APP_BASE_API_URL;
 const baseUrl = `${apiUrl}/api/v1`;
@@ -47,8 +48,10 @@ export const baseReauthQuery: BaseQueryFn<
       extraOptions
     );
 
-    if (refreshResponse.data) {
-      api.dispatch(setUserTokens(refreshResponse.data));
+    const mappedResponse = refreshResponse.data as IRefreshTokenResponse;
+
+    if (mappedResponse && mappedResponse.data) {
+      api.dispatch(setUserTokens(mappedResponse.data));
       result = await baseQuery(args, api, extraOptions);
     }
   }

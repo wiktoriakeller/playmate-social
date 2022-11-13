@@ -1,7 +1,7 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseReauthQuery } from "../baseReauthQuery";
-import { ISearchUsersRequest } from "./requests/ISearchUsersRequest";
-import { ISearchUsersResponse } from "./responses/ISearchUsersResponse";
+import { ISearchUsersRequest } from "./requests/searchUsersRequest";
+import { ISearchUsersResponse } from "./responses/searchUsersResponse";
 
 export const usersApi = createApi({
   reducerPath: "usersApi",

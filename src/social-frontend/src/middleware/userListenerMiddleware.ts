@@ -26,12 +26,12 @@ userListenerMiddleware.startListening({
 
 userListenerMiddleware.startListening({
   actionCreator: setUserTokens,
-  effect: (action: PayloadAction<IUserTokens>, apiListener) => {
+  effect: (action: PayloadAction<IUserTokens>) => {
     const user = getUserFromStorage();
     const newUser = {
       ...user,
-      userTokens: action.payload as IUserTokens
+      ...action.payload
     };
-    apiListener.dispatch(setUserIdentity(newUser));
+    storeUser(newUser);
   }
 });

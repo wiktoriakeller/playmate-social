@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IUserSearchItem } from "../api/users/responses/ISearchUsersResponse";
+import { IUserSearchItem } from "../api/users/responses/searchUsersResponse";
 import { RootState } from "../app/store";
 
 export interface ISearchUsers {

@@ -1,9 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseReauthQuery } from "../baseReauthQuery";
-import { ISendFriendRequestRequest } from "./requests/ISendFriendRequestRequest";
-import { ISendFriendRequestResponse } from "./responses/ISendFriendRequestResponse";
-import { IGetFriendsListRequest } from "./requests/IGetFriendsListRequest";
-import { IGetFriendsListResponse } from "./responses/IGetFriendsListResponse";
+import { ISendFriendRequestRequest } from "./requests/sendFriendRequest";
+import { ISendFriendRequestResponse } from "./responses/sendFriendRequestResponse";
+import { IGetFriendsListRequest } from "./requests/getFriendsListRequest";
+import { IGetFriendsListResponse } from "./responses/getFriendsListResponse";
 
 export const friendsApi = createApi({
   reducerPath: "friendsApi",

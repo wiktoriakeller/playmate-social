@@ -5,7 +5,7 @@ import {
   ListItemAvatar,
   ListItemText
 } from "@mui/material";
-import { IUserSearchItem } from "../../api/users/responses/ISearchUsersResponse";
+import { IUserSearchItem } from "../../api/users/responses/searchUsersResponse";
 import { StyledUserSearchItem } from "../../styled/components/userSearch/StyledUserSearchItem";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useAppDispatch } from "../../app/hooks";
