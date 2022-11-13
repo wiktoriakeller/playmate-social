@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Playmate.Social.Infrastructure.Persistence.Repositories;
 
@@ -10,7 +11,7 @@ public class FriendRepository : BaseRepository<Friend>, IFriendRepository
     {
     }
 
-    public async Task<IEnumerable<User>> GetFriends(User user)
+    public async Task<IEnumerable<User>> GetFriendsWhere(User user, Expression<Func<User, bool>> predicate)
     {
         var friends = _dbContext.Set<Friend>()
             .Where(f => f.RequesterId == user.Id)
@@ -23,13 +24,14 @@ public class FriendRepository : BaseRepository<Friend>, IFriendRepository
             .Select(f => f.Requester)
             .Concat(friends);
 
-        return await friends2.ToListAsync();
+        return await friends2
+            .Where(predicate)
+            .OrderBy(f => f.Username)
+            .ToListAsync();
     }
 
-    public async Task<Friend?> GetFriend(User user, Guid friendId)
-    {
-        var friend = await _dbContext.Set<Friend>().Where(f => f.AddresseeId == user.Id && f.RequesterId == friendId ||
-        f.RequesterId == user.Id && f.AddresseeId == friendId).FirstOrDefaultAsync();
-        return friend;
-    }
+    public async Task<Friend?> GetFriend(User user, Guid friendId) =>
+        await _dbContext.Set<Friend>()
+        .Where(f => f.AddresseeId == user.Id && f.RequesterId == friendId || f.RequesterId == user.Id && f.AddresseeId == friendId)
+        .FirstOrDefaultAsync();
 }

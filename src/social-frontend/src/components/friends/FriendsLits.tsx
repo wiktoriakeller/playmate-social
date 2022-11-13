@@ -1,3 +1,4 @@
+import { Skeleton } from "@mui/material";
 import { useEffect } from "react";
 import { useLazyGetFriendsListQuery } from "../../api/friends/friendsApi";
 import { useAppSelector } from "../../app/hooks";
@@ -11,8 +12,21 @@ const FriendsLits = () => {
     useLazyGetFriendsListQuery();
 
   useEffect(() => {
-    getFriendsListLazy({});
+    getFriendsListLazy({
+      search: friendsSearchPhrase
+    });
   }, [friendsSearchPhrase]);
+
+  if (isLoading) {
+    return (
+      <StyledFriendsList>
+        <Skeleton height={70} />
+        <Skeleton height={70} />
+        <Skeleton height={70} />
+        <Skeleton height={70} />
+      </StyledFriendsList>
+    );
+  }
 
   return (
     <StyledFriendsList>

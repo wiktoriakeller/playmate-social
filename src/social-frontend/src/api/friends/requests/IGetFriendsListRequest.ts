@@ -1,1 +1,3 @@
-export interface IGetFriendsListRequest {}
+export interface IGetFriendsListRequest {
+  search: string;
+}

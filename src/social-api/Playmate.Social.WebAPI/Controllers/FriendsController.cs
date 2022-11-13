@@ -17,9 +17,9 @@ public class FriendsController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetFriendsList()
+    public async Task<IActionResult> GetFriendsList([FromQuery] string? search)
     {
-        var response = await _medaitor.Send(new GetFriendsListQuery());
+        var response = await _medaitor.Send(new GetFriendsListQuery { Search = search ?? "" });
         return GetStatusCode(response);
     }
 

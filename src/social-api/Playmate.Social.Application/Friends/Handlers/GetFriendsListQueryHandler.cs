@@ -27,12 +27,14 @@ public class GetFriendsListQueryHandler : IHandlerWrapper<GetFriendsListQuery, G
 
     public async Task<Response<GetFriendsListResponse>> Handle(GetFriendsListQuery request, CancellationToken cancellationToken)
     {
+        var search = request.Search.ToLower();
         var user = _userService.CurrentUser;
+        var friends = await _friendsRepository.GetFriendsWhere(user,
+            friend => (!string.IsNullOrWhiteSpace(search) && friend.Username.ToLower().Contains(search)) || string.IsNullOrWhiteSpace(search));
 
-        var friends = await _friendsRepository.GetFriends(user);
         var mappedFriends = _mapper.Map<IEnumerable<User>, IEnumerable<FriendDto>>(friends);
-
         var response = new GetFriendsListResponse(mappedFriends);
+
         return ResponseResult.Ok(response);
     }
 }
