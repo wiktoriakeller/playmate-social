@@ -14,7 +14,6 @@ const UserSearch = () => {
   useEffect(() => {
     const debounce = setTimeout(() => {
       if (!!username && !isLoading) {
-        console.log(username);
         searchQuery({
           username: username
         }).then((e) => {
