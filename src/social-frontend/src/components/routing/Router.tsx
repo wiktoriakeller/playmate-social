@@ -8,35 +8,33 @@ import AuthRedirector from "./AuthRedirector";
 function Router() {
   return (
     <BrowserRouter>
-      <div className="main-layout">
-        <Header />
-        <Routes>
-          <Route
-            path="/login"
-            element={
-              <AuthRedirector redirectToHome={true}>
-                <LoginPage />
-              </AuthRedirector>
-            }
-          ></Route>
-          <Route
-            path="/register"
-            element={
-              <AuthRedirector redirectToHome={true}>
-                <RegisterPage />
-              </AuthRedirector>
-            }
-          ></Route>
-          <Route
-            path="/"
-            element={
-              <AuthRedirector>
-                <HomePage />
-              </AuthRedirector>
-            }
-          />
-        </Routes>
-      </div>
+      <Header />
+      <Routes>
+        <Route
+          path="/login"
+          element={
+            <AuthRedirector redirectToHome={true}>
+              <LoginPage />
+            </AuthRedirector>
+          }
+        ></Route>
+        <Route
+          path="/register"
+          element={
+            <AuthRedirector redirectToHome={true}>
+              <RegisterPage />
+            </AuthRedirector>
+          }
+        ></Route>
+        <Route
+          path="/"
+          element={
+            <AuthRedirector>
+              <HomePage />
+            </AuthRedirector>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 }

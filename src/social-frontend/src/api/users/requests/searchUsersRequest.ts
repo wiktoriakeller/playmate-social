@@ -1,4 +1,3 @@
-
 export interface ISearchUsersRequest {
-  username: string
+  username: string;
 }

@@ -1,5 +1,5 @@
 import { ThemeType } from "../slices/themeSlice";
-import { IUserState } from "../slices/userSlice";
+import { IUserIdentityState } from "../slices/userIdentitySlice";
 
 export const storeData = (key: string, value: string | null): void =>
   localStorage.setItem(key, value);
@@ -7,10 +7,10 @@ export const storeData = (key: string, value: string | null): void =>
 export const getData = (key: string): string | null =>
   localStorage.getItem(key);
 
-export const storeUser = (user: IUserState): void =>
+export const storeUser = (user: IUserIdentityState): void =>
   storeData("user", JSON.stringify(user));
 
-export const getUserFromStorage = (): IUserState | null => {
+export const getUserFromStorage = (): IUserIdentityState | null => {
   const user = getData("user");
 
   if (user === null || user === "") {

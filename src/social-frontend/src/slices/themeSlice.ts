@@ -6,7 +6,7 @@ export type ThemeType = "light" | "dark";
 
 export interface IThemeState {
   theme: ThemeType;
-};
+}
 
 const themeInitialState: IThemeState = {
   theme: getThemeFromStore() ?? "dark"

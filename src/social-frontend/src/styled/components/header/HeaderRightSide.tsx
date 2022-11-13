@@ -1,6 +1,10 @@
 import styled from "@emotion/styled";
 
-export const HeaderRightSide = styled.div`
+export interface IHeaderRightSideProps {
+  isHomePage: boolean;
+}
+
+export const HeaderRightSide = styled.div<IHeaderRightSideProps>`
   margin-right: 30px;
   justify-self: flex-end;
   display: flex;
@@ -8,4 +12,9 @@ export const HeaderRightSide = styled.div`
   justify-content: center;
   align-items: center;
   gap: 1px;
+
+  @media (max-width: 620px) {
+    display: ${(props) => (props.isHomePage ? "none" : "inherit")};
+    margin-left: 0px;
+  }
 `;

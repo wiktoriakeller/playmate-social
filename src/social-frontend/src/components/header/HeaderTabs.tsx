@@ -4,25 +4,34 @@ import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
 import Tabs from "@mui/material/Tabs";
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { selectCurrentTab, setTabIndex, TabName } from "../../slices/tabSlice";
+import {
+  selectCurrentTab,
+  setCurrentTab,
+  TabName,
+  tabsDictionary
+} from "../../slices/tabSlice";
 import { StyledTab } from "../../styled/components/mui/StyledTab";
 
 const HeaderTabs = () => {
   const currentTab = useAppSelector(selectCurrentTab);
   const disptach = useAppDispatch();
 
-  const handleTabChange = (event: React.SyntheticEvent, newTab: number) => {
-    let tabName = TabName.Chat;
-    if (newTab === 1) {
-      tabName = TabName.Games;
-    } else if (newTab === 2) {
-      tabName = TabName.Users;
+  const handleTabChange = (
+    event: React.SyntheticEvent,
+    newTabIndex: number
+  ) => {
+    let newTabName = TabName.Chat;
+    for (const tab of tabsDictionary) {
+      if (tab.index === newTabIndex) {
+        newTabName = tab.name;
+        break;
+      }
     }
 
     disptach(
-      setTabIndex({
-        index: newTab,
-        name: tabName
+      setCurrentTab({
+        index: newTabIndex,
+        name: newTabName
       })
     );
   };

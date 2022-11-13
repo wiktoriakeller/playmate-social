@@ -1,8 +1,11 @@
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
+import Brightness2Icon from "@mui/icons-material/Brightness2";
+import PeopleIcon from "@mui/icons-material/People";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { setCurrentTab, tabsDictionary } from "../../slices/tabSlice";
 import { selectTheme, setTheme, ThemeType } from "../../slices/themeSlice";
-import { selectUser } from "../../slices/userSlice";
+import { selectUserIdentity } from "../../slices/userIdentitySlice";
 import { HeaderCenter } from "../../styled/components/header/HeaderCenter";
 import { HeaderLeftSide } from "../../styled/components/header/HeaderLeftSide";
 import { HeaderRightSide } from "../../styled/components/header/HeaderRightSide";
@@ -14,15 +17,16 @@ import HeaderTabs from "./HeaderTabs";
 
 export const Header = () => {
   const theme = useAppSelector(selectTheme);
-  const user = useAppSelector(selectUser);
+  const user = useAppSelector(selectUserIdentity);
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   const getCurrentThemeIcon = (theme: ThemeType) => {
     if (theme === "light") {
-      return <Brightness7Icon sx={{ fontSize: "32px" }} />;
+      return <WbSunnyIcon sx={{ fontSize: "32px" }} />;
     }
 
-    return <Brightness4Icon sx={{ fontSize: "32px" }} />;
+    return <Brightness2Icon sx={{ fontSize: "32px" }} />;
   };
 
   const toggleTheme = () => {
@@ -45,13 +49,21 @@ export const Header = () => {
     }
   };
 
+  const onLogoClick = () => {
+    navigate("/");
+    dispatch(setCurrentTab(tabsDictionary[0]));
+  };
+
   return (
     <StyledHeader>
       <HeaderLeftSide>
-        <StyledLogo>Playmate</StyledLogo>
+        <StyledLogo onClick={onLogoClick}>
+          <PeopleIcon sx={{ fontSize: "32px" }} />
+          <span>playmate</span>
+        </StyledLogo>
       </HeaderLeftSide>
       <HeaderCenter>{getHeaderCenter()}</HeaderCenter>
-      <HeaderRightSide>
+      <HeaderRightSide isHomePage={user.jwtToken !== null}>
         <StyledIconButton onClick={toggleTheme}>
           {getCurrentThemeIcon(theme.theme)}
         </StyledIconButton>

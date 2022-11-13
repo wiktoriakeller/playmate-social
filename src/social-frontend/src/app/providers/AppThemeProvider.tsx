@@ -10,7 +10,7 @@ const AppThemeProvider = ({ children }) => {
   const themeMode = useAppSelector(selectTheme);
 
   const commonPalette = {
-    white: "#ffffff",
+    white: grey[50],
     black: "#000000"
   };
 
@@ -23,7 +23,7 @@ const AppThemeProvider = ({ children }) => {
             ...commonPalette,
             primary: grey,
             secondary: indigo,
-            divider: grey[600],
+            divider: grey[300],
             background: {
               default: grey[50],
               paper: grey[100]
@@ -33,7 +33,7 @@ const AppThemeProvider = ({ children }) => {
               secondary: grey[800]
             },
             header: grey[100],
-            border: grey[200],
+            border: grey[300],
             link: grey[600],
             linkHover: grey[700]
           }
@@ -42,13 +42,13 @@ const AppThemeProvider = ({ children }) => {
             ...commonPalette,
             primary: grey,
             secondary: indigo,
-            divider: grey[400],
+            divider: grey[800],
             background: {
               default: grey[900],
               paper: grey[800]
             },
             text: {
-              primary: "#fff",
+              primary: grey[100],
               secondary: grey[500]
             },
             header: grey[900],
@@ -58,7 +58,7 @@ const AppThemeProvider = ({ children }) => {
           })
     },
     shape: {
-      borderRadius: 4
+      borderRadius: 6
     }
   });
 

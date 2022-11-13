@@ -4,18 +4,21 @@ import { identityApi } from "../api/identity/identityApi";
 import { usersApi } from "../api/users/usersApi";
 import { themeListenerMiddleware } from "../middleware/themeListenerMiddleware";
 import { userListenerMiddleware } from "../middleware/userListenerMiddleware";
+import { friendsListSlice } from "../slices/friendsListSlice";
 import { tabSlice } from "../slices/tabSlice";
 import { themeSlice } from "../slices/themeSlice";
+import { userIdentitySlice } from "../slices/userIdentitySlice";
 import { userSearchSlice } from "../slices/userSearchSlice";
-import { userSlice } from "../slices/userSlice";
 
 export const store = configureStore({
   reducer: {
-    [userSlice.name]: userSlice.reducer,
+    [userIdentitySlice.name]: userIdentitySlice.reducer,
     [themeSlice.name]: themeSlice.reducer,
     [tabSlice.name]: tabSlice.reducer,
     [userSearchSlice.name]: userSearchSlice.reducer,
+    [friendsListSlice.name]: friendsListSlice.reducer,
     [identityApi.reducerPath]: identityApi.reducer,
+    [friendsApi.reducerPath]: friendsApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
     [friendsApi.reducerPath]: friendsApi.reducer
   },
@@ -25,6 +28,7 @@ export const store = configureStore({
       .concat(themeListenerMiddleware.middleware)
       .concat(identityApi.middleware)
       .concat(usersApi.middleware)
+      .concat(friendsApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

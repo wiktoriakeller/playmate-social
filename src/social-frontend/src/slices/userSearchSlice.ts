@@ -21,7 +21,7 @@ export const userSearchSlice = createSlice({
       state.users = action.payload;
     },
     updateUser(state: ISearchUsers, action: PayloadAction<IUserSearchItem>) {
-      const index = state.users.findIndex((e) => e.id == action.payload.id);
+      const index = state.users.findIndex((e) => e.id === action.payload.id);
       state.users[index] = action.payload;
     }
   }

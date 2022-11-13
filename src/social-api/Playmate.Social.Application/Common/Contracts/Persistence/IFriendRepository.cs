@@ -4,6 +4,9 @@ namespace Playmate.Social.Application.Common.Contracts.Persistence;
 
 public interface IFriendRepository : IRepository<Friend>
 {
-    Task<Friend?> GetFriend(User user, Guid friendId);
     Task<IEnumerable<User>> GetFriends(User user);
+
+    Task<IEnumerable<User>> GetFriendsWhere(User user, Func<User, bool> predicate);
+
+    Task<Friend?> GetFriend(User user, Guid friendId);
 }

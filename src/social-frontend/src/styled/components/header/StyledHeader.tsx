@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 
 export const StyledHeader = styled.div`
   top: 0;
-  max-height: 60px;
+  height: 56px;
   min-width: 100%;
   display: flex;
   align-items: center;

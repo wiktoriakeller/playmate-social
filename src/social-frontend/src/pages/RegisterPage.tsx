@@ -1,3 +1,4 @@
+import { TextField } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -5,7 +6,6 @@ import { useCreateUserMutation } from "../api/identity/identityApi";
 import { StyledButton } from "../styled/components/mui/StyledButton";
 import { StyledDivider } from "../styled/components/mui/StyledDivider";
 import { StyledLink } from "../styled/components/mui/StyledLink";
-import { StyledTextField } from "../styled/components/mui/StyledTextField";
 import { FormBox } from "../styled/pages/FormBox";
 import { FormContainer } from "../styled/pages/FormContainer";
 
@@ -37,28 +37,32 @@ const RegisterPage = () => {
     <FormContainer>
       <Paper elevation={3}>
         <FormBox>
-          <StyledTextField
+          <TextField
             label="Email"
             type={"email"}
             variant="outlined"
             onChange={(e) => setEmail(e.target.value)}
+            fullWidth
           />
-          <StyledTextField
+          <TextField
             label="Username"
             variant="outlined"
             onChange={(e) => setUsername(e.target.value)}
+            fullWidth
           />
-          <StyledTextField
+          <TextField
             label="Password"
             variant="outlined"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
+            fullWidth
           />
-          <StyledTextField
+          <TextField
             label="Confirm password"
             variant="outlined"
             type="password"
             onChange={(e) => setConfirmPassword(e.target.value)}
+            fullWidth
           />
           <StyledButton variant="contained" onClick={handleRegister}>
             Register
