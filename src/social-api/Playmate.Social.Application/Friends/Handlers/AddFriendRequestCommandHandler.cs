@@ -10,12 +10,12 @@ namespace Playmate.Social.Application.Friends.Handlers;
 
 public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCommand, AddFriendRequestResponse>
 {
-    private readonly IRepository<FriendRequest> _requestRepository;
+    private readonly IFriendRequestRepository _requestRepository;
     private readonly IRepository<User> _userRepository;
     private readonly IFriendRepository _friendRepository;
     private readonly ICurrentUserService _userService;
 
-    public AddFriendRequestCommandHandler(IRepository<FriendRequest> requestRepository,
+    public AddFriendRequestCommandHandler(IFriendRequestRepository requestRepository,
                                           ICurrentUserService userService,
                                           IRepository<User> userRepository,
                                           IFriendRepository friendRepository)
@@ -42,6 +42,12 @@ public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCo
         if (friend != null)
         {
             return ResponseResult.ValidationError<AddFriendRequestResponse>("Users are friends");
+        }
+
+        var currentRequests = await _requestRepository.GetUsersWithPendingRequests(currentUser);
+        if (currentRequests.Contains(addressee.Id))
+        {
+            return ResponseResult.ValidationError<AddFriendRequestResponse>("Request already exists");
         }
 
         var friendRequest = new FriendRequest() { Requester = currentUser, Addressee = addressee };

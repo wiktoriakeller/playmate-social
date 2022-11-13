@@ -40,6 +40,7 @@ const LoginPage = () => {
         <FormBox>
           <StyledTextField
             label="Email"
+            type={"email"}
             variant="outlined"
             onChange={(event) => setEmail(event.target.value)}
           />
