@@ -31,13 +31,17 @@ export const friendsListSlice = createSlice({
     ) {
       state.selectedFriend = action.payload;
     },
-    setSearchPhrase(state: IFriendsListState, action: PayloadAction<string>) {
+    setFriendsListSearchPhrase(
+      state: IFriendsListState,
+      action: PayloadAction<string>
+    ) {
       state.searchPhrase = action.payload;
     }
   }
 });
 
-export const { setFriendsList, setSelectedFriend } = friendsListSlice.actions;
+export const { setFriendsList, setSelectedFriend, setFriendsListSearchPhrase } =
+  friendsListSlice.actions;
 
 export const selectFriendsList = (state: RootState): IFriend[] =>
   state.friendsList.friends;
