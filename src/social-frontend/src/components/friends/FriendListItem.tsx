@@ -10,14 +10,22 @@ import { StyledFriendsListItem } from "../../styled/components/friends/StyledFri
 export interface IFriendsListItemProps {
   id: string;
   username: string;
-  lastMessage: string;
-  lastMessegeSender: string;
+  lastMessage?: string;
+  lastMessegeSender?: string;
   logoPath?: string;
 }
 
 const FriendListItem = (props: IFriendsListItemProps) => {
   const dispatch = useAppDispatch();
   const selectedFriend = useAppSelector(selectSelectedFriend);
+
+  const getLastMessage = () => {
+    if (!!props.lastMessegeSender && !!props.lastMessage) {
+      return `${props.lastMessegeSender}: ${props.lastMessage}`;
+    }
+
+    return "You:";
+  };
 
   return (
     <StyledFriendsListItem
@@ -27,7 +35,7 @@ const FriendListItem = (props: IFriendsListItemProps) => {
       <Avatar alt={props.username} src={props.logoPath} />
       <FriendData isSelected={selectedFriend?.id === props.id}>
         <span>{props.username}</span>
-        <span>{`${props.lastMessegeSender}: ${props.lastMessage}`}</span>
+        <span>{getLastMessage()}</span>
       </FriendData>
     </StyledFriendsListItem>
   );

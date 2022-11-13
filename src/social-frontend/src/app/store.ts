@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { friendsApi } from "../api/friends/friendsApi";
 import { identityApi } from "../api/identity/identityApi";
 import { themeListenerMiddleware } from "../middleware/themeListenerMiddleware";
 import { userListenerMiddleware } from "../middleware/userListenerMiddleware";
@@ -13,13 +14,15 @@ export const store = configureStore({
     [themeSlice.name]: themeSlice.reducer,
     [tabSlice.name]: tabSlice.reducer,
     [friendsListSlice.name]: friendsListSlice.reducer,
-    [identityApi.reducerPath]: identityApi.reducer
+    [identityApi.reducerPath]: identityApi.reducer,
+    [friendsApi.reducerPath]: friendsApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(userListenerMiddleware.middleware)
       .concat(themeListenerMiddleware.middleware)
       .concat(identityApi.middleware)
+      .concat(friendsApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

@@ -58,7 +58,7 @@ const AppThemeProvider = ({ children }) => {
           })
     },
     shape: {
-      borderRadius: 4
+      borderRadius: 6
     }
   });
 

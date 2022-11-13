@@ -7,23 +7,22 @@ export interface IFriend {
 }
 
 export interface IFriendsListState {
-  friends?: IFriend[];
+  friends: IFriend[];
   selectedFriend?: IFriend;
+  searchPhrase: string;
 }
 
 const friendsListInitialState: IFriendsListState = {
-  friends: null,
-  selectedFriend: null
+  friends: [],
+  selectedFriend: null,
+  searchPhrase: ""
 };
 
 export const friendsListSlice = createSlice({
   name: "friendsList",
   initialState: friendsListInitialState,
   reducers: {
-    setFriendsList(
-      state: IFriendsListState,
-      action: PayloadAction<IFriend[] | null>
-    ) {
+    setFriendsList(state: IFriendsListState, action: PayloadAction<IFriend[]>) {
       state.friends = action.payload;
     },
     setSelectedFriend(
@@ -31,15 +30,20 @@ export const friendsListSlice = createSlice({
       action: PayloadAction<IFriend | null>
     ) {
       state.selectedFriend = action.payload;
+    },
+    setSearchPhrase(state: IFriendsListState, action: PayloadAction<string>) {
+      state.searchPhrase = action.payload;
     }
   }
 });
 
 export const { setFriendsList, setSelectedFriend } = friendsListSlice.actions;
 
-export const selectFriendsList = (state: RootState): IFriend[] | null =>
+export const selectFriendsList = (state: RootState): IFriend[] =>
   state.friendsList.friends;
 export const selectSelectedFriend = (state: RootState): IFriend | null =>
   state.friendsList.selectedFriend;
+export const selectFriendsListSearchPhrase = (state: RootState): string =>
+  state.friendsList.searchPhrase;
 
 export default friendsListSlice.reducer;

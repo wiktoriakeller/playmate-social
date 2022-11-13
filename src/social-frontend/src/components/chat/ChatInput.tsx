@@ -1,11 +1,10 @@
-import { TextField } from "@mui/material";
 import { StyledChatInput } from "../../styled/components/chat/StyledChatInput";
-import { RoundTextField } from "../../styled/components/mui/RoundTextField";
+import { StyledTextField } from "../../styled/components/mui/StyledTextField";
 
 const ChatInput = () => {
   return (
     <StyledChatInput>
-      <RoundTextField
+      <StyledTextField
         fullWidth
         variant="outlined"
         placeholder={"Message"}

@@ -1,8 +1,9 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
+import PeopleIcon from "@mui/icons-material/People";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { setCurrentTab, TabName, tabsDictionary } from "../../slices/tabSlice";
+import { setCurrentTab, tabsDictionary } from "../../slices/tabSlice";
 import { selectTheme, setTheme, ThemeType } from "../../slices/themeSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
 import { HeaderCenter } from "../../styled/components/header/HeaderCenter";
@@ -13,7 +14,6 @@ import { StyledLogo } from "../../styled/components/header/StyledLogo";
 import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
 import UserMenu from "../user/UserMenu";
 import HeaderTabs from "./HeaderTabs";
-import PeopleIcon from "@mui/icons-material/People";
 
 export const Header = () => {
   const theme = useAppSelector(selectTheme);

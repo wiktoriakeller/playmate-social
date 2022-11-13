@@ -1,8 +1,8 @@
 import { useAppSelector } from "../app/hooks";
-import { selectCurrentTab, TabName } from "../slices/tabSlice";
 import ChatTab from "../components/tabs/ChatTab";
 import GamesTab from "../components/tabs/GamesTab";
 import UserSearchTab from "../components/tabs/UserSearchTab";
+import { selectCurrentTab, TabName } from "../slices/tabSlice";
 
 const HomePage = () => {
   const currentTab = useAppSelector(selectCurrentTab);

@@ -1,55 +1,22 @@
+import { useEffect } from "react";
+import { useLazyGetFriendsListQuery } from "../../api/friends/friendsApi";
+import { useAppSelector } from "../../app/hooks";
+import { selectFriendsListSearchPhrase } from "../../slices/friendsListSlice";
 import { StyledFriendsList } from "../../styled/components/friends/StyledFriendsList";
-import FriendListItem, { IFriendsListItemProps } from "./FriendListItem";
+import FriendListItem from "./FriendListItem";
 
 const FriendsLits = () => {
-  const friends: IFriendsListItemProps[] = [
-    {
-      id: "1",
-      username: "Albert",
-      lastMessegeSender: "You",
-      lastMessage: "xd"
-    },
-    {
-      id: "2",
-      username: "Ania",
-      lastMessegeSender: "You",
-      lastMessage: "xd"
-    },
-    {
-      id: "3",
-      username: "Jhon",
-      lastMessegeSender: "You",
-      lastMessage: "xd"
-    },
-    {
-      id: "4",
-      username: "Marek",
-      lastMessegeSender: "You",
-      lastMessage: "xd"
-    },
-    {
-      id: "5",
-      username: "Michael",
-      lastMessegeSender: "You",
-      lastMessage: "xd"
-    },
-    {
-      id: "6",
-      username: "Naruto",
-      lastMessegeSender: "You",
-      lastMessage: "xd"
-    },
-    {
-      id: "7",
-      username: "Naruto",
-      lastMessegeSender: "You",
-      lastMessage: "xd"
-    }
-  ];
+  const friendsSearchPhrase = useAppSelector(selectFriendsListSearchPhrase);
+  const [getFriendsListLazy, { data, isLoading }] =
+    useLazyGetFriendsListQuery();
+
+  useEffect(() => {
+    getFriendsListLazy({});
+  }, [friendsSearchPhrase]);
 
   return (
     <StyledFriendsList>
-      {friends.map((item) => (
+      {data?.data.friends.map((item) => (
         <FriendListItem {...item} key={item.id} />
       ))}
     </StyledFriendsList>
