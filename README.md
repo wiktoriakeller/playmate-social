@@ -41,3 +41,34 @@ To run the social-frontend application without docker compose create `.env` file
 ```
 REACT_APP_BASE_API_URL=http://localhost:5000
 ```
+
+
+## Battleships
+
+Create `.env` file in the `src/games/battleships` folder, it should contain following variables:
+
+- `REACT_APP_BASE_API_URL` - base url to game client.
+
+Example file:
+
+```
+REACT_APP_BASE_API_URL=http://localhost:3000
+```
+
+Then in the `src/games/battleships` folder run:
+
+```
+docker compose up
+```
+
+To delete created containers run:
+
+```
+docker compose down
+```
+
+To force rebuild of the containers run:
+
+```
+docker compose up --build
+```

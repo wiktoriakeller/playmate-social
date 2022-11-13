@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Domain.Entities;
-using System.Linq.Expressions;
 
 namespace Playmate.Social.Infrastructure.Persistence.Repositories;
 
@@ -11,7 +10,7 @@ public class FriendRepository : BaseRepository<Friend>, IFriendRepository
     {
     }
 
-    public async Task<IEnumerable<User>> GetFriendsWhere(User user, Expression<Func<User, bool>> predicate)
+    public async Task<IEnumerable<User>> GetFriends(User user)
     {
         var friends = _dbContext.Set<Friend>()
             .Where(f => f.RequesterId == user.Id)
@@ -25,9 +24,14 @@ public class FriendRepository : BaseRepository<Friend>, IFriendRepository
             .Concat(friends);
 
         return await friends2
-            .Where(predicate)
             .OrderBy(f => f.Username)
             .ToListAsync();
+    }
+
+    public async Task<IEnumerable<User>> GetFriendsWhere(User user, Func<User, bool> predicate)
+    {
+        var friends = await GetFriends(user);
+        return friends.Where(predicate);
     }
 
     public async Task<Friend?> GetFriend(User user, Guid friendId) =>

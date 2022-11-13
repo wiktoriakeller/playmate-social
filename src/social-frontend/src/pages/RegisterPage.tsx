@@ -39,6 +39,7 @@ const RegisterPage = () => {
         <FormBox>
           <TextField
             label="Email"
+            type={"email"}
             variant="outlined"
             onChange={(e) => setEmail(e.target.value)}
             fullWidth

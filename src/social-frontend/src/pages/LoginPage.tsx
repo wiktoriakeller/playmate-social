@@ -40,6 +40,7 @@ const LoginPage = () => {
         <FormBox>
           <TextField
             label="Email"
+            type={"email"}
             variant="outlined"
             onChange={(event) => setEmail(event.target.value)}
             fullWidth
