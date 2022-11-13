@@ -4,7 +4,7 @@
 
 ## Social app
 
-Create `.env` file in the `src` folder, it should contain following variables:
+Create `.env` file in the `src` folder, it should contain the following variables:
 
 - `SA_PASSWORD` - password to the database,
 - `JWT_KEY` - secret key for the JWT tokens
@@ -42,10 +42,9 @@ To run the social-frontend application without docker compose create `.env` file
 REACT_APP_BASE_API_URL=http://localhost:5000
 ```
 
-
 ## Battleships
 
-Create `.env` file in the `src/games/battleships` folder, it should contain following variables:
+Create `.env` file in the `src/games/battleships` folder, it should contain the following variables:
 
 - `REACT_APP_BASE_API_URL` - base url to game client.
 
