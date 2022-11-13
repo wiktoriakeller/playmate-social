@@ -3,7 +3,7 @@ import _ from "lodash";
 import { RootState } from "../app/store";
 import { getUserFromStorage } from "../common/storage";
 
-export interface IUserState {
+export interface IUserIdentityState {
   id?: string;
   email?: string;
   username?: string;
@@ -16,7 +16,7 @@ export interface IUserTokens {
   refreshToken?: string;
 }
 
-export const getEmptyUser = () => ({
+export const getEmptyUserIdentity = () => ({
   id: null,
   email: null,
   username: null,
@@ -24,36 +24,43 @@ export const getEmptyUser = () => ({
   refreshToken: null
 });
 
-const getUserInitialState = () => {
+const getUserIdentityInitialState = () => {
   const user = getUserFromStorage();
 
   if (user === null) {
-    return getEmptyUser();
+    return getEmptyUserIdentity();
   }
 
   return user;
 };
 
-export const userSlice = createSlice({
+export const userIdentitySlice = createSlice({
   name: "user",
-  initialState: getUserInitialState(),
+  initialState: getUserIdentityInitialState(),
   reducers: {
-    setUser(state: IUserState, action: PayloadAction<IUserState>) {
+    setUserIdentity(
+      state: IUserIdentityState,
+      action: PayloadAction<IUserIdentityState>
+    ) {
       _.assign(state, action.payload);
     },
-    setUserTokens(state: IUserState, action: PayloadAction<IUserTokens>) {
+    setUserTokens(
+      state: IUserIdentityState,
+      action: PayloadAction<IUserTokens>
+    ) {
       state.jwtToken = action.payload.jwtToken;
       state.refreshToken = action.payload.refreshToken;
     }
   }
 });
 
-export const { setUser, setUserTokens } = userSlice.actions;
+export const { setUserIdentity, setUserTokens } = userIdentitySlice.actions;
 
-export const selectUser = (state: RootState): IUserState => state.user;
+export const selectUserIdentity = (state: RootState): IUserIdentityState =>
+  state.user;
 export const selectUserTokens = (state: RootState): IUserTokens => ({
   jwtToken: state.user.jwtToken,
   refreshToken: state.user.refreshToken
 });
 
-export default userSlice.reducer;
+export default userIdentitySlice.reducer;

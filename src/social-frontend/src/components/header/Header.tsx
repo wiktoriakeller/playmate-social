@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setCurrentTab, TabName, tabsDictionary } from "../../slices/tabSlice";
 import { selectTheme, setTheme, ThemeType } from "../../slices/themeSlice";
-import { selectUser } from "../../slices/userSlice";
+import { selectUserIdentity } from "../../slices/userIdentitySlice";
 import { HeaderCenter } from "../../styled/components/header/HeaderCenter";
 import { HeaderLeftSide } from "../../styled/components/header/HeaderLeftSide";
 import { HeaderRightSide } from "../../styled/components/header/HeaderRightSide";
@@ -17,7 +17,7 @@ import PeopleIcon from "@mui/icons-material/People";
 
 export const Header = () => {
   const theme = useAppSelector(selectTheme);
-  const user = useAppSelector(selectUser);
+  const user = useAppSelector(selectUserIdentity);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 

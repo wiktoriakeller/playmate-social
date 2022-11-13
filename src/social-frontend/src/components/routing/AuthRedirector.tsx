@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "../../app/hooks";
-import { selectUserTokens } from "../../slices/userSlice";
+import { selectUserTokens } from "../../slices/userIdentitySlice";
 
 export interface AuthRedirectorProps {
   redirectToHome?: boolean;

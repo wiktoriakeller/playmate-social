@@ -1,14 +1,15 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { InputAdornment, TextField, Typography } from "@mui/material";
+import { InputAdornment, Typography } from "@mui/material";
 import { StyledFriendsSearch } from "../../styled/components/friends/StyledFriendsSearch";
+import { RoundTextField } from "../../styled/components/mui/RoundTextField";
 
 const FriendsSearch = () => {
   return (
     <StyledFriendsSearch>
-      <Typography variant="h6" sx={{ fontWeight: "bold" }}>
+      <Typography variant="h6" sx={{ fontWeight: "bold", paddingLeft: "4px" }}>
         Friends
       </Typography>
-      <TextField
+      <RoundTextField
         size="small"
         placeholder={"Search"}
         fullWidth

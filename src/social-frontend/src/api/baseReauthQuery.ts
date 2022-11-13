@@ -5,7 +5,7 @@ import type {
 } from "@reduxjs/toolkit/dist/query";
 import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
 import { getUserFromStorage } from "../common/storage";
-import { setUserTokens } from "../slices/userSlice";
+import { setUserTokens } from "../slices/userIdentitySlice";
 
 const apiUrl = process.env.REACT_APP_BASE_API_URL;
 const baseUrl = `${apiUrl}/api/v1`;

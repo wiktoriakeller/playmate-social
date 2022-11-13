@@ -5,11 +5,11 @@ import { userListenerMiddleware } from "../middleware/userListenerMiddleware";
 import { friendsListSlice } from "../slices/friendsListSlice";
 import { tabSlice } from "../slices/tabSlice";
 import { themeSlice } from "../slices/themeSlice";
-import { userSlice } from "../slices/userSlice";
+import { userIdentitySlice } from "../slices/userIdentitySlice";
 
 export const store = configureStore({
   reducer: {
-    [userSlice.name]: userSlice.reducer,
+    [userIdentitySlice.name]: userIdentitySlice.reducer,
     [themeSlice.name]: themeSlice.reducer,
     [tabSlice.name]: tabSlice.reducer,
     [friendsListSlice.name]: friendsListSlice.reducer,

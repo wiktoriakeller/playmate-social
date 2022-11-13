@@ -11,7 +11,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { clearUserFromStorage } from "../../common/storage";
-import { getEmptyUser, setUser } from "../../slices/userSlice";
+import {
+  getEmptyUserIdentity,
+  setUserIdentity
+} from "../../slices/userIdentitySlice";
 
 const UserMenu = () => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -27,7 +30,7 @@ const UserMenu = () => {
   };
 
   const handleUserLogout = () => {
-    disptach(setUser(getEmptyUser()));
+    disptach(setUserIdentity(getEmptyUserIdentity()));
     handleCloseUserMenu();
     navigate("/login");
   };

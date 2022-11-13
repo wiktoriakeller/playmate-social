@@ -5,17 +5,17 @@ import {
   storeUser
 } from "../common/storage";
 import {
-  IUserState,
+  IUserIdentityState,
   IUserTokens,
-  setUser,
+  setUserIdentity,
   setUserTokens
-} from "../slices/userSlice";
+} from "../slices/userIdentitySlice";
 
 export const userListenerMiddleware = createListenerMiddleware();
 
 userListenerMiddleware.startListening({
-  actionCreator: setUser,
-  effect: (action: PayloadAction<IUserState>) => {
+  actionCreator: setUserIdentity,
+  effect: (action: PayloadAction<IUserIdentityState>) => {
     if (action.payload.jwtToken === null) {
       clearUserFromStorage();
     }
@@ -32,6 +32,6 @@ userListenerMiddleware.startListening({
       ...user,
       userTokens: action.payload as IUserTokens
     };
-    apiListener.dispatch(setUser(newUser));
+    apiListener.dispatch(setUserIdentity(newUser));
   }
 });

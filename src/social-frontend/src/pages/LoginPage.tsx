@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthenticateUserMutation } from "../api/identity/identityApi";
 import { useAppDispatch } from "../app/hooks";
-import { setUser } from "../slices/userSlice";
+import { setUserIdentity } from "../slices/userIdentitySlice";
 import { StyledButton } from "../styled/components/mui/StyledButton";
 import { StyledDivider } from "../styled/components/mui/StyledDivider";
 import { StyledLink } from "../styled/components/mui/StyledLink";
@@ -26,7 +26,7 @@ const LoginPage = () => {
     })
       .unwrap()
       .then((e) => {
-        dispatch(setUser(e.data));
+        dispatch(setUserIdentity(e.data));
         navigate("/");
       })
       .catch((e) => {

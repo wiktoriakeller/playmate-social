@@ -6,5 +6,5 @@ export const StyledChatMessages = styled.div`
   flex-direction: column;
   margin-bottom: auto;
   overflow-y: scroll;
-  height: calc(100vh - 168px);
+  height: calc(100vh - 177px);
 `;
