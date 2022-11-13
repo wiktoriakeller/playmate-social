@@ -7,4 +7,5 @@ export const FriendsContainer = styled.div`
   align-items: center;
   justify-content: center;
   min-width: 260px;
+  height: 100%;
 `;

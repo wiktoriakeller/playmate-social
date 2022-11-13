@@ -8,7 +8,6 @@ export const StyledFriendsListItem = styled.div<IStyledFriendsListItemProps>`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
   width: 100%;
   padding: 2px 5px;
   border-radius: ${(props) => `${props.theme.shape.borderRadius}px`};
@@ -25,5 +24,9 @@ export const StyledFriendsListItem = styled.div<IStyledFriendsListItemProps>`
 
       return "";
     }};
+  }
+
+  &:last-child {
+    margin-bottom: auto;
   }
 `;

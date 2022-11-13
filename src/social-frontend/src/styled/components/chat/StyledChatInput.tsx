@@ -1,8 +1,10 @@
 import styled from "@emotion/styled";
 
 export const StyledChatInput = styled.div`
-  align-self: flex-end;
   width: 100%;
-  height: 100%;
+  height: 56px;
   display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
 `;
