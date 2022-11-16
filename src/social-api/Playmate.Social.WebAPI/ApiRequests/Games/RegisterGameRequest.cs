@@ -1,4 +1,4 @@
-﻿namespace Playmate.Social.WebAPI.Requests.Games;
+﻿namespace Playmate.Social.WebAPI.ApiRequests.Games;
 
 public class RegisterGameRequest
 {

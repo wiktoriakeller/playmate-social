@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Playmate.Social.Application.Identity.Commands;
-using Playmate.Social.WebAPI.Requests.Users;
+using Playmate.Social.WebAPI.ApiRequests.Users;
 
-namespace Playmate.Social.WebAPI.Requests.Mappings;
+namespace Playmate.Social.WebAPI.ApiRequests.Mappings;
 
 internal class CoursesMappingProfile : Profile
 {

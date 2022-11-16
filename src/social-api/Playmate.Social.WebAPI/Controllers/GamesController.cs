@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Playmate.Social.Application.Games.Commands;
 using Playmate.Social.Application.Games.Queries;
-using Playmate.Social.WebAPI.Requests.Games;
+using Playmate.Social.WebAPI.ApiRequests.Games;
 
 namespace Playmate.Social.WebAPI.Controllers;
 
