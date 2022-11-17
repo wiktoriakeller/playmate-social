@@ -54,8 +54,7 @@ const ChatInput = () => {
     }
   }, [connection, dispatch]);
 
-  const sendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const sendMessage = async () => {
     if (
       currentInput !== "" &&
       connection.state === HubConnectionState.Connected
@@ -92,11 +91,22 @@ const ChatInput = () => {
   return (
     <StyledChatInput>
       <form
-        onSubmit={async (evnet) => await sendMessage(evnet)}
+        onSubmit={async (event) => {
+          event.preventDefault();
+          await sendMessage();
+        }}
         style={{ width: "100%" }}
       >
         <StyledTextField
           fullWidth
+          multiline
+          maxRows={2}
+          onKeyDown={async (event) => {
+            if (event.key.toLocaleLowerCase() === "enter" && !event.shiftKey) {
+              event.preventDefault();
+              await sendMessage();
+            }
+          }}
           value={currentInput}
           variant="outlined"
           placeholder={"Message"}

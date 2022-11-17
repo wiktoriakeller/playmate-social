@@ -12,6 +12,7 @@ export const StyledChatMessage = styled.div<StyledChatMessageProps>`
   color: ${(props) => props.theme.palette.white};
   border-radius: ${(props) => `${props.theme.shape.borderRadius}px`};
   margin: 5px 20px;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
   align-self: ${(props) => (props.isUserMessage ? "flex-start" : "flex-end")};
 `;
