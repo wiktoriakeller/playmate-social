@@ -1,4 +1,4 @@
-﻿namespace Playmate.Social.WebAPI.Requests.Users
+﻿namespace Playmate.Social.WebAPI.ApiRequests.Users
 {
     public record CreateUserRequest
     {

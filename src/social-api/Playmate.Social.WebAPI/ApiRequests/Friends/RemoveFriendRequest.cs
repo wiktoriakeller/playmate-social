@@ -1,4 +1,4 @@
-﻿namespace Playmate.Social.WebAPI.Requests.Friends;
+﻿namespace Playmate.Social.WebAPI.ApiRequests.Friends;
 
 public class RemoveFriendRequest
 {

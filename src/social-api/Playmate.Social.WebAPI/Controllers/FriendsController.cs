@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Playmate.Social.Application.Friends.Commands;
 using Playmate.Social.Application.Friends.Queries;
-using Playmate.Social.WebAPI.Requests.Friends;
+using Playmate.Social.WebAPI.ApiRequests.Friends;
 
 namespace Playmate.Social.WebAPI.Controllers;
 
