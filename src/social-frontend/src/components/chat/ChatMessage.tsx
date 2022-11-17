@@ -1,11 +1,16 @@
-import React from "react";
+import { StyledChatMessage } from "../../styled/components/chat/StyledChatMessage";
 
 export interface IChatMessageProps {
   message: string;
+  isUserMessage: boolean;
 }
 
 const ChatMessage = (props: IChatMessageProps) => {
-  return <span>{props.message}</span>;
+  return (
+    <StyledChatMessage isUserMessage={props.isUserMessage}>
+      {props.message}
+    </StyledChatMessage>
+  );
 };
 
 export default ChatMessage;
