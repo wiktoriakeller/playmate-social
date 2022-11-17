@@ -10,4 +10,5 @@ export const StyledChatMessages = styled(StyledScrollbar)`
   margin: auto;
   overflow-y: scroll;
   scroll-behavior: smooth;
+  flex-direction: column-reverse;
 `;

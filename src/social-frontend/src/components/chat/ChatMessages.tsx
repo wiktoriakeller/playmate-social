@@ -8,26 +8,18 @@ import ChatMessage from "./ChatMessage";
 const ChatMessages = () => {
   const messages = useAppSelector(selectChatMessages);
   const user = useAppSelector(selectUserIdentity);
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
 
   return (
     <StyledChatMessages>
-      {messages.map((data, index) => (
+      {messages.map((_, index) => (
         <ChatMessage
           key={index}
-          message={data.message}
-          isUserMessage={user.id === data.friendUserId}
+          message={messages[messages.length - 1 - index].message}
+          isUserMessage={
+            user.id === messages[messages.length - 1 - index].friendUserId
+          }
         />
       ))}
-      <div ref={messagesEndRef} />
     </StyledChatMessages>
   );
 };
