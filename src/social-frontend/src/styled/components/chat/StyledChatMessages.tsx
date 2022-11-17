@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
+import { StyledScrollbar } from "../scrollbar/StyledScrollbar";
 
-export const StyledChatMessages = styled.div`
+export const StyledChatMessages = styled(StyledScrollbar)`
   width: 100%;
   height: calc(100vh - 177px);
   display: flex;
@@ -8,4 +9,5 @@ export const StyledChatMessages = styled.div`
   align-items: flex-start;
   margin: auto;
   overflow-y: scroll;
+  scroll-behavior: smooth;
 `;
