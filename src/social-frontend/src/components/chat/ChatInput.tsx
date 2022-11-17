@@ -1,10 +1,13 @@
 import { HubConnectionBuilder, HubConnectionState } from "@microsoft/signalr";
+import SendIcon from "@mui/icons-material/Send";
+import { Tooltip } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addChatMessage } from "../../slices/chatSlice";
 import { selectSelectedFriend } from "../../slices/friendsListSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
 import { StyledChatInput } from "../../styled/components/chat/StyledChatInput";
+import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
 import { StyledTextField } from "../../styled/components/mui/StyledTextField";
 
 const apiUrl = process.env.REACT_APP_BASE_API_URL;
@@ -112,11 +115,23 @@ const ChatInput = () => {
           placeholder={"Message"}
           size="small"
           sx={{
-            padding: "0px 6%"
+            padding: "0 2%"
           }}
           onChange={changeInputMessage}
         />
       </form>
+      <Tooltip title="Send">
+        <StyledIconButton
+          sx={{ margin: "0px 1% 0px -1%", padding: "10px" }}
+          size="large"
+          onClick={async (event) => {
+            event.preventDefault();
+            await sendMessage();
+          }}
+        >
+          <SendIcon />
+        </StyledIconButton>
+      </Tooltip>
     </StyledChatInput>
   );
 };
