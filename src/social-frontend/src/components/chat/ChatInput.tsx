@@ -45,10 +45,12 @@ const ChatInput = () => {
   useEffect(() => {
     if (!!connection) {
       connection.on("ReceiveChatMessage", (request) => {
+        console.log(request);
         dispatch(
           addChatMessage({
             message: request.message,
-            friendUserId: request.receiverId
+            friendUserId: request.senderId,
+            senderId: request.senderId
           })
         );
       });
@@ -72,7 +74,8 @@ const ChatInput = () => {
           dispatch(
             addChatMessage({
               message: currentInput,
-              friendUserId: selectedFriend.id
+              friendUserId: selectedFriend.id,
+              senderId: user.id
             })
           );
         })
