@@ -1,14 +1,14 @@
 import React from "react";
 import UserSearch from "../../components/userSearch/UserSearch";
 import UserSearchList from "../../components/userSearch/UserSearchList";
-import { UserSearchContainer } from "../../styled/components/userSearch/UserSearchContainer";
+import { CenteredListContainer } from "../../styled/components/CenteredListContainer";
 
 const UserSearchTab = () => {
   return (
-    <UserSearchContainer>
+    <CenteredListContainer>
       <UserSearch />
       <UserSearchList />
-    </UserSearchContainer>
+    </CenteredListContainer>
   );
 };
 
