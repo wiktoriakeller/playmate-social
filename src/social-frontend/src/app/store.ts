@@ -1,5 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { friendsApi } from "../api/friends/friendsApi";
+import { gameIntegrationApi } from "../api/games/gameIntegrationApi";
+import { gamesApi } from "../api/games/gamesApi";
 import { identityApi } from "../api/identity/identityApi";
 import { usersApi } from "../api/users/usersApi";
 import { themeListenerMiddleware } from "../middleware/themeListenerMiddleware";
@@ -20,7 +22,9 @@ export const store = configureStore({
     [identityApi.reducerPath]: identityApi.reducer,
     [friendsApi.reducerPath]: friendsApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
-    [friendsApi.reducerPath]: friendsApi.reducer
+    [friendsApi.reducerPath]: friendsApi.reducer,
+    [gamesApi.reducerPath]: gamesApi.reducer,
+    [gameIntegrationApi.reducerPath]: gameIntegrationApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -29,6 +33,8 @@ export const store = configureStore({
       .concat(identityApi.middleware)
       .concat(usersApi.middleware)
       .concat(friendsApi.middleware)
+      .concat(gamesApi.middleware)
+      .concat(gameIntegrationApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;
