@@ -1,9 +1,9 @@
 import { Skeleton } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import React, { useState } from "react";
-import { useLazyInitiateGameQuery } from "../../api/games/gameIntegrationApi";
+import React, { useRef, useState } from "react";
 import { useGetGamesQuery } from "../../api/games/gamesApi";
 import { IGame } from "../../api/games/responses/getGamesResponse";
+import { useInitiateGame } from "../../app/useInitiateGame";
 import { IFriend } from "../../slices/friendsListSlice";
 import FriendsListDialog from "./FriendsListDialog";
 import GamesListItem from "./GamesListItem";
@@ -11,13 +11,11 @@ import GamesListItem from "./GamesListItem";
 const GamesList = () => {
   const { data, isLoading } = useGetGamesQuery({});
   const [dialogOpen, setDialogOpen] = useState(false);
-  let selectedGame = null;
-
-  const [initializeGame, { data: gameUrls, isLoading: gameLoading }] =
-    useLazyInitiateGameQuery();
+  const { StartGame } = useInitiateGame();
+  let selectedGame = useRef<IGame>();
 
   const onGameSelected = (game: IGame) => {
-    selectedGame = game;
+    selectedGame.current = game;
     setDialogOpen(true);
   };
 
@@ -26,10 +24,12 @@ const GamesList = () => {
     if (!friend) {
       return;
     }
-    sendGameRequest(selectedGame, friend);
+    sendGameRequest(selectedGame.current, friend);
   };
 
-  const sendGameRequest = (game: IGame, friend: IFriend) => {};
+  const sendGameRequest = (game: IGame, friend: IFriend) => {
+    StartGame(friend, game);
+  };
 
   return isLoading ? (
     <>
@@ -49,7 +49,7 @@ const GamesList = () => {
     <>
       <FriendsListDialog open={dialogOpen} onClose={onFriendSelected} />
       <Grid container spacing={3}>
-        {data.data.games?.map((item) => (
+        {data?.data?.games?.map((item) => (
           <Grid xs={12} sm={4} key={item.id}>
             <GamesListItem
               game={item}
