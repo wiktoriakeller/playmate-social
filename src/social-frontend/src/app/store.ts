@@ -2,8 +2,9 @@ import { configureStore } from "@reduxjs/toolkit";
 import { friendsApi } from "../api/friends/friendsApi";
 import { identityApi } from "../api/identity/identityApi";
 import { usersApi } from "../api/users/usersApi";
+import { signalRListenerMiddleware } from "../middleware/signalRListenerMiddleware";
 import { themeListenerMiddleware } from "../middleware/themeListenerMiddleware";
-import { userListenerMiddleware } from "../middleware/userListenerMiddleware";
+import { userIdentityListenerMiddleware } from "../middleware/userIdentityListenerMiddleware";
 import { chatSlice } from "../slices/chatSlice";
 import { friendsListSlice } from "../slices/friendsListSlice";
 import { tabSlice } from "../slices/tabSlice";
@@ -26,7 +27,8 @@ export const store = configureStore({
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
-      .concat(userListenerMiddleware.middleware)
+      .concat(userIdentityListenerMiddleware.middleware)
+      .concat(signalRListenerMiddleware.middleware)
       .concat(themeListenerMiddleware.middleware)
       .concat(identityApi.middleware)
       .concat(usersApi.middleware)

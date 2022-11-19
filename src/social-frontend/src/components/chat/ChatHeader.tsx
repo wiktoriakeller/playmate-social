@@ -5,6 +5,7 @@ import { StyledChatHeader } from "../../styled/components/chat/StyledChatHeader"
 
 const ChatHeader = () => {
   const selectedUser = useAppSelector(selectSelectedFriend);
+
   return (
     <StyledChatHeader>
       <Avatar alt={selectedUser.username} />

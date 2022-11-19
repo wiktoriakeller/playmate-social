@@ -43,21 +43,15 @@ export const userIdentitySlice = createSlice({
       action: PayloadAction<IUserIdentityState>
     ) {
       _.assign(state, action.payload);
-    },
-    setUserTokens(
-      state: IUserIdentityState,
-      action: PayloadAction<IUserTokens>
-    ) {
-      state.jwtToken = action.payload.jwtToken;
-      state.refreshToken = action.payload.refreshToken;
     }
   }
 });
 
-export const { setUserIdentity, setUserTokens } = userIdentitySlice.actions;
+export const { setUserIdentity } = userIdentitySlice.actions;
 
 export const selectUserIdentity = (state: RootState): IUserIdentityState =>
   state.user;
+
 export const selectUserTokens = (state: RootState): IUserTokens => ({
   jwtToken: state.user.jwtToken,
   refreshToken: state.user.refreshToken
