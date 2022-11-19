@@ -6,9 +6,9 @@
 
 Create `.env` file in the `src` folder, it should contain the following variables:
 
-- `SA_PASSWORD` - password to the database,
-- `JWT_KEY` - secret key for the JWT tokens
-- `REACT_APP_BASE_API_URL` - base url to the API.
+-   `SA_PASSWORD` - password to the database,
+-   `JWT_KEY` - secret key for the JWT tokens
+-   `REACT_APP_BASE_API_URL` - base url to the API.
 
 Example file:
 
@@ -46,12 +46,14 @@ REACT_APP_BASE_API_URL=http://localhost:5000
 
 Create `.env` file in the `src/games/battleships` folder, it should contain the following variables:
 
-- `REACT_APP_BASE_API_URL` - base url to game client.
+-   `REACT_APP_BASE_API_URL` - internal url
+-   `REACT_APP_PUBLIC_URL` - base url to game client.
 
 Example file:
 
 ```
 REACT_APP_BASE_API_URL=http://localhost:3000
+REACT_APP_PUBLIC_URL=http://localhost:4000
 ```
 
 Then in the `src/games/battleships` folder run:

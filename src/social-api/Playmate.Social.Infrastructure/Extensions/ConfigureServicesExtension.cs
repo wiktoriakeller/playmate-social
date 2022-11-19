@@ -33,7 +33,6 @@ public static class ConfigureServicesExtension
         RegisterRepositories(services);
 
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-
         services.AddHttpContextAccessor();
 
         var tokenValidationParameters = new TokenValidationParameters
@@ -52,11 +51,29 @@ public static class ConfigureServicesExtension
             options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         })
-        .AddJwtBearer(cfg =>
+        .AddJwtBearer(options =>
         {
-            cfg.RequireHttpsMetadata = false;
-            cfg.SaveToken = true;
-            cfg.TokenValidationParameters = tokenValidationParameters;
+            options.RequireHttpsMetadata = false;
+            options.SaveToken = true;
+            options.TokenValidationParameters = tokenValidationParameters;
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var accessTokenKey = "access_token";
+                    if (context.Request.Query.ContainsKey(accessTokenKey))
+                    {
+                        var accessToken = context.Request.Query[accessTokenKey];
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/notifications"))
+                        {
+                            context.Token = accessToken;
+                        }
+                    }
+
+                    return Task.CompletedTask;
+                }
+            };
         });
 
         //Mapping profiles

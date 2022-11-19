@@ -1,3 +1,6 @@
+import { HubConnection } from "@microsoft/signalr";
+import { useAppSelector } from "../../app/hooks";
+import { selectSelectedFriend } from "../../slices/friendsListSlice";
 import { ChatContainer } from "../../styled/components/chat/ChatContainer";
 import { FriendsContainer } from "../../styled/components/friends/FriendsContainer";
 import { StyledDivider } from "../../styled/components/mui/StyledDivider";
@@ -9,6 +12,8 @@ import FriendsLits from "../friends/FriendsLits";
 import FriendsSearch from "../friends/FriendsSearch";
 
 const ChatTab = () => {
+  const selectedFriend = useAppSelector(selectSelectedFriend);
+
   return (
     <StyledChatTab>
       <FriendsContainer>
@@ -17,9 +22,15 @@ const ChatTab = () => {
       </FriendsContainer>
       <StyledDivider orientation="vertical" flexItem />
       <ChatContainer>
-        <ChatHeader />
-        <ChatMessages />
-        <ChatInput />
+        {selectedFriend !== null ? (
+          <>
+            <ChatHeader />
+            <ChatMessages />
+            <ChatInput />
+          </>
+        ) : (
+          <></>
+        )}
       </ChatContainer>
     </StyledChatTab>
   );

@@ -5,6 +5,6 @@ export const ChatContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
+  width: calc(100vw - 360px);
   height: 100%;
 `;

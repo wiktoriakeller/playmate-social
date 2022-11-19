@@ -6,6 +6,7 @@ import { identityApi } from "../api/identity/identityApi";
 import { usersApi } from "../api/users/usersApi";
 import { themeListenerMiddleware } from "../middleware/themeListenerMiddleware";
 import { userListenerMiddleware } from "../middleware/userListenerMiddleware";
+import { chatSlice } from "../slices/chatSlice";
 import { friendsListSlice } from "../slices/friendsListSlice";
 import { tabSlice } from "../slices/tabSlice";
 import { themeSlice } from "../slices/themeSlice";
@@ -19,6 +20,7 @@ export const store = configureStore({
     [tabSlice.name]: tabSlice.reducer,
     [userSearchSlice.name]: userSearchSlice.reducer,
     [friendsListSlice.name]: friendsListSlice.reducer,
+    [chatSlice.name]: chatSlice.reducer,
     [identityApi.reducerPath]: identityApi.reducer,
     [friendsApi.reducerPath]: friendsApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
