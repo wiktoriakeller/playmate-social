@@ -4,6 +4,7 @@ using Playmate.Social.Application.Common;
 using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
+using Playmate.Social.Application.GameResults.Dtos;
 using Playmate.Social.Application.GameResults.Queries;
 using Playmate.Social.Application.GameResults.Responses;
 using Playmate.Social.Domain.Entities;
@@ -27,11 +28,12 @@ public class GetResultsForUserQueryHandler : IHandlerWrapper<GetResultsForUserQu
     {
         var user = _userService.CurrentUser;
         var result = _resultsRepository
-            .GetWhere(r => r.WinnerId == user.Id || r.LoserId == user.Id)
-            .GroupBy(r => r.GameId)
-            .SelectMany(group => group)
-            .ToList();
+            .GetWhere(r => r.WinnerId == user.Id || r.LoserId == user.Id);
 
-        return ResponseResult.Created(new GetResultsForUserResponse());
+        var grouped = result
+            .GroupBy(r => r.GameId).
+            ToDictionary(group => group.Key, group => group.Select(gameResult => _mapper.Map<GameResultDto>(gameResult)));
+
+        return ResponseResult.Created(new GetResultsForUserResponse(grouped));
     }
 }

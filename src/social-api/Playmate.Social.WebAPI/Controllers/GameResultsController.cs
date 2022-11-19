@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Playmate.Social.Application.GameResults.Commands;
 using Playmate.Social.Application.GameResults.Queries;
-using Playmate.Social.WebAPI.Requests.GameResults;
+using Playmate.Social.WebAPI.ApiRequests.GameResults;
 
 namespace Playmate.Social.WebAPI.Controllers;
 
@@ -16,6 +16,7 @@ public class GameResultsController : BaseApiController
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<IActionResult> GetResultsForUser()
     {
         var response = await _medaitor.Send(new GetResultsForUserQuery());
