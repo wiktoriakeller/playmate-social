@@ -351,3 +351,4 @@ MigrationBackup/
 
 # Environment files
 .env
+.idea/
