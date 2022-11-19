@@ -1,29 +1,37 @@
 import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
-import { getUserFromStorage, storeUser } from "../common/storage";
 import {
-  IUserState,
+  clearUserFromStorage,
+  getUserFromStorage,
+  storeUser
+} from "../common/storage";
+import {
+  IUserIdentityState,
   IUserTokens,
-  setUser,
+  setUserIdentity,
   setUserTokens
-} from "../slices/userSlice";
+} from "../slices/userIdentitySlice";
 
 export const userListenerMiddleware = createListenerMiddleware();
 
 userListenerMiddleware.startListening({
-  actionCreator: setUser,
-  effect: (action: PayloadAction<IUserState>) => {
+  actionCreator: setUserIdentity,
+  effect: (action: PayloadAction<IUserIdentityState>) => {
+    if (action.payload.jwtToken === null) {
+      clearUserFromStorage();
+    }
+
     storeUser(action.payload);
   }
 });
 
 userListenerMiddleware.startListening({
   actionCreator: setUserTokens,
-  effect: (action: PayloadAction<IUserTokens>, apiListener) => {
+  effect: (action: PayloadAction<IUserTokens>) => {
     const user = getUserFromStorage();
     const newUser = {
       ...user,
-      userTokens: action.payload as IUserTokens
+      ...action.payload
     };
-    apiListener.dispatch(setUser(newUser));
+    storeUser(newUser);
   }
 });

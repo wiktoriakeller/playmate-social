@@ -2,12 +2,16 @@ services:
   social-api:
     environment:
       - "ASPNETCORE_ENVIRONMENT=Development"
-      - "ConnectionStrings:DefaultConnection=Server=social-db-sql;Database=SocialDbDev;User=sa;Password=${SA_PASSWORD?err};"
+      - "ConnectionStrings:DefaultConnection=Server=social-db-sql;Database=SocialDbDev;User=sa;Password=${SA_PASSWORD?err};TrustServerCertificate=True;"
       - "Authentication:JwtOptions:Issuer=http://localhost:5000/"
       - "Authentication:JwtOptions:Audience=http://localhost:5000/"
+      - "AllowedOrigins=http://localhost:3000"
     ports:
       - 5000:80
 
   social-frontend:
+    build:
+      args:
+        REACT_APP_BASE_API_URL: ${REACT_APP_BASE_API_URL}
     ports:
       - 80:3000

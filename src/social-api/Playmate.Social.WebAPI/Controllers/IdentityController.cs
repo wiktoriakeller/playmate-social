@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Playmate.Social.Application.Identity.Commands;
-using Playmate.Social.WebAPI.Requests.Users;
+using Playmate.Social.Application.Identity.Queries;
+using Playmate.Social.WebAPI.ApiRequests.Users;
 
 namespace Playmate.Social.WebAPI.Controllers;
 
@@ -40,6 +42,15 @@ public class IdentityController : BaseApiController
     {
         var command = _mapper.Map<RefreshTokenCommand>(request);
         var response = await _medaitor.Send(command);
+        return GetStatusCode(response);
+    }
+
+    [Authorize]
+    [HttpGet("search/{username}")]
+    public async Task<IActionResult> GetUsersByUsername([FromRoute] string username)
+    {
+        var query = new GetUsersByUsernameQuery() { Username = username };
+        var response = await _medaitor.Send(query);
         return GetStatusCode(response);
     }
 }

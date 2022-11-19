@@ -13,6 +13,7 @@ public static class ConfigureCorsExtension
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .WithOrigins(origins)
+                .AllowCredentials()
             );
         });
 

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Playmate.Social.Application.Friends.Commands;
 using Playmate.Social.Application.Friends.Queries;
-using Playmate.Social.WebAPI.Requests.Friends;
+using Playmate.Social.WebAPI.ApiRequests.Friends;
 
 namespace Playmate.Social.WebAPI.Controllers;
 
@@ -17,9 +17,9 @@ public class FriendsController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetFriendsList()
+    public async Task<IActionResult> GetFriendsList([FromQuery] string? search)
     {
-        var response = await _medaitor.Send(new GetFriendsListQuery());
+        var response = await _medaitor.Send(new GetFriendsListQuery { Search = search ?? "" });
         return GetStatusCode(response);
     }
 

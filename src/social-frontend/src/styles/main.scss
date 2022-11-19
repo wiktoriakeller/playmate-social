@@ -1,63 +1,10 @@
-@use "~bootstrap/scss/bootstrap";
-@use "./components/header";
-@use "./components/form";
-@use "./components/mui/button";
-@use "./components/mui/textField";
-@use "./components/mui/link";
-@use "./components/mui/divider";
-@use "./pages/loginPage";
-@use "./pages/registerPage";
-@use "./colors";
-
-:root {
-  --primary-color: #{colors.$indigo-700};
-  --primary-color-hover: #{colors.$indigo-800};
-  --primary-background-color: #{colors.$grey-200};
-  --secondary-background-color: #{colors.$white};
-  --border-color: #{colors.$grey-300};
-  --text-primary-color: #{colors.$black};
-  --text-secondary-color: #{colors.$grey-800};
-  --text-thetridiary-color: #{colors.$grey-800};
-}
-
-.dark-mode {
-  --primary-background-color: #{colors.$grey-900};
-  --secondary-background-color: #{colors.$grey-800};
-  --border-color: #{colors.$grey-800};
-  --text-primary-color: #{colors.$white};
-  --text-secondary-color: #{colors.$grey-200};
-  --text-thetridiary-color: #{colors.$grey-400};
-  background-color: colors.$grey-900;
-  width: 100vw;
-  min-height: 100vh;
-}
-
 body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  background-color: colors.$grey-200;
   scrollbar-gutter: stable;
+  overflow-y: auto;
   overflow-x: hidden;
-}
-
-.main-layout {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-}
-
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.5);
 }

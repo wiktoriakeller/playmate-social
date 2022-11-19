@@ -51,7 +51,7 @@ public class IdentityService : IIdentityService
         return Task.FromResult(ResponseResult.Ok(user));
     }
 
-    public async Task<Response<User>> GetUserByJwtTokenAsync(string jwtToken)
+    public Response<User> GetUserByJwtToken(string jwtToken)
     {
         var result = _jwtTokenService.IsJwtTokenValid(jwtToken, true);
 
@@ -103,7 +103,7 @@ public class IdentityService : IIdentityService
             return ResponseResult.ValidationError<AuthenticateUserResponse>(ErrorMessages.Identity.IncorrectCredentials);
         }
 
-        var newJwt = await _jwtTokenService.CreateJwtToken(user);
+        var newJwt = _jwtTokenService.CreateJwtToken(user);
         var newRefreshToken = await CreateRefreshToken(newJwt.Jti, user);
 
         var response = new AuthenticateUserResponse
@@ -144,7 +144,7 @@ public class IdentityService : IIdentityService
         }
 
         var user = _userRepository.GetWhere(u => u.Id.ToString() == result.userId).FirstOrDefault();
-        var newJwt = await _jwtTokenService.CreateJwtToken(user);
+        var newJwt = _jwtTokenService.CreateJwtToken(user);
         var newRefreshToken = await CreateRefreshToken(newJwt.Jti, user);
 
         var response = new RefreshTokenResponse

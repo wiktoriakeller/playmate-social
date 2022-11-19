@@ -1,6 +1,7 @@
 using Playmate.Social.Application.Common.Extensions;
 using Playmate.Social.Infrastructure.Extensions;
 using Playmate.Social.WebAPI.Extensions;
+using Playmate.Social.WebAPI.Hubs;
 using Playmate.Social.WebAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,7 @@ var policyName = "social-frontend";
 builder.Services.AddCorsConfiguration(builder.Configuration, policyName);
 builder.Services.AddSwaggerDoc();
 builder.Services.AddControllers();
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -26,8 +28,6 @@ if (builder.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
-
 app.UseAuthentication();
 
 app.UseAuthorization();
@@ -37,5 +37,7 @@ app.UseIdentityMiddleware();
 app.UseErrorHandlingMiddleware();
 
 app.MapControllers();
+
+app.MapHub<NotificationsHub>(NotificationsHub.HubPath);
 
 app.Run();

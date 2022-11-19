@@ -23,13 +23,19 @@ public class FriendRepository : BaseRepository<Friend>, IFriendRepository
             .Select(f => f.Requester)
             .Concat(friends);
 
-        return await friends2.ToListAsync();
+        return await friends2
+            .OrderBy(f => f.Username)
+            .ToListAsync();
     }
 
-    public async Task<Friend?> GetFriend(User user, Guid friendId)
+    public async Task<IEnumerable<User>> GetFriendsWhere(User user, Func<User, bool> predicate)
     {
-        var friend = await _dbContext.Set<Friend>().Where(f => f.AddresseeId == user.Id && f.RequesterId == friendId ||
-        f.RequesterId == user.Id && f.AddresseeId == friendId).FirstOrDefaultAsync();
-        return friend;
+        var friends = await GetFriends(user);
+        return friends.Where(predicate);
     }
+
+    public async Task<Friend?> GetFriend(User user, Guid friendId) =>
+        await _dbContext.Set<Friend>()
+        .Where(f => f.AddresseeId == user.Id && f.RequesterId == friendId || f.RequesterId == user.Id && f.AddresseeId == friendId)
+        .FirstOrDefaultAsync();
 }
