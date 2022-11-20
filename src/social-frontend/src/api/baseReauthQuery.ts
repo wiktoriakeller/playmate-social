@@ -5,17 +5,14 @@ import type {
 } from "@reduxjs/toolkit/dist/query";
 import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
 import { getUserFromStorage } from "../common/storage";
-import {
-  getEmptyUserIdentity,
-  setUserIdentity
-} from "../slices/userIdentitySlice";
+import { setUserIdentity } from "../slices/userIdentitySlice";
 import { IRefreshTokenResponse } from "./identity/responses/refreshTokenResponse";
 
-const apiUrl = process.env.REACT_APP_BASE_API_URL;
-const baseUrl = `${apiUrl}/api/v1`;
+const baseUrl = process.env.REACT_APP_BASE_API_URL;
+const baseApiUrl = `${baseUrl}/api/v1`;
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: baseUrl,
+  baseUrl: baseApiUrl,
   mode: "cors",
   prepareHeaders: (headers, { endpoint }) => {
     const user = getUserFromStorage();

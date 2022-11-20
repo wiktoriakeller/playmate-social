@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import _ from "lodash";
 import { RootState } from "../app/store";
-import { getUserFromStorage } from "../common/storage";
 
 export interface IUserIdentityState {
   id?: string;
@@ -24,19 +23,9 @@ export const getEmptyUserIdentity = () => ({
   refreshToken: null
 });
 
-const getUserIdentityInitialState = () => {
-  const user = getUserFromStorage();
-
-  if (user === null) {
-    return getEmptyUserIdentity();
-  }
-
-  return user;
-};
-
 export const userIdentitySlice = createSlice({
   name: "user",
-  initialState: getUserIdentityInitialState(),
+  initialState: getEmptyUserIdentity(),
   reducers: {
     setUserIdentity(
       state: IUserIdentityState,

@@ -2,8 +2,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "../../pages/HomePage";
 import LoginPage from "../../pages/LoginPage";
 import RegisterPage from "../../pages/RegisterPage";
+import AuthRedirector from "../authentication/AuthRedirector";
 import { Header } from "../header/Header";
-import AuthRedirector from "./AuthRedirector";
 
 function Router() {
   return (
