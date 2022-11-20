@@ -1,24 +1,32 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { InputAdornment, Typography } from "@mui/material";
 import _ from "lodash";
-import React, { useCallback } from "react";
-import { useAppDispatch } from "../../app/hooks";
-import { setFriendsListSearchPhrase } from "../../slices/friendsListSlice";
+import { useCallback, useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  selectFriendsListSearchPhrase,
+  setFriendsListSearchPhrase
+} from "../../slices/friendsListSlice";
 import { StyledFriendsSearch } from "../../styled/components/friends/StyledFriendsSearch";
 import { StyledTextField } from "../../styled/components/mui/StyledTextField";
 
 const FriendsSearch = () => {
   const dispatch = useAppDispatch();
+  const storedSearchPhrase = useAppSelector(selectFriendsListSearchPhrase);
+  const [searchPhrase, setSearchPhrase] = useState(storedSearchPhrase);
 
-  const changeSearchPhrase = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    dispatch(setFriendsListSearchPhrase(event.target.value));
-  };
+  useEffect(() => {
+    debouncedChangeSearchPhrase(searchPhrase);
+  }, [searchPhrase]);
 
   const debouncedChangeSearchPhrase = useCallback(
-    _.debounce(changeSearchPhrase, 500),
-    []
+    (newSerchPhrase: string) => {
+      _.debounce(
+        () => dispatch(setFriendsListSearchPhrase(newSerchPhrase)),
+        500
+      )();
+    },
+    [dispatch]
   );
 
   return (
@@ -27,6 +35,7 @@ const FriendsSearch = () => {
         Friends
       </Typography>
       <StyledTextField
+        value={searchPhrase}
         size="small"
         placeholder={"Search"}
         fullWidth
@@ -37,7 +46,7 @@ const FriendsSearch = () => {
             </InputAdornment>
           )
         }}
-        onChange={debouncedChangeSearchPhrase}
+        onChange={(event) => setSearchPhrase(event.target.value)}
       />
     </StyledFriendsSearch>
   );
