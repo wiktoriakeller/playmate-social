@@ -5,6 +5,7 @@ const storeData = (key: string, value: string | null): void =>
   localStorage.setItem(key, value);
 
 const getData = (key: string): string | null => localStorage.getItem(key);
+
 export const storeUser = (user: IUserIdentityState): void =>
   storeData("user", JSON.stringify(user));
 

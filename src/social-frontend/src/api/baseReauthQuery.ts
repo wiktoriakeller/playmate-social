@@ -14,10 +14,10 @@ const baseApiUrl = `${baseUrl}/api/v1`;
 const baseQuery = fetchBaseQuery({
   baseUrl: baseApiUrl,
   mode: "cors",
-  prepareHeaders: (headers, { endpoint }) => {
+  prepareHeaders: (headers) => {
     const user = getUserFromStorage();
 
-    if (user && user.jwtToken && endpoint !== "refresh") {
+    if (user && user.jwtToken) {
       headers.set("Authorization", `Bearer ${user.jwtToken}`);
     }
 
@@ -47,7 +47,6 @@ export const baseReauthQuery: BaseQueryFn<
       extraOptions
     );
 
-    console.log(refreshResponse);
     const mappedResponse = refreshResponse.data as IRefreshTokenResponse;
 
     if (mappedResponse && mappedResponse.data) {

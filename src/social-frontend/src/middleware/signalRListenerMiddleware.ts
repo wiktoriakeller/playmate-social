@@ -28,8 +28,7 @@ signalRListenerMiddleware.startListening({
   actionCreator: setUserIdentity,
   effect: (action: PayloadAction<IUserIdentityState>, listenerApi) => {
     const user = action.payload;
-
-    if (user.jwtToken !== null) {
+    if (!!user.jwtToken) {
       hubConnection = new HubConnectionBuilder()
         .withUrl(notificationsHubUrl, {
           accessTokenFactory: () => user.jwtToken
@@ -78,13 +77,13 @@ signalRListenerMiddleware.startListening({
           console.error("SignalR Connection Error: ", error);
         });
     } else if (
-      hubConnection !== null &&
+      !!hubConnection &&
       hubConnection.state !== HubConnectionState.Disconnected
     ) {
       hubConnection
         .stop()
         .then(() => {
-          console.log("Closed hub connection, user is null");
+          console.log("Closed hub connection, user logout");
         })
         .catch((error) => {
           console.error("Error while closing hub connection: ", error);
