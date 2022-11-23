@@ -10,9 +10,6 @@ public class GameResultsMappingProfile : Profile
     public GameResultsMappingProfile()
     {
         CreateMap<AddResultsCommand, GameResult>();
-        CreateMap<GameResult, GameResultDto>().ForMember(g => g.Won, o => o.MapFrom((s, d) =>
-        {
-            return s.Winner != null;
-        }));
+        CreateMap<GameResult, GameResultDto>();
     }
 }
