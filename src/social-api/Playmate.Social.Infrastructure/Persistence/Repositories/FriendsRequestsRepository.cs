@@ -16,7 +16,7 @@ public class FriendsRequestsRepository : BaseRepository<FriendRequest>, IFriends
         return _dbContext.Set<FriendRequest>().Where(predicate).Include(r => r.Requester);
     }
 
-    public async Task<IEnumerable<Guid>> GetUsersWithPendingRequests(User currentUser)
+    public async Task<IEnumerable<Guid>> GetUsersWithPendingRequestsAsync(User currentUser)
     {
         var users = _dbContext.Set<FriendRequest>()
             .Where(f => f.RequesterId == currentUser.Id)

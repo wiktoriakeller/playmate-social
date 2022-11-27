@@ -8,16 +8,16 @@ using Playmate.Social.WebAPI.ApiRequests.GameResults;
 
 namespace Playmate.Social.WebAPI.Controllers;
 
-[Route("api/v1/Results")]
-public class GameResultsController : BaseApiController
+[Route("api/v1/results")]
+public class GamesResultsController : BaseApiController
 {
-    public GameResultsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
+    public GamesResultsController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
     {
     }
 
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> GetResultsForUser()
+    public async Task<IActionResult> GetGameResultsForUser()
     {
         var response = await _medaitor.Send(new GetResultsForUserQuery());
         return GetStatusCode(response);
@@ -26,7 +26,7 @@ public class GameResultsController : BaseApiController
     [HttpPost]
     public async Task<IActionResult> AddGameResult([FromBody] AddGameResultRequest request)
     {
-        var command = _mapper.Map<AddResultsCommand>(request);
+        var command = _mapper.Map<AddGameResultCommand>(request);
         var response = await _medaitor.Send(command);
         return GetStatusCode(response);
     }

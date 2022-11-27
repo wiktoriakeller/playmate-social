@@ -9,7 +9,7 @@ public class GameResultsMappingProfile : Profile
 {
     public GameResultsMappingProfile()
     {
-        CreateMap<AddResultsCommand, GameResult>();
+        CreateMap<AddGameResultCommand, GameResult>();
         CreateMap<GameResult, GameResultDto>();
     }
 }

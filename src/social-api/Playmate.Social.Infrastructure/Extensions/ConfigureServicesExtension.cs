@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Playmate.Social.Application.Common.Contracts;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Domain.Entities;
@@ -13,7 +12,6 @@ using Playmate.Social.Infrastructure.Identity;
 using Playmate.Social.Infrastructure.Identity.Interfaces;
 using Playmate.Social.Infrastructure.Persistence;
 using Playmate.Social.Infrastructure.Persistence.Repositories;
-using Playmate.Social.Infrastructure.Services;
 using System.Text;
 
 namespace Playmate.Social.Infrastructure.Extensions;
@@ -22,7 +20,7 @@ public static class ConfigureServicesExtension
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        //Service registration
+        //Db context registration
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseSqlServer(
                 configuration.GetConnectionString("DefaultConnection"),
@@ -30,12 +28,10 @@ public static class ConfigureServicesExtension
 
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
-        services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
-
+        services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         RegisterRepositories(services);
 
-        services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
         services.AddHttpContextAccessor();
 
         var tokenValidationParameters = new TokenValidationParameters
@@ -43,7 +39,7 @@ public static class ConfigureServicesExtension
             ValidateIssuerSigningKey = true,
             ValidIssuer = configuration["Authentication:JwtOptions:Issuer"],
             ValidAudience = configuration["Authentication:JwtOptions:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Authentication:JwtOptions:Key"])),
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Authentication:JwtOptions:Key"]!)),
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };

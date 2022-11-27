@@ -23,7 +23,7 @@ public class JwtTokenService : IJwtTokenService
         _tokenValidationParameters = tokenValidationParameters;
     }
 
-    public JwtTokenInfoDto CreateJwtToken(User user)
+    public JwtTokenDto CreateJwtToken(User user)
     {
         var (claims, jti) = GetJwtTokenClaims(user);
 
@@ -40,9 +40,9 @@ public class JwtTokenService : IJwtTokenService
 
         var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
 
-        return new JwtTokenInfoDto
+        return new JwtTokenDto
         {
-            JwtToken = jwtToken,
+            Token = jwtToken,
             Jti = jti
         };
     }

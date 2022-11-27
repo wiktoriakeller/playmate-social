@@ -1,10 +1,10 @@
 ﻿namespace Playmate.Social.Application.Friends.Responses;
 
-public class AddFriendRequestResponse
+public class ConfirmFriendRequestResponse
 {
     public Guid Id { get; init; }
 
-    public AddFriendRequestResponse(Guid id)
+    public ConfirmFriendRequestResponse(Guid id)
     {
         Id = id;
     }

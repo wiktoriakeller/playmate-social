@@ -1,7 +1,7 @@
 ﻿namespace Playmate.Social.Infrastructure.Identity.Dto;
 
-public class JwtTokenInfoDto
+public class JwtTokenDto
 {
-    public string JwtToken { get; init; }
+    public string Token { get; init; }
     public string Jti { get; init; }
 }

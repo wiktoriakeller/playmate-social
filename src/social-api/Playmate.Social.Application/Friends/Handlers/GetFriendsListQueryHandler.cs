@@ -13,14 +13,15 @@ namespace Playmate.Social.Application.Friends.Handlers;
 public class GetFriendsListQueryHandler : IHandlerWrapper<GetFriendsListQuery, GetFriendsListResponse>
 {
     private readonly IFriendsRepository _friendsRepository;
-    private readonly ICurrentUserService _userService;
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
 
-    public GetFriendsListQueryHandler(ICurrentUserService userService,
-                                      IFriendsRepository friendsRepository,
-                                      IMapper mapper)
+    public GetFriendsListQueryHandler(
+        ICurrentUserService currentUserService,
+        IFriendsRepository friendsRepository,
+        IMapper mapper)
     {
-        _userService = userService;
+        _currentUserService = currentUserService;
         _friendsRepository = friendsRepository;
         _mapper = mapper;
     }
@@ -28,8 +29,8 @@ public class GetFriendsListQueryHandler : IHandlerWrapper<GetFriendsListQuery, G
     public async Task<Response<GetFriendsListResponse>> Handle(GetFriendsListQuery request, CancellationToken cancellationToken)
     {
         var search = request.Search.ToLower();
-        var user = _userService.CurrentUser;
-        var friends = await _friendsRepository.GetFriendsWhere(user,
+        var user = _currentUserService.CurrentUser;
+        var friends = await _friendsRepository.GetFriendsWhereAsync(user,
             friend => (!string.IsNullOrWhiteSpace(search) && friend.Username.ToLower().Contains(search)) || string.IsNullOrWhiteSpace(search));
 
         var mappedFriends = _mapper.Map<IEnumerable<User>, IEnumerable<FriendDto>>(friends);

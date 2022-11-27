@@ -5,7 +5,7 @@ namespace Playmate.Social.Infrastructure.Identity.Interfaces;
 
 public interface IJwtTokenService
 {
-    JwtTokenInfoDto CreateJwtToken(User user);
+    JwtTokenDto CreateJwtToken(User user);
 
     (bool success, string? jti, string? userId) IsJwtTokenValid(string jwtToken, bool validateLifetime);
 }

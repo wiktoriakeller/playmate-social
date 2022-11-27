@@ -111,7 +111,7 @@ public class IdentityService : IIdentityService
             Id = user.Id,
             Username = user.Username,
             Email = user.Email,
-            JwtToken = newJwt.JwtToken,
+            JwtToken = newJwt.Token,
             RefreshToken = newRefreshToken
         };
 
@@ -149,7 +149,7 @@ public class IdentityService : IIdentityService
 
         var response = new RefreshTokenResponse
         {
-            JwtToken = newJwt.JwtToken,
+            JwtToken = newJwt.Token,
             RefreshToken = newRefreshToken
         };
 

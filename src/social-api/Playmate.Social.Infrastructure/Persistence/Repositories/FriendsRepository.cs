@@ -10,7 +10,7 @@ public class FriendsRepository : BaseRepository<Friend>, IFriendsRepository
     {
     }
 
-    public async Task<IEnumerable<User>> GetFriends(User user)
+    public async Task<IEnumerable<User>> GetFriendsAsync(User user)
     {
         var friends = _dbContext.Set<Friend>()
             .Where(f => f.RequesterId == user.Id)
@@ -28,13 +28,13 @@ public class FriendsRepository : BaseRepository<Friend>, IFriendsRepository
             .ToListAsync();
     }
 
-    public async Task<IEnumerable<User>> GetFriendsWhere(User user, Func<User, bool> predicate)
+    public async Task<IEnumerable<User>> GetFriendsWhereAsync(User user, Func<User, bool> predicate)
     {
-        var friends = await GetFriends(user);
+        var friends = await GetFriendsAsync(user);
         return friends.Where(predicate);
     }
 
-    public async Task<Friend?> GetFriend(User user, Guid friendId) =>
+    public async Task<Friend?> GetFriendByIdAsync(User user, Guid friendId) =>
         await _dbContext.Set<Friend>()
         .Where(f => f.AddresseeId == user.Id && f.RequesterId == friendId || f.RequesterId == user.Id && f.AddresseeId == friendId)
         .FirstOrDefaultAsync();

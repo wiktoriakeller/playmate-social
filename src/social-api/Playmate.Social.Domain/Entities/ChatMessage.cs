@@ -1,6 +1,6 @@
 ﻿namespace Playmate.Social.Domain.Entities;
 
-public class ChatMessage
+public class ChatMessage : IEntity
 {
     public Guid Id { get; set; }
     public string SenderId { get; set; }

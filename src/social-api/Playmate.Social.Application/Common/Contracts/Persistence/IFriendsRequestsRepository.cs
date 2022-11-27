@@ -4,5 +4,5 @@ namespace Playmate.Social.Application.Common.Contracts.Persistence;
 
 public interface IFriendsRequestsRepository : IRepository<FriendRequest>
 {
-    Task<IEnumerable<Guid>> GetUsersWithPendingRequests(User currentUser);
+    Task<IEnumerable<Guid>> GetUsersWithPendingRequestsAsync(User currentUser);
 }

@@ -21,7 +21,7 @@ public class CurrentUserService : ICurrentUserService
             var user = GetCurrentUser();
             if (user == null)
             {
-                throw new CurrentUserException("Error during getting current user");
+                throw new InvalidUserException("Error during getting current user");
             }
             return user;
         }
