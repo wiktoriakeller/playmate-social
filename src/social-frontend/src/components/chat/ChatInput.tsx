@@ -1,5 +1,5 @@
 import SendIcon from "@mui/icons-material/Send";
-import { Tooltip } from "@mui/material";
+import { InputAdornment, Tooltip } from "@mui/material";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addChatMessage } from "../../slices/chatSlice";
@@ -8,6 +8,7 @@ import { selectUserIdentity } from "../../slices/userIdentitySlice";
 import { StyledChatInput } from "../../styled/components/chat/StyledChatInput";
 import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
 import { StyledTextField } from "../../styled/components/mui/StyledTextField";
+import ChatEmojiPicker from "./ChatEmojiPicker";
 
 const ChatInput = () => {
   const dispatch = useAppDispatch();
@@ -53,14 +54,21 @@ const ChatInput = () => {
           placeholder={"Message"}
           size="small"
           sx={{
-            padding: "0 2%"
+            padding: "0 1%"
           }}
           onChange={changeInputMessage}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <ChatEmojiPicker />
+              </InputAdornment>
+            )
+          }}
         />
       </form>
       <Tooltip title="Send">
         <StyledIconButton
-          sx={{ margin: "0px 1% 0px -1%", padding: "10px" }}
+          sx={{ marginRight: "1%", padding: "5px" }}
           size="large"
           onClick={sendMessage}
         >
