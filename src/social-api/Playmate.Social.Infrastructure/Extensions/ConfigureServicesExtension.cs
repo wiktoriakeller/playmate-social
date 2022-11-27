@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Playmate.Social.Application.Common.Contracts;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Domain.Entities;
@@ -12,6 +13,7 @@ using Playmate.Social.Infrastructure.Identity;
 using Playmate.Social.Infrastructure.Identity.Interfaces;
 using Playmate.Social.Infrastructure.Persistence;
 using Playmate.Social.Infrastructure.Persistence.Repositories;
+using Playmate.Social.Infrastructure.Services;
 using System.Text;
 
 namespace Playmate.Social.Infrastructure.Extensions;
@@ -28,6 +30,7 @@ public static class ConfigureServicesExtension
 
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
 
         RegisterRepositories(services);
@@ -92,5 +95,6 @@ public static class ConfigureServicesExtension
         services.AddScoped<IFriendRequestRepository, FriendRequestRepository>();
         services.AddScoped<IFriendRepository, FriendRepository>();
         services.AddScoped<IRepository<Game>, BaseRepository<Game>>();
-    }
+        services.AddScoped<IRepository<GameResult>, BaseRepository<GameResult>>();
+    }                                                                 
 }
