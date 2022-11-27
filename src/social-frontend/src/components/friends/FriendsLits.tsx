@@ -1,15 +1,33 @@
-import { Skeleton } from "@mui/material";
-import { useEffect } from "react";
+import { Avatar, Skeleton } from "@mui/material";
+import { useEffect, useMemo } from "react";
 import { useLazyGetFriendsListQuery } from "../../api/friends/friendsApi";
 import { useAppSelector } from "../../app/hooks";
 import { selectFriendsListSearchPhrase } from "../../slices/friendsListSlice";
 import { StyledFriendsList } from "../../styled/components/friends/StyledFriendsList";
+import { SkeletonsContainer } from "../../styled/components/mui/SkeletonsContainer";
 import FriendListItem from "./FriendListItem";
 
 const FriendsLits = () => {
   const friendsSearchPhrase = useAppSelector(selectFriendsListSearchPhrase);
   const [getFriendsListLazy, { data, isLoading }] =
     useLazyGetFriendsListQuery();
+  const skeletons = useMemo(() => {
+    const jsxElements = [];
+    for (let i = 0; i < 6; i++) {
+      jsxElements.push(
+        <SkeletonsContainer childrenHeight={70}>
+          <Skeleton variant="circular">
+            <Avatar />
+          </Skeleton>
+          <SkeletonsContainer childrenHeight={15} flexDirection="column">
+            <Skeleton width="80%" />
+            <Skeleton width="40%" />
+          </SkeletonsContainer>
+        </SkeletonsContainer>
+      );
+    }
+    return jsxElements;
+  }, []);
 
   useEffect(() => {
     getFriendsListLazy({
@@ -20,10 +38,7 @@ const FriendsLits = () => {
   if (isLoading) {
     return (
       <StyledFriendsList>
-        <Skeleton height={70} />
-        <Skeleton height={70} />
-        <Skeleton height={70} />
-        <Skeleton height={70} />
+        {skeletons.map((skeleton) => skeleton)}
       </StyledFriendsList>
     );
   }

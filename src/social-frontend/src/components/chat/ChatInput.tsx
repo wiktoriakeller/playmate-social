@@ -1,85 +1,33 @@
-import { HubConnectionBuilder, HubConnectionState } from "@microsoft/signalr";
-import { useEffect, useState } from "react";
+import SendIcon from "@mui/icons-material/Send";
+import { InputAdornment, Tooltip } from "@mui/material";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addChatMessage } from "../../slices/chatSlice";
 import { selectSelectedFriend } from "../../slices/friendsListSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
 import { StyledChatInput } from "../../styled/components/chat/StyledChatInput";
+import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
 import { StyledTextField } from "../../styled/components/mui/StyledTextField";
-
-const apiUrl = process.env.REACT_APP_BASE_API_URL;
-const hubUrl = `${apiUrl}/hubs/notifications`;
+import ChatEmojiPicker from "./ChatEmojiPicker";
 
 const ChatInput = () => {
   const dispatch = useAppDispatch();
   const selectedFriend = useAppSelector(selectSelectedFriend);
   const user = useAppSelector(selectUserIdentity);
   const [currentInput, setCurrentInput] = useState("");
-  const [connection, setConnection] = useState(null);
 
-  useEffect(() => {
-    const createNewConnection = async () => {
-      if (
-        !!connection &&
-        connection.state !== HubConnectionState.Disconnected
-      ) {
-        await connection.stop();
-      }
-
-      const newConnection = new HubConnectionBuilder()
-        .withUrl(hubUrl, {
-          accessTokenFactory: () => user.jwtToken ?? ""
-        })
-        .withAutomaticReconnect()
-        .build();
-
-      setConnection(newConnection);
-    };
-
-    createNewConnection().catch((error) => console.log(error));
-  }, [user.jwtToken]);
-
-  useEffect(() => {
-    if (!!connection) {
-      connection.on("ReceiveChatMessage", (request) => {
-        dispatch(
-          addChatMessage({
-            message: request.message,
-            friendUserId: request.receiverId
-          })
-        );
-      });
-
-      connection.start().catch((error) => console.log(error));
-    }
-  }, [connection, dispatch]);
-
-  const sendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
+  const sendMessage = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    if (
-      currentInput !== "" &&
-      connection.state === HubConnectionState.Connected
-    ) {
-      connection
-        .send("SendChatMessage", {
+    if (currentInput !== "") {
+      dispatch(
+        addChatMessage({
           senderId: user.id,
           receiverId: selectedFriend.id,
+          isCurrentUserReceiver: false,
           message: currentInput
         })
-        .then(() => {
-          dispatch(
-            addChatMessage({
-              message: currentInput,
-              friendUserId: selectedFriend.id
-            })
-          );
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-        .finally(() => {
-          setCurrentInput("");
-        });
+      );
+      setCurrentInput("");
     }
   };
 
@@ -91,22 +39,42 @@ const ChatInput = () => {
 
   return (
     <StyledChatInput>
-      <form
-        onSubmit={async (evnet) => await sendMessage(evnet)}
-        style={{ width: "100%" }}
-      >
+      <form onSubmit={sendMessage} style={{ width: "100%" }}>
         <StyledTextField
           fullWidth
+          multiline
+          maxRows={2}
+          onKeyDown={(event) => {
+            if (event.key.toLocaleLowerCase() === "enter" && !event.shiftKey) {
+              sendMessage(event);
+            }
+          }}
           value={currentInput}
           variant="outlined"
           placeholder={"Message"}
           size="small"
           sx={{
-            padding: "0px 6%"
+            padding: "0 1%"
           }}
           onChange={changeInputMessage}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <ChatEmojiPicker />
+              </InputAdornment>
+            )
+          }}
         />
       </form>
+      <Tooltip title="Send">
+        <StyledIconButton
+          sx={{ marginRight: "1%", padding: "5px" }}
+          size="large"
+          onClick={sendMessage}
+        >
+          <SendIcon />
+        </StyledIconButton>
+      </Tooltip>
     </StyledChatInput>
   );
 };

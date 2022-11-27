@@ -2,16 +2,22 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
 
 export interface IChatMessage {
+  senderId: string;
+  receiverId: string;
   message: string;
-  friendUserId: string;
+  isCurrentUserReceiver: boolean;
+}
+
+export interface IChatMessagesDictionary {
+  [key: string]: IChatMessage[];
 }
 
 export interface IChatState {
-  messages: IChatMessage[];
+  messages: IChatMessagesDictionary;
 }
 
 const chatInitialState: IChatState = {
-  messages: []
+  messages: {}
 };
 
 export const chatSlice = createSlice({
@@ -19,14 +25,22 @@ export const chatSlice = createSlice({
   initialState: chatInitialState,
   reducers: {
     addChatMessage(state: IChatState, action: PayloadAction<IChatMessage>) {
-      state.messages.push(action.payload);
+      let friendId = action.payload.receiverId;
+      if (action.payload.isCurrentUserReceiver) {
+        friendId = action.payload.senderId;
+      }
+
+      if (state.messages[friendId] === undefined) {
+        state.messages[friendId] = [];
+      }
+      state.messages[friendId].push(action.payload);
     }
   }
 });
 
 export const { addChatMessage } = chatSlice.actions;
 
-export const selectChatMessages = (state: RootState): IChatMessage[] =>
+export const selectChatMessages = (state: RootState): IChatMessagesDictionary =>
   state.chat.messages;
 
 export default chatSlice.reducer;

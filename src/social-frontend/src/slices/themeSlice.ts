@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
-import { getThemeFromStore } from "../common/storage";
+import { getThemeFromStorage } from "../common/storage";
 
 export type ThemeType = "light" | "dark";
 
@@ -9,7 +9,7 @@ export interface IThemeState {
 }
 
 const themeInitialState: IThemeState = {
-  theme: getThemeFromStore() ?? "dark"
+  theme: getThemeFromStorage() ?? "dark"
 };
 
 export const themeSlice = createSlice({
