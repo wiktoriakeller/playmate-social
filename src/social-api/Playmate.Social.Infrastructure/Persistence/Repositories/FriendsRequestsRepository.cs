@@ -5,9 +5,9 @@ using System.Linq.Expressions;
 
 namespace Playmate.Social.Infrastructure.Persistence.Repositories;
 
-public class FriendRequestRepository : BaseRepository<FriendRequest>, IFriendRequestRepository
+public class FriendsRequestsRepository : BaseRepository<FriendRequest>, IFriendsRequestsRepository
 {
-    public FriendRequestRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public FriendsRequestsRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
     }
 

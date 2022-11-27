@@ -13,12 +13,12 @@ namespace Playmate.Social.Application.Identity.Handlers;
 public class GetUsersByUsernameQueryHandler : IHandlerWrapper<GetUsersByUsernameQuery, GetUsersByUsernameResponse>
 {
     private readonly IRepository<User> _userRepository;
-    private readonly IFriendRequestRepository _requestsRepository;
-    private readonly IFriendRepository _friendsRepository;
+    private readonly IFriendsRequestsRepository _requestsRepository;
+    private readonly IFriendsRepository _friendsRepository;
     private readonly IMapper _mapper;
     private readonly ICurrentUserService _userService;
 
-    public GetUsersByUsernameQueryHandler(IRepository<User> userRepository, IMapper mapper, ICurrentUserService userService, IFriendRepository friendsRepository, IFriendRequestRepository requestsRepository)
+    public GetUsersByUsernameQueryHandler(IRepository<User> userRepository, IMapper mapper, ICurrentUserService userService, IFriendsRepository friendsRepository, IFriendsRequestsRepository requestsRepository)
     {
         _userRepository = userRepository;
         _mapper = mapper;

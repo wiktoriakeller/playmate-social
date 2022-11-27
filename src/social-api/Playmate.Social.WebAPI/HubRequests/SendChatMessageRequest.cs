@@ -2,7 +2,8 @@
 
 public class SendChatMessageRequest
 {
-    public string SenderId { get; init; }
-    public string ReceiverId { get; init; }
-    public string Message { get; init; }
+    public Guid SenderId { get; init; }
+    public Guid ReceiverId { get; init; }
+    public string Content { get; init; }
+    public DateTimeOffset CreatedAt { get; init; }
 }

@@ -12,6 +12,6 @@ public class NotificationsHub : Hub<INotificationsClient>
 
     public async Task SendChatMessage(SendChatMessageRequest request)
     {
-        await Clients.User(request.ReceiverId).ReceiveChatMessage(request);
+        await Clients.User(request.ReceiverId.ToString()).ReceiveChatMessage(request);
     }
 }

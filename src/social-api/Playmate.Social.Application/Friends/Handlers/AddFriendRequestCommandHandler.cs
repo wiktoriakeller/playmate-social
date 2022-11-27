@@ -10,15 +10,15 @@ namespace Playmate.Social.Application.Friends.Handlers;
 
 public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCommand, AddFriendRequestResponse>
 {
-    private readonly IFriendRequestRepository _requestRepository;
+    private readonly IFriendsRequestsRepository _requestRepository;
     private readonly IRepository<User> _userRepository;
-    private readonly IFriendRepository _friendRepository;
+    private readonly IFriendsRepository _friendRepository;
     private readonly ICurrentUserService _userService;
 
-    public AddFriendRequestCommandHandler(IFriendRequestRepository requestRepository,
+    public AddFriendRequestCommandHandler(IFriendsRequestsRepository requestRepository,
                                           ICurrentUserService userService,
                                           IRepository<User> userRepository,
-                                          IFriendRepository friendRepository)
+                                          IFriendsRepository friendRepository)
     {
         _requestRepository = requestRepository;
         _userService = userService;

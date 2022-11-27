@@ -9,10 +9,10 @@ namespace Playmate.Social.Application.Friends.Handlers;
 
 public class RemoveFriendCommandHandler : IHandlerWrapper<RemoveFriendCommand, RemoveFriendResponse>
 {
-    private readonly IFriendRepository _friendRepository;
+    private readonly IFriendsRepository _friendRepository;
     private readonly ICurrentUserService _userService;
 
-    public RemoveFriendCommandHandler(IFriendRepository friendRepository, ICurrentUserService userService)
+    public RemoveFriendCommandHandler(IFriendsRepository friendRepository, ICurrentUserService userService)
     {
         _friendRepository = friendRepository;
         _userService = userService;

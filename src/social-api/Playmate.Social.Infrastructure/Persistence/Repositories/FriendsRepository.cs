@@ -4,9 +4,9 @@ using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Infrastructure.Persistence.Repositories;
 
-public class FriendRepository : BaseRepository<Friend>, IFriendRepository
+public class FriendsRepository : BaseRepository<Friend>, IFriendsRepository
 {
-    public FriendRepository(ApplicationDbContext dbContext) : base(dbContext)
+    public FriendsRepository(ApplicationDbContext dbContext) : base(dbContext)
     {
     }
 

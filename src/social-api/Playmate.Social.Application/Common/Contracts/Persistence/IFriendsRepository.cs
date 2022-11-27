@@ -2,7 +2,7 @@
 
 namespace Playmate.Social.Application.Common.Contracts.Persistence;
 
-public interface IFriendRepository : IRepository<Friend>
+public interface IFriendsRepository : IRepository<Friend>
 {
     Task<IEnumerable<User>> GetFriends(User user);
 
