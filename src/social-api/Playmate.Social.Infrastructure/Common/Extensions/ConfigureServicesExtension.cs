@@ -43,6 +43,7 @@ public static class ConfigureServicesExtension
     private static void AddCassandraDbContext(IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<CassandraConfiguration>(configuration.GetSection("Cassandra:Configuration"));
+        services.AddSingleton<ICassandraConnection, CassandraConnection>();
         services.AddScoped<ICassandraDbContext, CassandraDbContext>();
         services.AddScoped<IChatMessagesRepository, ChatMessagesRepository>();
     }

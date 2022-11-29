@@ -22,6 +22,8 @@ app.UseCors(policyName);
 
 app.ApplyMigrations();
 
+await app.ConnectCassandra();
+
 if (builder.Environment.IsDevelopment())
 {
     app.UseSwagger();
