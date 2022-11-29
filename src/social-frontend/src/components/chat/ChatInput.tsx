@@ -24,7 +24,7 @@ const ChatInput = () => {
           senderId: user.id,
           receiverId: selectedFriend.id,
           isCurrentUserReceiver: false,
-          message: currentInput
+          content: currentInput
         })
       );
       setCurrentInput("");

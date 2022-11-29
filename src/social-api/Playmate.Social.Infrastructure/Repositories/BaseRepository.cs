@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Playmate.Social.Application.Common.Contracts.Persistence;
-using Playmate.Social.Domain.Entities;
+using Playmate.Social.Infrastructure.Persistence;
 using System.Linq.Expressions;
 
-namespace Playmate.Social.Infrastructure.Persistence.Repositories;
+namespace Playmate.Social.Infrastructure.Repositories;
 
 public class BaseRepository<TEntity> : IRepository<TEntity>
-    where TEntity : class, IEntity
+    where TEntity : class
 {
     protected readonly ApplicationDbContext _dbContext;
 

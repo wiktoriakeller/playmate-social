@@ -1,5 +1,5 @@
 using Playmate.Social.Application.Common.Extensions;
-using Playmate.Social.Infrastructure.Extensions;
+using Playmate.Social.Infrastructure.Common.Extensions;
 using Playmate.Social.WebAPI.Extensions;
 using Playmate.Social.WebAPI.Hubs;
 using Playmate.Social.WebAPI.Middleware;

@@ -1,6 +1,6 @@
 ﻿namespace Playmate.Social.Domain.Entities;
 
-public class RefreshToken : IEntity
+public class RefreshToken
 {
     public Guid Id { get; set; }
     public string Token { get; set; }

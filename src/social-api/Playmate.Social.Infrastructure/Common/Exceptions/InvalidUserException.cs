@@ -1,4 +1,4 @@
-﻿namespace Playmate.Social.Infrastructure.Exceptions;
+﻿namespace Playmate.Social.Infrastructure.Common.Exceptions;
 
 public class InvalidUserException : Exception
 {

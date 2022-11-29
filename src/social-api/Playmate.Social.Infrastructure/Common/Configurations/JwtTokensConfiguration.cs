@@ -1,6 +1,6 @@
-﻿namespace Playmate.Social.Infrastructure.Configuration;
+﻿namespace Playmate.Social.Infrastructure.Common.Configurations;
 
-public class JwtOptions
+public class JwtTokensConfiguration
 {
     public string Key { get; set; }
     public string Issuer { get; set; }

@@ -19,7 +19,7 @@ const ChatMessages = () => {
         messages.map((_, index) => (
           <ChatMessage
             key={index}
-            message={messages[messages.length - 1 - index].message}
+            message={messages[messages.length - 1 - index].content}
             isUserMessage={
               user.id === messages[messages.length - 1 - index].senderId
             }

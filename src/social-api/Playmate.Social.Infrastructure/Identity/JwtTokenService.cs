@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Playmate.Social.Domain.Entities;
-using Playmate.Social.Infrastructure.Configuration;
+using Playmate.Social.Infrastructure.Common.Configurations;
 using Playmate.Social.Infrastructure.Identity.Dto;
 using Playmate.Social.Infrastructure.Identity.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,11 +12,11 @@ namespace Playmate.Social.Infrastructure.Identity;
 
 public class JwtTokenService : IJwtTokenService
 {
-    private readonly JwtOptions _jwtOptions;
+    private readonly JwtTokensConfiguration _jwtOptions;
     private readonly TokenValidationParameters _tokenValidationParameters;
 
     public JwtTokenService(
-        IOptions<JwtOptions> jwtOptions,
+        IOptions<JwtTokensConfiguration> jwtOptions,
         TokenValidationParameters tokenValidationParameters)
     {
         _jwtOptions = jwtOptions.Value;

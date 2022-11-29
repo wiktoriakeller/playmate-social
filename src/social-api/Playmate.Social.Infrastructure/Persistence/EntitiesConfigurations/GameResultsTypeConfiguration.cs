@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Playmate.Social.Domain.Entities;
 
-namespace Playmate.Social.Infrastructure.Persistence.Configurations;
+namespace Playmate.Social.Infrastructure.Persistence.EntitiesConfigurations;
 
 public class GameResultsTypeConfiguration : IEntityTypeConfiguration<GameResult>
 {

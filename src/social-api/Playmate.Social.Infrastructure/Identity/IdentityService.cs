@@ -8,7 +8,7 @@ using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.Identity.Commands;
 using Playmate.Social.Application.Identity.Responses;
 using Playmate.Social.Domain.Entities;
-using Playmate.Social.Infrastructure.Configuration;
+using Playmate.Social.Infrastructure.Common.Configurations;
 using Playmate.Social.Infrastructure.Identity.Interfaces;
 using System.Security.Cryptography;
 
@@ -21,12 +21,12 @@ public class IdentityService : IIdentityService
     private readonly IRepository<User> _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IMapper _mapper;
-    private readonly JwtOptions _jwtOptions;
+    private readonly JwtTokensConfiguration _jwtOptions;
 
     public IdentityService(
         IJwtTokenService jwtTokenService,
         IRepository<RefreshToken> refreshTokenRepository,
-        IOptions<JwtOptions> jwtOptions,
+        IOptions<JwtTokensConfiguration> jwtOptions,
         IMapper mapper,
         IRepository<User> userRepository,
         IPasswordHasher<User> passwordHasher)

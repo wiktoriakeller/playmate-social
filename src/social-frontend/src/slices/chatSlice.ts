@@ -4,7 +4,8 @@ import { RootState } from "../app/store";
 export interface IChatMessage {
   senderId: string;
   receiverId: string;
-  message: string;
+  content: string;
+  createdAt: Date;
   isCurrentUserReceiver: boolean;
 }
 

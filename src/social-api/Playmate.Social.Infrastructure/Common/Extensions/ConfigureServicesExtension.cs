@@ -7,39 +7,53 @@ using Microsoft.IdentityModel.Tokens;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Domain.Entities;
-using Playmate.Social.Infrastructure.Configuration;
+using Playmate.Social.Infrastructure.Common.Configurations;
 using Playmate.Social.Infrastructure.Identity;
 using Playmate.Social.Infrastructure.Identity.Interfaces;
 using Playmate.Social.Infrastructure.Persistence;
-using Playmate.Social.Infrastructure.Persistence.Repositories;
+using Playmate.Social.Infrastructure.Persistence.Interfaces;
+using Playmate.Social.Infrastructure.Repositories;
 using System.Text;
 
-namespace Playmate.Social.Infrastructure.Extensions;
+namespace Playmate.Social.Infrastructure.Common.Extensions;
 
 public static class ConfigureServicesExtension
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        //Db context registration
+        AddApplicationDbContext(services, configuration);
+        AddCassandraDbContext(services, configuration);
+        AddAuthentication(services, configuration);
+        AddRepositories(services);
+        AddServices(services);
+
+        //Mapping profiles
+        services.AddAutoMapper(typeof(ConfigureServicesExtension).Assembly);
+        return services;
+    }
+
+    private static void AddApplicationDbContext(IServiceCollection services, IConfiguration configuration)
+    {
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection"),
-                b => b.MigrationsAssembly(typeof(ConfigureServicesExtension).Assembly.FullName)));
+        options.UseSqlServer(
+            configuration.GetConnectionString("DefaultConnection"),
+            b => b.MigrationsAssembly(typeof(ConfigureServicesExtension).Assembly.FullName)));
+    }
 
-        services.AddScoped<IIdentityService, IdentityService>();
-        services.AddScoped<ICurrentUserService, CurrentUserService>();
-        services.AddScoped<IJwtTokenService, JwtTokenService>();
-        services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
-        RegisterRepositories(services);
+    private static void AddCassandraDbContext(IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<CassandraConfiguration>(configuration.GetSection("Cassandra:Configuration"));
+        services.AddScoped<ICassandraDbContext, CassandraDbContext>();
+    }
 
-        services.AddHttpContextAccessor();
-
+    private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)
+    {
         var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,
-            ValidIssuer = configuration["Authentication:JwtOptions:Issuer"],
-            ValidAudience = configuration["Authentication:JwtOptions:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Authentication:JwtOptions:Key"]!)),
+            ValidIssuer = configuration["Authentication:JwtTokensConfiguration:Issuer"],
+            ValidAudience = configuration["Authentication:JwtTokensConfiguration:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Authentication:JwtTokensConfiguration:Key"]!)),
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
@@ -75,16 +89,11 @@ public static class ConfigureServicesExtension
             };
         });
 
-        //Mapping profiles
-        services.AddAutoMapper(typeof(ConfigureServicesExtension).Assembly);
-
-        //Options bindings
         services.AddSingleton(tokenValidationParameters);
-        services.Configure<JwtOptions>(configuration.GetSection("Authentication:JwtOptions"));
-        return services;
+        services.Configure<JwtTokensConfiguration>(configuration.GetSection("Authentication:JwtTokensConfiguration"));
     }
 
-    private static void RegisterRepositories(IServiceCollection services)
+    private static void AddRepositories(IServiceCollection services)
     {
         services.AddScoped<IRepository<RefreshToken>, BaseRepository<RefreshToken>>();
         services.AddScoped<IRepository<User>, BaseRepository<User>>();
@@ -92,5 +101,15 @@ public static class ConfigureServicesExtension
         services.AddScoped<IFriendsRepository, FriendsRepository>();
         services.AddScoped<IRepository<Game>, BaseRepository<Game>>();
         services.AddScoped<IRepository<GameResult>, BaseRepository<GameResult>>();
+    }
+
+    private static void AddServices(IServiceCollection services)
+    {
+        services.AddHttpContextAccessor();
+
+        services.AddScoped<IIdentityService, IdentityService>();
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
+        services.AddScoped<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
     }
 }

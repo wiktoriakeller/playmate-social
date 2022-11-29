@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Playmate.Social.Infrastructure.Persistence;
 
-namespace Playmate.Social.Infrastructure.Extensions;
+namespace Playmate.Social.Infrastructure.Common.Extensions;
 
 public static class ApplyMigrationsExtension
 {

@@ -18,10 +18,11 @@ const baseUrl = process.env.REACT_APP_BASE_API_URL;
 const notificationsHubUrl = `${baseUrl}/hubs/notifications`;
 let hubConnection: HubConnection | null = null;
 
-interface IHubChatMessage {
+interface IReceiveChatMessage {
   senderId: string;
   receiverId: string;
-  message: string;
+  content: string;
+  createdAt: Date;
 }
 
 signalRListenerMiddleware.startListening({
@@ -55,7 +56,7 @@ signalRListenerMiddleware.startListening({
         );
       });
 
-      hubConnection.on("ReceiveChatMessage", (request: IHubChatMessage) => {
+      hubConnection.on("ReceiveChatMessage", (request: IReceiveChatMessage) => {
         listenerApi.dispatch(
           addChatMessage({
             ...request,
