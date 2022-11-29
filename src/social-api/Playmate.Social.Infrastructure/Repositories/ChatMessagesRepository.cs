@@ -1,4 +1,5 @@
-﻿using Playmate.Social.Application.Common.Contracts.Persistence;
+﻿using Cassandra.Mapping;
+using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Domain.Entities;
 using Playmate.Social.Infrastructure.Persistence.Interfaces;
 
@@ -6,14 +7,14 @@ namespace Playmate.Social.Infrastructure.Repositories;
 
 public class ChatMessagesRepository : IChatMessagesRepository
 {
-    private readonly ICassandraConnection _connection;
+    private static readonly string _selectMessagesQuery = "SELECT * FROM chatMessages WHERE chatRoomId=?";
 
-    private readonly string _selectMessagesQuery = "SELECT * FROM chatMessages WHERE chatRoomId=?";
-
-    private readonly string _addMessageQuery = """
+    private static readonly string _addMessageQuery = """
             INSERT INTO chatMessages (chatRoomId, senderId, receiverId, content, createdAt, id)
             VALUES (?, ?, ?, ?, ?, now());
         """;
+
+    private readonly ICassandraConnection _connection;
 
     public ChatMessagesRepository(ICassandraConnection connection)
     {
@@ -24,7 +25,8 @@ public class ChatMessagesRepository : IChatMessagesRepository
     {
         try
         {
-            return await _connection.CassandraMapper.FetchAsync<ChatMessage>(_selectMessagesQuery, roomId);
+            var cql = Cql.New(_selectMessagesQuery, roomId);
+            return await _connection.CassandraMapper.FetchAsync<ChatMessage>(cql);
         }
         catch (Exception)
         {
