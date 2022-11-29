@@ -47,21 +47,30 @@ public class CassandraDbContext : ICassandraDbContext
         session.Execute(createChatMessagesTable);
 
         _session = _cluster.Connect(_cassandraConfiguration.KeySpace);
-        _session.UserDefinedTypes.Define(
-            UdtMap.For<ChatMessage>()
-        );
     }
 
-    public IEnumerable<ChatMessage> SelectChatMessagesForChatRoomId(string roomId, int pageSize)
+    public async Task<IEnumerable<ChatMessage>> SelectChatMessagesForChatRoomId(string roomId)
     {
         try
         {
-            var query = _session.Prepare("SELECT * FROM chatMessages WHERE chatRoomId=?");
-            var selectQuery = $"select * from chatMessages where ";
+            var query = "SELECT * FROM chatMessages WHERE chatRoomId=?";
+            return await _cassandraMapper.FetchAsync<ChatMessage>(query, roomId);
         }
         catch (Exception)
         {
             throw;
+        }
+    }
+
+    public async Task AddChatMessage(ChatMessage chatMessage)
+    {
+        try
+        {
+            await _cassandraMapper.InsertAsync(chatMessage);
+        }
+        catch(Exception)
+        {
+            throw;   
         }
     }
 }

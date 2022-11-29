@@ -44,6 +44,7 @@ public static class ConfigureServicesExtension
     {
         services.Configure<CassandraConfiguration>(configuration.GetSection("Cassandra:Configuration"));
         services.AddScoped<ICassandraDbContext, CassandraDbContext>();
+        services.AddScoped<IChatMessagesRepository, ChatMessagesRepository>();
     }
 
     private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)

@@ -20,9 +20,4 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Playmate.Social.Application\Playmate.Social.Application.csproj" />
 	</ItemGroup>
-	
-	<ItemGroup>
-	  <Folder Include="Persistence\CassandraMappers\" />
-	</ItemGroup>
-
 </Project>

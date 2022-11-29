@@ -4,7 +4,6 @@ namespace Playmate.Social.Application.Common.Contracts.Persistence;
 
 public interface IChatMessagesRepository
 {
-    Task<IEnumerable<ChatMessage>> GetChatMessagesForUser(Guid userId);
-
-    Task<string> AddChatMessage(ChatMessage chatMessage);
+    Task<IEnumerable<ChatMessage>> GetChatMessagesForRoomId(string roomId);
+    Task AddChatMessage(ChatMessage chatMessage);
 }

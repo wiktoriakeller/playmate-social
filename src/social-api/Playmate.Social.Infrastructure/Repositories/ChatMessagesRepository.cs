@@ -13,13 +13,13 @@ public class ChatMessagesRepository : IChatMessagesRepository
         _cassandraDbContext = cassandraDbContext;
     }
 
-    public Task<string> AddChatMessage(ChatMessage chatMessage)
+    public async Task AddChatMessage(ChatMessage chatMessage)
     {
-        throw new NotImplementedException();
+        await _cassandraDbContext.AddChatMessage(chatMessage);
     }
 
-    public Task<IEnumerable<ChatMessage>> GetChatMessagesForUser(Guid userId)
+    public async Task<IEnumerable<ChatMessage>> GetChatMessagesForRoomId(string roomId)
     {
-        throw new NotImplementedException();
+        return await _cassandraDbContext.SelectChatMessagesForChatRoomId(roomId);
     }
 }
