@@ -42,7 +42,7 @@ public static class ConfigureServicesExtension
 
     private static void AddCassandraDbContext(IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<CassandraConfiguration>(configuration.GetSection("Cassandra:Configuration"));
+        services.Configure<CassandraConfiguration>(configuration.GetSection(CassandraConfiguration.Section));
         services.AddSingleton<ICassandraConnection, CassandraConnection>();
         services.AddScoped<IChatMessagesRepository, ChatMessagesRepository>();
     }
@@ -91,7 +91,7 @@ public static class ConfigureServicesExtension
         });
 
         services.AddSingleton(tokenValidationParameters);
-        services.Configure<JwtTokensConfiguration>(configuration.GetSection("Authentication:JwtTokensConfiguration"));
+        services.Configure<JwtTokensConfiguration>(configuration.GetSection(JwtTokensConfiguration.Section));
     }
 
     private static void AddRepositories(IServiceCollection services)

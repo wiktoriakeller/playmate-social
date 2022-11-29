@@ -1,25 +1,32 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Playmate.Social.Application.Common.Contracts.Persistence;
-using Playmate.Social.Domain.Entities;
+using Playmate.Social.Application.ChatMessages.Commands;
+using Playmate.Social.Application.ChatMessages.Queries;
+using Playmate.Social.WebAPI.HubRequests.ChatMessages;
 
 namespace Playmate.Social.WebAPI.Controllers;
 
 [Route("chat")]
 public class ChatMessagesController : BaseApiController
 {
-    private readonly IChatMessagesRepository _chatMessagesRepository;
-
-    public ChatMessagesController(IMediator mediator, IMapper mapper, IChatMessagesRepository chatMessagesRepository) : base(mediator, mapper)
+    public ChatMessagesController(IMediator mediator, IMapper mapper) : base(mediator, mapper)
     {
-        _chatMessagesRepository = chatMessagesRepository;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetChatMessages([FromQuery] GetChatMessagesListRequest request)
+    {
+        var query = new GetChatMessagesListQuery { FirstUserId = request.FirstUserId, SecondUserId = request.SecondUserId };
+        var response = await _medaitor.Send(query);
+        return GetStatusCode(response);
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddChatMessage(ChatMessage chatMessage)
+    public async Task<IActionResult> AddChatMessage([FromBody] SendChatMessageRequest request)
     {
-        await _chatMessagesRepository.AddChatMessage(chatMessage);
-        return Ok(await _chatMessagesRepository.GetChatMessagesForRoomId(chatMessage.ChatRoomId));
+        var command = _mapper.Map<AddChatMessageCommand>(request);
+        var response = await _medaitor.Send(command);
+        return GetStatusCode(response);
     }
 }

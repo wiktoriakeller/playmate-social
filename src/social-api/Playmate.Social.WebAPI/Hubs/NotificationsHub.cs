@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
-using Playmate.Social.WebAPI.HubRequests;
+using Playmate.Social.WebAPI.HubRequests.ChatMessages;
 using Playmate.Social.WebAPI.Hubs.Clients;
 
 namespace Playmate.Social.WebAPI.Hubs;

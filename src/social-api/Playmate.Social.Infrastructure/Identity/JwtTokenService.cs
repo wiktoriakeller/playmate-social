@@ -2,7 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using Playmate.Social.Domain.Entities;
 using Playmate.Social.Infrastructure.Common.Configurations;
-using Playmate.Social.Infrastructure.Identity.Dto;
+using Playmate.Social.Infrastructure.Identity.Dtos;
 using Playmate.Social.Infrastructure.Identity.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;

@@ -2,6 +2,8 @@
 
 public class JwtTokensConfiguration
 {
+    public static readonly string Section = "Authentication:JwtTokensConfiguration";
+
     public string Key { get; set; }
     public string Issuer { get; set; }
     public string Audience { get; set; }

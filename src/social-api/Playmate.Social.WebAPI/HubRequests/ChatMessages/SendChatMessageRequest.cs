@@ -1,4 +1,4 @@
-﻿namespace Playmate.Social.WebAPI.HubRequests;
+﻿namespace Playmate.Social.WebAPI.HubRequests.ChatMessages;
 
 public class SendChatMessageRequest
 {

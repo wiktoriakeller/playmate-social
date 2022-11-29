@@ -23,6 +23,9 @@ public class CassandraConnection : IAsyncDisposable, ICassandraConnection
         Cluster = Cassandra.Cluster.Builder()
             .AddContactPoint(CassandraConfiguration.ContactPoints)
             .WithPort(CassandraConfiguration.Port)
+            .WithExecutionProfiles(options => options
+                .WithProfile(CassandraConfiguration.ChatProfile, profile => profile
+                    .WithConsistencyLevel(ConsistencyLevel.LocalOne)))
             .Build();
 
         var session = await Cluster.ConnectAsync();
@@ -41,7 +44,10 @@ public class CassandraConnection : IAsyncDisposable, ICassandraConnection
     {
         var createKeyspace = new SimpleStatement($$"""
             CREATE KEYSPACE IF NOT EXISTS {{CassandraConfiguration.KeySpace}}
-            WITH REPLICATION = {'class': 'NetworkTopologyStrategy', 'datacenter1': 1 };
+            WITH REPLICATION = {
+                'class': 'NetworkTopologyStrategy',
+                'datacenter1': 1
+            };
         """);
 
         var createChatMessagesTable = new SimpleStatement($"""
