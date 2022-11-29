@@ -1,12 +1,9 @@
 ﻿using Cassandra;
 using Cassandra.Mapping;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Playmate.Social.Domain.Entities;
 using Playmate.Social.Infrastructure.Common.Configurations;
 using Playmate.Social.Infrastructure.Persistence.Interfaces;
-using System.Linq.Expressions;
 
 namespace Playmate.Social.Infrastructure.Persistence;
 
@@ -22,31 +19,32 @@ public class CassandraDbContext : ICassandraDbContext
         _cassandraConfiguration = cassandraConfiguration.Value;
         _cluster = Cluster.Builder()
             .AddContactPoint(_cassandraConfiguration.ContactPoints)
+            .WithPort(_cassandraConfiguration.Port)
             .Build();
 
         var session = _cluster.Connect();
-        _cassandraMapper = new Mapper(session);
 
         var createKeyspace = new SimpleStatement($$"""
-            CREATE KEYSPACE IF NOT EXISTS ${{_cassandraConfiguration.KeySpace}}
+            CREATE KEYSPACE IF NOT EXISTS {{_cassandraConfiguration.KeySpace}}
             WITH REPLICATION = {'class': 'NetworkTopologyStrategy', 'datacenter1': 1 };
         """);
         session.Execute(createKeyspace);
 
         var createChatMessagesTable = new SimpleStatement($"""
-            CREATE TABLE IF NOT EXISTS ${_cassandraConfiguration.KeySpace}.chatMessages (
+            CREATE TABLE IF NOT EXISTS {_cassandraConfiguration.KeySpace}.chatMessages (
                 chatRoomId text,
                 id uuid,
-                senderId text,
-                receiverId text,
+                senderId uuid,
+                receiverId uuid,
                 content text,
-                createdAt timestamp),
-                PRIMARY KEY ((chatRoomId), id, createdAt))
-                WITH CLUSTERING ORDER BY (createdAt DESC);
+                createdAt timestamp,
+                PRIMARY KEY ((chatRoomId), createdAt, id))
+                WITH CLUSTERING ORDER BY (createdAt DESC, id ASC);
         """);
         session.Execute(createChatMessagesTable);
 
         _session = _cluster.Connect(_cassandraConfiguration.KeySpace);
+        _cassandraMapper = new Mapper(_session);
     }
 
     public async Task<IEnumerable<ChatMessage>> SelectChatMessagesForChatRoomId(string roomId)
@@ -66,11 +64,17 @@ public class CassandraDbContext : ICassandraDbContext
     {
         try
         {
-            await _cassandraMapper.InsertAsync(chatMessage);
+            var addMessageStatement = _session.Prepare("""
+                INSERT INTO chatMessages (chatRoomId, senderId, receiverId, content, createdAt, id)
+                VALUES (?, ?, ?, ?, ?, now());
+            """);
+
+            var binded = addMessageStatement.Bind(chatMessage.ChatRoomId, chatMessage.SenderId, chatMessage.ReceiverId, chatMessage.Content, chatMessage.CreatedAt);
+            await _session.ExecuteAsync(binded);
         }
-        catch(Exception)
+        catch (Exception)
         {
-            throw;   
+            throw;
         }
     }
 }
