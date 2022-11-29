@@ -26,7 +26,19 @@ public class CassandraConnection : IAsyncDisposable, ICassandraConnection
             .Build();
 
         var session = await Cluster.ConnectAsync();
+        await CreateChatTableIfNotExists(session);
 
+        Session = await Cluster.ConnectAsync(CassandraConfiguration.KeySpace);
+        CassandraMapper = new Mapper(Session);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await Cluster.ShutdownAsync();
+    }
+
+    private async Task CreateChatTableIfNotExists(ISession session)
+    {
         var createKeyspace = new SimpleStatement($$"""
             CREATE KEYSPACE IF NOT EXISTS {{CassandraConfiguration.KeySpace}}
             WITH REPLICATION = {'class': 'NetworkTopologyStrategy', 'datacenter1': 1 };
@@ -46,13 +58,5 @@ public class CassandraConnection : IAsyncDisposable, ICassandraConnection
 
         await session.ExecuteAsync(createKeyspace);
         await session.ExecuteAsync(createChatMessagesTable);
-
-        Session = await Cluster.ConnectAsync(CassandraConfiguration.KeySpace);
-        CassandraMapper = new Mapper(Session);
-    }
-
-    public async ValueTask DisposeAsync()
-    {
-        await Cluster.ShutdownAsync();
     }
 }

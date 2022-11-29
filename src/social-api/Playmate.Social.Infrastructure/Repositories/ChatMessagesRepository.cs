@@ -6,20 +6,43 @@ namespace Playmate.Social.Infrastructure.Repositories;
 
 public class ChatMessagesRepository : IChatMessagesRepository
 {
-    private readonly ICassandraDbContext _cassandraDbContext;
+    private readonly ICassandraConnection _connection;
 
-    public ChatMessagesRepository(ICassandraDbContext cassandraDbContext)
-    {
-        _cassandraDbContext = cassandraDbContext;
-    }
+    private readonly string _selectMessagesQuery = "SELECT * FROM chatMessages WHERE chatRoomId=?";
 
-    public async Task AddChatMessage(ChatMessage chatMessage)
+    private readonly string _addMessageQuery = """
+            INSERT INTO chatMessages (chatRoomId, senderId, receiverId, content, createdAt, id)
+            VALUES (?, ?, ?, ?, ?, now());
+        """;
+
+    public ChatMessagesRepository(ICassandraConnection connection)
     {
-        await _cassandraDbContext.AddChatMessage(chatMessage);
+        _connection = connection;
     }
 
     public async Task<IEnumerable<ChatMessage>> GetChatMessagesForRoomId(string roomId)
     {
-        return await _cassandraDbContext.SelectChatMessagesForChatRoomId(roomId);
+        try
+        {
+            return await _connection.CassandraMapper.FetchAsync<ChatMessage>(_selectMessagesQuery, roomId);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task AddChatMessage(ChatMessage chatMessage)
+    {
+        try
+        {
+            var addMessageStatement = _connection.Session.Prepare(_addMessageQuery);
+            var binded = addMessageStatement.Bind(chatMessage.ChatRoomId, chatMessage.SenderId, chatMessage.ReceiverId, chatMessage.Content, chatMessage.CreatedAt);
+            await _connection.Session.ExecuteAsync(binded);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 }

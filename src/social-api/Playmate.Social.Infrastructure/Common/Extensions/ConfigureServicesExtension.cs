@@ -44,7 +44,6 @@ public static class ConfigureServicesExtension
     {
         services.Configure<CassandraConfiguration>(configuration.GetSection("Cassandra:Configuration"));
         services.AddSingleton<ICassandraConnection, CassandraConnection>();
-        services.AddScoped<ICassandraDbContext, CassandraDbContext>();
         services.AddScoped<IChatMessagesRepository, ChatMessagesRepository>();
     }
 
