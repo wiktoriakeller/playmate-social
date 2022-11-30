@@ -2,7 +2,7 @@
 using Playmate.Social.Application.Common;
 using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Persistence;
-using Playmate.Social.Application.Common.Contracts.Providers;
+using Playmate.Social.Application.Common.Contracts.Services;
 using Playmate.Social.Application.GameResults.Commands;
 using Playmate.Social.Application.GameResults.Responses;
 using Playmate.Social.Domain.Entities;

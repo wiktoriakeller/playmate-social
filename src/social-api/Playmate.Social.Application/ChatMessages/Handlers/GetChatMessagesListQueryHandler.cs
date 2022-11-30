@@ -4,52 +4,37 @@ using Playmate.Social.Application.ChatMessages.Queries;
 using Playmate.Social.Application.ChatMessages.Responses;
 using Playmate.Social.Application.Common;
 using Playmate.Social.Application.Common.BaseResponse;
-using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
+using Playmate.Social.Application.Common.Contracts.Services;
 
 namespace Playmate.Social.Application.ChatMessages.Handlers;
 
 public class GetChatMessagesListQueryHandler : IHandlerWrapper<GetChatMessagesListQuery, GetChatMessagesListResponse>
 {
     private readonly IChatMessagesRepository _chatMessagesRepository;
-    private readonly IIdentityService _identityService;
+    private readonly IRoomIdProvider _roomIdProvider;
     private readonly IMapper _mapper;
 
     public GetChatMessagesListQueryHandler(
         IChatMessagesRepository chatMessagesRepository,
-        IIdentityService identityService,
+        IRoomIdProvider roomIdProvider,
         IMapper mapper)
     {
         _chatMessagesRepository = chatMessagesRepository;
-        _identityService = identityService;
+        _roomIdProvider = roomIdProvider;
         _mapper = mapper;
     }
 
     public async Task<Response<GetChatMessagesListResponse>> Handle(GetChatMessagesListQuery request, CancellationToken cancellationToken)
     {
-        var sender = await _identityService.GetUserById(request.FirstUserId);
+        var roomIdResponse = await _roomIdProvider.GetRoomIdForUsers(request.FirstUserId, request.SecondUserId);
 
-        if (sender is null)
+        if (!roomIdResponse.Succeeded)
         {
-            return ResponseResult.NotFound<GetChatMessagesListResponse>("First user was not found");
+            return ResponseResult.NotFound<GetChatMessagesListResponse>(roomIdResponse.Errors);
         }
 
-        var receiver = await _identityService.GetUserById(request.SecondUserId);
-
-        if (receiver is null)
-        {
-            return ResponseResult.NotFound<GetChatMessagesListResponse>("Second user was not found");
-        }
-
-        var firstUserName = sender.Username;
-        var secondUserName = receiver.Username;
-        var roomId = $"{firstUserName}{secondUserName}";
-
-        if (string.Compare(secondUserName, firstUserName, true) < 0)
-        {
-            roomId = $"{secondUserName}{firstUserName}";
-        }
-
+        var roomId = roomIdResponse.Data!;
         var messages = await _chatMessagesRepository.GetChatMessagesForRoomIdAsync(roomId);
         var messagesDto = _mapper.Map<IEnumerable<ChatMessageDto>>(messages);
         var response = new GetChatMessagesListResponse

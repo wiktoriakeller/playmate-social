@@ -1,4 +1,4 @@
-﻿namespace Playmate.Social.Application.Common.Contracts.Providers;
+﻿namespace Playmate.Social.Application.Common.Contracts.Services;
 
 public interface IDateTimeProvider
 {
