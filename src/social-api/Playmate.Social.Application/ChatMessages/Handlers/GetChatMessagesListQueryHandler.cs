@@ -27,7 +27,7 @@ public class GetChatMessagesListQueryHandler : IHandlerWrapper<GetChatMessagesLi
 
     public async Task<Response<GetChatMessagesListResponse>> Handle(GetChatMessagesListQuery request, CancellationToken cancellationToken)
     {
-        var roomIdResponse = await _roomIdProvider.GetRoomIdForUsers(request.FirstUserId, request.SecondUserId);
+        var roomIdResponse = await _roomIdProvider.GetRoomIdByFriendId(request.FriendId);
 
         if (!roomIdResponse.Succeeded)
         {
@@ -39,8 +39,8 @@ public class GetChatMessagesListQueryHandler : IHandlerWrapper<GetChatMessagesLi
         var messagesDto = _mapper.Map<IEnumerable<ChatMessageDto>>(messages);
         var response = new GetChatMessagesListResponse
         {
-            ChatMessages = messagesDto,
-            RoomId = roomId
+            FriendId = request.FriendId,
+            Messages = messagesDto
         };
 
         return ResponseResult.Ok(response);

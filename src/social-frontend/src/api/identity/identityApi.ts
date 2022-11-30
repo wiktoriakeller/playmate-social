@@ -23,7 +23,7 @@ export const identityApi = createApi({
     }),
     createUser: builder.mutation<ICreateUserResponse, ICreateUserRequest>({
       query: (request) => ({
-        url: "identity/register",
+        url: "/identity/register",
         method: "POST",
         body: request
       })
@@ -31,7 +31,7 @@ export const identityApi = createApi({
     refreshToken: builder.mutation<IRefreshTokenResponse, IRefreshTokenRequest>(
       {
         query: (request) => ({
-          url: "identity/refresh",
+          url: "/identity/refresh",
           method: "POST",
           body: request
         })

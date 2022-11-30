@@ -4,6 +4,6 @@ namespace Playmate.Social.Application.ChatMessages.Responses;
 
 public class GetChatMessagesListResponse
 {
-    public string RoomId { get; init; }
-    public IEnumerable<ChatMessageDto> ChatMessages { get; init; }
+    public required Guid FriendId { get; init  ; }
+    public required IEnumerable<ChatMessageDto> Messages { get; init; }
 }

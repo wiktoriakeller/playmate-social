@@ -14,7 +14,7 @@ export const friendsApi = createApi({
       IGetFriendsListRequest
     >({
       query: (request) => ({
-        url: `/friends/?search=${request.search}`,
+        url: `/friends?search=${request.search}`,
         method: "GET"
       })
     }),

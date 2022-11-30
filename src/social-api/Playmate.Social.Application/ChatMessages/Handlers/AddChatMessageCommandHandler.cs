@@ -27,7 +27,7 @@ public class AddChatMessageCommandHandler : IHandlerWrapper<AddChatMessageComman
 
     public async Task<Response<AddChatMessageResponse>> Handle(AddChatMessageCommand request, CancellationToken cancellationToken)
     {
-        var roomIdResponse = await _roomIdProvider.GetRoomIdForUsers(request.SenderId, request.ReceiverId);
+        var roomIdResponse = await _roomIdProvider.GetRoomIdByFriendId(request.ReceiverId);
 
         if (!roomIdResponse.Succeeded)
         {

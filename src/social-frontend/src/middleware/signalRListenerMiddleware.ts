@@ -22,7 +22,7 @@ interface IReceiveChatMessage {
   senderId: string;
   receiverId: string;
   content: string;
-  createdAt: Date;
+  createdAt: string;
 }
 
 signalRListenerMiddleware.startListening({

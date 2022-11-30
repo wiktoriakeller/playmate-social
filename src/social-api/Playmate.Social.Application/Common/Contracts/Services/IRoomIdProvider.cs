@@ -4,5 +4,5 @@ namespace Playmate.Social.Application.Common.Contracts.Services;
 
 public interface IRoomIdProvider
 {
-    Task<Response<string>> GetRoomIdForUsers(Guid firstUserId, Guid secondUserId);
+    Task<Response<string>> GetRoomIdByFriendId(Guid friendId);
 }

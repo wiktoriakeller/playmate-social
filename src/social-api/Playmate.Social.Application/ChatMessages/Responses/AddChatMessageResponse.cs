@@ -2,5 +2,5 @@
 
 public class AddChatMessageResponse
 {
-    public Guid MessageId { get; init; }
+    public required Guid MessageId { get; init; }
 }

@@ -7,35 +7,30 @@ namespace Playmate.Social.Application.Common.Services;
 public class RoomIdProvider : IRoomIdProvider
 {
     private readonly IIdentityService _identityService;
+    private readonly ICurrentUserService _currentUserService;
 
-    public RoomIdProvider(IIdentityService identityService)
+    public RoomIdProvider(IIdentityService identityService, ICurrentUserService currentUserService)
     {
         _identityService = identityService;
+        _currentUserService = currentUserService;
     }
 
-    public async Task<Response<string>> GetRoomIdForUsers(Guid firstUserId, Guid secondUserId)
+    public async Task<Response<string>> GetRoomIdByFriendId(Guid friendId)
     {
-        var sender = await _identityService.GetUserById(firstUserId);
+        var currentUserUsername = _currentUserService.CurrentUser.Username;
+        var friend = await _identityService.GetUserById(friendId);
 
-        if (sender is null)
+        if (friend is null)
         {
-            return ResponseResult.NotFound<string>("First user was not found");
+            return ResponseResult.NotFound<string>("Friend with specified ID was not found");
         }
 
-        var receiver = await _identityService.GetUserById(secondUserId);
+        var friendUsername = friend?.Username;
+        var roomId = $"{currentUserUsername}{friendUsername}";
 
-        if (receiver is null)
+        if (string.Compare(friendUsername, currentUserUsername, true) < 0)
         {
-            return ResponseResult.NotFound<string>("Second user was not found");
-        }
-
-        var firstUserName = sender.Username;
-        var secondUserName = receiver.Username;
-        var roomId = $"{firstUserName}{secondUserName}";
-
-        if (string.Compare(secondUserName, firstUserName, true) < 0)
-        {
-            roomId = $"{secondUserName}{firstUserName}";
+            roomId = $"{friendUsername}{currentUserUsername}";
         }
 
         return ResponseResult.Ok(roomId);

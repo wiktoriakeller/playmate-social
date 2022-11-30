@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { chatMessagesApi } from "../api/chatMessages/chatMessagesApi";
 import { friendsApi } from "../api/friends/friendsApi";
 import { identityApi } from "../api/identity/identityApi";
 import { usersApi } from "../api/users/usersApi";
@@ -26,7 +27,8 @@ export const store = configureStore({
     [identityApi.reducerPath]: identityApi.reducer,
     [friendsApi.reducerPath]: friendsApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
-    [friendsApi.reducerPath]: friendsApi.reducer
+    [friendsApi.reducerPath]: friendsApi.reducer,
+    [chatMessagesApi.reducerPath]: chatMessagesApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -37,6 +39,7 @@ export const store = configureStore({
       .concat(identityApi.middleware)
       .concat(usersApi.middleware)
       .concat(friendsApi.middleware)
+      .concat(chatMessagesApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;
