@@ -3,7 +3,10 @@ import { InputAdornment, Tooltip } from "@mui/material";
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addChatMessage } from "../../slices/chatSlice";
-import { selectSelectedFriend } from "../../slices/friendsListSlice";
+import {
+  selectSelectedFriend,
+  setSelectedFriendLastChatMessage
+} from "../../slices/friendsListSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
 import { StyledChatInput } from "../../styled/components/chat/StyledChatInput";
 import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
@@ -28,6 +31,15 @@ const ChatInput = () => {
           createdAt: new Date().toISOString()
         })
       );
+
+      dispatch(
+        setSelectedFriendLastChatMessage({
+          senderId: user.id,
+          senderUsername: user.username,
+          content: currentInput
+        })
+      );
+
       setCurrentInput("");
     }
   };

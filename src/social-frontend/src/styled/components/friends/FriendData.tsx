@@ -16,6 +16,9 @@ export const FriendData = styled.div<IFriendsDataProps>`
     props.isSelected
       ? props.theme.palette.common.white
       : props.theme.palette.text.primary};
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 
   span:nth-of-type(2) {
     color: ${(props) =>

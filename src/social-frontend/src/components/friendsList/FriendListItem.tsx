@@ -1,4 +1,5 @@
 import Avatar from "@mui/material/Avatar";
+import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   IFriend,
@@ -22,17 +23,15 @@ const FriendListItem = (props: IFriendsListItemProps) => {
   const currentUser = useAppSelector(selectUserIdentity);
   const selectedFriend = useAppSelector(selectSelectedFriend);
 
-  const getLastMessage = () => {
-    if (!!props.lastChatMessage) {
+  const getLastMessage = useCallback((message?: ILastChatMessage) => {
+    if (!!message) {
       const senderName =
-        currentUser.id === props.lastChatMessage.senderId
-          ? "You"
-          : props.lastChatMessage.senderUsername;
-      return `${senderName}: ${props.lastChatMessage.content}`;
+        currentUser.id === message.senderId ? "You" : message.senderUsername;
+      return `${senderName}: ${message.content}`;
     }
 
     return "";
-  };
+  }, []);
 
   return (
     <StyledFriendsListItem
@@ -42,7 +41,11 @@ const FriendListItem = (props: IFriendsListItemProps) => {
       <Avatar alt={props.username} src={props.logoPath} />
       <FriendData isSelected={selectedFriend?.id === props.id}>
         <span>{props.username}</span>
-        <span>{getLastMessage()}</span>
+        {selectedFriend?.id === props.id ? (
+          <span>{getLastMessage(selectedFriend.lastChatMessage)}</span>
+        ) : (
+          <span>{getLastMessage(props.lastChatMessage)}</span>
+        )}
       </FriendData>
     </StyledFriendsListItem>
   );

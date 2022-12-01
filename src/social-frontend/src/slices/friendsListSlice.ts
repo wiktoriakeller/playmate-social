@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
-import { IChatMessage } from "./chatSlice";
 
 export interface ILastChatMessage {
   content: string;
@@ -11,7 +10,7 @@ export interface ILastChatMessage {
 export interface IFriend {
   id: string;
   username: string;
-  lastMessage: ILastChatMessage;
+  lastChatMessage?: ILastChatMessage;
 }
 
 export interface IFriendsListState {
@@ -39,6 +38,12 @@ export const friendsListSlice = createSlice({
     ) {
       state.selectedFriend = action.payload;
     },
+    setSelectedFriendLastChatMessage(
+      state: IFriendsListState,
+      action: PayloadAction<ILastChatMessage>
+    ) {
+      state.selectedFriend.lastChatMessage = action.payload;
+    },
     setFriendsListSearchPhrase(
       state: IFriendsListState,
       action: PayloadAction<string>
@@ -48,8 +53,12 @@ export const friendsListSlice = createSlice({
   }
 });
 
-export const { setFriendsList, setSelectedFriend, setFriendsListSearchPhrase } =
-  friendsListSlice.actions;
+export const {
+  setFriendsList,
+  setSelectedFriend,
+  setFriendsListSearchPhrase,
+  setSelectedFriendLastChatMessage
+} = friendsListSlice.actions;
 
 export const selectFriendsList = (state: RootState): IFriend[] =>
   state.friendsList.friends;

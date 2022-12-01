@@ -11,6 +11,7 @@ const FriendsLits = () => {
   const friendsSearchPhrase = useAppSelector(selectFriendsListSearchPhrase);
   const [getFriendsListLazy, { data, isLoading }] =
     useLazyGetFriendsListQuery();
+
   const skeletons = useMemo(() => {
     const jsxElements = [];
     for (let i = 0; i < 6; i++) {
