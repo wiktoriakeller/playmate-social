@@ -1,9 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../app/store";
+import { IChatMessage } from "./chatSlice";
+
+export interface ILastChatMessage {
+  content: string;
+  senderId: string;
+  senderUsername: string;
+}
 
 export interface IFriend {
   id: string;
   username: string;
+  lastMessage: ILastChatMessage;
 }
 
 export interface IFriendsListState {

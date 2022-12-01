@@ -23,7 +23,7 @@ public class ChatMessagesRepository : IChatMessagesRepository
         _connection = connection;
     }
 
-    public async Task<IEnumerable<ChatMessage>> GetChatMessagesForRoomIdAsync(string roomId)
+    public async Task<IEnumerable<ChatMessage>> GetAllChatMessagesForRoomIdAsync(string roomId)
     {
         try
         {
@@ -31,6 +31,22 @@ public class ChatMessagesRepository : IChatMessagesRepository
             return await _connection.CassandraMapper.FetchAsync<ChatMessage>(cql);
         }
         catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<IEnumerable<ChatMessage>> GetChatMessagesForRoomIdAsync(string roomId, int pageSize)
+    {
+        try
+        {
+            var cql = Cql.New(_selectMessagesQuery, roomId)
+                .WithExecutionProfile(CassandraConfiguration.ChatProfile)
+                .WithOptions(options => options.SetPageSize(pageSize));
+
+            return await _connection.CassandraMapper.FetchAsync<ChatMessage>(cql);
+        }
+        catch(Exception)
         {
             throw;
         }
