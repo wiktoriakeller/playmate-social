@@ -30,7 +30,7 @@ const FriendListItem = (props: IFriendsListItemProps) => {
       return `${senderName}: ${message.content}`;
     }
 
-    return "";
+    return "You:";
   }, []);
 
   const setCurrentFriend = useCallback(() => {
