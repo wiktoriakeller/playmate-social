@@ -33,16 +33,20 @@ const FriendListItem = (props: IFriendsListItemProps) => {
     return "";
   }, []);
 
+  const setCurrentFriend = useCallback(() => {
+    dispatch(setSelectedFriend(props as IFriend));
+  }, [props]);
+
   return (
     <StyledFriendsListItem
-      onClick={() => dispatch(setSelectedFriend(props as IFriend))}
+      onClick={setCurrentFriend}
       isSelected={selectedFriend?.id === props.id}
     >
       <Avatar alt={props.username} src={props.logoPath} />
       <FriendData isSelected={selectedFriend?.id === props.id}>
         <span>{props.username}</span>
         {selectedFriend?.id === props.id ? (
-          <span>{getLastMessage(selectedFriend.lastChatMessage)}</span>
+          <span>{getLastMessage(selectedFriend?.lastChatMessage)}</span>
         ) : (
           <span>{getLastMessage(props.lastChatMessage)}</span>
         )}
