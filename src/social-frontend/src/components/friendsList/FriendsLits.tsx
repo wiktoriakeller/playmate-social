@@ -1,16 +1,21 @@
 import { Avatar, Skeleton } from "@mui/material";
 import { useEffect, useMemo } from "react";
 import { useLazyGetFriendsListQuery } from "../../api/friends/friendsApi";
-import { useAppSelector } from "../../app/hooks";
-import { selectFriendsListSearchPhrase } from "../../slices/friendsListSlice";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import {
+  selectFriendsList,
+  selectFriendsListSearchPhrase,
+  setFriendsList
+} from "../../slices/friendsListSlice";
 import { StyledFriendsList } from "../../styled/components/friends/StyledFriendsList";
 import { SkeletonsContainer } from "../../styled/components/mui/SkeletonsContainer";
 import FriendListItem from "./FriendListItem";
 
 const FriendsLits = () => {
+  const dispatch = useAppDispatch();
   const friendsSearchPhrase = useAppSelector(selectFriendsListSearchPhrase);
-  const [getFriendsListLazy, { data, isLoading }] =
-    useLazyGetFriendsListQuery();
+  const userFriends = useAppSelector(selectFriendsList);
+  const [getFriendsListLazy, { isLoading }] = useLazyGetFriendsListQuery();
 
   const skeletons = useMemo(() => {
     const jsxElements = [];
@@ -33,6 +38,8 @@ const FriendsLits = () => {
   useEffect(() => {
     getFriendsListLazy({
       search: friendsSearchPhrase
+    }).then((response) => {
+      dispatch(setFriendsList(response?.data?.data.friends));
     });
   }, [friendsSearchPhrase]);
 
@@ -46,7 +53,7 @@ const FriendsLits = () => {
 
   return (
     <StyledFriendsList>
-      {data?.data?.friends?.map((item) => (
+      {userFriends.map((item) => (
         <FriendListItem {...item} key={item.id} />
       ))}
     </StyledFriendsList>

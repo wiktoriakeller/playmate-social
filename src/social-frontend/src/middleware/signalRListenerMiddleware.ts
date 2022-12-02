@@ -6,7 +6,7 @@ import {
 } from "@microsoft/signalr";
 import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
 import { addChatMessage, IChatMessage } from "../slices/chatSlice";
-import { setSelectedFriendLastChatMessage } from "../slices/friendsListSlice";
+import { setFriendLastChatMessage } from "../slices/friendsListSlice";
 import {
   IUserIdentityState,
   setUserIdentity
@@ -21,6 +21,7 @@ let hubConnection: HubConnection | null = null;
 
 interface IReceiveChatMessage {
   senderId: string;
+  senderUsername: string;
   receiverId: string;
   content: string;
   createdAt: string;
@@ -66,9 +67,9 @@ signalRListenerMiddleware.startListening({
         );
 
         listenerApi.dispatch(
-          setSelectedFriendLastChatMessage({
+          setFriendLastChatMessage({
             senderId: request.senderId,
-            senderUsername: user.username,
+            senderUsername: request.senderUsername,
             content: request.content
           })
         );

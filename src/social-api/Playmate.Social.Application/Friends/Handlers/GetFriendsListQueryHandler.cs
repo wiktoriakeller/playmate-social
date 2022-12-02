@@ -59,6 +59,7 @@ public class GetFriendsListQueryHandler : IHandlerWrapper<GetFriendsListQuery, G
                     {
                         Content = lastMessage.Content,
                         SenderId = lastMessage.SenderId,
+                        CreatedAt = lastMessage.CreatedAt,
                         SenderUsername = friend.Username
                     };
                     
@@ -66,6 +67,8 @@ public class GetFriendsListQueryHandler : IHandlerWrapper<GetFriendsListQuery, G
                 }
             }
         }
+
+        mappedFriends = mappedFriends.OrderByDescending(x => x.LastChatMessage?.CreatedAt);
 
         var response = new GetFriendsListResponse(mappedFriends);
 

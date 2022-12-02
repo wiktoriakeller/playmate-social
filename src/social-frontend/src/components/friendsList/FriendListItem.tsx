@@ -26,7 +26,9 @@ const FriendListItem = (props: IFriendsListItemProps) => {
   const getLastMessage = useCallback((message?: ILastChatMessage) => {
     if (!!message) {
       const senderName =
-        currentUser.id === message.senderId ? "You" : message.senderUsername;
+        currentUser.username === message.senderUsername
+          ? "You"
+          : message.senderUsername;
       return `${senderName}: ${message.content}`;
     }
 
@@ -45,11 +47,7 @@ const FriendListItem = (props: IFriendsListItemProps) => {
       <Avatar alt={props.username} src={props.logoPath} />
       <FriendData isSelected={selectedFriend?.id === props.id}>
         <span>{props.username}</span>
-        {selectedFriend?.id === props.id ? (
-          <span>{getLastMessage(selectedFriend?.lastChatMessage)}</span>
-        ) : (
-          <span>{getLastMessage(props.lastChatMessage)}</span>
-        )}
+        <span>{getLastMessage(props.lastChatMessage)}</span>
       </FriendData>
     </StyledFriendsListItem>
   );

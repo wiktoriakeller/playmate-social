@@ -38,11 +38,15 @@ export const friendsListSlice = createSlice({
     ) {
       state.selectedFriend = action.payload;
     },
-    setSelectedFriendLastChatMessage(
+    setFriendLastChatMessage(
       state: IFriendsListState,
       action: PayloadAction<ILastChatMessage>
     ) {
-      state.selectedFriend.lastChatMessage = action.payload;
+      state.friends = state.friends.map((friend) =>
+        friend.id !== action.payload.senderId
+          ? friend
+          : { ...friend, lastChatMessage: action.payload }
+      );
     },
     setFriendsListSearchPhrase(
       state: IFriendsListState,
@@ -57,7 +61,7 @@ export const {
   setFriendsList,
   setSelectedFriend,
   setFriendsListSearchPhrase,
-  setSelectedFriendLastChatMessage
+  setFriendLastChatMessage
 } = friendsListSlice.actions;
 
 export const selectFriendsList = (state: RootState): IFriend[] =>

@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addChatMessage } from "../../slices/chatSlice";
 import {
   selectSelectedFriend,
-  setSelectedFriendLastChatMessage
+  setFriendLastChatMessage
 } from "../../slices/friendsListSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
 import { StyledChatInput } from "../../styled/components/chat/StyledChatInput";
@@ -25,6 +25,7 @@ const ChatInput = () => {
       dispatch(
         addChatMessage({
           senderId: user.id,
+          senderUsername: user.username,
           receiverId: selectedFriend.id,
           isCurrentUserReceiver: false,
           content: currentInput,
@@ -33,8 +34,8 @@ const ChatInput = () => {
       );
 
       dispatch(
-        setSelectedFriendLastChatMessage({
-          senderId: user.id,
+        setFriendLastChatMessage({
+          senderId: selectedFriend.id,
           senderUsername: user.username,
           content: currentInput
         })

@@ -3,6 +3,7 @@ import { RootState } from "../app/store";
 
 export interface IChatMessage {
   senderId: string;
+  senderUsername: string;
   receiverId: string;
   content: string;
   isCurrentUserReceiver: boolean;

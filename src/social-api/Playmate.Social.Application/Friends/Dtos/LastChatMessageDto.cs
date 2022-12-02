@@ -5,4 +5,5 @@ public class LastChatMessageDto
     public string Content { get; set; }
     public Guid SenderId { get; set; }
     public string SenderUsername { get; set;}
+    public DateTimeOffset CreatedAt { get; set; }
 }
