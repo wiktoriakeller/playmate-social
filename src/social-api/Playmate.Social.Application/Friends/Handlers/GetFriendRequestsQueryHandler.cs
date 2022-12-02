@@ -12,23 +12,25 @@ namespace Playmate.Social.Application.Friends.Handlers;
 
 public class GetFriendRequestsQueryHandler : IHandlerWrapper<GetFriendRequestsQuery, GetFriendRequestsResponse>
 {
-    private readonly IFriendRequestRepository _requestsRepository;
-    private readonly ICurrentUserService _userService;
+    private readonly IFriendsRequestsRepository _friendsRequestsRepository;
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
 
-    public GetFriendRequestsQueryHandler(IMapper mapper, ICurrentUserService userService, IFriendRequestRepository requestsRepository)
+    public GetFriendRequestsQueryHandler(
+        IMapper mapper,
+        ICurrentUserService userService,
+        IFriendsRequestsRepository requestsRepository)
     {
         _mapper = mapper;
-        _userService = userService;
-        _requestsRepository = requestsRepository;
+        _currentUserService = userService;
+        _friendsRequestsRepository = requestsRepository;
     }
 
     public Task<Response<GetFriendRequestsResponse>> Handle(GetFriendRequestsQuery request, CancellationToken cancellationToken)
     {
-        var user = _userService.CurrentUser;
+        var user = _currentUserService.CurrentUser;
 
-        var requests = _requestsRepository.GetWhere(r => r.AddresseeId == user.Id).ToList();
-
+        var requests = _friendsRequestsRepository.GetWhere(r => r.AddresseeId == user.Id).ToList();
         var mappedRequests = _mapper.Map<IEnumerable<FriendRequest>, IEnumerable<FriendRequestDto>>(requests);
 
         var response = new GetFriendRequestsResponse(mappedRequests);

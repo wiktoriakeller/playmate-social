@@ -10,12 +10,12 @@ namespace Playmate.Social.Application.Games.Handlers;
 
 public class RegisterGameCommandHandler : IHandlerWrapper<RegisterGameCommand, RegisterGameResponse>
 {
-    private readonly IRepository<Game> _gameRepository;
+    private readonly IRepository<Game> _gamesRepository;
     private readonly IMapper _mapper;
 
-    public RegisterGameCommandHandler(IRepository<Game> gameRepository, IMapper mapper)
+    public RegisterGameCommandHandler(IRepository<Game> gamesRepository, IMapper mapper)
     {
-        _gameRepository = gameRepository;
+        _gamesRepository = gamesRepository;
         _mapper = mapper;
     }
 
@@ -28,7 +28,7 @@ public class RegisterGameCommandHandler : IHandlerWrapper<RegisterGameCommand, R
             return ResponseResult.ValidationError<RegisterGameResponse>("Could not register game");
         }
 
-        var createGame = await _gameRepository.AddAsync(game);
+        var createGame = await _gamesRepository.AddAsync(game);
 
         if (createGame == null)
         {

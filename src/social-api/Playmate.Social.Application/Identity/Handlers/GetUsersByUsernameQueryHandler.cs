@@ -12,32 +12,37 @@ namespace Playmate.Social.Application.Identity.Handlers;
 
 public class GetUsersByUsernameQueryHandler : IHandlerWrapper<GetUsersByUsernameQuery, GetUsersByUsernameResponse>
 {
-    private readonly IRepository<User> _userRepository;
-    private readonly IFriendRequestRepository _requestsRepository;
-    private readonly IFriendRepository _friendsRepository;
+    private readonly IRepository<User> _usersRepository;
+    private readonly IFriendsRequestsRepository _requestsRepository;
+    private readonly IFriendsRepository _friendsRepository;
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
-    private readonly ICurrentUserService _userService;
 
-    public GetUsersByUsernameQueryHandler(IRepository<User> userRepository, IMapper mapper, ICurrentUserService userService, IFriendRepository friendsRepository, IFriendRequestRepository requestsRepository)
+    public GetUsersByUsernameQueryHandler(
+        IRepository<User> userRepository,
+        ICurrentUserService userService,
+        IFriendsRepository friendsRepository,
+        IFriendsRequestsRepository requestsRepository,
+        IMapper mapper)
     {
-        _userRepository = userRepository;
-        _mapper = mapper;
-        _userService = userService;
+        _usersRepository = userRepository;
+        _currentUserService = userService;
         _friendsRepository = friendsRepository;
         _requestsRepository = requestsRepository;
+        _mapper = mapper;
     }
 
     public async Task<Response<GetUsersByUsernameResponse>> Handle(GetUsersByUsernameQuery request, CancellationToken cancellationToken)
     {
-        var currentUser = _userService.CurrentUser;
+        var currentUser = _currentUserService.CurrentUser;
 
-        var users = _userRepository.GetWhere(u => u.Username.Contains(request.Username) && u.Id != currentUser.Id).ToList();
+        var users = _usersRepository.GetWhere(u => u.Username.Contains(request.Username) && u.Id != currentUser.Id).ToList();
         var mappedUsers = _mapper.Map<IEnumerable<UserDto>>(users);
 
-        var friends = await _friendsRepository.GetFriends(currentUser);
+        var friends = await _friendsRepository.GetFriendsAsync(currentUser);
         var friendsSet = friends.Select(f => f.Id).ToHashSet();
 
-        var requests = await _requestsRepository.GetUsersWithPendingRequests(currentUser);
+        var requests = await _requestsRepository.GetUsersWithPendingRequestsAsync(currentUser);
         var requestsSet = requests.ToHashSet();
 
         foreach (var user in mappedUsers)
@@ -46,6 +51,7 @@ public class GetUsersByUsernameQueryHandler : IHandlerWrapper<GetUsersByUsername
             {
                 user.IsFriend = true;
             }
+
             if (requestsSet.Contains(user.Id))
             {
                 user.PendingRequest = true;

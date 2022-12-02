@@ -2,7 +2,7 @@
 
 public class RemoveFriendResponse
 {
-    public Guid FriendId { get; set; }
+    public Guid FriendId { get; init; }
 
     public RemoveFriendResponse(Guid friendId)
     {

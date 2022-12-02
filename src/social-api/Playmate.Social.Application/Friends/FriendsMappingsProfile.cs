@@ -12,5 +12,6 @@ public class FriendsMappingsProfile : Profile
         CreateMap<FriendRequest, FriendRequestDto>()
             .ForMember(d => d.From, o => o.MapFrom(s => s.Requester))
             .ForMember(d => d.RequestId, o => o.MapFrom(s => s.Id));
+        CreateMap<User, FriendListItemDto>();
     }
 }

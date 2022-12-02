@@ -17,10 +17,10 @@ const AuthRedirector = (props: AuthRedirectorProps) => {
   const user = useAppSelector(selectUserIdentity);
   let hasToken = true;
 
-  if (user.jwtToken === null) {
+  if (user === null || user.jwtToken === null) {
     const userFromStorage = getUserFromStorage();
 
-    if (userFromStorage.jwtToken === null) {
+    if (userFromStorage === null || userFromStorage.jwtToken === null) {
       hasToken = false;
     } else {
       dispatch(setUserIdentity(userFromStorage));

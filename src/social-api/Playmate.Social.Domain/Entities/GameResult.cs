@@ -1,6 +1,6 @@
 ﻿namespace Playmate.Social.Domain.Entities;
 
-public class GameResult : IEntity
+public class GameResult
 {
     public Guid Id { get; set; }
     public Guid GameId { get; set; }

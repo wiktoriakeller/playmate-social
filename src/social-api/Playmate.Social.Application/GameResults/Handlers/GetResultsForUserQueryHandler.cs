@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using MediatR;
 using Playmate.Social.Application.Common;
 using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Identity;
@@ -13,22 +12,24 @@ namespace Playmate.Social.Application.GameResults.Handlers;
 
 public class GetResultsForUserQueryHandler : IHandlerWrapper<GetResultsForUserQuery, GetResultsForUserResponse>
 {
-    private readonly IRepository<GameResult> _resultsRepository;
+    private readonly IRepository<GameResult> _gamesResultsRepository;
+    private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
-    private readonly ICurrentUserService _userService;
 
-    public GetResultsForUserQueryHandler(IRepository<GameResult> resultsRepository, IMapper mapper, ICurrentUserService userService)
+    public GetResultsForUserQueryHandler(
+        IRepository<GameResult> gamesResultsRepository,
+        ICurrentUserService currentUserService,
+        IMapper mapper)
     {
-        _resultsRepository = resultsRepository;
+        _gamesResultsRepository = gamesResultsRepository;
+        _currentUserService = currentUserService;
         _mapper = mapper;
-        _userService = userService;
     }
 
     public async Task<Response<GetResultsForUserResponse>> Handle(GetResultsForUserQuery request, CancellationToken cancellationToken)
     {
-        var user = _userService.CurrentUser;
-        var result = _resultsRepository
-            .GetWhere(r => r.WinnerId == user.Id || r.LoserId == user.Id);
+        var user = _currentUserService.CurrentUser;
+        var result = _gamesResultsRepository.GetWhere(r => r.WinnerId == user.Id || r.LoserId == user.Id);
 
         var grouped = result
             .GroupBy(r => r.GameId).

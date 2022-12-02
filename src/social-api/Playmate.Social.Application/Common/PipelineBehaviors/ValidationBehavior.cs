@@ -31,13 +31,13 @@ public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TReques
             if (notFound is not null)
             {
                 return (TResponse)Activator.CreateInstance(typeof(TResponse), notFound.ErrorMessage,
-                    ResponseError.NotFound, HttpStatusCode.NotFound, default);
+                    ResponseError.NotFound, HttpStatusCode.NotFound, default)!;
             }
             else if (errors.Any())
             {
                 var messages = errors.Select(x => x.ErrorMessage);
                 return (TResponse)Activator.CreateInstance(typeof(TResponse), messages,
-                   ResponseError.ValidationError, HttpStatusCode.BadRequest, default);
+                   ResponseError.ValidationError, HttpStatusCode.BadRequest, default)!;
             }
         }
 
