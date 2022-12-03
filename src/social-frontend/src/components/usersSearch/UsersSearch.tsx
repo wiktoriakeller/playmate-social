@@ -6,8 +6,8 @@ import { useAppDispatch } from "../../app/hooks";
 import { setUserSearch } from "../../slices/userSearchSlice";
 import { StyledUserSearch } from "../../styled/components/userSearch/StyledUserSearch";
 
-const UserSearch = () => {
-  const [searchQuery, { data, isLoading }] = useLazySearchUsersQuery();
+const UsersSearch = () => {
+  const [searchQuery, { isLoading }] = useLazySearchUsersQuery();
   const [username, setUsername] = useState("");
   const dispatch = useAppDispatch();
 
@@ -18,7 +18,7 @@ const UserSearch = () => {
           username: username
         }).then((e) => {
           dispatch(setUserSearch(e.data.data.users));
-        })
+        });
       }
     }, 500);
 
@@ -46,4 +46,4 @@ const UserSearch = () => {
   );
 };
 
-export default UserSearch;
+export default UsersSearch;

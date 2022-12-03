@@ -1,3 +1,4 @@
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import {
   Avatar,
   IconButton,
@@ -5,14 +6,13 @@ import {
   ListItemAvatar,
   ListItemText
 } from "@mui/material";
+import { useLazySendFriendRequestQuery } from "../../api/friends/friendsApi";
 import { IUserSearchItem } from "../../api/users/responses/searchUsersResponse";
-import { StyledUserSearchItem } from "../../styled/components/userSearch/StyledUserSearchItem";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useAppDispatch } from "../../app/hooks";
 import { updateUser } from "../../slices/userSearchSlice";
-import { useLazySendFriendRequestQuery } from "../../api/friends/friendsApi";
+import { StyledUserSearchItem } from "../../styled/components/userSearch/StyledUserSearchItem";
 
-const UserSearchItem = (props: IUserSearchItem) => {
+const UsersSearchItem = (props: IUserSearchItem) => {
   const dispatch = useAppDispatch();
   const [sendFriendRequest] = useLazySendFriendRequestQuery();
 
@@ -52,4 +52,4 @@ const UserSearchItem = (props: IUserSearchItem) => {
   );
 };
 
-export default UserSearchItem;
+export default UsersSearchItem;

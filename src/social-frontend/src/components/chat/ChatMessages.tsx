@@ -7,6 +7,7 @@ import {
 } from "../../slices/chatSlice";
 import { selectSelectedFriend } from "../../slices/friendsListSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
+import { SkeletonChatMessage } from "../../styled/components/chat/SkeletonChatMessage";
 import { StyledChatMessages } from "../../styled/components/chat/StyledChatMessages";
 import ChatMessage from "./ChatMessage";
 
@@ -15,18 +16,38 @@ const ChatMessages = () => {
   const user = useAppSelector(selectUserIdentity);
   const selectedFriend = useAppSelector(selectSelectedFriend);
   const messages = useAppSelector(selectChatMessages)[selectedFriend.id];
-  const [getChatMessagesLazy, { isLoading }] =
+  const [getChatMessagesLazy, { isLoading, isFetching }] =
     useLazyGetChatMessagesListQuery();
 
   useEffect(() => {
-    if (messages === undefined) {
-      getChatMessagesLazy({
-        friendId: selectedFriend.id
-      }).then((response) => {
-        dispatch(addChatMessagesList(response.data.data));
-      });
-    }
-  }, []);
+    getChatMessagesLazy({
+      friendId: selectedFriend.id
+    }).then((response) => {
+      dispatch(addChatMessagesList(response.data.data));
+    });
+  }, [selectedFriend]);
+
+  if (isLoading || isFetching) {
+    return (
+      <StyledChatMessages>
+        <SkeletonChatMessage isUserMessage={true} />
+        <SkeletonChatMessage isUserMessage={true} />
+        <SkeletonChatMessage isUserMessage={false} />
+        <SkeletonChatMessage isUserMessage={true} />
+        <SkeletonChatMessage isUserMessage={false} />
+        <SkeletonChatMessage isUserMessage={false} />
+        <SkeletonChatMessage isUserMessage={true} />
+        <SkeletonChatMessage isUserMessage={false} />
+        <SkeletonChatMessage isUserMessage={true} />
+        <SkeletonChatMessage isUserMessage={true} />
+        <SkeletonChatMessage isUserMessage={true} />
+        <SkeletonChatMessage isUserMessage={false} />
+        <SkeletonChatMessage isUserMessage={true} />
+        <SkeletonChatMessage isUserMessage={false} />
+        <SkeletonChatMessage isUserMessage={true} />
+      </StyledChatMessages>
+    );
+  }
 
   return (
     <StyledChatMessages>

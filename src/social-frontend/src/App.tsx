@@ -1,14 +1,14 @@
-import AppProvider from "./app/providers/AppProvider";
+import AppStoreProvider from "./app/providers/AppStoreProvider";
 import AppThemeProvider from "./app/providers/AppThemeProvider";
-import Router from "./components/routing/Router";
+import Router from "./routing/Router";
 
 function App() {
   return (
-    <AppProvider>
+    <AppStoreProvider>
       <AppThemeProvider>
         <Router />
       </AppThemeProvider>
-    </AppProvider>
+    </AppStoreProvider>
   );
 }
 

@@ -65,7 +65,7 @@ const ChatInput = () => {
           }}
           value={currentInput}
           variant="outlined"
-          placeholder={"Message"}
+          placeholder={"Aa"}
           size="small"
           sx={{
             padding: "0 1%"
