@@ -15,7 +15,8 @@ const FriendsLits = () => {
   const dispatch = useAppDispatch();
   const friendsSearchPhrase = useAppSelector(selectFriendsListSearchPhrase);
   const userFriends = useAppSelector(selectFriendsList);
-  const [getFriendsListLazy, { isLoading }] = useLazyGetFriendsListQuery();
+  const [getFriendsListLazy, { isLoading, isFetching }] =
+    useLazyGetFriendsListQuery();
 
   const skeletons = useMemo(() => {
     const jsxElements = [];
@@ -43,7 +44,7 @@ const FriendsLits = () => {
     });
   }, [friendsSearchPhrase]);
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <StyledFriendsList>
         {skeletons.map((skeleton) => skeleton)}
