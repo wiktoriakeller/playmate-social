@@ -11,30 +11,58 @@ services:
       SA_PASSWORD: ${SA_PASSWORD?err}
     user: root
     ports:
-      - "1433:1433"
-    networks:
-      - localdev
+      - 1433:1433
     volumes:
       - db-data:/var/opt/mssql/data
-        
+    networks:
+      - localdev
+
+  cassandra-db:
+    container_name: cassandra-db
+    image: cassandra:latest
+    restart: always
+    ports:
+      - 9042:9042
+    volumes:
+      - cassandra-data:/var/lib/cassandra
+    networks:
+      - localdev
+
   social-api:
     container_name: social-api
     build:
       context: ./social-api/
     environment:
-      - "Authentication:JwtOptions:Key=${JWT_KEY?err}"
+      - "ASPNETCORE_ENVIRONMENT=Development"
+      - "Authentication:JwtTokensConfiguration:Key=${JWT_KEY?err}"
+      - "ConnectionStrings:DefaultConnection=Server=social-db-sql;Database=SocialDbTest;User=sa;Password=${SA_PASSWORD?err};TrustServerCertificate=True;"
+      - "Authentication:JwtTokensConfiguration:Issuer=http://localhost:5000/"
+      - "Authentication:JwtTokensConfiguration:Audience=http://localhost:5000/"
+      - "AllowedOrigins=http://localhost:4000"
+      - "Cassandra:Configuration:Port=9042"
+      - "Cassandra:Configuration:ContactPoints=cassandra-db"
+    ports:
+      - 5000:80
     restart: always
     depends_on:
       - social-db-sql
+      - cassandra-db
     networks:
       - localdev
 
   social-frontend:
     container_name: social-frontend
-    build: 
+    build:
       context: ./social-frontend
+      args:
+        REACT_APP_BASE_API_URL: ${REACT_APP_BASE_API_URL}
+    ports:
+      - 4000:3000
     depends_on:
       - social-api
+    networks:
+      - localdev
 
 volumes:
   db-data:
+  cassandra-data:

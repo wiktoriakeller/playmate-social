@@ -6,15 +6,15 @@
 
 Create `.env` file in the `src` folder, it should contain the following variables:
 
--   `SA_PASSWORD` - password to the database,
--   `JWT_KEY` - secret key for the JWT tokens
--   `REACT_APP_BASE_API_URL` - base url to the API.
+- `SA_PASSWORD` - password to the database,
+- `JWT_KEY` - secret key for the JWT tokens
+- `REACT_APP_BASE_API_URL` - base url to the API.
 
 Example file:
 
 ```
-SA_PASSWORD="Your_password123"
-JWT_KEY="super_secret_key"
+SA_PASSWORD=Your_password123
+JWT_KEY=super_secret_key
 REACT_APP_BASE_API_URL=http://localhost:5000
 ```
 
@@ -42,12 +42,18 @@ To run the social-frontend application without docker compose create `.env` file
 REACT_APP_BASE_API_URL=http://localhost:5000
 ```
 
+Next start Cassandra Docker container:
+
+```
+docker run --name cassandra-test -p 9044:9042 -d cassandra:latest
+```
+
 ## Battleships
 
 Create `.env` file in the `src/games/battleships` folder, it should contain the following variables:
 
--   `REACT_APP_BASE_API_URL` - internal url
--   `REACT_APP_PUBLIC_URL` - base url to game client.
+- `REACT_APP_BASE_API_URL` - internal url
+- `REACT_APP_PUBLIC_URL` - base url to game client.
 
 Example file:
 
