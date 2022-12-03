@@ -4,6 +4,10 @@
 
 ## Social app
 
+Setup of social application with and without Compose.
+
+### With Docker Compose
+
 Create `.env` file in the `src` folder, it should contain the following variables:
 
 - `SA_PASSWORD` - password to the database,
@@ -35,6 +39,8 @@ To force rebuild of the containers run:
 ```
 docker compose up --build
 ```
+
+### Without Docker Compose
 
 To run the social-frontend application without docker compose create `.env` file in the `src/social-frontend` folder with the `REACT_APP_BASE_API_URL` variable, e.g.:
 
