@@ -140,7 +140,7 @@ public class IdentityService : IIdentityService
 
         var currentRefreshToken = refreshTokens.First();
 
-        if (currentRefreshToken.ExpiryDate >= DateTime.UtcNow || currentRefreshToken.JwtId != result.jti)
+        if (currentRefreshToken.ExpiryDate < DateTime.UtcNow || currentRefreshToken.JwtId != result.jti)
         {
             return ResponseResult.Unauthorized<RefreshTokenResponse>(ErrorMessages.Identity.InvalidToken);
         }

@@ -27,7 +27,6 @@ public static class ConfigureServicesExtension
         AddRepositories(services);
         AddServices(services);
 
-        //Mapping profiles
         services.AddAutoMapper(typeof(ConfigureServicesExtension).Assembly);
         return services;
     }
