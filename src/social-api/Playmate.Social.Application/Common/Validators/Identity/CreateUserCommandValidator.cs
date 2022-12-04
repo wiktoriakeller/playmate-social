@@ -15,6 +15,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         RuleFor(x => x.Email)
             .NotEmpty()
             .EmailAddress()
+            .WithMessage("Incorrect email address")
             .UserWithEmailShouldExist(false, identityService)
             .WithMessage(ErrorMessages.Identity.UserWithEmailAlreadyExists);
 
@@ -22,7 +23,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
             .MinimumLength(6)
             .MaximumLength(20);
 
-        RuleFor(x => x.UserName)
+        RuleFor(x => x.Username)
             .MinimumLength(2)
             .MaximumLength(20)
             .UserWithUsernameShouldExist(false, repository)

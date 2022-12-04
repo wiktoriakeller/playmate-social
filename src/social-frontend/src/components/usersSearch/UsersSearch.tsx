@@ -3,6 +3,7 @@ import { InputAdornment, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLazySearchUsersQuery } from "../../api/users/usersApi";
 import { useAppDispatch } from "../../app/hooks";
+import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
 import { setUserSearch } from "../../slices/userSearchSlice";
 import { StyledUserSearch } from "../../styled/components/userSearch/StyledUserSearch";
 
@@ -16,9 +17,20 @@ const UsersSearch = () => {
       if (!!username && !isLoading) {
         searchQuery({
           username: username
-        }).then((e) => {
-          dispatch(setUserSearch(e.data.data.users));
-        });
+        })
+          .unwrap()
+          .then((response) => {
+            dispatch(setUserSearch(response?.data?.users));
+          })
+          .catch((error: { status: string | number }) => {
+            dispatch(
+              openSnackbar({
+                message: "Could not load users list",
+                severity: SnackbarSeverity.Error,
+                status: error.status
+              })
+            );
+          });
       }
     }, 500);
 

@@ -5,6 +5,8 @@ import Paper from "@mui/material/Paper";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "../api/identity/identityApi";
+import { ICreateUserResponse } from "../api/identity/responses/createUserResponse";
+import { useAppDispatch } from "../app/hooks";
 import {
   validateAll,
   validateEquality,
@@ -12,6 +14,7 @@ import {
   validateRange,
   ValidationFunc
 } from "../common/validators";
+import { openSnackbar, SnackbarSeverity } from "../slices/snackbarSlice";
 import { FormTextField } from "../styled/components/mui/FormTextField";
 import { StyledButton } from "../styled/components/mui/StyledButton";
 import { StyledDivider } from "../styled/components/mui/StyledDivider";
@@ -34,6 +37,7 @@ interface IRegisterFromValidationState {
 }
 
 const RegisterPage = () => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [createUser] = useCreateUserMutation();
   const [showPassword, setShowPassword] = useState(false);
@@ -67,8 +71,8 @@ const RegisterPage = () => {
     () =>
       validateMinLength(
         registerState.username,
-        1,
-        "Username is required",
+        2,
+        "Username must be at least 2 characters long",
         (value) =>
           setRegisterValidationState((prev) => ({
             ...prev,
@@ -141,9 +145,20 @@ const RegisterPage = () => {
       .then(() => {
         navigate("/login");
       })
-      .catch((e) => {
-        console.log(e);
-      });
+      .catch(
+        (error: { status: string | number; data: ICreateUserResponse }) => {
+          dispatch(
+            openSnackbar({
+              message:
+                error.data?.errors.length > 0
+                  ? error.data.errors[0]
+                  : "Could not create user",
+              severity: SnackbarSeverity.Error,
+              status: error.status
+            })
+          );
+        }
+      );
   }, [registerState]);
 
   return (
