@@ -10,5 +10,12 @@ export const StyledButton = styled(Button)`
     &:hover {
       background-color: ${(props) => props.theme.palette.secondary.dark};
     }
+
+    &:disabled {
+      background-color: ${(props) =>
+        props.theme.palette.mode === "dark"
+          ? props.theme.palette.primary.dark
+          : props.theme.palette.primary.main};
+    }
   }
 `;

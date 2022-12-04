@@ -2,10 +2,15 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthenticateUserMutation } from "../api/identity/identityApi";
 import { useAppDispatch } from "../app/hooks";
+import {
+  validateAll,
+  validateMinLength,
+  ValidationFunc
+} from "../common/validators";
 import { setUserIdentity } from "../slices/userIdentitySlice";
 import { FormTextField } from "../styled/components/mui/FormTextField";
 import { StyledButton } from "../styled/components/mui/StyledButton";
@@ -19,22 +24,82 @@ interface ILoginFormState {
   password: string;
 }
 
+interface ILoginFormValidationState {
+  emailError: string;
+  passwordError: string;
+}
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [authenticate] = useAuthenticateUserMutation();
   const [showPassword, setShowPassword] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(true);
+  const [isFirstRender, setIsFirstRender] = useState(true);
 
   const [loginState, setLogin] = useState<ILoginFormState>({
     email: "",
     password: ""
   });
 
+  const [loginValidationState, setLoginValidationState] =
+    useState<ILoginFormValidationState>({
+      emailError: "",
+      passwordError: ""
+    });
+
+  const validators: ValidationFunc[] = [
+    () =>
+      validateMinLength(loginState.email, 1, "Email is required", (value) =>
+        setLoginValidationState((prev) => ({
+          ...prev,
+          emailError: value
+        }))
+      ),
+    () =>
+      validateMinLength(
+        loginState.password,
+        1,
+        "Password is required",
+        (value) =>
+          setLoginValidationState((prev) => ({
+            ...prev,
+            passwordError: value
+          }))
+      )
+  ];
+
+  const validateForm = useCallback(
+    (validate: boolean) => {
+      if (validate) {
+        const isError = validateAll(validate, validators);
+        setIsFormValid(!isError);
+        return isError;
+      }
+
+      return false;
+    },
+    [loginState]
+  );
+
+  useEffect(() => {
+    validateForm(!isFirstRender);
+  }, [loginState]);
+
   const toggleShowPassword = useCallback(() => {
     setShowPassword((prev) => !prev);
   }, []);
 
-  const handleLogin = useCallback(() => {
+  const handleLoginSubmit = useCallback(() => {
+    if (isFirstRender) {
+      const isError = validateForm(true);
+      setIsFirstRender(false);
+
+      if (isError) {
+        return;
+      }
+    }
+
     authenticate(loginState)
       .unwrap()
       .then((e) => {
@@ -51,6 +116,8 @@ const LoginPage = () => {
       <Paper elevation={3}>
         <FormBox>
           <FormTextField
+            error={loginValidationState.emailError.length > 0}
+            helperText={loginValidationState.emailError}
             label="Email"
             type={"email"}
             variant="outlined"
@@ -60,6 +127,8 @@ const LoginPage = () => {
             fullWidth
           />
           <FormTextField
+            error={loginValidationState.passwordError.length > 0}
+            helperText={loginValidationState.passwordError}
             label="Password"
             variant="outlined"
             type={showPassword ? "text" : "password"}
@@ -73,7 +142,6 @@ const LoginPage = () => {
                   <IconButton
                     aria-label="toggle password visibility"
                     onClick={toggleShowPassword}
-                    edge="end"
                   >
                     {showPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
@@ -81,7 +149,11 @@ const LoginPage = () => {
               )
             }}
           />
-          <StyledButton variant="contained" onClick={handleLogin}>
+          <StyledButton
+            variant="contained"
+            onClick={handleLoginSubmit}
+            disabled={!isFormValid}
+          >
             Login
           </StyledButton>
           <StyledDivider variant="middle" />
