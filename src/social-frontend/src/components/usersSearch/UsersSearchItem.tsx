@@ -6,7 +6,7 @@ import {
   ListItemText,
   Tooltip
 } from "@mui/material";
-import { useLazySendFriendRequestQuery } from "../../api/friends/friendsApi";
+import { useSendFriendRequestMutation } from "../../api/friends/friendsApi";
 import { IUserSearchItem } from "../../api/users/responses/searchUsersResponse";
 import { useAppDispatch } from "../../app/hooks";
 import { updateUser } from "../../slices/userSearchSlice";
@@ -14,7 +14,7 @@ import { UserListItem } from "../../styled/components/userSearch/UserListItem";
 
 const UsersSearchItem = (props: IUserSearchItem) => {
   const dispatch = useAppDispatch();
-  const [sendFriendRequest] = useLazySendFriendRequestQuery();
+  const [sendFriendRequest] = useSendFriendRequestMutation();
 
   const sendRequest = () => {
     dispatch(

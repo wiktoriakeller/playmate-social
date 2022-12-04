@@ -1,5 +1,47 @@
 # Playmate
 
+Link to the [backlog](https://github.com/users/codeblessing/projects/4).
+
+# Technologies
+
+## Social app
+
+Backend:
+
+- C#
+- .NET 7
+- ASP.NET Core
+- SignalR
+- Entity Framework Core
+- MSSQL
+- Cassandra
+- FluentValidation
+- AutoMapper
+- MediatR
+
+Frontend:
+
+- TypeScript
+- React
+- Redux
+- RTK Query
+- MUI
+- Emotion
+
+## Battleships
+
+Backend:
+
+- Python 3.10
+- FastAPI
+- WebSocket
+
+Frontend:
+
+- TypeScript
+- React
+- Redux
+
 # Setup
 
 ## Social app

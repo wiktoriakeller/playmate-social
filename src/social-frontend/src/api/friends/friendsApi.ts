@@ -18,12 +18,12 @@ export const friendsApi = createApi({
         method: "GET"
       })
     }),
-    sendFriendRequest: builder.query<
+    sendFriendRequest: builder.mutation<
       ISendFriendRequestResponse,
       ISendFriendRequestRequest
     >({
       query: (request) => ({
-        url: "/friends",
+        url: "/friends/requests",
         method: "POST",
         body: request
       })
@@ -31,7 +31,7 @@ export const friendsApi = createApi({
   })
 });
 
-export const { useLazyGetFriendsListQuery, useLazySendFriendRequestQuery } =
+export const { useLazyGetFriendsListQuery, useSendFriendRequestMutation } =
   friendsApi;
 
 export default friendsApi.reducer;
