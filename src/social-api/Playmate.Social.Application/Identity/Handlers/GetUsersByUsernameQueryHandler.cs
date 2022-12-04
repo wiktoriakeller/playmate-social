@@ -35,8 +35,9 @@ public class GetUsersByUsernameQueryHandler : IHandlerWrapper<GetUsersByUsername
     public async Task<Response<GetUsersByUsernameResponse>> Handle(GetUsersByUsernameQuery request, CancellationToken cancellationToken)
     {
         var currentUser = _currentUserService.CurrentUser;
+        var serach = request.Username.ToLower().Trim();
 
-        var users = _usersRepository.GetWhere(u => u.Username.Contains(request.Username) && u.Id != currentUser.Id).ToList();
+        var users = _usersRepository.GetWhere(u => u.Username.ToLower().Trim().Contains(serach) && u.Id != currentUser.Id);
         var mappedUsers = _mapper.Map<IEnumerable<UserDto>>(users);
 
         var friends = await _friendsRepository.GetFriendsAsync(currentUser);

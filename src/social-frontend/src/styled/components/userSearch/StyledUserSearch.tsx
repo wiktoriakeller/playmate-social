@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
+import { TextField } from "@mui/material";
 
-export const StyledUserSearch = styled.div`
+export const StyledUserSearch = styled(TextField)`
   width: 100%;
   max-width: 1000px;
   margin-top: 40px;

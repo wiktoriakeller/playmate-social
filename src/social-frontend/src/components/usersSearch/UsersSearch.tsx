@@ -40,21 +40,19 @@ const UsersSearch = () => {
   }, [username]);
 
   return (
-    <StyledUserSearch>
-      <TextField
-        placeholder="Search"
-        variant="outlined"
-        onChange={(e) => setUsername(e.target.value)}
-        fullWidth
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchIcon />
-            </InputAdornment>
-          )
-        }}
-      />
-    </StyledUserSearch>
+    <StyledUserSearch
+      placeholder="Search"
+      variant="outlined"
+      onChange={(e) => setUsername(e.target.value)}
+      fullWidth
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <SearchIcon />
+          </InputAdornment>
+        )
+      }}
+    />
   );
 };
 
