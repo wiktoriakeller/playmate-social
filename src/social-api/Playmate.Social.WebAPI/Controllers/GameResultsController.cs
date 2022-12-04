@@ -19,7 +19,7 @@ public class GameResultsController : BaseApiController
     [Authorize]
     public async Task<IActionResult> GetResultsForUser()
     {
-        var response = await _medaitor.Send(new GetResultsForUserQuery());
+        var response = await _mediator.Send(new GetResultsForUserQuery());
         return GetStatusCode(response);
     }
 
@@ -27,7 +27,7 @@ public class GameResultsController : BaseApiController
     public async Task<IActionResult> AddGameResult([FromBody] AddGameResultRequest request)
     {
         var command = _mapper.Map<AddResultsCommand>(request);
-        var response = await _medaitor.Send(command);
+        var response = await _mediator.Send(command);
         return GetStatusCode(response);
     }
 }

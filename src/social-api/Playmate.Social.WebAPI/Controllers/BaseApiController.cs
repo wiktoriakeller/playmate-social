@@ -8,12 +8,12 @@ namespace Playmate.Social.WebAPI.Controllers;
 [ApiController]
 public class BaseApiController : ControllerBase
 {
-    protected readonly IMediator _medaitor;
+    protected readonly IMediator _mediator;
     protected readonly IMapper _mapper;
 
     public BaseApiController(IMediator mediator, IMapper mapper)
     {
-        _medaitor = mediator;
+        _mediator = mediator;
         _mapper = mapper;
     }
 
