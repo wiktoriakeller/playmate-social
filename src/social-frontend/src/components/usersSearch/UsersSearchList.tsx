@@ -1,17 +1,17 @@
-import { List } from "@mui/material";
 import { useAppSelector } from "../../app/hooks";
 import { selectUserSearch } from "../../slices/userSearchSlice";
+import { UsersList } from "../../styled/components/userSearch/UsersList";
 import UsersSearchItem from "./UsersSearchItem";
 
 const UsersSearchList = () => {
   const userList = useAppSelector(selectUserSearch);
 
   return (
-    <List sx={{ overflow: "auto", maxHeight: "100%" }}>
+    <UsersList>
       {userList.users?.map((item) => (
         <UsersSearchItem {...item} key={item.id} />
       ))}
-    </List>
+    </UsersList>
   );
 };
 
