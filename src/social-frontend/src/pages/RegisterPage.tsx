@@ -106,6 +106,7 @@ const RegisterPage = () => {
       if (validate) {
         const isError = validateAll(validate, validators);
         setIsFormValid(!isError);
+        return isError;
       }
 
       return false;
