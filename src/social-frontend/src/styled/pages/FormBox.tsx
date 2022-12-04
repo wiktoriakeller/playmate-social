@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const FormBox = styled.div`
+export const FormBox = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
