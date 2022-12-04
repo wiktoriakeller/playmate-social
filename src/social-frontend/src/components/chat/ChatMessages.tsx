@@ -16,7 +16,7 @@ const ChatMessages = () => {
   const user = useAppSelector(selectUserIdentity);
   const selectedFriend = useAppSelector(selectSelectedFriend);
   const messages = useAppSelector(selectChatMessages)[selectedFriend.id];
-  const [getChatMessagesLazy, { isLoading, isFetching }] =
+  const [getChatMessagesLazy, { isLoading }] =
     useLazyGetChatMessagesListQuery();
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const ChatMessages = () => {
     });
   }, [selectedFriend]);
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return (
       <StyledChatMessages>
         <SkeletonChatMessage isUserMessage={true} />

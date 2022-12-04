@@ -5,12 +5,14 @@ import Paper from "@mui/material/Paper";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthenticateUserMutation } from "../api/identity/identityApi";
+import { IAuthenticateUserResponse } from "../api/identity/responses/authenticateUserResponse";
 import { useAppDispatch } from "../app/hooks";
 import {
   validateAll,
   validateMinLength,
   ValidationFunc
 } from "../common/validators";
+import { openSnackbar, SnackbarSeverity } from "../slices/snackbarSlice";
 import { setUserIdentity } from "../slices/userIdentitySlice";
 import { FormTextField } from "../styled/components/mui/FormTextField";
 import { StyledButton } from "../styled/components/mui/StyledButton";
@@ -102,13 +104,27 @@ const LoginPage = () => {
 
     authenticate(loginState)
       .unwrap()
-      .then((e) => {
-        dispatch(setUserIdentity(e.data));
+      .then((response) => {
+        dispatch(setUserIdentity(response.data));
         navigate("/");
       })
-      .catch((e) => {
-        console.log(e);
-      });
+      .catch(
+        (error: {
+          status: string | number;
+          data: IAuthenticateUserResponse;
+        }) => {
+          dispatch(
+            openSnackbar({
+              message:
+                error.data?.errors.length > 0
+                  ? error.data.errors[0]
+                  : "Invalid credentials",
+              severity: SnackbarSeverity.Error,
+              status: error.status
+            })
+          );
+        }
+      );
   }, [loginState]);
 
   return (

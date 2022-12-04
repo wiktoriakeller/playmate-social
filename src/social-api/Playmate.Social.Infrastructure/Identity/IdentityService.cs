@@ -77,7 +77,7 @@ public class IdentityService : IIdentityService
         var newUser = new User
         {
             Email = createUserCommand.Email,
-            Username = createUserCommand.UserName
+            Username = createUserCommand.Username
         };
 
         var hashedPassword = _passwordHasher.HashPassword(newUser, createUserCommand.Password);

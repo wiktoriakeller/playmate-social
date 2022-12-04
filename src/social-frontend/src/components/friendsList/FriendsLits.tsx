@@ -7,6 +7,7 @@ import {
   selectFriendsListSearchPhrase,
   setFriendsList
 } from "../../slices/friendsListSlice";
+import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
 import { StyledFriendsList } from "../../styled/components/friends/StyledFriendsList";
 import { SkeletonsContainer } from "../../styled/components/mui/SkeletonsContainer";
 import FriendListItem from "./FriendListItem";
@@ -39,9 +40,20 @@ const FriendsLits = () => {
   useEffect(() => {
     getFriendsListLazy({
       search: friendsSearchPhrase
-    }).then((response) => {
-      dispatch(setFriendsList(response?.data?.data.friends));
-    });
+    })
+      .unwrap()
+      .then((response) => {
+        dispatch(setFriendsList(response?.data?.friends));
+      })
+      .catch((error: { status: string | number }) => {
+        dispatch(
+          openSnackbar({
+            message: "Could not load friends list",
+            severity: SnackbarSeverity.Error,
+            status: error.status
+          })
+        );
+      });
   }, [friendsSearchPhrase]);
 
   if (isLoading || isFetching) {

@@ -27,11 +27,29 @@ interface IReceiveChatMessage {
   createdAt: string;
 }
 
+const stopHubConnection = () => {
+  if (
+    !!hubConnection &&
+    hubConnection.state !== HubConnectionState.Disconnected
+  ) {
+    hubConnection
+      .stop()
+      .then(() => {
+        console.log("Closed hub connection, user logout");
+      })
+      .catch((error) => {
+        console.error("Error while closing hub connection: ", error);
+      });
+  }
+};
+
 signalRListenerMiddleware.startListening({
   actionCreator: setUserIdentity,
   effect: (action: PayloadAction<IUserIdentityState>, listenerApi) => {
     const user = action.payload;
     if (!!user?.jwtToken) {
+      stopHubConnection();
+
       hubConnection = new HubConnectionBuilder()
         .withUrl(notificationsHubUrl, {
           accessTokenFactory: () => user.jwtToken
@@ -91,14 +109,7 @@ signalRListenerMiddleware.startListening({
       !!hubConnection &&
       hubConnection.state !== HubConnectionState.Disconnected
     ) {
-      hubConnection
-        .stop()
-        .then(() => {
-          console.log("Closed hub connection, user logout");
-        })
-        .catch((error) => {
-          console.error("Error while closing hub connection: ", error);
-        });
+      stopHubConnection();
     }
   }
 });
