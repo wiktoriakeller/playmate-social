@@ -12,7 +12,7 @@ export const storeUser = (user: IUserIdentityState): void =>
 export const getUserFromStorage = (): IUserIdentityState | null => {
   const user = getData("user");
 
-  if (user === null || user === "") {
+  if (user === null || user === "" || user === undefined) {
     return null;
   }
 

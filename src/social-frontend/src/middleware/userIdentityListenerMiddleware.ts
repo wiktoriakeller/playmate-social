@@ -10,7 +10,7 @@ export const userIdentityListenerMiddleware = createListenerMiddleware();
 userIdentityListenerMiddleware.startListening({
   actionCreator: setUserIdentity,
   effect: (action: PayloadAction<IUserIdentityState>) => {
-    if (action.payload.jwtToken === null) {
+    if (action.payload?.jwtToken === null) {
       clearUserFromStorage();
     }
 

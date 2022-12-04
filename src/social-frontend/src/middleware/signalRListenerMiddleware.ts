@@ -31,7 +31,7 @@ signalRListenerMiddleware.startListening({
   actionCreator: setUserIdentity,
   effect: (action: PayloadAction<IUserIdentityState>, listenerApi) => {
     const user = action.payload;
-    if (!!user.jwtToken) {
+    if (!!user?.jwtToken) {
       hubConnection = new HubConnectionBuilder()
         .withUrl(notificationsHubUrl, {
           accessTokenFactory: () => user.jwtToken
