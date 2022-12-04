@@ -54,7 +54,7 @@ const FriendsLits = () => {
 
   return (
     <StyledFriendsList>
-      {userFriends.map((item) => (
+      {userFriends?.map((item) => (
         <FriendListItem {...item} key={item.id} />
       ))}
     </StyledFriendsList>
