@@ -41,6 +41,8 @@ Frontend:
 - TypeScript
 - React
 - Redux
+- RTK Query
+- MUI
 
 # Setup
 
