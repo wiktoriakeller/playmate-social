@@ -50,18 +50,18 @@ services:
     networks:
       - localdev
 
-  social-frontend:
-    container_name: social-frontend
-    build:
-      context: ./social-frontend
-      args:
-        REACT_APP_BASE_API_URL: ${REACT_APP_BASE_API_URL}
-    ports:
-      - 4000:3000
-    depends_on:
-      - social-api
-    networks:
-      - localdev
+  # social-frontend:
+  #   container_name: social-frontend
+  #   build:
+  #     context: ./social-frontend
+  #     args:
+  #       REACT_APP_BASE_API_URL: ${REACT_APP_BASE_API_URL}
+  #   ports:
+  #     - 4000:3000
+  #   depends_on:
+  #     - social-api
+  #   networks:
+  #     - localdev
 
 volumes:
   db-data:

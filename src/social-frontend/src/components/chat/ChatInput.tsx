@@ -12,6 +12,7 @@ import { StyledChatInput } from "../../styled/components/chat/StyledChatInput";
 import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
 import { StyledTextField } from "../../styled/components/mui/StyledTextField";
 import ChatEmojiPicker from "./ChatEmojiPicker";
+import { EmojiClickData } from "emoji-picker-react";
 
 const ChatInput = () => {
   const dispatch = useAppDispatch();
@@ -50,6 +51,9 @@ const ChatInput = () => {
   ) => {
     setCurrentInput(event.target.value);
   };
+  const handleOnEmojiClick = (emoji: EmojiClickData) => {
+    setCurrentInput(currentInput + emoji.emoji);
+  };
 
   return (
     <StyledChatInput>
@@ -74,7 +78,7 @@ const ChatInput = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <ChatEmojiPicker />
+                <ChatEmojiPicker onEmojiClick={handleOnEmojiClick} />
               </InputAdornment>
             )
           }}
