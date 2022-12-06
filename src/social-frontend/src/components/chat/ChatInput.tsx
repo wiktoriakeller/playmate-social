@@ -1,6 +1,6 @@
 import SendIcon from "@mui/icons-material/Send";
 import { InputAdornment, Tooltip } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addChatMessage } from "../../slices/chatSlice";
 import {
@@ -19,6 +19,7 @@ const ChatInput = () => {
   const selectedFriend = useAppSelector(selectSelectedFriend);
   const user = useAppSelector(selectUserIdentity);
   const [currentInput, setCurrentInput] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const sendMessage = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -59,6 +60,7 @@ const ChatInput = () => {
     <StyledChatInput>
       <form onSubmit={sendMessage} style={{ width: "100%" }}>
         <StyledTextField
+          ref={inputRef}
           fullWidth
           multiline
           maxRows={2}
@@ -78,7 +80,7 @@ const ChatInput = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <ChatEmojiPicker onEmojiClick={handleOnEmojiClick} />
+                <ChatEmojiPicker onEmojiClick={handleOnEmojiClick} chatInputTextRef={inputRef}/>
               </InputAdornment>
             )
           }}
