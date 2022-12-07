@@ -12,6 +12,7 @@ import { HeaderRightSide } from "../../styled/components/header/HeaderRightSide"
 import { StyledHeader } from "../../styled/components/header/StyledHeader";
 import { StyledLogo } from "../../styled/components/header/StyledLogo";
 import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
+import NotificationsButton from "../friendsRequests/NotificationsButton";
 import UserMenu from "../user/UserMenu";
 import HeaderTabs from "./HeaderTabs";
 
@@ -67,6 +68,7 @@ export const Header = () => {
         <StyledIconButton onClick={toggleTheme}>
           {getCurrentThemeIcon(theme.theme)}
         </StyledIconButton>
+        <NotificationsButton />
         {getUserMenu()}
       </HeaderRightSide>
     </StyledHeader>
