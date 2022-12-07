@@ -1,11 +1,9 @@
-﻿namespace Playmate.Social.Application.Friends.Responses;
+﻿using Playmate.Social.Application.Friends.Dtos;
+
+namespace Playmate.Social.Application.Friends.Responses;
 
 public class AnswerFriendRequestResponse
 {
-    public Guid Id { get; set; }
-
-    public AnswerFriendRequestResponse(Guid id)
-    {
-        Id = id;
-    }
+    public bool RequestAccepted { get; set; }
+    public FriendDto? CreatedFriend { get; set; }
 }
