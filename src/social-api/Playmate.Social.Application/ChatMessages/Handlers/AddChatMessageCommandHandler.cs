@@ -40,7 +40,11 @@ public class AddChatMessageCommandHandler : IHandlerWrapper<AddChatMessageComman
         var messageId = await _chatMessagesRepository.AddChatMessageAsync(chatMessage);
         var response = new AddChatMessageResponse
         {
-            MessageId = messageId
+            Id = messageId,
+            SenderId = request.SenderId,
+            ReceiverId = request.ReceiverId,
+            Content = request.Content,
+            CreatedAt = request.CreatedAt
         };
 
         return ResponseResult.Ok(response);

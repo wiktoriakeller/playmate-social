@@ -37,6 +37,7 @@ public class GetChatMessagesListQueryHandler : IHandlerWrapper<GetChatMessagesLi
         var roomId = roomIdResponse.Data!;
         var messages = await _chatMessagesRepository.GetAllChatMessagesForRoomIdAsync(roomId);
         var messagesDto = _mapper.Map<IEnumerable<ChatMessageDto>>(messages);
+
         var response = new GetChatMessagesListResponse
         {
             FriendId = request.FriendId,
