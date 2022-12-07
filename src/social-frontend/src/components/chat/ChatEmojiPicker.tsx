@@ -31,32 +31,33 @@ const ChatEmojiPicker = (props: IChatEmojiPicker) => {
   }, []);
 
   return (
-    <Tooltip title="Choose an emoji">
-      <div>
+    <div>
+      <Tooltip title="Choose an emoji">
         <StyledIconButton sx={{ padding: "3px" }} onClick={handleClick}>
           <EmojiEmotionsIcon />
         </StyledIconButton>
-        <Popper
-          open={open}
-          anchorEl={props.chatInputTextRef.current}
-          placement="top-end"
-        >
-          <ClickAwayListener onClickAway={handleClose}>
-            <Box>
-              <EmojiPickerContainer>
-                <EmojiPicker
-                  onEmojiClick={props.onEmojiClick}
-                  emojiStyle={EmojiStyle.GOOGLE}
-                  theme={themeMode.theme as Theme}
-                  lazyLoadEmojis={false}
-                  suggestedEmojisMode={SuggestionMode.RECENT}
-                />
-              </EmojiPickerContainer>
-            </Box>
-          </ClickAwayListener>
-        </Popper>
-      </div>
-    </Tooltip>
+      </Tooltip>
+      <Popper
+        open={open}
+        anchorEl={props.chatInputTextRef.current}
+        placement="top-end"
+      >
+        <ClickAwayListener onClickAway={handleClose}>
+          <Box>
+            <EmojiPickerContainer>
+              <EmojiPicker
+                emojiVersion="1.0"
+                onEmojiClick={props.onEmojiClick}
+                emojiStyle={EmojiStyle.NATIVE}
+                theme={themeMode.theme as Theme}
+                lazyLoadEmojis={false}
+                suggestedEmojisMode={SuggestionMode.RECENT}
+              />
+            </EmojiPickerContainer>
+          </Box>
+        </ClickAwayListener>
+      </Popper>
+    </div>
   );
 };
 
