@@ -20,14 +20,17 @@ export const userSearchSlice = createSlice({
     ) {
       state.users = action.payload;
     },
-    updateUser(state: ISearchUsers, action: PayloadAction<IUserSearchItem>) {
+    sendFriendRequest(
+      state: ISearchUsers,
+      action: PayloadAction<IUserSearchItem>
+    ) {
       const index = state.users.findIndex((e) => e.id === action.payload.id);
       state.users[index] = action.payload;
     }
   }
 });
 
-export const { setUserSearch, updateUser } = userSearchSlice.actions;
+export const { setUserSearch, sendFriendRequest } = userSearchSlice.actions;
 
 export const selectUserSearch = (state: RootState): ISearchUsers =>
   state.userSearch;

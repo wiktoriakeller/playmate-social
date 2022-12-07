@@ -5,14 +5,27 @@ import {
   LogLevel
 } from "@microsoft/signalr";
 import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
+import { IFriendRequestConfirmationResponse } from "../api/friends/responses/friendsRequestConfirmation";
+import { IUserSearchItem } from "../api/users/responses/searchUsersResponse";
 import { addChatMessage, IChatMessage } from "../slices/chatSlice";
+import {
+  addFriendRequest,
+  answerFriendRequests,
+  IFriendRequest,
+  IFriendRequestConfirmation
+} from "../slices/friendRequestsSlice";
+import { addFriend } from "../slices/friendsListSlice";
 import {
   IUserIdentityState,
   setUserIdentity
 } from "../slices/userIdentitySlice";
+import { sendFriendRequest } from "../slices/userSearchSlice";
 
 export const signalRListenerMiddleware = createListenerMiddleware();
 export const chatListenerMiddleware = createListenerMiddleware();
+export const sendFriendRequestsListenerMiddleware = createListenerMiddleware();
+export const answerFriendRequestsListenerMiddleware =
+  createListenerMiddleware();
 
 const baseUrl = process.env.REACT_APP_BASE_API_URL;
 const notificationsHubUrl = `${baseUrl}/hubs/notifications`;
@@ -64,6 +77,20 @@ signalRListenerMiddleware.startListening({
         );
       });
 
+      hubConnection.on("ReceiveFriendsRequest", (request: IFriendRequest) => {
+        listenerApi.dispatch(addFriendRequest(request));
+      });
+
+      hubConnection.on(
+        "ReceiveFriendsRequestConfirmation",
+        (request: IFriendRequestConfirmationResponse) => {
+          console.log(request);
+          if (request.requestAccepted) {
+            listenerApi.dispatch(addFriend(request.createdFriend));
+          }
+        }
+      );
+
       hubConnection
         .start()
         .then(() => {
@@ -100,5 +127,28 @@ chatListenerMiddleware.startListening({
         console.error("Error while sending chat message: ", error);
       });
     }
+  }
+});
+
+sendFriendRequestsListenerMiddleware.startListening({
+  actionCreator: sendFriendRequest,
+  effect: (action: PayloadAction<IUserSearchItem>) => {
+    hubConnection
+      .send("SendFriendRequest", {
+        username: action.payload.username,
+        receiverId: action.payload.id
+      })
+      .catch((error) => {
+        console.error("Error while sending friend request: ", error);
+      });
+  }
+});
+
+answerFriendRequestsListenerMiddleware.startListening({
+  actionCreator: answerFriendRequests,
+  effect: (action: PayloadAction<IFriendRequestConfirmation>) => {
+    hubConnection.send("AnswerFriendRequest", action.payload).catch((error) => {
+      console.error("Error while answering friend request: ", error);
+    });
   }
 });

@@ -9,21 +9,18 @@ import { IUserSearchItem } from "../../api/users/responses/searchUsersResponse";
 import { StyledUserSearchItem } from "../../styled/components/userSearch/StyledUserSearchItem";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { useAppDispatch } from "../../app/hooks";
-import { updateUser } from "../../slices/userSearchSlice";
-import { useLazySendFriendRequestQuery } from "../../api/friends/friendsApi";
+import { sendFriendRequest } from "../../slices/userSearchSlice";
 
 const UserSearchItem = (props: IUserSearchItem) => {
   const dispatch = useAppDispatch();
-  const [sendFriendRequest] = useLazySendFriendRequestQuery();
 
   const sendRequest = () => {
     dispatch(
-      updateUser({
+      sendFriendRequest({
         ...props,
         isFriend: true
       })
     );
-    sendFriendRequest({ username: props.username });
   };
 
   return (

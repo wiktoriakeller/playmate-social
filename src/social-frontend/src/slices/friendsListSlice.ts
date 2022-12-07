@@ -25,6 +25,9 @@ export const friendsListSlice = createSlice({
     setFriendsList(state: IFriendsListState, action: PayloadAction<IFriend[]>) {
       state.friends = action.payload;
     },
+    addFriend(state: IFriendsListState, action: PayloadAction<IFriend>) {
+      state.friends.push(action.payload);
+    },
     setSelectedFriend(
       state: IFriendsListState,
       action: PayloadAction<IFriend | null>
@@ -40,8 +43,12 @@ export const friendsListSlice = createSlice({
   }
 });
 
-export const { setFriendsList, setSelectedFriend, setFriendsListSearchPhrase } =
-  friendsListSlice.actions;
+export const {
+  setFriendsList,
+  setSelectedFriend,
+  setFriendsListSearchPhrase,
+  addFriend
+} = friendsListSlice.actions;
 
 export const selectFriendsList = (state: RootState): IFriend[] =>
   state.friendsList.friends;
