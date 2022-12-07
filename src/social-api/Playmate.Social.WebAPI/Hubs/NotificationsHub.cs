@@ -29,7 +29,7 @@ public class NotificationsHub : Hub<INotificationsClient>
 
         if (response.Succeeded)
         {
-            await Clients.User(request.ReceiverId.ToString()).ReceiveChatMessage(request);
+            await Clients.User(request.ReceiverId.ToString()).ReceiveChatMessage(response.Data!);
         }
     }
 }

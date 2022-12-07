@@ -2,5 +2,9 @@
 
 public class AddChatMessageResponse
 {
-    public required Guid MessageId { get; init; }
+    public Guid Id { get; init; }
+    public Guid SenderId { get; init; }
+    public Guid ReceiverId { get; init; }
+    public string Content { get; init; }
+    public DateTimeOffset CreatedAt { get; init; }
 }

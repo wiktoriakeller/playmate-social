@@ -17,7 +17,6 @@ public class RoomIdProvider : IRoomIdProvider
 
     public async Task<Response<string>> GetRoomIdByFriendId(Guid friendId)
     {
-        var currentUserUsername = _currentUserService.CurrentUser.Username;
         var friend = await _identityService.GetUserById(friendId);
 
         if (friend is null)
@@ -25,12 +24,12 @@ public class RoomIdProvider : IRoomIdProvider
             return ResponseResult.NotFound<string>("Friend with specified ID was not found");
         }
 
-        var friendUsername = friend?.Username;
-        var roomId = $"{currentUserUsername}{friendUsername}";
+        var currentUserId = _currentUserService.CurrentUser.Id;
+        var roomId = $"{currentUserId}{friendId}";
 
-        if (string.Compare(friendUsername, currentUserUsername, true) < 0)
+        if (string.Compare(friendId.ToString(), currentUserId.ToString(), true) < 0)
         {
-            roomId = $"{friendUsername}{currentUserUsername}";
+            roomId = $"{friendId}{currentUserId}";
         }
 
         return ResponseResult.Ok(roomId);

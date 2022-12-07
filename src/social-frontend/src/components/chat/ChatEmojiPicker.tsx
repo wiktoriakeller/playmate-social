@@ -1,18 +1,23 @@
-import { useState, useCallback } from "react";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
-import { Tooltip, ClickAwayListener, Box } from "@mui/material";
-import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
-import { EmojiPickerContainer } from "../../styled/components/chat/EmojiPickerContainer";
-import { selectTheme } from "../../slices/themeSlice";
-import { useAppSelector } from "../../app/hooks";
+import { Box, ClickAwayListener, Tooltip } from "@mui/material";
 import Popper from "@mui/material/Popper";
-import EmojiPicker from "emoji-picker-react";
-import { EmojiClickData, EmojiStyle, Theme } from "emoji-picker-react";
+import EmojiPicker, {
+  EmojiClickData,
+  EmojiStyle,
+  SuggestionMode,
+  Theme
+} from "emoji-picker-react";
+import { useCallback, useState } from "react";
+import { useAppSelector } from "../../app/hooks";
+import { selectTheme } from "../../slices/themeSlice";
+import { EmojiPickerContainer } from "../../styled/components/chat/EmojiPickerContainer";
+import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
 
 export interface IChatEmojiPicker {
   onEmojiClick: (e: EmojiClickData) => void;
   chatInputTextRef: React.MutableRefObject<HTMLInputElement>;
 }
+
 const ChatEmojiPicker = (props: IChatEmojiPicker) => {
   const themeMode = useAppSelector(selectTheme);
   const [open, setOpen] = useState(false);
@@ -24,6 +29,7 @@ const ChatEmojiPicker = (props: IChatEmojiPicker) => {
   const handleClose = useCallback(() => {
     setOpen(false);
   }, []);
+
   return (
     <Tooltip title="Choose an emoji">
       <div>
@@ -42,6 +48,8 @@ const ChatEmojiPicker = (props: IChatEmojiPicker) => {
                   onEmojiClick={props.onEmojiClick}
                   emojiStyle={EmojiStyle.GOOGLE}
                   theme={themeMode.theme as Theme}
+                  lazyLoadEmojis={false}
+                  suggestedEmojisMode={SuggestionMode.RECENT}
                 />
               </EmojiPickerContainer>
             </Box>
