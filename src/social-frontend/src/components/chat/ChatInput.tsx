@@ -1,6 +1,6 @@
 import SendIcon from "@mui/icons-material/Send";
 import { InputAdornment, Tooltip } from "@mui/material";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { addChatMessage } from "../../slices/chatSlice";
 import {
@@ -12,12 +12,14 @@ import { StyledChatInput } from "../../styled/components/chat/StyledChatInput";
 import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
 import { StyledTextField } from "../../styled/components/mui/StyledTextField";
 import ChatEmojiPicker from "./ChatEmojiPicker";
+import { EmojiClickData } from "emoji-picker-react";
 
 const ChatInput = () => {
   const dispatch = useAppDispatch();
   const selectedFriend = useAppSelector(selectSelectedFriend);
   const user = useAppSelector(selectUserIdentity);
   const [currentInput, setCurrentInput] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const sendMessage = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -50,11 +52,15 @@ const ChatInput = () => {
   ) => {
     setCurrentInput(event.target.value);
   };
+  const handleOnEmojiClick = (emoji: EmojiClickData) => {
+    setCurrentInput(currentInput + emoji.emoji);
+  };
 
   return (
     <StyledChatInput>
       <form onSubmit={sendMessage} style={{ width: "100%" }}>
         <StyledTextField
+          ref={inputRef}
           fullWidth
           multiline
           maxRows={2}
@@ -74,7 +80,7 @@ const ChatInput = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <ChatEmojiPicker />
+                <ChatEmojiPicker onEmojiClick={handleOnEmojiClick} chatInputTextRef={inputRef}/>
               </InputAdornment>
             )
           }}
