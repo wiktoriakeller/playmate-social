@@ -25,10 +25,10 @@ export const Header = () => {
 
   const getCurrentThemeIcon = (theme: ThemeType) => {
     if (theme === "light") {
-      return <WbSunnyIcon sx={{ fontSize: "32px" }} />;
+      return <WbSunnyIcon sx={{ fontSize: "28px" }} />;
     }
 
-    return <Brightness2Icon sx={{ fontSize: "32px" }} />;
+    return <Brightness2Icon sx={{ fontSize: "28px" }} />;
   };
 
   const toggleTheme = () => {

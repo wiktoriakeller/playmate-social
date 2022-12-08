@@ -1,5 +1,5 @@
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import {
-  Badge,
   Box,
   ClickAwayListener,
   Grow,
@@ -8,19 +8,18 @@ import {
   Paper,
   Popper,
   Skeleton,
-  Tooltip,
-  Typography
+  Tooltip
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useLazyGetFriendRequestsQuery } from "../../api/friends/friendsApi";
-import RequestItem from "./RequestItem";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   selectFriendRequests,
   setFriendRequests
 } from "../../slices/friendRequestsSlice";
+import { StyledBadge } from "../../styled/components/notifications/StyledBadge";
 import { NotificationsContainer } from "../../styled/components/notifications/NotificationsContainer";
+import RequestItem from "./RequestItem";
 
 const NotificationsButton = () => {
   const anchorRef = useRef<HTMLButtonElement>(null);
@@ -30,7 +29,9 @@ const NotificationsButton = () => {
   const [getFriendRequests, { isLoading }] = useLazyGetFriendRequestsQuery();
 
   const handleOpenRequestsList = () => {
-    setOpen(true);
+    if (pendingRequests.length > 0) {
+      setOpen(true);
+    }
   };
 
   const handleClose = () => {
@@ -55,18 +56,17 @@ const NotificationsButton = () => {
 
   return (
     <Box>
-      <Tooltip title="See requests">
+      <Tooltip title="Friendship requests">
         <IconButton onClick={handleOpenRequestsList} ref={anchorRef}>
-          <Badge badgeContent={pendingRequests.length} color="secondary">
-            <NotificationsIcon sx={{ width: "26px", height: "26px" }} />
-          </Badge>
+          <StyledBadge badgeContent={pendingRequests.length} color="secondary">
+            <NotificationsIcon sx={{ width: "28px", height: "28px" }} />
+          </StyledBadge>
         </IconButton>
       </Tooltip>
 
       <Popper
         open={open}
         anchorEl={anchorRef.current}
-        role={undefined}
         placement="bottom-end"
         transition
         disablePortal
@@ -83,17 +83,21 @@ const NotificationsButton = () => {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <Box>
-                    <Typography textAlign="center">Friend requests</Typography>
-                    <List sx={{ overflow: "auto", maxHeight: 250 }}>
-                      {isLoading ? (
-                        notificationsSkeleton()
-                      ) : pendingRequests.length === 0 ? (
-                        <Typography textAlign="center">No requests</Typography>
-                      ) : (
-                        pendingRequests.map((item) => (
-                          <RequestItem {...item} key={item.requestId} />
-                        ))
-                      )}
+                    <List
+                      dense={false}
+                      sx={{
+                        overflowX: "hidden",
+                        overflowY: "auto",
+                        maxHeight: 250
+                      }}
+                    >
+                      {pendingRequests.map((item, index) => (
+                        <RequestItem
+                          request={item}
+                          isLast={index === pendingRequests.length - 1}
+                          key={item.requestId}
+                        />
+                      ))}
                     </List>
                   </Box>
                 </ClickAwayListener>

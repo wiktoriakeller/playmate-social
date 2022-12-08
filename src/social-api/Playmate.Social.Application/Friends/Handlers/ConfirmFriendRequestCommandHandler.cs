@@ -48,7 +48,7 @@ public class ConfirmFriendRequestCommandHandler : IHandlerWrapper<ConfirmFriendR
         if (request.Accept)
         {
             var friend = new Friend() { AddresseeId = friendRequest.AddresseeId, RequesterId = friendRequest.RequesterId };
-            var createdFriend = await _friendsRepository.AddAsync(friend);
+            await _friendsRepository.AddAsync(friend);
             response.CreatedFriend = _mapper.Map<FriendDto>(currentUser);
         }
 
