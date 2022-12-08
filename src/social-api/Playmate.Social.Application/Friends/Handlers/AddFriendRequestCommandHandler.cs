@@ -12,16 +12,16 @@ namespace Playmate.Social.Application.Friends.Handlers;
 
 public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCommand, AddFriendRequestResponse>
 {
-    private readonly IFriendRequestRepository _friendsRequestsRepository;
+    private readonly IFriendsRequestsRepository _friendsRequestsRepository;
     private readonly IRepository<User> _usersRepository;
-    private readonly IFriendRepository _friendsRepository;
+    private readonly IFriendsRepository _friendsRepository;
     private readonly ICurrentUserService _currentUserService;
 
     public AddFriendRequestCommandHandler(
-        IFriendRequestRepository requestsRepository,
+        IFriendsRequestsRepository requestsRepository,
         ICurrentUserService currentUserService,
         IRepository<User> usersRepository,
-        IFriendRepository friendsRepository)
+        IFriendsRepository friendsRepository)
     {
         _friendsRequestsRepository = requestsRepository;
         _currentUserService = currentUserService;
@@ -39,14 +39,14 @@ public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCo
             return ResponseResult.NotFound<AddFriendRequestResponse>("Could not find user");
         }
 
-        var friend = await _friendsRepository.GetFriend(currentUser, addressee.Id);
+        var friend = await _friendsRepository.GetFriendByIdAsync(currentUser, addressee.Id);
 
         if (friend != null)
         {
             return ResponseResult.ValidationError<AddFriendRequestResponse>("Users are friends");
         }
 
-        var currentRequests = await _friendsRequestsRepository.GetUsersWithPendingRequests(currentUser);
+        var currentRequests = await _friendsRequestsRepository.GetUsersWithPendingRequestsAsync(currentUser);
         if (currentRequests.Contains(addressee.Id))
         {
             return ResponseResult.ValidationError<AddFriendRequestResponse>("Request already exists");

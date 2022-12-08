@@ -5,7 +5,10 @@ import type {
 } from "@reduxjs/toolkit/dist/query";
 import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
 import { getUserFromStorage } from "../common/storage";
-import { setUserIdentity } from "../slices/userIdentitySlice";
+import {
+  getEmptyUserIdentity,
+  setUserIdentity
+} from "../slices/userIdentitySlice";
 import { IRefreshTokenResponse } from "./identity/responses/refreshTokenResponse";
 
 const baseUrl = process.env.REACT_APP_BASE_API_URL;
@@ -46,6 +49,10 @@ export const baseReauthQuery: BaseQueryFn<
       api,
       extraOptions
     );
+
+    if (!!refreshResponse.error && refreshResponse.error.status !== 200) {
+      api.dispatch(setUserIdentity(getEmptyUserIdentity()));
+    }
 
     const mappedResponse = refreshResponse.data as IRefreshTokenResponse;
 

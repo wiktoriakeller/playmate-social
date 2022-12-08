@@ -1,10 +1,10 @@
 ﻿namespace Playmate.Social.Application.GameResults.Responses;
 
-public class AddResultsResponse
+public class AddGameResultResponse
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; init; }
 
-    public AddResultsResponse(Guid id)
+    public AddGameResultResponse(Guid id)
     {
         Id = id;
     }

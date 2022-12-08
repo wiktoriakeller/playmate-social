@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace Playmate.Social.Application.Common.Contracts.Persistence;
 
-public interface IRepository<TEntity> where TEntity : IEntity
+public interface IRepository<TEntity> where TEntity : class
 {
     ValueTask<TEntity?> GetByIdAsync(Guid id);
 

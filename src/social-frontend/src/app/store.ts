@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { chatMessagesApi } from "../api/chatMessages/chatMessagesApi";
 import { friendsApi } from "../api/friends/friendsApi";
 import { identityApi } from "../api/identity/identityApi";
 import { usersApi } from "../api/users/usersApi";
@@ -13,6 +14,7 @@ import { userIdentityListenerMiddleware } from "../middleware/userIdentityListen
 import { chatSlice } from "../slices/chatSlice";
 import { friendRequestsSlice } from "../slices/friendRequestsSlice";
 import { friendsListSlice } from "../slices/friendsListSlice";
+import { snackbarSlice } from "../slices/snackbarSlice";
 import { tabSlice } from "../slices/tabSlice";
 import { themeSlice } from "../slices/themeSlice";
 import { userIdentitySlice } from "../slices/userIdentitySlice";
@@ -27,10 +29,12 @@ export const store = configureStore({
     [friendsListSlice.name]: friendsListSlice.reducer,
     [chatSlice.name]: chatSlice.reducer,
     [friendRequestsSlice.name]: friendRequestsSlice.reducer,
+    [snackbarSlice.name]: snackbarSlice.reducer,
     [identityApi.reducerPath]: identityApi.reducer,
     [friendsApi.reducerPath]: friendsApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
-    [friendsApi.reducerPath]: friendsApi.reducer
+    [friendsApi.reducerPath]: friendsApi.reducer,
+    [chatMessagesApi.reducerPath]: chatMessagesApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -43,6 +47,7 @@ export const store = configureStore({
       .concat(identityApi.middleware)
       .concat(usersApi.middleware)
       .concat(friendsApi.middleware)
+      .concat(chatMessagesApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

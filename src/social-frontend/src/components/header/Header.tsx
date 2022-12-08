@@ -1,6 +1,7 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import PeopleIcon from "@mui/icons-material/People";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import { Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { setCurrentTab, tabsDictionary } from "../../slices/tabSlice";
@@ -65,10 +66,12 @@ export const Header = () => {
       </HeaderLeftSide>
       <HeaderCenter>{getHeaderCenter()}</HeaderCenter>
       <HeaderRightSide isHomePage={user.jwtToken !== null}>
-        <StyledIconButton onClick={toggleTheme}>
-          {getCurrentThemeIcon(theme.theme)}
-        </StyledIconButton>
         <NotificationsButton />
+        <Tooltip title={"Toggle theme"}>
+          <StyledIconButton onClick={toggleTheme}>
+            {getCurrentThemeIcon(theme.theme)}
+          </StyledIconButton>
+        </Tooltip>
         {getUserMenu()}
       </HeaderRightSide>
     </StyledHeader>

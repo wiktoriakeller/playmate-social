@@ -7,6 +7,8 @@ namespace Playmate.Social.Application.Common.Contracts.Identity;
 
 public interface IIdentityService
 {
+    ValueTask<User?> GetUserById(Guid id);
+
     Task<Response<User>> GetUserByEmail(string email);
 
     Response<User> GetUserByJwtToken(string token);

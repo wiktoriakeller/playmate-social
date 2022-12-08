@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Playmate.Social.Application.Friends.Commands;
 using Playmate.Social.WebAPI.ApiRequests.Friends;
-using Playmate.Social.WebAPI.HubRequests;
+using Playmate.Social.Application.ChatMessages.Commands;
+using Playmate.Social.WebAPI.HubRequests.ChatMessages;
 using Playmate.Social.WebAPI.Hubs.Clients;
 
 namespace Playmate.Social.WebAPI.Hubs;
@@ -24,17 +25,23 @@ public class NotificationsHub : Hub<INotificationsClient>
 
     public async Task SendChatMessage(SendChatMessageRequest request)
     {
-        await Clients.User(request.ReceiverId).ReceiveChatMessage(request);
+        var command = _mapper.Map<AddChatMessageCommand>(request);
+        var response = await _mediator.Send(command);
+
+        if (response.Succeeded)
+        {
+            await Clients.User(request.ReceiverId.ToString()).ReceiveChatMessage(response.Data!);
+        }
     }
 
-    public async Task AnswerFriendRequest(AnswerRequest answerRequest)
+    public async Task AnswerFriendRequest(ConfirmFriendRequest confirmRequest)
     {
-        var command = _mapper.Map<AnswerFriendRequestCommand>(answerRequest);
+        var command = _mapper.Map<ConfirmFriendRequestCommand>(confirmRequest);
         var response = await _mediator.Send(command);
         
         if (response.Succeeded)
         {
-            await Clients.User(answerRequest.RequesterId.ToString()).ReceiveFriendsRequestConfirmation();
+            await Clients.User(confirmRequest.RequesterId.ToString()).ReceiveFriendsRequestConfirmation();
         }
     }
 

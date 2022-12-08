@@ -4,7 +4,7 @@ namespace Playmate.Social.Application.Friends.Responses;
 
 public class GetFriendRequestsResponse
 {
-    public IEnumerable<FriendRequestDto> Requests { get; set; }
+    public IEnumerable<FriendRequestDto> Requests { get; init; }
 
     public GetFriendRequestsResponse(IEnumerable<FriendRequestDto> requests)
     {

@@ -1,11 +1,11 @@
 ﻿using Playmate.Social.Domain.Entities;
-using Playmate.Social.Infrastructure.Identity.Dto;
+using Playmate.Social.Infrastructure.Identity.Dtos;
 
 namespace Playmate.Social.Infrastructure.Identity.Interfaces;
 
 public interface IJwtTokenService
 {
-    JwtTokenInfoDto CreateJwtToken(User user);
+    JwtTokenDto CreateJwtToken(User user);
 
     (bool success, string? jti, string? userId) IsJwtTokenValid(string jwtToken, bool validateLifetime);
 }

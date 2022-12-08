@@ -2,6 +2,6 @@
 
 public class AddFriendRequest
 {
-    public string Username { get; set; }
+    public string Username { get; init; }
     public string ReceiverId { get; init; }
 }

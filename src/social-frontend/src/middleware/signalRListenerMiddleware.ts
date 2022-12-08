@@ -8,6 +8,7 @@ import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
 import { IFriendRequestConfirmationResponse } from "../api/friends/responses/friendsRequestConfirmation";
 import { IUserSearchItem } from "../api/users/responses/searchUsersResponse";
 import { addChatMessage, IChatMessage } from "../slices/chatSlice";
+import { setFriendLastChatMessage } from "../slices/friendsListSlice";
 import {
   addFriendRequest,
   answerFriendRequests,
@@ -31,17 +32,37 @@ const baseUrl = process.env.REACT_APP_BASE_API_URL;
 const notificationsHubUrl = `${baseUrl}/hubs/notifications`;
 let hubConnection: HubConnection | null = null;
 
-interface IHubChatMessage {
+interface IReceiveChatMessage {
   senderId: string;
+  senderUsername: string;
   receiverId: string;
-  message: string;
+  content: string;
+  createdAt: string;
 }
+
+const stopHubConnection = () => {
+  if (
+    !!hubConnection &&
+    hubConnection.state !== HubConnectionState.Disconnected
+  ) {
+    hubConnection
+      .stop()
+      .then(() => {
+        console.log("Closed hub connection, user logout");
+      })
+      .catch((error) => {
+        console.error("Error while closing hub connection: ", error);
+      });
+  }
+};
 
 signalRListenerMiddleware.startListening({
   actionCreator: setUserIdentity,
   effect: (action: PayloadAction<IUserIdentityState>, listenerApi) => {
     const user = action.payload;
-    if (!!user.jwtToken) {
+    if (!!user?.jwtToken) {
+      stopHubConnection();
+
       hubConnection = new HubConnectionBuilder()
         .withUrl(notificationsHubUrl, {
           accessTokenFactory: () => user.jwtToken
@@ -68,11 +89,19 @@ signalRListenerMiddleware.startListening({
         );
       });
 
-      hubConnection.on("ReceiveChatMessage", (request: IHubChatMessage) => {
+      hubConnection.on("ReceiveChatMessage", (request: IReceiveChatMessage) => {
         listenerApi.dispatch(
           addChatMessage({
             ...request,
             isCurrentUserReceiver: true
+          })
+        );
+
+        listenerApi.dispatch(
+          setFriendLastChatMessage({
+            senderId: request.senderId,
+            senderUsername: request.senderUsername,
+            content: request.content
           })
         );
       });
@@ -107,14 +136,7 @@ signalRListenerMiddleware.startListening({
       !!hubConnection &&
       hubConnection.state !== HubConnectionState.Disconnected
     ) {
-      hubConnection
-        .stop()
-        .then(() => {
-          console.log("Closed hub connection, user logout");
-        })
-        .catch((error) => {
-          console.error("Error while closing hub connection: ", error);
-        });
+      stopHubConnection();
     }
   }
 });
