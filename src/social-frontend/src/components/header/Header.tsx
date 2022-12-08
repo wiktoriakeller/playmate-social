@@ -47,7 +47,12 @@ export const Header = () => {
 
   const getUserMenu = () => {
     if (user.jwtToken) {
-      return <UserMenu />;
+      return (
+        <>
+          <NotificationsButton />
+          <UserMenu />
+        </>
+      );
     }
   };
 
@@ -66,7 +71,6 @@ export const Header = () => {
       </HeaderLeftSide>
       <HeaderCenter>{getHeaderCenter()}</HeaderCenter>
       <HeaderRightSide isHomePage={user.jwtToken !== null}>
-        <NotificationsButton />
         <Tooltip title={"Toggle theme"}>
           <StyledIconButton onClick={toggleTheme}>
             {getCurrentThemeIcon(theme.theme)}
