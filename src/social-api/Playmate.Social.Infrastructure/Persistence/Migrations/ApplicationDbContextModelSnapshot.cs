@@ -87,6 +87,35 @@ namespace Playmate.Social.Infrastructure.Persistence.Migrations
                     b.ToTable("Games");
                 });
 
+            modelBuilder.Entity("Playmate.Social.Domain.Entities.GameResult", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("GameId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("LoserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WinnerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.HasIndex("LoserId");
+
+                    b.HasIndex("WinnerId");
+
+                    b.ToTable("GameResults");
+                });
+
             modelBuilder.Entity("Playmate.Social.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
@@ -180,6 +209,33 @@ namespace Playmate.Social.Infrastructure.Persistence.Migrations
                     b.Navigation("Addressee");
 
                     b.Navigation("Requester");
+                });
+
+            modelBuilder.Entity("Playmate.Social.Domain.Entities.GameResult", b =>
+                {
+                    b.HasOne("Playmate.Social.Domain.Entities.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("Playmate.Social.Domain.Entities.User", "Loser")
+                        .WithMany()
+                        .HasForeignKey("LoserId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("Playmate.Social.Domain.Entities.User", "Winner")
+                        .WithMany()
+                        .HasForeignKey("WinnerId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Game");
+
+                    b.Navigation("Loser");
+
+                    b.Navigation("Winner");
                 });
 
             modelBuilder.Entity("Playmate.Social.Domain.Entities.RefreshToken", b =>

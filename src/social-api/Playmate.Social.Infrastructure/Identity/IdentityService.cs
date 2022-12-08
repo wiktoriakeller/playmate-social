@@ -8,7 +8,7 @@ using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.Identity.Commands;
 using Playmate.Social.Application.Identity.Responses;
 using Playmate.Social.Domain.Entities;
-using Playmate.Social.Infrastructure.Configuration;
+using Playmate.Social.Infrastructure.Common.Configurations;
 using Playmate.Social.Infrastructure.Identity.Interfaces;
 using System.Security.Cryptography;
 
@@ -18,15 +18,15 @@ public class IdentityService : IIdentityService
 {
     private readonly IJwtTokenService _jwtTokenService;
     private readonly IRepository<RefreshToken> _refreshTokenRepository;
-    private readonly IRepository<User> _userRepository;
+    private readonly IRepository<User> _usersRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IMapper _mapper;
-    private readonly JwtOptions _jwtOptions;
+    private readonly JwtTokensConfiguration _jwtOptions;
 
     public IdentityService(
         IJwtTokenService jwtTokenService,
         IRepository<RefreshToken> refreshTokenRepository,
-        IOptions<JwtOptions> jwtOptions,
+        IOptions<JwtTokensConfiguration> jwtOptions,
         IMapper mapper,
         IRepository<User> userRepository,
         IPasswordHasher<User> passwordHasher)
@@ -35,13 +35,15 @@ public class IdentityService : IIdentityService
         _refreshTokenRepository = refreshTokenRepository;
         _mapper = mapper;
         _jwtOptions = jwtOptions.Value;
-        _userRepository = userRepository;
+        _usersRepository = userRepository;
         _passwordHasher = passwordHasher;
     }
 
+    public ValueTask<User?> GetUserById(Guid id) => _usersRepository.GetByIdAsync(id);
+
     public Task<Response<User>> GetUserByEmail(string email)
     {
-        var user = _userRepository.GetWhere(u => u.Email == email).FirstOrDefault();
+        var user = _usersRepository.GetWhere(u => u.Email == email).FirstOrDefault();
 
         if (user == null)
         {
@@ -60,7 +62,7 @@ public class IdentityService : IIdentityService
             return ResponseResult.Unauthorized<User>(ErrorMessages.Identity.InvalidToken);
         }
 
-        var user = _userRepository.GetWhere(u => u.Id.ToString() == result.userId).FirstOrDefault();
+        var user = _usersRepository.GetWhere(u => u.Id.ToString() == result.userId).FirstOrDefault();
 
         if (user == null)
         {
@@ -75,13 +77,13 @@ public class IdentityService : IIdentityService
         var newUser = new User
         {
             Email = createUserCommand.Email,
-            Username = createUserCommand.UserName
+            Username = createUserCommand.Username
         };
 
         var hashedPassword = _passwordHasher.HashPassword(newUser, createUserCommand.Password);
         newUser.PasswordHash = hashedPassword;
 
-        await _userRepository.AddAsync(newUser);
+        await _usersRepository.AddAsync(newUser);
 
         var response = _mapper.Map<CreateUserResponse>(newUser);
         return ResponseResult.Ok(response);
@@ -89,7 +91,7 @@ public class IdentityService : IIdentityService
 
     public async Task<Response<AuthenticateUserResponse>> AuthenticateUserAync(AuthenticateUserCommand authenticateUserCommand)
     {
-        var user = _userRepository.GetWhere(u => u.Email == authenticateUserCommand.Email).FirstOrDefault();
+        var user = _usersRepository.GetWhere(u => u.Email == authenticateUserCommand.Email).FirstOrDefault();
 
         if (user == null)
         {
@@ -111,7 +113,7 @@ public class IdentityService : IIdentityService
             Id = user.Id,
             Username = user.Username,
             Email = user.Email,
-            JwtToken = newJwt.JwtToken,
+            JwtToken = newJwt.Token,
             RefreshToken = newRefreshToken
         };
 
@@ -138,18 +140,18 @@ public class IdentityService : IIdentityService
 
         var currentRefreshToken = refreshTokens.First();
 
-        if (currentRefreshToken.ExpiryDate >= DateTime.UtcNow || currentRefreshToken.JwtId != result.jti)
+        if (currentRefreshToken.ExpiryDate < DateTime.UtcNow || currentRefreshToken.JwtId != result.jti)
         {
             return ResponseResult.Unauthorized<RefreshTokenResponse>(ErrorMessages.Identity.InvalidToken);
         }
 
-        var user = _userRepository.GetWhere(u => u.Id.ToString() == result.userId).FirstOrDefault();
+        var user = _usersRepository.GetWhere(u => u.Id.ToString() == result.userId).FirstOrDefault();
         var newJwt = _jwtTokenService.CreateJwtToken(user);
         var newRefreshToken = await CreateRefreshToken(newJwt.Jti, user);
 
         var response = new RefreshTokenResponse
         {
-            JwtToken = newJwt.JwtToken,
+            JwtToken = newJwt.Token,
             RefreshToken = newRefreshToken
         };
 
@@ -182,7 +184,7 @@ public class IdentityService : IIdentityService
     private string GetUniqueToken()
     {
         var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-        var tokenIsUsed = _userRepository.GetWhere(u => u.RefreshToken != null && u.RefreshToken.Token == token).Any();
+        var tokenIsUsed = _usersRepository.GetWhere(u => u.RefreshToken != null && u.RefreshToken.Token == token).Any();
 
         if (tokenIsUsed)
         {

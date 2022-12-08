@@ -8,22 +8,24 @@ import { IGetFriendsListResponse } from "./responses/getFriendsListResponse";
 export const friendsApi = createApi({
   reducerPath: "friendsApi",
   baseQuery: baseReauthQuery,
+  tagTypes: ["friendsList"],
   endpoints: (builder) => ({
     getFriendsList: builder.query<
       IGetFriendsListResponse,
       IGetFriendsListRequest
     >({
       query: (request) => ({
-        url: `/friends/?search=${request.search}`,
+        url: `/friends?search=${request.search}`,
         method: "GET"
-      })
+      }),
+      providesTags: ["friendsList"]
     }),
-    sendFriendRequest: builder.query<
+    sendFriendRequest: builder.mutation<
       ISendFriendRequestResponse,
       ISendFriendRequestRequest
     >({
       query: (request) => ({
-        url: "/friends",
+        url: "/friends/requests",
         method: "POST",
         body: request
       })
@@ -31,7 +33,7 @@ export const friendsApi = createApi({
   })
 });
 
-export const { useLazyGetFriendsListQuery, useLazySendFriendRequestQuery } =
+export const { useLazyGetFriendsListQuery, useSendFriendRequestMutation } =
   friendsApi;
 
 export default friendsApi.reducer;

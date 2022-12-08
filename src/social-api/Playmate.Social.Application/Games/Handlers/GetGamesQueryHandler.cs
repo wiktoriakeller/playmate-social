@@ -9,16 +9,16 @@ namespace Playmate.Social.Application.Games.Handlers;
 
 public class GetGamesQueryHandler : IHandlerWrapper<GetGamesQuery, GetGamesResponse>
 {
-    private readonly IRepository<Game> _gameRepository;
+    private readonly IRepository<Game> _gamesRepository;
 
-    public GetGamesQueryHandler(IRepository<Game> gameRepository)
+    public GetGamesQueryHandler(IRepository<Game> gamesRepository)
     {
-        _gameRepository = gameRepository;
+        _gamesRepository = gamesRepository;
     }
 
     public Task<Response<GetGamesResponse>> Handle(GetGamesQuery request, CancellationToken cancellationToken)
     {
-        var games = _gameRepository.GetAll();
+        var games = _gamesRepository.GetAll();
 
         var response = new GetGamesResponse(games);
         return Task.FromResult(ResponseResult.Ok(response));

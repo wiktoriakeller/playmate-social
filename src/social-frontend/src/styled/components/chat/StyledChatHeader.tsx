@@ -9,4 +9,10 @@ export const StyledChatHeader = styled.div`
   justify-content: flex-start;
   width: 100%;
   min-height: 56px;
+  padding-left: 20px;
+  gap: 10px;
+
+  span {
+    font-weight: bold;
+  }
 `;

@@ -4,7 +4,7 @@ using Playmate.Social.WebAPI.ApiRequests.Games;
 
 namespace Playmate.Social.WebAPI.ApiRequests.Mappings;
 
-public class GamesMappingProfile : Profile
+internal class GamesMappingProfile : Profile
 {
     public GamesMappingProfile()
     {

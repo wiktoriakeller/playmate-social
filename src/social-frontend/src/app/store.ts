@@ -1,13 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { chatMessagesApi } from "../api/chatMessages/chatMessagesApi";
 import { friendsApi } from "../api/friends/friendsApi";
 import { gameIntegrationApi } from "../api/games/gameIntegrationApi";
 import { gamesApi } from "../api/games/gamesApi";
 import { identityApi } from "../api/identity/identityApi";
 import { usersApi } from "../api/users/usersApi";
+import {
+  chatListenerMiddleware,
+  signalRListenerMiddleware
+} from "../middleware/signalRListenerMiddleware";
 import { themeListenerMiddleware } from "../middleware/themeListenerMiddleware";
-import { userListenerMiddleware } from "../middleware/userListenerMiddleware";
+import { userIdentityListenerMiddleware } from "../middleware/userIdentityListenerMiddleware";
 import { chatSlice } from "../slices/chatSlice";
 import { friendsListSlice } from "../slices/friendsListSlice";
+import { snackbarSlice } from "../slices/snackbarSlice";
 import { tabSlice } from "../slices/tabSlice";
 import { themeSlice } from "../slices/themeSlice";
 import { userIdentitySlice } from "../slices/userIdentitySlice";
@@ -21,22 +27,27 @@ export const store = configureStore({
     [userSearchSlice.name]: userSearchSlice.reducer,
     [friendsListSlice.name]: friendsListSlice.reducer,
     [chatSlice.name]: chatSlice.reducer,
+    [snackbarSlice.name]: snackbarSlice.reducer,
     [identityApi.reducerPath]: identityApi.reducer,
     [friendsApi.reducerPath]: friendsApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
     [friendsApi.reducerPath]: friendsApi.reducer,
     [gamesApi.reducerPath]: gamesApi.reducer,
-    [gameIntegrationApi.reducerPath]: gameIntegrationApi.reducer
+    [gameIntegrationApi.reducerPath]: gameIntegrationApi.reducer,
+    [chatMessagesApi.reducerPath]: chatMessagesApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
-      .concat(userListenerMiddleware.middleware)
+      .concat(userIdentityListenerMiddleware.middleware)
+      .concat(signalRListenerMiddleware.middleware)
+      .concat(chatListenerMiddleware.middleware)
       .concat(themeListenerMiddleware.middleware)
       .concat(identityApi.middleware)
       .concat(usersApi.middleware)
       .concat(friendsApi.middleware)
       .concat(gamesApi.middleware)
       .concat(gameIntegrationApi.middleware)
+      .concat(chatMessagesApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

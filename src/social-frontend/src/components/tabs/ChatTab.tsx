@@ -1,4 +1,3 @@
-import { HubConnection } from "@microsoft/signalr";
 import { useAppSelector } from "../../app/hooks";
 import { selectSelectedFriend } from "../../slices/friendsListSlice";
 import { ChatContainer } from "../../styled/components/chat/ChatContainer";
@@ -8,8 +7,8 @@ import { StyledChatTab } from "../../styled/components/tabs/StyledChatTab";
 import ChatHeader from "../chat/ChatHeader";
 import ChatInput from "../chat/ChatInput";
 import ChatMessages from "../chat/ChatMessages";
-import FriendsLits from "../friends/FriendsLits";
-import FriendsSearch from "../friends/FriendsSearch";
+import FriendsLits from "../friendsList/FriendsLits";
+import FriendsSearch from "../friendsList/FriendsSearch";
 
 const ChatTab = () => {
   const selectedFriend = useAppSelector(selectSelectedFriend);

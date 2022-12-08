@@ -17,13 +17,13 @@ public class GamesController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetGamest()
+    public async Task<IActionResult> GetGames()
     {
         var response = await _medaitor.Send(new GetGamesQuery());
         return GetStatusCode(response);
     }
 
-    [HttpPost("register")]
+    [HttpPost]
     public async Task<IActionResult> RegisterGame([FromBody] RegisterGameRequest request)
     {
         var command = _mapper.Map<RegisterGameCommand>(request);

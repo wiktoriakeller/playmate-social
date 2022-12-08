@@ -1,7 +1,7 @@
 import { useAppSelector } from "../app/hooks";
 import ChatTab from "../components/tabs/ChatTab";
 import GamesTab from "../components/tabs/GamesTab";
-import UserSearchTab from "../components/tabs/UserSearchTab";
+import UsersSearchTab from "../components/tabs/UsersSearchTab";
 import { selectCurrentTab, TabName } from "../slices/tabSlice";
 
 const HomePage = () => {
@@ -14,7 +14,7 @@ const HomePage = () => {
       case TabName.Games:
         return <GamesTab />;
       case TabName.Users:
-        return <UserSearchTab />;
+        return <UsersSearchTab />;
       default:
         return <></>;
     }

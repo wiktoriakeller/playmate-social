@@ -30,18 +30,18 @@ public class FriendsController : BaseApiController
         return GetStatusCode(response);
     }
 
-    [HttpPost]
-    public async Task<IActionResult> SendFriendRequest([FromBody] AddFriendRequest addFriendRequest)
+    [HttpPost("requests")]
+    public async Task<IActionResult> AddFriendRequest([FromBody] AddFriendRequest addFriendRequest)
     {
         var command = _mapper.Map<AddFriendRequestCommand>(addFriendRequest);
         var response = await _medaitor.Send(command);
         return GetStatusCode(response);
     }
 
-    [HttpPost("answer")]
-    public async Task<IActionResult> AnswerFriendRequest([FromBody] AnswerRequest answerRequest)
+    [HttpPost("confirmations")]
+    public async Task<IActionResult> ConfirmFriendRequest([FromBody] ConfirmFriendRequest answerRequest)
     {
-        var command = _mapper.Map<AnswerFriendRequestCommand>(answerRequest);
+        var command = _mapper.Map<ConfirmFriendRequestCommand>(answerRequest);
         var response = await _medaitor.Send(command);
         return GetStatusCode(response);
     }

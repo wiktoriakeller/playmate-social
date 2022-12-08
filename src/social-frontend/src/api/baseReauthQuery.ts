@@ -5,19 +5,22 @@ import type {
 } from "@reduxjs/toolkit/dist/query";
 import { fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
 import { getUserFromStorage } from "../common/storage";
-import { setUserTokens } from "../slices/userIdentitySlice";
+import {
+  getEmptyUserIdentity,
+  setUserIdentity
+} from "../slices/userIdentitySlice";
 import { IRefreshTokenResponse } from "./identity/responses/refreshTokenResponse";
 
-const apiUrl = process.env.REACT_APP_BASE_API_URL;
-const baseUrl = `${apiUrl}/api/v1`;
+const baseUrl = process.env.REACT_APP_BASE_API_URL;
+const baseApiUrl = `${baseUrl}/api/v1`;
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: baseUrl,
+  baseUrl: baseApiUrl,
   mode: "cors",
-  prepareHeaders: (headers, { endpoint }) => {
+  prepareHeaders: (headers) => {
     const user = getUserFromStorage();
 
-    if (user && user.jwtToken && endpoint !== "refresh") {
+    if (user && user.jwtToken) {
       headers.set("Authorization", `Bearer ${user.jwtToken}`);
     }
 
@@ -34,7 +37,6 @@ export const baseReauthQuery: BaseQueryFn<
 
   if (result.error && result.error.status === 401) {
     const user = getUserFromStorage();
-
     const refreshResponse = await baseQuery(
       {
         url: "/identity/refresh",
@@ -48,10 +50,19 @@ export const baseReauthQuery: BaseQueryFn<
       extraOptions
     );
 
+    if (!!refreshResponse.error && refreshResponse.error.status !== 200) {
+      api.dispatch(setUserIdentity(getEmptyUserIdentity()));
+    }
+
     const mappedResponse = refreshResponse.data as IRefreshTokenResponse;
 
     if (mappedResponse && mappedResponse.data) {
-      api.dispatch(setUserTokens(mappedResponse.data));
+      api.dispatch(
+        setUserIdentity({
+          ...user,
+          ...mappedResponse.data
+        })
+      );
       result = await baseQuery(args, api, extraOptions);
     }
   }

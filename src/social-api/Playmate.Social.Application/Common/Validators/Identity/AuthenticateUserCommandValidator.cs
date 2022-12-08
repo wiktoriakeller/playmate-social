@@ -13,8 +13,9 @@ public class AuthenticateUserCommandValidator : AbstractValidator<AuthenticateUs
         RuleFor(x => x.Email)
             .NotEmpty()
             .EmailAddress()
+            .WithMessage("Incorrect email address")
             .UserWithEmailShouldExist(true, identityService)
-            .WithMessage(ErrorMessages.Identity.UserNotFound);
+            .WithMessage(ErrorMessages.Identity.IncorrectCredentials);
 
         RuleFor(x => x.Password)
             .NotEmpty();
