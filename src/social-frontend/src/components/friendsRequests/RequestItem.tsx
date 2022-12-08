@@ -59,7 +59,7 @@ const RequestItem = (props: IRequestItemProps) => {
           </IconButton>
         </NotificationsButtons>
       </ListItem>
-      {props.isLast ? <></> : <ListDivider variant="middle" light />}
+      {props.isLast ? <></> : <ListDivider variant="middle" />}
     </Box>
   );
 };
