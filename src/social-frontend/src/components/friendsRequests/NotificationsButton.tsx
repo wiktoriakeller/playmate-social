@@ -4,7 +4,6 @@ import {
   ClickAwayListener,
   Grow,
   IconButton,
-  List,
   Paper,
   Popper,
   Skeleton,
@@ -17,6 +16,7 @@ import {
   selectFriendRequests,
   setFriendRequests
 } from "../../slices/friendRequestsSlice";
+import { StyledList } from "../../styled/components/mui/StyledList";
 import { NotificationsContainer } from "../../styled/components/notifications/NotificationsContainer";
 import { StyledBadge } from "../../styled/components/notifications/StyledBadge";
 import RequestItem from "./RequestItem";
@@ -83,14 +83,7 @@ const NotificationsButton = () => {
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
                   <Box>
-                    <List
-                      dense={false}
-                      sx={{
-                        overflowX: "hidden",
-                        overflowY: "auto",
-                        maxHeight: 250
-                      }}
-                    >
+                    <StyledList dense={false}>
                       {isLoading
                         ? notificationsSkeleton()
                         : pendingRequests.map((item, index) => (
@@ -100,7 +93,7 @@ const NotificationsButton = () => {
                               key={item.requestId}
                             />
                           ))}
-                    </List>
+                    </StyledList>
                   </Box>
                 </ClickAwayListener>
               </Paper>
