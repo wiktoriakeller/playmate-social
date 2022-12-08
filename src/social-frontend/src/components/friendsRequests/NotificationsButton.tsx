@@ -20,6 +20,7 @@ import {
   selectFriendRequests,
   setFriendRequests
 } from "../../slices/friendRequestsSlice";
+import { NotificationsContainer } from "../../styled/components/notifications/NotificationsContainer";
 
 const NotificationsButton = () => {
   const anchorRef = useRef<HTMLButtonElement>(null);
@@ -78,24 +79,26 @@ const NotificationsButton = () => {
                 placement === "bottom-end" ? "right top" : "left bottom"
             }}
           >
-            <Paper>
-              <ClickAwayListener onClickAway={handleClose}>
-                <Box>
-                  <Typography textAlign="center">Friend requests</Typography>
-                  <List sx={{ overflow: "auto", maxHeight: "50%" }}>
-                    {isLoading ? (
-                      notificationsSkeleton()
-                    ) : pendingRequests.length === 0 ? (
-                      <Typography textAlign="center">No requests</Typography>
-                    ) : (
-                      pendingRequests.map((item) => (
-                        <RequestItem {...item} key={item.requestId} />
-                      ))
-                    )}
-                  </List>
-                </Box>
-              </ClickAwayListener>
-            </Paper>
+            <NotificationsContainer>
+              <Paper>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <Box>
+                    <Typography textAlign="center">Friend requests</Typography>
+                    <List sx={{ overflow: "auto", maxHeight: 250 }}>
+                      {isLoading ? (
+                        notificationsSkeleton()
+                      ) : pendingRequests.length === 0 ? (
+                        <Typography textAlign="center">No requests</Typography>
+                      ) : (
+                        pendingRequests.map((item) => (
+                          <RequestItem {...item} key={item.requestId} />
+                        ))
+                      )}
+                    </List>
+                  </Box>
+                </ClickAwayListener>
+              </Paper>
+            </NotificationsContainer>
           </Grow>
         )}
       </Popper>
