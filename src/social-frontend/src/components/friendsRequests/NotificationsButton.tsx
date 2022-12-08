@@ -1,4 +1,5 @@
 import {
+  Badge,
   Box,
   ClickAwayListener,
   Grow,
@@ -41,11 +42,23 @@ const NotificationsButton = () => {
     });
   }, []);
 
+  const notificationsSkeleton = () => {
+    return (
+      <>
+        <Skeleton height={40} />
+        <Skeleton height={40} />
+        <Skeleton height={40} />
+      </>
+    );
+  };
+
   return (
     <Box>
       <Tooltip title="See requests">
         <IconButton onClick={handleOpenRequestsList} ref={anchorRef}>
-          <NotificationsIcon sx={{ width: "26px", height: "26px" }} />
+          <Badge badgeContent={pendingRequests.length} color="secondary">
+            <NotificationsIcon sx={{ width: "26px", height: "26px" }} />
+          </Badge>
         </IconButton>
       </Tooltip>
 
@@ -71,11 +84,7 @@ const NotificationsButton = () => {
                   <Typography textAlign="center">Friend requests</Typography>
                   <List sx={{ overflow: "auto", maxHeight: "50%" }}>
                     {isLoading ? (
-                      <>
-                        <Skeleton height={40} />
-                        <Skeleton height={40} />
-                        <Skeleton height={40} />
-                      </>
+                      notificationsSkeleton()
                     ) : pendingRequests.length === 0 ? (
                       <Typography textAlign="center">No requests</Typography>
                     ) : (
