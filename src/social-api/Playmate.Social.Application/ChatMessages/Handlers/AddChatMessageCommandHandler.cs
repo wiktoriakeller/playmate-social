@@ -3,6 +3,7 @@ using Playmate.Social.Application.ChatMessages.Commands;
 using Playmate.Social.Application.ChatMessages.Responses;
 using Playmate.Social.Application.Common;
 using Playmate.Social.Application.Common.BaseResponse;
+using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.Common.Contracts.Services;
 using Playmate.Social.Domain.Entities;
@@ -13,15 +14,18 @@ public class AddChatMessageCommandHandler : IHandlerWrapper<AddChatMessageComman
 {
     private readonly IChatMessagesRepository _chatMessagesRepository;
     private readonly IRoomIdProvider _roomIdProvider;
+    private readonly IIdentityService _identityService;
     private readonly IMapper _mapper;
 
     public AddChatMessageCommandHandler(
         IChatMessagesRepository chatMessagesRepository,
         IRoomIdProvider roomIdProvider,
+        IIdentityService identityService,
         IMapper mapper)
     {
         _chatMessagesRepository = chatMessagesRepository;
         _roomIdProvider = roomIdProvider;
+        _identityService = identityService;
         _mapper = mapper;
     }
 
@@ -34,6 +38,7 @@ public class AddChatMessageCommandHandler : IHandlerWrapper<AddChatMessageComman
             return ResponseResult.NotFound<AddChatMessageResponse>(roomIdResponse.Errors);
         }
 
+        var friend = await _identityService.GetUserById(request.SenderId);
         var chatMessage = _mapper.Map<ChatMessage>(request);
         chatMessage.ChatRoomId = roomIdResponse.Data!;
 
@@ -42,6 +47,7 @@ public class AddChatMessageCommandHandler : IHandlerWrapper<AddChatMessageComman
         {
             Id = messageId,
             SenderId = request.SenderId,
+            SenderUsername = friend.Username,
             ReceiverId = request.ReceiverId,
             Content = request.Content,
             CreatedAt = request.CreatedAt
