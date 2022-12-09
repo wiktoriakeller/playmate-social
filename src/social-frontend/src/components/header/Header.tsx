@@ -13,6 +13,7 @@ import { HeaderRightSide } from "../../styled/components/header/HeaderRightSide"
 import { StyledHeader } from "../../styled/components/header/StyledHeader";
 import { StyledLogo } from "../../styled/components/header/StyledLogo";
 import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
+import NotificationsButton from "../friendsRequests/NotificationsButton";
 import UserMenu from "../user/UserMenu";
 import HeaderTabs from "./HeaderTabs";
 
@@ -24,10 +25,10 @@ export const Header = () => {
 
   const getCurrentThemeIcon = (theme: ThemeType) => {
     if (theme === "light") {
-      return <WbSunnyIcon sx={{ fontSize: "32px" }} />;
+      return <WbSunnyIcon sx={{ fontSize: "28px" }} />;
     }
 
-    return <Brightness2Icon sx={{ fontSize: "32px" }} />;
+    return <Brightness2Icon sx={{ fontSize: "28px" }} />;
   };
 
   const toggleTheme = () => {
@@ -46,7 +47,12 @@ export const Header = () => {
 
   const getUserMenu = () => {
     if (user.jwtToken) {
-      return <UserMenu />;
+      return (
+        <>
+          <NotificationsButton />
+          <UserMenu />
+        </>
+      );
     }
   };
 

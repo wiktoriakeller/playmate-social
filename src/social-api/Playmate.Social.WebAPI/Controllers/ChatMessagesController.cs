@@ -19,7 +19,7 @@ public class ChatMessagesController : BaseApiController
     public async Task<IActionResult> GetChatMessages([FromQuery] GetChatMessagesListRequest request)
     {
         var query = new GetChatMessagesListQuery { FriendId = request.FriendId };
-        var response = await _medaitor.Send(query);
+        var response = await _mediator.Send(query);
         return GetStatusCode(response);
     }
 }

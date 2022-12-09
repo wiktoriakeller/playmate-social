@@ -1,8 +1,10 @@
-﻿using Playmate.Social.Application.Common;
+﻿using AutoMapper;
+using Playmate.Social.Application.Common;
 using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.Friends.Commands;
+using Playmate.Social.Application.Friends.Dtos;
 using Playmate.Social.Application.Friends.Responses;
 using Playmate.Social.Domain.Entities;
 
@@ -50,9 +52,16 @@ public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCo
             return ResponseResult.ValidationError<AddFriendRequestResponse>("Request already exists");
         }
 
-        var friendRequest = new FriendRequest() { Requester = currentUser, Addressee = addressee };
+        var friendRequest = new FriendRequest() { RequesterId = currentUser.Id, AddresseeId = addressee.Id };
         var createdRequest = await _friendsRequestsRepository.AddAsync(friendRequest);
 
-        return ResponseResult.Created(new AddFriendRequestResponse(createdRequest.Id));
+        var mappedRequest = new FriendRequestDto() { 
+            RequestId = createdRequest.Id, From = new FriendDto {
+                Id = currentUser.Id,
+                Username = currentUser.Username
+            }
+        };
+
+        return ResponseResult.Created(new AddFriendRequestResponse(mappedRequest));
     }
 }

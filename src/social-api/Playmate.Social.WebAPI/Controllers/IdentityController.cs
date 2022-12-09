@@ -19,7 +19,7 @@ public class IdentityController : BaseApiController
     public async Task<IActionResult> Register([FromBody] CreateUserRequest request)
     {
         var command = _mapper.Map<CreateUserCommand>(request);
-        var response = await _medaitor.Send(command);
+        var response = await _mediator.Send(command);
 
         if (!response.Succeeded)
         {
@@ -33,7 +33,7 @@ public class IdentityController : BaseApiController
     public async Task<IActionResult> Login([FromBody] AuthenticateUserRequest request)
     {
         var command = _mapper.Map<AuthenticateUserCommand>(request);
-        var response = await _medaitor.Send(command);
+        var response = await _mediator.Send(command);
         return GetStatusCode(response);
     }
 
@@ -41,7 +41,7 @@ public class IdentityController : BaseApiController
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
     {
         var command = _mapper.Map<RefreshTokenCommand>(request);
-        var response = await _medaitor.Send(command);
+        var response = await _mediator.Send(command);
         return GetStatusCode(response);
     }
 
@@ -50,7 +50,7 @@ public class IdentityController : BaseApiController
     public async Task<IActionResult> GetUsersByUsername([FromRoute] string username)
     {
         var query = new GetUsersByUsernameQuery() { Username = username };
-        var response = await _medaitor.Send(query);
+        var response = await _mediator.Send(query);
         return GetStatusCode(response);
     }
 }

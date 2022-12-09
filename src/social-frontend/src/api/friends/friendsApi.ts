@@ -1,9 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseReauthQuery } from "../baseReauthQuery";
-import { ISendFriendRequestRequest } from "./requests/sendFriendRequest";
-import { ISendFriendRequestResponse } from "./responses/sendFriendRequestResponse";
 import { IGetFriendsListRequest } from "./requests/getFriendsListRequest";
 import { IGetFriendsListResponse } from "./responses/getFriendsListResponse";
+import { IGetFriendRequestsRequest } from "./requests/getFriendRequestsRequest";
+import { IGetFriendRequestsResponse } from "./responses/getFriendRequestsResponse";
 
 export const friendsApi = createApi({
   reducerPath: "friendsApi",
@@ -20,20 +20,19 @@ export const friendsApi = createApi({
       }),
       providesTags: ["friendsList"]
     }),
-    sendFriendRequest: builder.mutation<
-      ISendFriendRequestResponse,
-      ISendFriendRequestRequest
+    getFriendRequests: builder.query<
+      IGetFriendRequestsResponse,
+      IGetFriendRequestsRequest
     >({
-      query: (request) => ({
-        url: "/friends/requests",
-        method: "POST",
-        body: request
+      query: () => ({
+        url: `/friends/requests`,
+        method: "GET"
       })
     })
   })
 });
 
-export const { useLazyGetFriendsListQuery, useSendFriendRequestMutation } =
+export const { useLazyGetFriendsListQuery, useLazyGetFriendRequestsQuery } =
   friendsApi;
 
 export default friendsApi.reducer;

@@ -1,11 +1,13 @@
-﻿namespace Playmate.Social.Application.Friends.Responses;
+﻿using Playmate.Social.Application.Friends.Dtos;
+
+namespace Playmate.Social.Application.Friends.Responses;
 
 public class AddFriendRequestResponse
 {
-    public Guid Id { get; init; }
+    public FriendRequestDto Request { get; set; }
 
-    public AddFriendRequestResponse(Guid id)
+    public AddFriendRequestResponse(FriendRequestDto request)
     {
-        Id = id;
+        Request = request;
     }
 }

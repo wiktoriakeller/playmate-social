@@ -3,13 +3,17 @@ import { chatMessagesApi } from "../api/chatMessages/chatMessagesApi";
 import { friendsApi } from "../api/friends/friendsApi";
 import { identityApi } from "../api/identity/identityApi";
 import { usersApi } from "../api/users/usersApi";
+import { friendsListListenerMiddleware } from "../middleware/friendsListListenerMiddleware";
 import {
+  answerFriendRequestsListenerMiddleware,
   chatListenerMiddleware,
+  sendFriendRequestsListenerMiddleware,
   signalRListenerMiddleware
 } from "../middleware/signalRListenerMiddleware";
 import { themeListenerMiddleware } from "../middleware/themeListenerMiddleware";
 import { userIdentityListenerMiddleware } from "../middleware/userIdentityListenerMiddleware";
 import { chatSlice } from "../slices/chatSlice";
+import { friendRequestsSlice } from "../slices/friendRequestsSlice";
 import { friendsListSlice } from "../slices/friendsListSlice";
 import { snackbarSlice } from "../slices/snackbarSlice";
 import { tabSlice } from "../slices/tabSlice";
@@ -25,6 +29,7 @@ export const store = configureStore({
     [userSearchSlice.name]: userSearchSlice.reducer,
     [friendsListSlice.name]: friendsListSlice.reducer,
     [chatSlice.name]: chatSlice.reducer,
+    [friendRequestsSlice.name]: friendRequestsSlice.reducer,
     [snackbarSlice.name]: snackbarSlice.reducer,
     [identityApi.reducerPath]: identityApi.reducer,
     [friendsApi.reducerPath]: friendsApi.reducer,
@@ -37,7 +42,10 @@ export const store = configureStore({
       .concat(userIdentityListenerMiddleware.middleware)
       .concat(signalRListenerMiddleware.middleware)
       .concat(chatListenerMiddleware.middleware)
+      .concat(sendFriendRequestsListenerMiddleware.middleware)
+      .concat(answerFriendRequestsListenerMiddleware.middleware)
       .concat(themeListenerMiddleware.middleware)
+      .concat(friendsListListenerMiddleware.middleware)
       .concat(identityApi.middleware)
       .concat(usersApi.middleware)
       .concat(friendsApi.middleware)
