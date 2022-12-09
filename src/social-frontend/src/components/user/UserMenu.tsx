@@ -53,7 +53,7 @@ const UserMenu = () => {
     <Box>
       <Tooltip title="Open settings">
         <IconButton onClick={handleOpenUserMenu}>
-          <Avatar sx={{ width: "32px", height: "32px" }} />
+          <Avatar sx={{ width: "28px", height: "28px" }} />
         </IconButton>
       </Tooltip>
       <Menu

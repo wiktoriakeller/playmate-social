@@ -6,24 +6,21 @@ import {
   ListItemText,
   Tooltip
 } from "@mui/material";
-import { useSendFriendRequestMutation } from "../../api/friends/friendsApi";
 import { IUserSearchItem } from "../../api/users/responses/searchUsersResponse";
 import { useAppDispatch } from "../../app/hooks";
-import { updateUser } from "../../slices/userSearchSlice";
+import { sendFriendRequest } from "../../slices/userSearchSlice";
 import { UserListItem } from "../../styled/components/userSearch/UserListItem";
 
 const UsersSearchItem = (props: IUserSearchItem) => {
   const dispatch = useAppDispatch();
-  const [sendFriendRequest] = useSendFriendRequestMutation();
 
   const sendRequest = () => {
     dispatch(
-      updateUser({
+      sendFriendRequest({
         ...props,
         isFriend: true
       })
     );
-    sendFriendRequest({ username: props.username });
   };
 
   return (

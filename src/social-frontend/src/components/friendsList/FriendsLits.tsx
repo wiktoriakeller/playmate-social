@@ -1,11 +1,12 @@
 import { Avatar, Skeleton } from "@mui/material";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useLazyGetFriendsListQuery } from "../../api/friends/friendsApi";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   selectFriendsList,
   selectFriendsListSearchPhrase,
-  setFriendsList
+  setFriendsList,
+  setSelectedFriend
 } from "../../slices/friendsListSlice";
 import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
 import { StyledFriendsList } from "../../styled/components/friends/StyledFriendsList";
@@ -16,7 +17,9 @@ const FriendsLits = () => {
   const dispatch = useAppDispatch();
   const friendsSearchPhrase = useAppSelector(selectFriendsListSearchPhrase);
   const userFriends = useAppSelector(selectFriendsList);
-  const [getFriendsListLazy, { isLoading }] = useLazyGetFriendsListQuery();
+  const [getFriendsListLazy, { isLoading, data }] =
+    useLazyGetFriendsListQuery();
+  const isFirstRender = useRef<boolean>(true);
 
   const skeletons = useMemo(() => {
     const jsxElements = [];
@@ -37,13 +40,13 @@ const FriendsLits = () => {
   }, []);
 
   useEffect(() => {
-    getFriendsListLazy({
-      search: friendsSearchPhrase
-    })
+    getFriendsListLazy(
+      {
+        search: friendsSearchPhrase
+      },
+      true
+    )
       .unwrap()
-      .then((response) => {
-        dispatch(setFriendsList(response?.data?.friends));
-      })
       .catch((error: { status: string | number }) => {
         dispatch(
           openSnackbar({
@@ -54,6 +57,20 @@ const FriendsLits = () => {
         );
       });
   }, [friendsSearchPhrase]);
+
+  useEffect(() => {
+    if (data !== undefined) {
+      dispatch(setFriendsList(data.data?.friends));
+
+      if (isFirstRender.current) {
+        if (data.data?.friends.length > 0) {
+          dispatch(setSelectedFriend(data.data.friends[0]));
+        }
+
+        isFirstRender.current = false;
+      }
+    }
+  }, [data]);
 
   if (isLoading) {
     return (
