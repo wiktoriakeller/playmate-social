@@ -24,11 +24,7 @@ const GamesList = () => {
     if (!friend) {
       return;
     }
-    sendGameRequest(selectedGame.current, friend);
-  };
-
-  const sendGameRequest = (game: IGame, friend: IFriend) => {
-    StartGame(friend, game);
+    StartGame(friend, selectedGame.current);
   };
 
   return isLoading ? (

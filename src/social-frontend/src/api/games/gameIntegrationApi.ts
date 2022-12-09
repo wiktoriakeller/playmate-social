@@ -7,15 +7,11 @@ export const gameIntegrationApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "" }),
   endpoints: (builder) => ({
     initiateGame: builder.query<IStartGameResponse, IStartGameRequest>({
-      query: (request) => {
-        console.log(request);
-
-        return {
-          url: request.gameUrl,
-          method: "POST",
-          body: request.payload
-        };
-      }
+      query: (request) => ({
+        url: request.gameUrl,
+        method: "POST",
+        body: request.payload
+      })
     })
   })
 });

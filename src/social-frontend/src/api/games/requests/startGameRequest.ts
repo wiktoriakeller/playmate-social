@@ -5,5 +5,6 @@ export interface IStartGameRequest {
     senderName: string;
     receiverId: string;
     receiverName: string;
+    resultsUrl: string;
   };
 }
