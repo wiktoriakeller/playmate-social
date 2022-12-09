@@ -2,7 +2,7 @@
 
 Bachelor's degree final project - social platform that allows its users to play games with each other and gather statistics from gameplays.
 
-Project backlog can be accessed [here](https://github.com/users/codeblessing/projects/4).
+Project backlog can be accessed [here](https://github.com/users/wiktoriakeller/projects/3).
 
 ## Social API Technologies
 
