@@ -1,6 +1,8 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { chatMessagesApi } from "../api/chatMessages/chatMessagesApi";
 import { friendsApi } from "../api/friends/friendsApi";
+import { gameIntegrationApi } from "../api/games/gameIntegrationApi";
+import { gamesApi } from "../api/games/gamesApi";
 import { identityApi } from "../api/identity/identityApi";
 import { usersApi } from "../api/users/usersApi";
 import { friendsListListenerMiddleware } from "../middleware/friendsListListenerMiddleware";
@@ -35,6 +37,8 @@ export const store = configureStore({
     [friendsApi.reducerPath]: friendsApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
     [friendsApi.reducerPath]: friendsApi.reducer,
+    [gamesApi.reducerPath]: gamesApi.reducer,
+    [gameIntegrationApi.reducerPath]: gameIntegrationApi.reducer,
     [chatMessagesApi.reducerPath]: chatMessagesApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
@@ -49,6 +53,8 @@ export const store = configureStore({
       .concat(identityApi.middleware)
       .concat(usersApi.middleware)
       .concat(friendsApi.middleware)
+      .concat(gamesApi.middleware)
+      .concat(gameIntegrationApi.middleware)
       .concat(chatMessagesApi.middleware)
 });
 
