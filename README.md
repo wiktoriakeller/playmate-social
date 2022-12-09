@@ -1,12 +1,10 @@
-# Playmate
+# 🎮 Playmate
 
-Link to the [backlog](https://github.com/users/codeblessing/projects/4).
+Bachelor's degree final project - social platform that allows its users to play games with each other and gather statistics from gameplays.
 
-# Technologies
+Project backlog can be accessed [here](https://github.com/users/codeblessing/projects/4).
 
-## Social app
-
-Backend:
+## Social API Technologies
 
 - C#
 - .NET 7
@@ -19,7 +17,7 @@ Backend:
 - AutoMapper
 - MediatR
 
-Frontend:
+## Social UI Technologies
 
 - TypeScript
 - React
@@ -28,24 +26,7 @@ Frontend:
 - MUI
 - Emotion
 
-## Battleships
-
-Backend:
-
-- Python 3.10
-- FastAPI
-- WebSocket
-
-Frontend:
-
-- TypeScript
-- React
-- Redux
-- MUI
-
-# Setup
-
-## Social app
+## Setup
 
 Setup of social application with and without Compose.
 
@@ -95,36 +76,4 @@ Next start Cassandra Docker container:
 
 ```
 docker run --name cassandra-test -p 9044:9042 -d cassandra:latest
-```
-
-## Battleships
-
-Create `.env` file in the `src/games/battleships` folder, it should contain the following variables:
-
-- `REACT_APP_BASE_API_URL` - internal url
-- `REACT_APP_PUBLIC_URL` - base url to game client.
-
-Example file:
-
-```
-REACT_APP_BASE_API_URL=http://localhost:3000
-REACT_APP_PUBLIC_URL=http://localhost:4000
-```
-
-Then in the `src/games/battleships` folder run:
-
-```
-docker compose up
-```
-
-To delete created containers run:
-
-```
-docker compose down
-```
-
-To force rebuild of the containers run:
-
-```
-docker compose up --build
 ```
