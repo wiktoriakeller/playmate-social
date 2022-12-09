@@ -27,6 +27,7 @@ const RequestItem = (props: IRequestItemProps) => {
         requestId: props.request.requestId
       })
     );
+
     if (accept) {
       dispatch(addFriend(props.request.from));
     }

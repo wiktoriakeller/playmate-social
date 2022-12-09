@@ -7,7 +7,7 @@ import {
 
 export const StyledList = styled(List)`
   overflow-x: hidden;
-  max-height: 250px;
+  max-height: 200px;
   overflow-y: scroll;
   scroll-behavior: smooth;
 

@@ -3,6 +3,7 @@ import { chatMessagesApi } from "../api/chatMessages/chatMessagesApi";
 import { friendsApi } from "../api/friends/friendsApi";
 import { identityApi } from "../api/identity/identityApi";
 import { usersApi } from "../api/users/usersApi";
+import { friendsListListenerMiddleware } from "../middleware/friendsListListenerMiddleware";
 import {
   answerFriendRequestsListenerMiddleware,
   chatListenerMiddleware,
@@ -44,6 +45,7 @@ export const store = configureStore({
       .concat(sendFriendRequestsListenerMiddleware.middleware)
       .concat(answerFriendRequestsListenerMiddleware.middleware)
       .concat(themeListenerMiddleware.middleware)
+      .concat(friendsListListenerMiddleware.middleware)
       .concat(identityApi.middleware)
       .concat(usersApi.middleware)
       .concat(friendsApi.middleware)
