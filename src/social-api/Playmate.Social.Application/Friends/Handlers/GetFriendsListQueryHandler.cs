@@ -36,11 +36,10 @@ public class GetFriendsListQueryHandler : IHandlerWrapper<GetFriendsListQuery, G
     public async Task<Response<GetFriendsListResponse>> Handle(GetFriendsListQuery request, CancellationToken cancellationToken)
     {
         var search = request.Search.ToLower().Trim();
-        var user = _currentUserService.CurrentUser;
+        var currentUser = _currentUserService.CurrentUser;
         
-        var friends = await _friendsRepository.GetFriendsWhereAsync(user,
-            friend => (!string.IsNullOrWhiteSpace(search) 
-            && friend.Username.ToLower().Contains(search)) || string.IsNullOrWhiteSpace(search));
+        var friends = await _friendsRepository.GetFriendsWhereAsync(currentUser,
+            friend => (!string.IsNullOrWhiteSpace(search) && friend.Username.ToLower().Contains(search)) || string.IsNullOrWhiteSpace(search));
 
         var mappedFriends = _mapper.Map<IEnumerable<User>, IEnumerable<FriendListItemDto>>(friends);
 
@@ -60,7 +59,7 @@ public class GetFriendsListQueryHandler : IHandlerWrapper<GetFriendsListQuery, G
                         Content = lastMessage.Content,
                         SenderId = lastMessage.SenderId,
                         CreatedAt = lastMessage.CreatedAt,
-                        SenderUsername = friend.Username
+                        SenderUsername = lastMessage.SenderId == currentUser.Id ? currentUser.Username : friend.Username
                     };
                     
                     friend.LastChatMessage = mappedMessage;
@@ -69,9 +68,7 @@ public class GetFriendsListQueryHandler : IHandlerWrapper<GetFriendsListQuery, G
         }
 
         mappedFriends = mappedFriends.OrderByDescending(x => x.LastChatMessage?.CreatedAt);
-
         var response = new GetFriendsListResponse(mappedFriends);
-
         return ResponseResult.Ok(response);
     }
 }

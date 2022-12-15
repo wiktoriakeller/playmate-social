@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLazyGetChatMessagesListQuery } from "../../api/chatMessages/chatMessagesApi";
 import { IGetChatMessagesListResponse } from "../../api/chatMessages/responses/getChatMessagesListResponse";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
@@ -17,11 +17,14 @@ const ChatMessages = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUserIdentity);
   const selectedFriend = useAppSelector(selectSelectedFriend);
+
   const paginatedMessages =
     useAppSelector(selectChatMessages)[selectedFriend.id];
-  const [currentPageNumber, _] = useState(
+
+  const [currentPageNumber] = useState(
     paginatedMessages?.currentPageNumber ?? 1
   );
+
   const [getChatMessagesLazy, { isLoading, data }] =
     useLazyGetChatMessagesListQuery();
 
@@ -50,10 +53,7 @@ const ChatMessages = () => {
   }, [selectedFriend, currentPageNumber]);
 
   useEffect(() => {
-    if (
-      data !== undefined &&
-      currentPageNumber !== paginatedMessages?.currentPageNumber
-    ) {
+    if (!!data && currentPageNumber !== paginatedMessages?.currentPageNumber) {
       dispatch(
         addChatMessagesList({
           ...data.data,
@@ -63,45 +63,30 @@ const ChatMessages = () => {
     }
   }, [data]);
 
-  if (isLoading) {
-    return (
-      <StyledChatMessages>
-        <SkeletonChatMessage isUserMessage={true} />
-        <SkeletonChatMessage isUserMessage={true} />
-        <SkeletonChatMessage isUserMessage={false} />
-        <SkeletonChatMessage isUserMessage={true} />
-        <SkeletonChatMessage isUserMessage={false} />
-        <SkeletonChatMessage isUserMessage={false} />
-        <SkeletonChatMessage isUserMessage={true} />
-        <SkeletonChatMessage isUserMessage={false} />
-        <SkeletonChatMessage isUserMessage={true} />
-        <SkeletonChatMessage isUserMessage={true} />
-        <SkeletonChatMessage isUserMessage={true} />
-        <SkeletonChatMessage isUserMessage={false} />
-        <SkeletonChatMessage isUserMessage={true} />
-        <SkeletonChatMessage isUserMessage={false} />
-        <SkeletonChatMessage isUserMessage={true} />
-      </StyledChatMessages>
-    );
-  }
+  const messagesSkeletons = useMemo(() => {
+    const skeletons: React.ReactNode[] = [];
+    for (let i = 0; i < 12; i++) {
+      skeletons.push(<SkeletonChatMessage isUserMessage={i % 2 === 0} />);
+    }
+
+    return skeletons;
+  }, []);
 
   return (
     <StyledChatMessages>
-      {paginatedMessages?.messages !== undefined ? (
-        paginatedMessages.messages.map((_, index) => (
-          <ChatMessage
-            key={index}
-            message={paginatedMessages.messages[index].content}
-            isUserMessage={
-              user.id === paginatedMessages.messages[index].senderId
-            }
-            createdAt={paginatedMessages.messages[index].createdAt}
-            joinGameUrl={paginatedMessages.messages[index].joinGameUrl ?? ""}
-          />
-        ))
-      ) : (
-        <></>
-      )}
+      {paginatedMessages?.messages !== undefined && !isLoading
+        ? paginatedMessages.messages.map((_, index) => (
+            <ChatMessage
+              key={index}
+              message={paginatedMessages.messages[index].content}
+              isUserMessage={
+                user.id === paginatedMessages.messages[index].senderId
+              }
+              createdAt={paginatedMessages.messages[index].createdAt}
+              joinGameUrl={paginatedMessages.messages[index].joinGameUrl ?? ""}
+            />
+          ))
+        : messagesSkeletons.map((item) => item)}
     </StyledChatMessages>
   );
 };
