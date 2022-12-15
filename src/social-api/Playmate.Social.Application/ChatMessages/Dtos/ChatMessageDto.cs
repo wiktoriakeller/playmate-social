@@ -7,4 +7,5 @@ public class ChatMessageDto
     public Guid ReceiverId { get; set; }
     public string Content { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
+    public string JoinGameUrl { get; set; }
 }

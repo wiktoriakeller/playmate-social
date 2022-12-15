@@ -12,8 +12,8 @@ public class ChatMessagesRepository : IChatMessagesRepository
     private static readonly string _selectMessagesQuery = "SELECT * FROM chatMessages WHERE chatRoomId=?";
 
     private static readonly string _addMessageQuery = """
-            INSERT INTO chatMessages (chatRoomId, senderId, receiverId, content, createdAt, id)
-            VALUES (?, ?, ?, ?, ?, ?);
+            INSERT INTO chatMessages (chatRoomId, senderId, receiverId, content, createdAt, joinGameUrl, id)
+            VALUES (?, ?, ?, ?, ?, ?, ?);
         """;
 
     private readonly ICassandraConnection _connection;
@@ -56,7 +56,7 @@ public class ChatMessagesRepository : IChatMessagesRepository
     {
         var messageId = TimeUuid.NewId(chatMessage.CreatedAt).ToGuid();
         var addMessageStatement = _connection.Session.Prepare(_addMessageQuery);
-        var binded = addMessageStatement.Bind(chatMessage.ChatRoomId, chatMessage.SenderId, chatMessage.ReceiverId, chatMessage.Content, chatMessage.CreatedAt, messageId);
+        var binded = addMessageStatement.Bind(chatMessage.ChatRoomId, chatMessage.SenderId, chatMessage.ReceiverId, chatMessage.Content, chatMessage.CreatedAt, chatMessage.JoinGameUrl, messageId);
 
         try
         {

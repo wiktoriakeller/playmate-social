@@ -58,6 +58,7 @@ public class CassandraConnection : IAsyncDisposable, ICassandraConnection
                 receiverId uuid,
                 content text,
                 createdAt timestamp,
+                joinGameUrl text,
                 PRIMARY KEY ((chatRoomId), createdAt, id))
                 WITH CLUSTERING ORDER BY (createdAt DESC, id ASC);
         """);

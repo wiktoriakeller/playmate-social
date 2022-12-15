@@ -8,6 +8,7 @@ export interface IChatMessage {
   content: string;
   isCurrentUserReceiver: boolean;
   createdAt: string;
+  joinGameUrl?: string;
 }
 
 export interface IFriendChatMessagesList {

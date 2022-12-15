@@ -38,6 +38,7 @@ interface IReceiveChatMessage {
   receiverId: string;
   content: string;
   createdAt: string;
+  joinGameUrl: string;
 }
 
 const stopHubConnection = () => {
