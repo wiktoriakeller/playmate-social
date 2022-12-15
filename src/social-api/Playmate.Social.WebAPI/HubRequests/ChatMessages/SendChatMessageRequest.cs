@@ -7,4 +7,5 @@ public class SendChatMessageRequest
     public Guid ReceiverId { get; init; }
     public string Content { get; init; }
     public DateTimeOffset CreatedAt { get; init; }
+    public bool IsGameInvitation { get; init; } = false;
 }
