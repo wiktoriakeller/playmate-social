@@ -22,9 +22,9 @@ const FriendsLits = () => {
   const isFirstRender = useRef<boolean>(true);
 
   const skeletons = useMemo(() => {
-    const jsxElements = [];
+    const skeletons: React.ReactNode[] = [];
     for (let i = 0; i < 6; i++) {
-      jsxElements.push(
+      skeletons.push(
         <SkeletonsContainer childrenHeight={70}>
           <Skeleton variant="circular">
             <Avatar />
@@ -36,7 +36,7 @@ const FriendsLits = () => {
         </SkeletonsContainer>
       );
     }
-    return jsxElements;
+    return skeletons;
   }, []);
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const FriendsLits = () => {
   }, [friendsSearchPhrase]);
 
   useEffect(() => {
-    if (data !== undefined) {
+    if (!!data) {
       dispatch(setFriendsList(data.data?.friends));
 
       if (isFirstRender.current) {
@@ -72,19 +72,11 @@ const FriendsLits = () => {
     }
   }, [data]);
 
-  if (isLoading) {
-    return (
-      <StyledFriendsList>
-        {skeletons.map((skeleton) => skeleton)}
-      </StyledFriendsList>
-    );
-  }
-
   return (
     <StyledFriendsList>
-      {userFriends?.map((item) => (
-        <FriendListItem {...item} key={item.id} />
-      ))}
+      {userFriends !== undefined && !isLoading
+        ? userFriends.map((item) => <FriendListItem {...item} key={item.id} />)
+        : skeletons.map((skeleton) => skeleton)}
     </StyledFriendsList>
   );
 };

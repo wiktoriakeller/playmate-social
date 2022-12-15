@@ -23,21 +23,22 @@ const FriendListItem = (props: IFriendsListItemProps) => {
   const currentUser = useAppSelector(selectUserIdentity);
   const selectedFriend = useAppSelector(selectSelectedFriend);
 
-  const getLastMessage = useCallback((message?: ILastChatMessage) => {
-    if (!!message) {
-      const senderName =
-        currentUser.username === message.senderUsername
-          ? "You"
-          : message.senderUsername;
-      return `${senderName}: ${message.content}`;
-    }
+  const getLastMessage = useCallback(
+    (message?: ILastChatMessage) => {
+      if (!!message) {
+        const senderName =
+          currentUser.username === message.senderUsername
+            ? "You"
+            : message.senderUsername;
+        return `${senderName}: ${message.content}`;
+      }
 
-    return "You:";
-  }, []);
+      return "You:";
+    },
+    [currentUser.username]
+  );
 
-  const setCurrentFriend = useCallback(() => {
-    dispatch(setSelectedFriend(props as IFriend));
-  }, [props]);
+  const setCurrentFriend = () => dispatch(setSelectedFriend(props as IFriend));
 
   return (
     <StyledFriendsListItem
