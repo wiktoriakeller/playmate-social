@@ -96,6 +96,9 @@ const ChatMessages = () => {
               user.id === paginatedMessages.messages[index].senderId
             }
             createdAt={paginatedMessages.messages[index].createdAt}
+            isGameInvitation={
+              paginatedMessages.messages[index].isGameInvitation ?? false
+            }
           />
         ))
       ) : (
