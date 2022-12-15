@@ -52,7 +52,7 @@ const ChatMessages = () => {
   useEffect(() => {
     if (
       data !== undefined &&
-      currentPageNumber != paginatedMessages?.currentPageNumber
+      currentPageNumber !== paginatedMessages?.currentPageNumber
     ) {
       dispatch(
         addChatMessagesList({
@@ -96,9 +96,7 @@ const ChatMessages = () => {
               user.id === paginatedMessages.messages[index].senderId
             }
             createdAt={paginatedMessages.messages[index].createdAt}
-            isGameInvitation={
-              paginatedMessages.messages[index].isGameInvitation ?? false
-            }
+            joinGameUrl={paginatedMessages.messages[index].joinGameUrl ?? ""}
           />
         ))
       ) : (

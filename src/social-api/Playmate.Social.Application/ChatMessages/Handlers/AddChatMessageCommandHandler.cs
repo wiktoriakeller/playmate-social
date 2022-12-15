@@ -51,7 +51,7 @@ public class AddChatMessageCommandHandler : IHandlerWrapper<AddChatMessageComman
             ReceiverId = request.ReceiverId,
             Content = request.Content,
             CreatedAt = request.CreatedAt,
-            IsGameInvitation = request.IsGameInvitation
+            JoinGameUrl = request.JoinGameUrl
         };
 
         return ResponseResult.Ok(response);

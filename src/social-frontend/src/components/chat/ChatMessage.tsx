@@ -7,24 +7,24 @@ export interface IChatMessageProps {
   message: string;
   isUserMessage: boolean;
   createdAt: string;
-  isGameInvitation: boolean;
+  joinGameUrl: string;
 }
 
 const ChatMessage = (props: IChatMessageProps) => {
   return (
     <Tooltip title={props.createdAt} placement="right">
-      {props.isGameInvitation ? (
+      {props.joinGameUrl ? (
         <StyledJoinGameButton isUserMessage={props.isUserMessage}>
           <Button
             variant="outlined"
             color="secondary"
             size="large"
             onClick={() => {
-              window.open(props.message.split("@")[1], "_blank");
+              window.open(props.joinGameUrl, "_blank");
             }}
             endIcon={<PlayCircleIcon />}
           >
-            {props.message.split("@")[0]}
+            {props.message}
           </Button>
         </StyledJoinGameButton>
       ) : (

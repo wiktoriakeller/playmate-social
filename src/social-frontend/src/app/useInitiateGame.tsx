@@ -29,9 +29,9 @@ export const useInitiateGame = () => {
             senderUsername: user.username,
             receiverId: opponent.id,
             isCurrentUserReceiver: false,
-            content: `Play ${game.name}@${urls.receiverGameUrl}`,
+            content: `Play ${game.name}`,
             createdAt: new Date().toISOString(),
-            isGameInvitation: true
+            joinGameUrl: urls.receiverGameUrl
           })
         );
         window.open(urls.senderGameUrl, "_blank");

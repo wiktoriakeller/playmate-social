@@ -8,5 +8,5 @@ public class AddChatMessageResponse
     public Guid ReceiverId { get; init; }
     public string Content { get; init; }
     public DateTimeOffset CreatedAt { get; init; }
-    public bool IsGameInvitation { get; init; }
+    public string JoinGameUrl { get; init; }
 }
