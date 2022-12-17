@@ -10,7 +10,7 @@ import {
   TabName,
   tabsDictionary
 } from "../../slices/tabSlice";
-import { StyledTab } from "../../styled/components/mui/StyledTab";
+import { StyledTab } from "../../styled/components/common/StyledTab";
 
 const HeaderTabs = () => {
   const currentTab = useAppSelector(selectCurrentTab);

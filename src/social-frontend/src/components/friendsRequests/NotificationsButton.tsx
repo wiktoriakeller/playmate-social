@@ -16,7 +16,7 @@ import {
   selectFriendRequests,
   setFriendRequests
 } from "../../slices/friendRequestsSlice";
-import { StyledList } from "../../styled/components/mui/StyledList";
+import { StyledList } from "../../styled/components/common/StyledList";
 import { NotificationsContainer } from "../../styled/components/notifications/NotificationsContainer";
 import { StyledBadge } from "../../styled/components/notifications/StyledBadge";
 import RequestItem from "./RequestItem";

@@ -6,20 +6,23 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthenticateUserMutation } from "../api/identity/identityApi";
 import { IAuthenticateUserResponse } from "../api/identity/responses/authenticateUserResponse";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   validateAll,
   validateMinLength,
   ValidationFunc
 } from "../common/validators";
 import { openSnackbar, SnackbarSeverity } from "../slices/snackbarSlice";
+import { selectTheme } from "../slices/themeSlice";
 import { setUserIdentity } from "../slices/userIdentitySlice";
-import { FormTextField } from "../styled/components/mui/FormTextField";
-import { StyledButton } from "../styled/components/mui/StyledButton";
-import { StyledDivider } from "../styled/components/mui/StyledDivider";
-import { StyledLink } from "../styled/components/mui/StyledLink";
-import { FormBox } from "../styled/pages/FormBox";
-import { FormContainer } from "../styled/pages/FormContainer";
+import { FormTextField } from "../styled/components/common/FormTextField";
+import { StyledButton } from "../styled/components/common/StyledButton";
+import { StyledHorizontalDivider } from "../styled/components/common/StyledDivider";
+import { StyledGoogleButton } from "../styled/components/common/StyledGoogleButton";
+import { StyledLink } from "../styled/components/common/StyledLink";
+import { StyledSpan } from "../styled/components/common/StyledSpan";
+import { FormBox } from "../styled/components/common/FormBox";
+import { FormContainer } from "../styled/components/common/FormContainer";
 
 interface ILoginFormState {
   email: string;
@@ -34,6 +37,7 @@ interface ILoginFormValidationState {
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const theme = useAppSelector(selectTheme);
   const [authenticate] = useAuthenticateUserMutation();
   const [showPassword, setShowPassword] = useState(false);
   const [isFormValid, setIsFormValid] = useState(true);
@@ -172,10 +176,22 @@ const LoginPage = () => {
           >
             Login
           </StyledButton>
-          <StyledDivider variant="middle" />
-          <StyledLink href="/register" underline="hover">
-            Do you want to register?
-          </StyledLink>
+          <StyledSpan>
+            {"Don't have an account? "}
+            <StyledLink href="/register" underline="hover">
+              Sign Up
+            </StyledLink>
+          </StyledSpan>
+          <StyledHorizontalDivider variant="middle" textAlign="center">
+            <StyledSpan>Or</StyledSpan>
+          </StyledHorizontalDivider>
+          <StyledGoogleButton
+            label="Sign In with Google"
+            type={theme.theme}
+            onClick={() => {
+              console.log("Google button clicked");
+            }}
+          />
         </FormBox>
       </Paper>
     </FormContainer>

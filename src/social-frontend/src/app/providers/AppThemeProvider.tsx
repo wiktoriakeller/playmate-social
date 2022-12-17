@@ -34,7 +34,7 @@ const AppThemeProvider = ({ children }) => {
             },
             header: grey[100],
             border: grey[300],
-            link: grey[600],
+            link: grey[500],
             linkHover: grey[700]
           }
         : {
@@ -53,8 +53,8 @@ const AppThemeProvider = ({ children }) => {
             },
             header: grey[900],
             border: grey[800],
-            link: grey[500],
-            linkHover: grey[400]
+            link: grey[200],
+            linkHover: grey[300]
           })
     },
     shape: {

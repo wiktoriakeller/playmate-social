@@ -8,7 +8,7 @@ import {
   setFriendsListSearchPhrase
 } from "../../slices/friendsListSlice";
 import { StyledFriendsSearch } from "../../styled/components/friends/StyledFriendsSearch";
-import { StyledTextField } from "../../styled/components/mui/StyledTextField";
+import { StyledTextField } from "../../styled/components/common/StyledTextField";
 
 const FriendsSearch = () => {
   const dispatch = useAppDispatch();

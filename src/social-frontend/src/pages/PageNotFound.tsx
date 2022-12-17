@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { StyledLink } from "../styled/components/mui/StyledLink";
+import { StyledLink } from "../styled/components/common/StyledLink";
 import { PageNotFoundBox } from "../styled/pages/PageNotFoundBox";
 
 export const PageNotFound = () => {

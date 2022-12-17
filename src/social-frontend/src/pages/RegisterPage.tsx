@@ -2,11 +2,11 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { IconButton, InputAdornment } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "../api/identity/identityApi";
 import { ICreateUserResponse } from "../api/identity/responses/createUserResponse";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   validateAll,
   validateEquality,
@@ -15,12 +15,15 @@ import {
   ValidationFunc
 } from "../common/validators";
 import { openSnackbar, SnackbarSeverity } from "../slices/snackbarSlice";
-import { FormTextField } from "../styled/components/mui/FormTextField";
-import { StyledButton } from "../styled/components/mui/StyledButton";
-import { StyledDivider } from "../styled/components/mui/StyledDivider";
-import { StyledLink } from "../styled/components/mui/StyledLink";
-import { FormBox } from "../styled/pages/FormBox";
-import { FormContainer } from "../styled/pages/FormContainer";
+import { selectTheme } from "../slices/themeSlice";
+import { FormBox } from "../styled/components/common/FormBox";
+import { FormContainer } from "../styled/components/common/FormContainer";
+import { FormTextField } from "../styled/components/common/FormTextField";
+import { StyledButton } from "../styled/components/common/StyledButton";
+import { StyledHorizontalDivider } from "../styled/components/common/StyledDivider";
+import { StyledGoogleButton } from "../styled/components/common/StyledGoogleButton";
+import { StyledLink } from "../styled/components/common/StyledLink";
+import { StyledSpan } from "../styled/components/common/StyledSpan";
 
 interface IRegisterFormState {
   email: string;
@@ -39,6 +42,7 @@ interface IRegisterFromValidationState {
 const RegisterPage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const theme = useAppSelector(selectTheme);
   const [createUser] = useCreateUserMutation();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -251,10 +255,22 @@ const RegisterPage = () => {
           >
             Register
           </StyledButton>
-          <StyledDivider variant="middle" />
-          <StyledLink href="/login" underline="hover">
-            Already have an account?
-          </StyledLink>
+          <StyledSpan>
+            {"Already have an account? "}
+            <StyledLink href="/login" underline="hover">
+              Sign In
+            </StyledLink>
+          </StyledSpan>
+          <StyledHorizontalDivider variant="middle" textAlign="center">
+            <StyledSpan>Or</StyledSpan>
+          </StyledHorizontalDivider>
+          <StyledGoogleButton
+            label="Sign Up with Google"
+            type={theme.theme}
+            onClick={() => {
+              console.log("Google button clicked");
+            }}
+          />
         </FormBox>
       </Paper>
     </FormContainer>
