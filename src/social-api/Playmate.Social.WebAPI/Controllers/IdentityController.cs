@@ -44,13 +44,4 @@ public class IdentityController : BaseApiController
         var response = await _mediator.Send(command);
         return GetStatusCode(response);
     }
-
-    [Authorize]
-    [HttpGet("search/{username}")]
-    public async Task<IActionResult> GetUsersByUsername([FromRoute] string username)
-    {
-        var query = new GetUsersByUsernameQuery() { Username = username };
-        var response = await _mediator.Send(query);
-        return GetStatusCode(response);
-    }
 }
