@@ -15,8 +15,8 @@ export const StyledGoogleButton = styled(GoogleButton)`
     box-shadow: none !important;
     background-color: ${(props) =>
       props.theme.palette.mode === "dark"
-        ? props.theme.palette.background.paper
-        : props.theme.palette.primary.light} !important;
+        ? props.theme.palette.grey[800]
+        : props.theme.palette.background.paper} !important;
     transition: all 0s ease 0s !important;
 
     div {
