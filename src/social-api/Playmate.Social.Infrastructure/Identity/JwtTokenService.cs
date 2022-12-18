@@ -108,6 +108,7 @@ public class JwtTokenService : IJwtTokenService
             ValidIssuer = _tokenValidationParameters.ValidIssuer,
             ValidAudience = _tokenValidationParameters.ValidAudience,
             IssuerSigningKey = _tokenValidationParameters.IssuerSigningKey,
+            AlgorithmValidator= _tokenValidationParameters.AlgorithmValidator,
             ValidateLifetime = validateLifetime ? true : false,
             ClockSkew = _tokenValidationParameters.ClockSkew,
         };
