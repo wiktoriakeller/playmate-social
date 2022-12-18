@@ -54,6 +54,7 @@ public static class ConfigureServicesExtension
             ValidIssuer = configuration["Authentication:JwtTokensConfiguration:Issuer"],
             ValidAudience = configuration["Authentication:JwtTokensConfiguration:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Authentication:JwtTokensConfiguration:Key"]!)),
+            ValidAlgorithms = new List<string> { SecurityAlgorithms.HmacSha256 },
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
