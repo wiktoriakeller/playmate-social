@@ -11,4 +11,5 @@ export interface IGame {
   name: string;
   description: string;
   serverUrl: string;
+  imageUrl: string;
 }

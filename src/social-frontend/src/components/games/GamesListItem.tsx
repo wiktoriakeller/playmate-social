@@ -16,7 +16,12 @@ const GamesListItem = (props: IGameListItemProps) => {
 
   return (
     <Card>
-      <CardMedia component="img" height="150" image="" alt="Game image" />
+      <CardMedia
+        component="img"
+        height="150"
+        image={props.game.imageUrl}
+        alt="Game image"
+      />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {props.game.name}
