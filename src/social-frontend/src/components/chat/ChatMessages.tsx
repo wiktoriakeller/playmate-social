@@ -50,7 +50,7 @@ const ChatMessages = () => {
           );
         }
       );
-  }, [selectedFriend, currentPageNumber]);
+  }, [selectedFriend, currentPageNumber, dispatch, getChatMessagesLazy]);
 
   useEffect(() => {
     if (!!data && currentPageNumber !== paginatedMessages?.currentPageNumber) {
@@ -61,7 +61,7 @@ const ChatMessages = () => {
         })
       );
     }
-  }, [data]);
+  }, [data, dispatch, currentPageNumber, paginatedMessages?.currentPageNumber]);
 
   const messagesSkeletons = useMemo(() => {
     const skeletons: React.ReactNode[] = [];
@@ -75,15 +75,13 @@ const ChatMessages = () => {
   return (
     <StyledChatMessages>
       {paginatedMessages?.messages !== undefined && !isLoading
-        ? paginatedMessages.messages.map((_, index) => (
+        ? paginatedMessages.messages.map((message, index) => (
             <ChatMessage
               key={index}
-              message={paginatedMessages.messages[index].content}
-              isUserMessage={
-                user.id === paginatedMessages.messages[index].senderId
-              }
-              createdAt={paginatedMessages.messages[index].createdAt}
-              joinGameUrl={paginatedMessages.messages[index].joinGameUrl ?? ""}
+              message={message.content}
+              isUserMessage={user.id === message.senderId}
+              createdAt={message.createdAt}
+              joinGameUrl={message.joinGameUrl ?? ""}
             />
           ))
         : messagesSkeletons.map((item) => item)}

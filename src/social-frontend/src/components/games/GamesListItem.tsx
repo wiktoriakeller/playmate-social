@@ -1,8 +1,7 @@
 import { Button, CardActions, CardContent, Typography } from "@mui/material";
-import React from "react";
-import { IGame } from "../../api/games/responses/getGamesResponse";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
+import { IGame } from "../../api/games/responses/getGamesResponse";
 
 export interface IGameListItemProps {
   game: IGame;

@@ -56,7 +56,7 @@ const FriendsLits = () => {
           })
         );
       });
-  }, [friendsSearchPhrase]);
+  }, [friendsSearchPhrase, dispatch, getFriendsListLazy]);
 
   useEffect(() => {
     if (!!data) {
@@ -70,7 +70,7 @@ const FriendsLits = () => {
         isFirstRender.current = false;
       }
     }
-  }, [data]);
+  }, [data, dispatch]);
 
   return (
     <StyledFriendsList>
