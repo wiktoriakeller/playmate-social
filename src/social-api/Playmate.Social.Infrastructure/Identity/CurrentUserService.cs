@@ -19,10 +19,12 @@ public class CurrentUserService : ICurrentUserService
         get
         {
             var user = GetCurrentUser();
-            if (user == null)
+
+            if (user is null)
             {
-                throw new InvalidUserException("Error during getting current user");
+                throw new InvalidUserException("Error while getting current user");
             }
+
             return user;
         }
     }

@@ -4,9 +4,9 @@ public class JwtTokensConfiguration
 {
     public static readonly string Section = "Authentication:JwtTokensConfiguration";
 
-    public string Key { get; set; }
-    public string Issuer { get; set; }
-    public string Audience { get; set; }
-    public int ExpirationInMinutes { get; set; }
-    public int RefreshTokenExpirationInDays { get; set; }
+    public string Key { get; init; }
+    public string Issuer { get; init; }
+    public string Audience { get; init; }
+    public int ExpirationInMinutes { get; init; }
+    public int RefreshTokenExpirationInDays { get; init; }
 }
