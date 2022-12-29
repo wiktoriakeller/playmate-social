@@ -9,6 +9,7 @@ internal class CoursesMappingProfile : Profile
     public CoursesMappingProfile()
     {
         CreateMap<AuthenticateUserRequest, AuthenticateUserCommand>();
+        CreateMap<AuthenticateExternalUserRequest, AuthenticateExternalUserCommand>();
         CreateMap<CreateUserRequest, CreateUserCommand>();
         CreateMap<RefreshTokenRequest, RefreshTokenCommand>();
     }

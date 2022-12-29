@@ -9,7 +9,7 @@ export const usersApi = createApi({
   endpoints: (builder) => ({
     searchUsers: builder.query<ISearchUsersResponse, ISearchUsersRequest>({
       query: (request) => ({
-        url: `/identity/search/${request.username}`,
+        url: `/users/${request.username}`,
         method: "GET"
       })
     })

@@ -1,7 +1,7 @@
-﻿using Playmate.Social.Domain.Entities;
-using Playmate.Social.Infrastructure.Identity.Dtos;
+﻿using Playmate.Social.Application.Identity.Dtos;
+using Playmate.Social.Domain.Entities;
 
-namespace Playmate.Social.Infrastructure.Identity.Interfaces;
+namespace Playmate.Social.Application.Common.Contracts.Identity;
 
 public interface IJwtTokenService
 {

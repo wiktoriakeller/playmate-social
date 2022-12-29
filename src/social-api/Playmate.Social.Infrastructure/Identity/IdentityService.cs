@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Constants;
@@ -9,7 +8,6 @@ using Playmate.Social.Application.Identity.Commands;
 using Playmate.Social.Application.Identity.Responses;
 using Playmate.Social.Domain.Entities;
 using Playmate.Social.Infrastructure.Common.Configurations;
-using Playmate.Social.Infrastructure.Identity.Interfaces;
 using System.Security.Cryptography;
 
 namespace Playmate.Social.Infrastructure.Identity;
@@ -20,20 +18,17 @@ public class IdentityService : IIdentityService
     private readonly IRepository<RefreshToken> _refreshTokenRepository;
     private readonly IRepository<User> _usersRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
-    private readonly IMapper _mapper;
     private readonly JwtTokensConfiguration _jwtOptions;
 
     public IdentityService(
         IJwtTokenService jwtTokenService,
         IRepository<RefreshToken> refreshTokenRepository,
         IOptions<JwtTokensConfiguration> jwtOptions,
-        IMapper mapper,
         IRepository<User> userRepository,
         IPasswordHasher<User> passwordHasher)
     {
         _jwtTokenService = jwtTokenService;
         _refreshTokenRepository = refreshTokenRepository;
-        _mapper = mapper;
         _jwtOptions = jwtOptions.Value;
         _usersRepository = userRepository;
         _passwordHasher = passwordHasher;
@@ -41,38 +36,21 @@ public class IdentityService : IIdentityService
 
     public ValueTask<User?> GetUserById(Guid id) => _usersRepository.GetByIdAsync(id);
 
-    public Task<Response<User>> GetUserByEmail(string email)
-    {
-        var user = _usersRepository.GetWhere(u => u.Email == email).FirstOrDefault();
+    public User? GetUserByEmail(string email) => _usersRepository.GetWhere(u => u.Email == email).FirstOrDefault();
 
-        if (user == null)
+    public User? GetUserByJwtToken(string jwtToken)
+    {
+        var (success, jti, userId) = _jwtTokenService.IsJwtTokenValid(jwtToken, true);
+
+        if (success)
         {
-            return Task.FromResult(ResponseResult.NotFound<User>(ErrorMessages.Identity.UserNotFound));
+            return _usersRepository.GetWhere(u => u.Id.ToString() == userId).FirstOrDefault();
         }
 
-        return Task.FromResult(ResponseResult.Ok(user));
+        return null;
     }
 
-    public Response<User> GetUserByJwtToken(string jwtToken)
-    {
-        var result = _jwtTokenService.IsJwtTokenValid(jwtToken, true);
-
-        if (!result.success)
-        {
-            return ResponseResult.Unauthorized<User>(ErrorMessages.Identity.InvalidToken);
-        }
-
-        var user = _usersRepository.GetWhere(u => u.Id.ToString() == result.userId).FirstOrDefault();
-
-        if (user == null)
-        {
-            return ResponseResult.NotFound<User>(ErrorMessages.Identity.UserNotFound);
-        }
-
-        return ResponseResult.Ok(user);
-    }
-
-    public async Task<Response<CreateUserResponse>> CreateUserAsync(CreateUserCommand createUserCommand)
+    public async Task<Guid> CreateUserAsync(CreateUserCommand createUserCommand)
     {
         var newUser = new User
         {
@@ -85,8 +63,7 @@ public class IdentityService : IIdentityService
 
         await _usersRepository.AddAsync(newUser);
 
-        var response = _mapper.Map<CreateUserResponse>(newUser);
-        return ResponseResult.Ok(response);
+        return newUser.Id;
     }
 
     public async Task<Response<AuthenticateUserResponse>> AuthenticateUserAync(AuthenticateUserCommand authenticateUserCommand)
@@ -158,7 +135,7 @@ public class IdentityService : IIdentityService
         return ResponseResult.Ok(response);
     }
 
-    private async Task<string> CreateRefreshToken(string jti, User user)
+    public async Task<string> CreateRefreshToken(string jti, User user)
     {
         var currentRefresh = await _refreshTokenRepository.FirstOrDefaultAsync(t => t.UserId == user.Id);
 

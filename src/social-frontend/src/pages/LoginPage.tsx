@@ -1,25 +1,31 @@
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { IconButton, InputAdornment } from "@mui/material";
+import { Box, IconButton, InputAdornment } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import { useCallback, useEffect, useState } from "react";
+import { GoogleLogin } from "@react-oauth/google";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthenticateUserMutation } from "../api/identity/identityApi";
+import {
+  useAuthenticateExternalUserMutation,
+  useAuthenticateUserMutation
+} from "../api/identity/identityApi";
 import { IAuthenticateUserResponse } from "../api/identity/responses/authenticateUserResponse";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
 import {
   validateAll,
   validateMinLength,
   ValidationFunc
 } from "../common/validators";
 import { openSnackbar, SnackbarSeverity } from "../slices/snackbarSlice";
+import { selectTheme } from "../slices/themeSlice";
 import { setUserIdentity } from "../slices/userIdentitySlice";
-import { FormTextField } from "../styled/components/mui/FormTextField";
-import { StyledButton } from "../styled/components/mui/StyledButton";
-import { StyledDivider } from "../styled/components/mui/StyledDivider";
-import { StyledLink } from "../styled/components/mui/StyledLink";
-import { FormBox } from "../styled/pages/FormBox";
-import { FormContainer } from "../styled/pages/FormContainer";
+import { FormBox } from "../styled/components/common/FormBox";
+import { FormContainer } from "../styled/components/common/FormContainer";
+import { FormTextField } from "../styled/components/common/FormTextField";
+import { StyledButton } from "../styled/components/common/StyledButton";
+import { StyledHorizontalDivider } from "../styled/components/common/StyledDivider";
+import { StyledLink } from "../styled/components/common/StyledLink";
+import { StyledSpan } from "../styled/components/common/StyledSpan";
 
 interface ILoginFormState {
   email: string;
@@ -34,7 +40,9 @@ interface ILoginFormValidationState {
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const theme = useAppSelector(selectTheme);
   const [authenticate] = useAuthenticateUserMutation();
+  const [authenticateExternalUser] = useAuthenticateExternalUserMutation();
   const [showPassword, setShowPassword] = useState(false);
   const [isFormValid, setIsFormValid] = useState(true);
   const [isFirstRender, setIsFirstRender] = useState(true);
@@ -50,26 +58,29 @@ const LoginPage = () => {
       passwordError: ""
     });
 
-  const validators: ValidationFunc[] = [
-    () =>
-      validateMinLength(loginState.email, 1, "Email is required", (value) =>
-        setLoginValidationState((prev) => ({
-          ...prev,
-          emailError: value
-        }))
-      ),
-    () =>
-      validateMinLength(
-        loginState.password,
-        1,
-        "Password is required",
-        (value) =>
+  const validators: ValidationFunc[] = useMemo(
+    () => [
+      () =>
+        validateMinLength(loginState.email, 1, "Email is required", (value) =>
           setLoginValidationState((prev) => ({
             ...prev,
-            passwordError: value
+            emailError: value
           }))
-      )
-  ];
+        ),
+      () =>
+        validateMinLength(
+          loginState.password,
+          1,
+          "Password is required",
+          (value) =>
+            setLoginValidationState((prev) => ({
+              ...prev,
+              passwordError: value
+            }))
+        )
+    ],
+    [loginState]
+  );
 
   const validateForm = useCallback(
     (validate: boolean) => {
@@ -81,12 +92,12 @@ const LoginPage = () => {
 
       return false;
     },
-    [loginState]
+    [validators]
   );
 
   useEffect(() => {
     validateForm(!isFirstRender);
-  }, [loginState]);
+  }, [loginState, isFirstRender, validateForm]);
 
   const toggleShowPassword = useCallback(() => {
     setShowPassword((prev) => !prev);
@@ -125,7 +136,14 @@ const LoginPage = () => {
           );
         }
       );
-  }, [loginState]);
+  }, [
+    loginState,
+    authenticate,
+    dispatch,
+    isFirstRender,
+    navigate,
+    validateForm
+  ]);
 
   return (
     <FormContainer>
@@ -172,10 +190,72 @@ const LoginPage = () => {
           >
             Login
           </StyledButton>
-          <StyledDivider variant="middle" />
-          <StyledLink href="/register" underline="hover">
-            Do you want to register?
-          </StyledLink>
+          <StyledSpan>
+            {"Don't have an account? "}
+            <StyledLink href="/register" underline="hover">
+              Sign Up
+            </StyledLink>
+          </StyledSpan>
+          <StyledHorizontalDivider variant="middle" textAlign="center">
+            <StyledSpan>Or</StyledSpan>
+          </StyledHorizontalDivider>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              maxWidth: "100%",
+              width: "100%",
+              overflow: "hidden",
+              height: "40px"
+            }}
+          >
+            <GoogleLogin
+              onSuccess={(responseToken) => {
+                authenticateExternalUser({
+                  token: responseToken.credential,
+                  provider: "Google"
+                })
+                  .unwrap()
+                  .then((response) => {
+                    dispatch(setUserIdentity(response.data));
+                    navigate("/");
+                  })
+                  .catch(
+                    (error: {
+                      status: string | number;
+                      data: IAuthenticateUserResponse;
+                    }) => {
+                      dispatch(
+                        openSnackbar({
+                          message:
+                            error.data?.errors.length > 0
+                              ? error.data.errors[0]
+                              : "Invalid credentials",
+                          severity: SnackbarSeverity.Error,
+                          status: error.status
+                        })
+                      );
+                    }
+                  );
+              }}
+              onError={() => {
+                dispatch(
+                  openSnackbar({
+                    message: "Sign in with Google failed",
+                    severity: SnackbarSeverity.Error
+                  })
+                );
+              }}
+              shape={"rectangular"}
+              type={"standard"}
+              ux_mode={"popup"}
+              context={"signin"}
+              size={"large"}
+              width={"400px"}
+              theme={theme.theme === "dark" ? "filled_blue" : "outline"}
+            />
+          </Box>
         </FormBox>
       </Paper>
     </FormContainer>

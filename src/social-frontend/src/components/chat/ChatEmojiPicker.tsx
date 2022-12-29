@@ -11,7 +11,7 @@ import { useCallback, useState } from "react";
 import { useAppSelector } from "../../app/hooks";
 import { selectTheme } from "../../slices/themeSlice";
 import { EmojiPickerContainer } from "../../styled/components/chat/EmojiPickerContainer";
-import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
+import { StyledIconButton } from "../../styled/components/common/StyledIconButton";
 
 export interface IChatEmojiPicker {
   onEmojiClick: (e: EmojiClickData) => void;

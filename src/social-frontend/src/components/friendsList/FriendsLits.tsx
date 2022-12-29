@@ -10,7 +10,7 @@ import {
 } from "../../slices/friendsListSlice";
 import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
 import { StyledFriendsList } from "../../styled/components/friends/StyledFriendsList";
-import { SkeletonsContainer } from "../../styled/components/mui/SkeletonsContainer";
+import { SkeletonsContainer } from "../../styled/components/common/SkeletonsContainer";
 import FriendListItem from "./FriendListItem";
 
 const FriendsLits = () => {

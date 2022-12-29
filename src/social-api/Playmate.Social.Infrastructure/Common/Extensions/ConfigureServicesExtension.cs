@@ -9,7 +9,6 @@ using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Domain.Entities;
 using Playmate.Social.Infrastructure.Common.Configurations;
 using Playmate.Social.Infrastructure.Identity;
-using Playmate.Social.Infrastructure.Identity.Interfaces;
 using Playmate.Social.Infrastructure.Persistence;
 using Playmate.Social.Infrastructure.Persistence.Interfaces;
 using Playmate.Social.Infrastructure.Repositories;
@@ -92,6 +91,7 @@ public static class ConfigureServicesExtension
 
         services.AddSingleton(tokenValidationParameters);
         services.Configure<JwtTokensConfiguration>(configuration.GetSection(JwtTokensConfiguration.Section));
+        services.Configure<GoogleAuthConfiguration>(configuration.GetSection(GoogleAuthConfiguration.Section));
     }
 
     private static void AddRepositories(IServiceCollection services)
@@ -107,8 +107,8 @@ public static class ConfigureServicesExtension
     private static void AddServices(IServiceCollection services)
     {
         services.AddHttpContextAccessor();
-
         services.AddScoped<IIdentityService, IdentityService>();
+        services.AddScoped<IExternalIdentityService, ExternaIdentityService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();

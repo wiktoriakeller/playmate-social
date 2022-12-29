@@ -9,8 +9,8 @@ import {
 } from "../../slices/friendsListSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
 import { StyledChatInput } from "../../styled/components/chat/StyledChatInput";
-import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
-import { StyledTextField } from "../../styled/components/mui/StyledTextField";
+import { StyledIconButton } from "../../styled/components/common/StyledIconButton";
+import { StyledTextField } from "../../styled/components/common/StyledTextField";
 import ChatEmojiPicker from "./ChatEmojiPicker";
 import { EmojiClickData } from "emoji-picker-react";
 
@@ -80,7 +80,10 @@ const ChatInput = () => {
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <ChatEmojiPicker onEmojiClick={handleOnEmojiClick} chatInputTextRef={inputRef}/>
+                <ChatEmojiPicker
+                  onEmojiClick={handleOnEmojiClick}
+                  chatInputTextRef={inputRef}
+                />
               </InputAdornment>
             )
           }}

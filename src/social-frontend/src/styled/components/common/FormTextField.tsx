@@ -14,4 +14,8 @@ export const FormTextField = styled(TextField)`
   input::-ms-clear {
     display: none;
   }
+
+  .MuiFormHelperText-root {
+    margin: 6px 0px -5px 5px;
+  }
 `;

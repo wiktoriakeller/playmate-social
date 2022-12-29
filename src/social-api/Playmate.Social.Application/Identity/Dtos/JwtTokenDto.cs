@@ -1,4 +1,4 @@
-﻿namespace Playmate.Social.Infrastructure.Identity.Dtos;
+﻿namespace Playmate.Social.Application.Identity.Dtos;
 
 public class JwtTokenDto
 {

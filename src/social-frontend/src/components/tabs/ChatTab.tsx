@@ -2,7 +2,7 @@ import { useAppSelector } from "../../app/hooks";
 import { selectSelectedFriend } from "../../slices/friendsListSlice";
 import { ChatContainer } from "../../styled/components/chat/ChatContainer";
 import { FriendsContainer } from "../../styled/components/friends/FriendsContainer";
-import { StyledDivider } from "../../styled/components/mui/StyledDivider";
+import { StyledHorizontalDivider } from "../../styled/components/common/StyledDivider";
 import { StyledChatTab } from "../../styled/components/tabs/StyledChatTab";
 import ChatHeader from "../chat/ChatHeader";
 import ChatInput from "../chat/ChatInput";
@@ -19,7 +19,7 @@ const ChatTab = () => {
         <FriendsSearch />
         <FriendsLits />
       </FriendsContainer>
-      <StyledDivider orientation="vertical" flexItem />
+      <StyledHorizontalDivider orientation="vertical" flexItem />
       <ChatContainer>
         {selectedFriend !== null ? (
           <>

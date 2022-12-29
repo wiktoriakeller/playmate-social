@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Playmate.Social.Application.Identity.Commands;
-using Playmate.Social.Application.Identity.Queries;
 using Playmate.Social.WebAPI.ApiRequests.Users;
 
 namespace Playmate.Social.WebAPI.Controllers;
@@ -37,20 +35,19 @@ public class IdentityController : BaseApiController
         return GetStatusCode(response);
     }
 
+    [HttpPost("external-login")]
+    public async Task<IActionResult> ExternalLogin([FromBody] AuthenticateExternalUserRequest request)
+    {
+        var command = _mapper.Map<AuthenticateExternalUserCommand>(request);
+        var response = await _mediator.Send(command);
+        return GetStatusCode(response);
+    }
+
     [HttpPost("refresh")]
     public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest request)
     {
         var command = _mapper.Map<RefreshTokenCommand>(request);
         var response = await _mediator.Send(command);
-        return GetStatusCode(response);
-    }
-
-    [Authorize]
-    [HttpGet("search/{username}")]
-    public async Task<IActionResult> GetUsersByUsername([FromRoute] string username)
-    {
-        var query = new GetUsersByUsernameQuery() { Username = username };
-        var response = await _mediator.Send(query);
         return GetStatusCode(response);
     }
 }
