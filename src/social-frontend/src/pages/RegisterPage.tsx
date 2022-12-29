@@ -178,7 +178,12 @@ const RegisterPage = () => {
   return (
     <FormContainer>
       <Paper elevation={3}>
-        <FormBox>
+        <FormBox
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleRegister();
+          }}
+        >
           <FormTextField
             error={registerValidationState.emailError.length > 0}
             helperText={registerValidationState.emailError}
@@ -259,8 +264,8 @@ const RegisterPage = () => {
             }}
           />
           <StyledButton
+            type="submit"
             variant="contained"
-            onClick={handleRegister}
             disabled={!isFormValid}
           >
             Register

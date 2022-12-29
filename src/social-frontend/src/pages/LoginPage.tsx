@@ -148,7 +148,12 @@ const LoginPage = () => {
   return (
     <FormContainer>
       <Paper elevation={3}>
-        <FormBox>
+        <FormBox
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleLoginSubmit();
+          }}
+        >
           <FormTextField
             error={loginValidationState.emailError.length > 0}
             helperText={loginValidationState.emailError}
@@ -184,8 +189,8 @@ const LoginPage = () => {
             }}
           />
           <StyledButton
+            type="submit"
             variant="contained"
-            onClick={handleLoginSubmit}
             disabled={!isFormValid}
           >
             Login
