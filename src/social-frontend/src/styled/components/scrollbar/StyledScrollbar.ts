@@ -20,6 +20,7 @@ export const getScrollbarColor = (theme: Theme): string => {
 export const StyledScrollbar = styled.div`
   overflow-y: scroll;
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 
   ::-webkit-scrollbar {
     height: 8px;

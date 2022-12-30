@@ -8,9 +8,12 @@ export const StyledChatHeader = styled.div`
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  min-height: 56px;
+  height: 56px;
   padding-left: 20px;
   gap: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
   span {
     font-weight: bold;

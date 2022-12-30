@@ -13,6 +13,7 @@ export const StyledFriendsListItem = styled.div<IStyledFriendsListItemProps>`
   border-radius: ${(props) => `${props.theme.shape.borderRadius}px`};
   background-color: ${(props) =>
     props.isSelected ? props.theme.palette.secondary.dark : "inherit"};
+  box-sizing: border-box;
 
   &:hover {
     background-color: ${(props) => {

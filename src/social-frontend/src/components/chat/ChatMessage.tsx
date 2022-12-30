@@ -1,7 +1,7 @@
+import PlayCircleIcon from "@mui/icons-material/PlayCircle";
 import { Button, Tooltip } from "@mui/material";
 import { StyledChatMessage } from "../../styled/components/chat/StyledChatMessage";
-import PlayCircleIcon from "@mui/icons-material/PlayCircle";
-import { StyledJoinGameButton } from "../../styled/components/chat/StyledTextMessage";
+import { StyledJoinGameButton } from "../../styled/components/chat/StyledJoinGameButton";
 
 export interface IChatMessageProps {
   message: string;

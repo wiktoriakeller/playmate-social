@@ -7,4 +7,7 @@ export const StyledChatInput = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  padding-right: 2px;
+  padding-left: 12px;
+  box-sizing: border-box;
 `;

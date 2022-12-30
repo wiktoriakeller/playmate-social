@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const StyledHeader = styled.div`
   top: 0;
   height: 56px;
-  min-width: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-around;
@@ -15,4 +15,5 @@ export const StyledHeader = styled.div`
   background-color: ${(props) => props.theme.palette.header};
   border-bottom: 1px solid ${(props) => props.theme.palette.border};
   z-index: 2;
+  box-sizing: border-box;
 `;
