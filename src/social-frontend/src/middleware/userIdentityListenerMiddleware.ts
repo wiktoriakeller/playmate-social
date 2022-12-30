@@ -15,9 +15,9 @@ userIdentityListenerMiddleware.startListening({
   actionCreator: setUserIdentity,
   effect: (action: PayloadAction<IUserIdentityState>, apiListener) => {
     if (action.payload?.jwtToken === null) {
+      clearUserFromStorage();
       apiListener.dispatch(setSelectedFriend(null));
       apiListener.dispatch(setCurrentTab(tabsDictionary[0]));
-      clearUserFromStorage();
     }
 
     apiListener.dispatch(friendsApi.util.invalidateTags(["friendsList"]));

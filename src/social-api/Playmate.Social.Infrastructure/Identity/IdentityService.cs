@@ -16,7 +16,7 @@ public class IdentityService : IIdentityService
 {
     private readonly IJwtTokenService _jwtTokenService;
     private readonly IRepository<RefreshToken> _refreshTokenRepository;
-    private readonly IRepository<User> _usersRepository;
+    private readonly IUsersRepository _usersRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly JwtTokensConfiguration _jwtOptions;
 
@@ -24,7 +24,7 @@ public class IdentityService : IIdentityService
         IJwtTokenService jwtTokenService,
         IRepository<RefreshToken> refreshTokenRepository,
         IOptions<JwtTokensConfiguration> jwtOptions,
-        IRepository<User> userRepository,
+        IUsersRepository userRepository,
         IPasswordHasher<User> passwordHasher)
     {
         _jwtTokenService = jwtTokenService;
@@ -33,10 +33,6 @@ public class IdentityService : IIdentityService
         _usersRepository = userRepository;
         _passwordHasher = passwordHasher;
     }
-
-    public ValueTask<User?> GetUserById(Guid id) => _usersRepository.GetByIdAsync(id);
-
-    public User? GetUserByEmail(string email) => _usersRepository.GetWhere(u => u.Email == email).FirstOrDefault();
 
     public User? GetUserByJwtToken(string jwtToken)
     {
@@ -55,14 +51,14 @@ public class IdentityService : IIdentityService
         var newUser = new User
         {
             Email = createUserCommand.Email,
-            Username = createUserCommand.Username
+            Username = createUserCommand.Username,
+            IsExternalUser = createUserCommand.IsExternalUser
         };
 
         var hashedPassword = _passwordHasher.HashPassword(newUser, createUserCommand.Password);
         newUser.PasswordHash = hashedPassword;
 
         await _usersRepository.AddAsync(newUser);
-
         return newUser.Id;
     }
 

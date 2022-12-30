@@ -5,17 +5,23 @@ import {
   LogLevel
 } from "@microsoft/signalr";
 import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
+import { friendsApi } from "../api/friends/friendsApi";
 import { IFriendRequestConfirmationResponse } from "../api/friends/responses/friendsRequestConfirmation";
 import { IUserSearchItem } from "../api/users/responses/searchUsersResponse";
+import { RootState } from "../app/store";
 import { addChatMessage, IChatMessage } from "../slices/chatSlice";
-import { setFriendLastChatMessage } from "../slices/friendsListSlice";
 import {
   addFriendRequest,
   answerFriendRequests,
   IFriendRequest,
   IFriendRequestConfirmation
 } from "../slices/friendRequestsSlice";
-import { addFriend } from "../slices/friendsListSlice";
+import {
+  addFriend,
+  IFriend,
+  setFriendLastChatMessage,
+  setFriendsList
+} from "../slices/friendsListSlice";
 import {
   IUserIdentityState,
   setUserIdentity
@@ -32,7 +38,7 @@ const baseUrl = process.env.REACT_APP_BASE_API_URL;
 const notificationsHubUrl = `${baseUrl}/hubs/notifications`;
 let hubConnection: HubConnection | null = null;
 
-interface IReceiveChatMessage {
+export interface IReceiveChatMessage {
   senderId: string;
   senderUsername: string;
   receiverId: string;
@@ -61,7 +67,7 @@ signalRListenerMiddleware.startListening({
   actionCreator: setUserIdentity,
   effect: (action: PayloadAction<IUserIdentityState>, listenerApi) => {
     const user = action.payload;
-    if (!!user?.jwtToken) {
+    if (user?.jwtToken !== null) {
       stopHubConnection();
 
       hubConnection = new HubConnectionBuilder()
@@ -114,7 +120,6 @@ signalRListenerMiddleware.startListening({
       hubConnection.on(
         "ReceiveFriendsRequestConfirmation",
         (request: IFriendRequestConfirmationResponse) => {
-          console.log(request);
           if (request.requestAccepted) {
             listenerApi.dispatch(addFriend(request.createdFriend));
           }
@@ -142,14 +147,47 @@ signalRListenerMiddleware.startListening({
   }
 });
 
+const getFriendsListWithNewestMessageAtTheTop = (
+  state: RootState,
+  isCurrentUserReceiver: boolean,
+  senderId: string,
+  receiverId: string
+): IFriend[] => {
+  const friendsList = state.friendsList.friends;
+  let friendToMove: IFriend | null = null;
+
+  if (isCurrentUserReceiver) {
+    friendToMove = friendsList.filter((x) => x.id === senderId)[0];
+  } else {
+    friendToMove = friendsList.filter((x) => x.id === receiverId)[0];
+  }
+
+  const newList = [
+    friendToMove,
+    ...friendsList.filter((x) => x.id !== friendToMove?.id)
+  ];
+  return newList;
+};
+
 chatListenerMiddleware.startListening({
   actionCreator: addChatMessage,
-  effect: (action: PayloadAction<IChatMessage>) => {
+  effect: (action: PayloadAction<IChatMessage>, apiListener) => {
     if (!action.payload.isCurrentUserReceiver) {
       hubConnection.send("SendChatMessage", action.payload).catch((error) => {
         console.error("Error while sending chat message: ", error);
       });
     }
+
+    const currentState = apiListener.getState() as RootState;
+    const newList = getFriendsListWithNewestMessageAtTheTop(
+      currentState,
+      action.payload.isCurrentUserReceiver,
+      action.payload.senderId,
+      action.payload.receiverId
+    );
+    apiListener.dispatch(setFriendsList(newList));
+
+    apiListener.dispatch(friendsApi.util.invalidateTags(["friendsList"]));
   }
 });
 

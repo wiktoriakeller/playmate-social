@@ -38,10 +38,10 @@ public class NotificationsHub : Hub<INotificationsClient>
     {
         var command = _mapper.Map<ConfirmFriendRequestCommand>(confirmRequest);
         var response = await _mediator.Send(command);
-        
+
         if (response.Succeeded)
         {
-            await Clients.User(confirmRequest.RequesterId.ToString()).ReceiveFriendsRequestConfirmation();
+            await Clients.User(confirmRequest.RequesterId.ToString()).ReceiveFriendsRequestConfirmation(response.Data);
         }
     }
 

@@ -13,5 +13,7 @@ public class FriendsMappingsProfile : Profile
             .ForMember(d => d.From, o => o.MapFrom(s => s.Requester))
             .ForMember(d => d.RequestId, o => o.MapFrom(s => s.Id));
         CreateMap<User, FriendListItemDto>();
+        CreateMap<FriendDto, FriendListItemDto>()
+            .ForMember(d => d.SortBy, o => o.MapFrom(s => s.FriendsSince));
     }
 }

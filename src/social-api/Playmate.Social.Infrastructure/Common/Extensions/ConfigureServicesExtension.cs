@@ -97,11 +97,11 @@ public static class ConfigureServicesExtension
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddScoped<IRepository<RefreshToken>, BaseRepository<RefreshToken>>();
-        services.AddScoped<IRepository<User>, BaseRepository<User>>();
-        services.AddScoped<IFriendsRequestsRepository, FriendsRequestsRepository>();
+        services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<IFriendRequestsRepository, FriendRequestsRepository>();
         services.AddScoped<IFriendsRepository, FriendsRepository>();
-        services.AddScoped<IRepository<Game>, BaseRepository<Game>>();
-        services.AddScoped<IRepository<GameResult>, BaseRepository<GameResult>>();
+        services.AddScoped<IGamesRepository, GamesRepository>();
+        services.AddScoped<IGameResultsRepository, GameResultsRepository>();
     }
 
     private static void AddServices(IServiceCollection services)
