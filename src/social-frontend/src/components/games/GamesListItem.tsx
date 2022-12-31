@@ -1,3 +1,4 @@
+import BarChartIcon from "@mui/icons-material/BarChart";
 import {
   Button,
   CardActions,
@@ -6,11 +7,10 @@ import {
   Tooltip,
   Typography
 } from "@mui/material";
-import React, { useState } from "react";
-import { IGame } from "../../api/games/responses/getGamesResponse";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
-import BarChartIcon from "@mui/icons-material/BarChart";
+import { useState } from "react";
+import { IGame } from "../../api/games/responses/getGamesResponse";
 import GameResultsPage from "../gameResults/GameResultsPage";
 
 export interface IGameListItemProps {
@@ -45,13 +45,17 @@ const GamesListItem = (props: IGameListItemProps) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="large" onClick={selectGame}>
+        <Button
+          size="large"
+          onClick={selectGame}
+          color="secondary"
+          sx={{ marginRight: "auto" }}
+        >
           Play
         </Button>
-
         <Tooltip title="Game results">
-          <IconButton onClick={handleClick}>
-            <BarChartIcon sx={{ width: "28px", height: "28px" }} />
+          <IconButton onClick={handleClick} color="secondary">
+            <BarChartIcon fontSize="medium" />
           </IconButton>
         </Tooltip>
         <GameResultsPage
