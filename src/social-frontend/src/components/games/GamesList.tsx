@@ -1,6 +1,6 @@
 import { Skeleton } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { useGetGamesQuery } from "../../api/games/gamesApi";
 import { IGame } from "../../api/games/responses/getGamesResponse";
 import { useInitiateGame } from "../../app/useInitiateGame";
@@ -9,10 +9,10 @@ import FriendsListDialog from "./FriendsListDialog";
 import GamesListItem from "./GamesListItem";
 
 const GamesList = () => {
-  const { data, isLoading } = useGetGamesQuery({});
+  const { data, isLoading } = useGetGamesQuery();
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { StartGame } = useInitiateGame();
-  let selectedGame = useRef<IGame>();
+  const { startGame } = useInitiateGame();
+  const selectedGame = useRef<IGame>();
 
   const onGameSelected = (game: IGame) => {
     selectedGame.current = game;
@@ -24,23 +24,22 @@ const GamesList = () => {
     if (!friend) {
       return;
     }
-    StartGame(friend, selectedGame.current);
+
+    startGame(friend, selectedGame.current);
   };
 
   return isLoading ? (
-    <>
-      <Grid container spacing={3}>
-        <Grid xs={12} sm={4}>
-          <Skeleton height={300} />
-        </Grid>
-        <Grid xs={12} sm={4}>
-          <Skeleton height={300} />
-        </Grid>
-        <Grid xs={12} sm={4}>
-          <Skeleton height={300} />
-        </Grid>
+    <Grid container spacing={3}>
+      <Grid xs={12} sm={4}>
+        <Skeleton height={300} />
       </Grid>
-    </>
+      <Grid xs={12} sm={4}>
+        <Skeleton height={300} />
+      </Grid>
+      <Grid xs={12} sm={4}>
+        <Skeleton height={300} />
+      </Grid>
+    </Grid>
   ) : (
     <>
       <FriendsListDialog open={dialogOpen} onClose={onFriendSelected} />

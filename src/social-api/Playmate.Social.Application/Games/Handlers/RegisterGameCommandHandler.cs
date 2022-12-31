@@ -10,10 +10,10 @@ namespace Playmate.Social.Application.Games.Handlers;
 
 public class RegisterGameCommandHandler : IHandlerWrapper<RegisterGameCommand, RegisterGameResponse>
 {
-    private readonly IRepository<Game> _gamesRepository;
+    private readonly IGamesRepository _gamesRepository;
     private readonly IMapper _mapper;
 
-    public RegisterGameCommandHandler(IRepository<Game> gamesRepository, IMapper mapper)
+    public RegisterGameCommandHandler(IGamesRepository gamesRepository, IMapper mapper)
     {
         _gamesRepository = gamesRepository;
         _mapper = mapper;

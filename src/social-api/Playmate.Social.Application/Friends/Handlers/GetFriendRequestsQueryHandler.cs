@@ -12,14 +12,14 @@ namespace Playmate.Social.Application.Friends.Handlers;
 
 public class GetFriendRequestsQueryHandler : IHandlerWrapper<GetFriendRequestsQuery, GetFriendRequestsResponse>
 {
-    private readonly IFriendsRequestsRepository _friendsRequestsRepository;
+    private readonly IFriendRequestsRepository _friendsRequestsRepository;
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
 
     public GetFriendRequestsQueryHandler(
         IMapper mapper,
         ICurrentUserService userService,
-        IFriendsRequestsRepository requestsRepository)
+        IFriendRequestsRepository requestsRepository)
     {
         _mapper = mapper;
         _currentUserService = userService;

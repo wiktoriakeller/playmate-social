@@ -39,10 +39,10 @@ const NotificationsButton = () => {
   }, [setOpen]);
 
   useEffect(() => {
-    getFriendRequests({}).then((response) => {
+    getFriendRequests().then((response) => {
       dispatch(setFriendRequests(response.data.data.requests));
     });
-  }, []);
+  }, [getFriendRequests, dispatch]);
 
   const notificationsSkeleton = () => {
     return (

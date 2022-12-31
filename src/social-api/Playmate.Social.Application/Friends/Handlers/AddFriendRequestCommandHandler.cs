@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Playmate.Social.Application.Common;
+﻿using Playmate.Social.Application.Common;
 using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
@@ -12,15 +11,15 @@ namespace Playmate.Social.Application.Friends.Handlers;
 
 public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCommand, AddFriendRequestResponse>
 {
-    private readonly IFriendsRequestsRepository _friendsRequestsRepository;
-    private readonly IRepository<User> _usersRepository;
+    private readonly IFriendRequestsRepository _friendsRequestsRepository;
+    private readonly IUsersRepository _usersRepository;
     private readonly IFriendsRepository _friendsRepository;
     private readonly ICurrentUserService _currentUserService;
 
     public AddFriendRequestCommandHandler(
-        IFriendsRequestsRepository requestsRepository,
+        IFriendRequestsRepository requestsRepository,
         ICurrentUserService currentUserService,
-        IRepository<User> usersRepository,
+        IUsersRepository usersRepository,
         IFriendsRepository friendsRepository)
     {
         _friendsRequestsRepository = requestsRepository;
@@ -55,8 +54,11 @@ public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCo
         var friendRequest = new FriendRequest() { RequesterId = currentUser.Id, AddresseeId = addressee.Id };
         var createdRequest = await _friendsRequestsRepository.AddAsync(friendRequest);
 
-        var mappedRequest = new FriendRequestDto() { 
-            RequestId = createdRequest.Id, From = new FriendDto {
+        var mappedRequest = new FriendRequestDto()
+        {
+            RequestId = createdRequest.Id,
+            From = new FriendDto
+            {
                 Id = currentUser.Id,
                 Username = currentUser.Username
             }

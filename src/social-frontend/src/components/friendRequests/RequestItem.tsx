@@ -19,16 +19,16 @@ export interface IRequestItemProps {
 const RequestItem = (props: IRequestItemProps) => {
   const dispatch = useAppDispatch();
 
-  const answerFriendRequest = (accept: boolean) => {
+  const answerFriendRequest = (accepted: boolean) => {
     dispatch(
       answerFriendRequests({
-        accept: accept,
-        requesterid: props.request.from.id,
+        accept: accepted,
+        requesterId: props.request.from.id,
         requestId: props.request.requestId
       })
     );
 
-    if (accept) {
+    if (accepted) {
       dispatch(addFriend(props.request.from));
     }
   };

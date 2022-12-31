@@ -11,4 +11,7 @@ export const StyledChatMessages = styled(StyledScrollbar)`
   overflow-y: scroll;
   scroll-behavior: smooth;
   flex-direction: column-reverse;
+  padding: 6px 14px;
+  gap: 6px;
+  box-sizing: border-box;
 `;

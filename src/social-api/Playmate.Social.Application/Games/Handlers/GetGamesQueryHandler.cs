@@ -3,15 +3,14 @@ using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.Games.Queries;
 using Playmate.Social.Application.Games.Responses;
-using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Application.Games.Handlers;
 
 public class GetGamesQueryHandler : IHandlerWrapper<GetGamesQuery, GetGamesResponse>
 {
-    private readonly IRepository<Game> _gamesRepository;
+    private readonly IGamesRepository _gamesRepository;
 
-    public GetGamesQueryHandler(IRepository<Game> gamesRepository)
+    public GetGamesQueryHandler(IGamesRepository gamesRepository)
     {
         _gamesRepository = gamesRepository;
     }

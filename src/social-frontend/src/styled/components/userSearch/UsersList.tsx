@@ -6,8 +6,8 @@ export const UsersList = styled(List)`
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  width: 100%;
-  gap: 6px;
+  width: 80%;
+  gap: 10px;
   max-width: 1000px;
   padding: 12px 10%;
 `;

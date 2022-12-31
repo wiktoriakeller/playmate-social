@@ -1,12 +1,11 @@
-import React from "react";
-import { StypedGameGrid } from "../../styled/components/games/StyledGameGrid";
+import { StyledGameGrid } from "../../styled/components/games/StyledGameGrid";
 import GamesList from "../games/GamesList";
 
 const GamesTab = () => {
   return (
-    <StypedGameGrid>
+    <StyledGameGrid>
       <GamesList />
-    </StypedGameGrid>
+    </StyledGameGrid>
   );
 };
 

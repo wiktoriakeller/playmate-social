@@ -11,7 +11,7 @@ export interface IFriendRequest {
 
 export interface IFriendRequestConfirmation {
   requestId: string;
-  requesterid: string;
+  requesterId: string;
   accept: boolean;
 }
 

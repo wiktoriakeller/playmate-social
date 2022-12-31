@@ -9,5 +9,6 @@ export const StyledFriendsSearch = styled.div`
   gap: 4px;
   margin: 12px 0px 20px 0px;
   padding: 0px 10px;
-  max-height: 60px;
+  height: 60px;
+  box-sizing: border-box;
 `;

@@ -6,23 +6,22 @@ using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.Identity.Dtos;
 using Playmate.Social.Application.Identity.Queries;
 using Playmate.Social.Application.Identity.Responses;
-using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Application.Identity.Handlers;
 
 public class GetUsersByUsernameQueryHandler : IHandlerWrapper<GetUsersByUsernameQuery, GetUsersByUsernameResponse>
 {
-    private readonly IRepository<User> _usersRepository;
-    private readonly IFriendsRequestsRepository _requestsRepository;
+    private readonly IUsersRepository _usersRepository;
+    private readonly IFriendRequestsRepository _requestsRepository;
     private readonly IFriendsRepository _friendsRepository;
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
 
     public GetUsersByUsernameQueryHandler(
-        IRepository<User> userRepository,
+        IUsersRepository userRepository,
         ICurrentUserService userService,
         IFriendsRepository friendsRepository,
-        IFriendsRequestsRepository requestsRepository,
+        IFriendRequestsRepository requestsRepository,
         IMapper mapper)
     {
         _usersRepository = userRepository;

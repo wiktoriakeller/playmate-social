@@ -8,7 +8,7 @@ import {
   ListItemText,
   Skeleton
 } from "@mui/material";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useLazyGetFriendsListQuery } from "../../api/friends/friendsApi";
 import { IFriend } from "../../slices/friendsListSlice";
 
@@ -22,8 +22,8 @@ const FriendsListDialog = (props: FriendsListDialogProps) => {
     useLazyGetFriendsListQuery();
 
   useEffect(() => {
-    getFriendsListLazy({ search: "" });
-  }, []);
+    getFriendsListLazy({ search: "" }, true);
+  }, [getFriendsListLazy]);
 
   const handleListItemClick = (value: IFriend) => {
     props.onClose(value);

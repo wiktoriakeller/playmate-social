@@ -6,18 +6,17 @@ using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.GameResults.Dtos;
 using Playmate.Social.Application.GameResults.Queries;
 using Playmate.Social.Application.GameResults.Responses;
-using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Application.GameResults.Handlers;
 
 public class GetResultsForUserQueryHandler : IHandlerWrapper<GetResultsForUserQuery, GetResultsForUserResponse>
 {
-    private readonly IRepository<GameResult> _gamesResultsRepository;
+    private readonly IGameResultsRepository _gamesResultsRepository;
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
 
     public GetResultsForUserQueryHandler(
-        IRepository<GameResult> gamesResultsRepository,
+        IGameResultsRepository gamesResultsRepository,
         ICurrentUserService currentUserService,
         IMapper mapper)
     {

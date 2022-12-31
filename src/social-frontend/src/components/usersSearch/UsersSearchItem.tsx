@@ -44,7 +44,14 @@ const UsersSearchItem = (props: IUserSearchItem) => {
       <ListItemAvatar>
         <Avatar alt={props.username} />
       </ListItemAvatar>
-      <ListItemText primary={props.username} />
+      <ListItemText
+        sx={{
+          overflow: "hidden",
+          whiteSpace: "nowrap",
+          textOverflow: "ellipsis"
+        }}
+        primary={props.username}
+      />
     </UserListItem>
   );
 };

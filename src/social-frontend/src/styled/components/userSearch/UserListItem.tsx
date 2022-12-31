@@ -6,7 +6,7 @@ export const UserListItem = styled(ListItem)`
   border: 1px solid
     ${(props) =>
       props.theme.palette.mode === "dark"
-        ? props.theme.palette.background.paper
+        ? props.theme.palette.grey[800]
         : props.theme.palette.primary.light};
 
   box-shadow: ${(props) => props.theme.shadows[1]};
@@ -15,7 +15,7 @@ export const UserListItem = styled(ListItem)`
   &:hover {
     background-color: ${(props) =>
       props.theme.palette.mode === "dark"
-        ? props.theme.palette.background.paper
+        ? props.theme.palette.grey[800]
         : props.theme.palette.primary.light};
   }
 `;
