@@ -13,7 +13,7 @@ import { HeaderRightSide } from "../../styled/components/header/HeaderRightSide"
 import { StyledHeader } from "../../styled/components/header/StyledHeader";
 import { StyledLogo } from "../../styled/components/header/StyledLogo";
 import { StyledIconButton } from "../../styled/components/common/StyledIconButton";
-import NotificationsButton from "../friendsRequests/NotificationsButton";
+import NotificationsButton from "../friendRequests/NotificationsButton";
 import UserMenu from "../user/UserMenu";
 import HeaderTabs from "./HeaderTabs";
 

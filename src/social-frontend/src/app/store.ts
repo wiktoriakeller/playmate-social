@@ -5,11 +5,10 @@ import { gameIntegrationApi } from "../api/games/gameIntegrationApi";
 import { gamesApi } from "../api/games/gamesApi";
 import { identityApi } from "../api/identity/identityApi";
 import { usersApi } from "../api/users/usersApi";
-import { friendsListListenerMiddleware } from "../middleware/friendsListListenerMiddleware";
 import {
   answerFriendRequestsListenerMiddleware,
   chatListenerMiddleware,
-  sendFriendRequestsListenerMiddleware,
+  sendFriendRequestListenerMiddleware,
   signalRListenerMiddleware
 } from "../middleware/signalRListenerMiddleware";
 import { themeListenerMiddleware } from "../middleware/themeListenerMiddleware";
@@ -46,10 +45,9 @@ export const store = configureStore({
       .concat(userIdentityListenerMiddleware.middleware)
       .concat(signalRListenerMiddleware.middleware)
       .concat(chatListenerMiddleware.middleware)
-      .concat(sendFriendRequestsListenerMiddleware.middleware)
+      .concat(sendFriendRequestListenerMiddleware.middleware)
       .concat(answerFriendRequestsListenerMiddleware.middleware)
       .concat(themeListenerMiddleware.middleware)
-      .concat(friendsListListenerMiddleware.middleware)
       .concat(identityApi.middleware)
       .concat(usersApi.middleware)
       .concat(friendsApi.middleware)

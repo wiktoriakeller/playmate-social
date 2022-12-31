@@ -1,8 +1,11 @@
 import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
-import { chatMessagesApi } from "../api/chatMessages/chatMessagesApi";
-import { friendsApi } from "../api/friends/friendsApi";
 import { clearUserFromStorage, storeUser } from "../common/storage";
-import { setSelectedFriend } from "../slices/friendsListSlice";
+import { clearChatState } from "../slices/chatSlice";
+import {
+  setFriendsList,
+  setFriendsListSearchPhrase,
+  setSelectedFriend
+} from "../slices/friendsListSlice";
 import { setCurrentTab, tabsDictionary } from "../slices/tabSlice";
 import {
   IUserIdentityState,
@@ -18,10 +21,11 @@ userIdentityListenerMiddleware.startListening({
       clearUserFromStorage();
       apiListener.dispatch(setSelectedFriend(null));
       apiListener.dispatch(setCurrentTab(tabsDictionary[0]));
+      apiListener.dispatch(clearChatState());
+      apiListener.dispatch(setFriendsList([]));
+      apiListener.dispatch(setFriendsListSearchPhrase(""));
     }
 
-    apiListener.dispatch(friendsApi.util.invalidateTags(["friendsList"]));
-    apiListener.dispatch(chatMessagesApi.util.invalidateTags(["chatMessages"]));
     storeUser(action.payload);
   }
 });

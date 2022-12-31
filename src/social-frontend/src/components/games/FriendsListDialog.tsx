@@ -23,7 +23,7 @@ const FriendsListDialog = (props: FriendsListDialogProps) => {
 
   useEffect(() => {
     getFriendsListLazy({ search: "" });
-  }, []);
+  }, [getFriendsListLazy]);
 
   const handleListItemClick = (value: IFriend) => {
     props.onClose(value);

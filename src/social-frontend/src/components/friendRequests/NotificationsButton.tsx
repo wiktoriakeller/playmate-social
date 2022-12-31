@@ -42,7 +42,7 @@ const NotificationsButton = () => {
     getFriendRequests().then((response) => {
       dispatch(setFriendRequests(response.data.data.requests));
     });
-  }, []);
+  }, [getFriendRequests, dispatch]);
 
   const notificationsSkeleton = () => {
     return (

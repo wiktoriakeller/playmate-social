@@ -5,20 +5,21 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import {
   selectFriendsList,
   selectFriendsListSearchPhrase,
+  selectSelectedFriend,
   setFriendsList,
   setSelectedFriend
 } from "../../slices/friendsListSlice";
 import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
-import { StyledFriendsList } from "../../styled/components/friends/StyledFriendsList";
 import { SkeletonsContainer } from "../../styled/components/common/SkeletonsContainer";
+import { StyledFriendsList } from "../../styled/components/friends/StyledFriendsList";
 import FriendListItem from "./FriendListItem";
 
 const FriendsLits = () => {
   const dispatch = useAppDispatch();
   const friendsSearchPhrase = useAppSelector(selectFriendsListSearchPhrase);
   const userFriends = useAppSelector(selectFriendsList);
-  const [getFriendsListLazy, { isLoading, data }] =
-    useLazyGetFriendsListQuery();
+  const [getFriendsListLazy, { isLoading }] = useLazyGetFriendsListQuery();
+  const selectedFriend = useAppSelector(selectSelectedFriend);
   const isFirstRender = useRef<boolean>(true);
 
   const skeletons = useMemo(() => {
@@ -40,13 +41,23 @@ const FriendsLits = () => {
   }, []);
 
   useEffect(() => {
-    getFriendsListLazy(
-      {
-        search: friendsSearchPhrase
-      },
-      true
-    )
+    getFriendsListLazy({
+      search: friendsSearchPhrase
+    })
       .unwrap()
+      .then((response) => {
+        if (!!response.data) {
+          dispatch(setFriendsList(response.data.friends));
+
+          if (isFirstRender.current) {
+            if (response.data.friends.length > 0 && selectedFriend === null) {
+              dispatch(setSelectedFriend(response.data.friends[0]));
+            }
+
+            isFirstRender.current = false;
+          }
+        }
+      })
       .catch((error: { status: string | number }) => {
         dispatch(
           openSnackbar({
@@ -56,21 +67,7 @@ const FriendsLits = () => {
           })
         );
       });
-  }, [friendsSearchPhrase, dispatch, getFriendsListLazy]);
-
-  useEffect(() => {
-    if (!!data) {
-      dispatch(setFriendsList(data.data?.friends));
-
-      if (isFirstRender.current) {
-        if (data.data?.friends.length > 0) {
-          dispatch(setSelectedFriend(data.data.friends[0]));
-        }
-
-        isFirstRender.current = false;
-      }
-    }
-  }, [data, dispatch]);
+  }, [friendsSearchPhrase, selectedFriend, dispatch, getFriendsListLazy]);
 
   return (
     <StyledFriendsList>

@@ -5,7 +5,6 @@ import {
   LogLevel
 } from "@microsoft/signalr";
 import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
-import { friendsApi } from "../api/friends/friendsApi";
 import { IFriendRequestConfirmationResponse } from "../api/friends/responses/friendsRequestConfirmation";
 import { IUserSearchItem } from "../api/users/responses/searchUsersResponse";
 import { RootState } from "../app/store";
@@ -30,7 +29,7 @@ import { sendFriendRequest } from "../slices/userSearchSlice";
 
 export const signalRListenerMiddleware = createListenerMiddleware();
 export const chatListenerMiddleware = createListenerMiddleware();
-export const sendFriendRequestsListenerMiddleware = createListenerMiddleware();
+export const sendFriendRequestListenerMiddleware = createListenerMiddleware();
 export const answerFriendRequestsListenerMiddleware =
   createListenerMiddleware();
 
@@ -185,13 +184,12 @@ chatListenerMiddleware.startListening({
       action.payload.senderId,
       action.payload.receiverId
     );
-    apiListener.dispatch(setFriendsList(newList));
 
-    apiListener.dispatch(friendsApi.util.invalidateTags(["friendsList"]));
+    apiListener.dispatch(setFriendsList(newList));
   }
 });
 
-sendFriendRequestsListenerMiddleware.startListening({
+sendFriendRequestListenerMiddleware.startListening({
   actionCreator: sendFriendRequest,
   effect: (action: PayloadAction<IUserSearchItem>) => {
     hubConnection
