@@ -1,18 +1,29 @@
 import { Skeleton } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useGetGamesQuery } from "../../api/games/gamesApi";
 import { IGame } from "../../api/games/responses/getGamesResponse";
 import { useInitiateGame } from "../../app/useInitiateGame";
 import { IFriend } from "../../slices/friendsListSlice";
 import FriendsListDialog from "./FriendsListDialog";
 import GamesListItem from "./GamesListItem";
+import { useLazyGetGameResultsQuery } from "../../api/gameResults/gameResultsApi";
+import { useAppDispatch } from "../../app/hooks";
+import { setGameResults } from "../../slices/gameResultsSlice";
 
 const GamesList = () => {
   const { data, isLoading } = useGetGamesQuery({});
   const [dialogOpen, setDialogOpen] = useState(false);
   const { StartGame } = useInitiateGame();
   let selectedGame = useRef<IGame>();
+  const [getGameResults] = useLazyGetGameResultsQuery();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    getGameResults({}).then((response) => {
+      dispatch(setGameResults(response.data.data.results));
+    });
+  }, []);
 
   const onGameSelected = (game: IGame) => {
     selectedGame.current = game;

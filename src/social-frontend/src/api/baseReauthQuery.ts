@@ -12,7 +12,7 @@ import {
 import { IRefreshTokenResponse } from "./identity/responses/refreshTokenResponse";
 
 const baseUrl = process.env.REACT_APP_BASE_API_URL;
-const baseApiUrl = `${baseUrl}/api/v1`;
+export const baseApiUrl = `${baseUrl}/api/v1`;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: baseApiUrl,

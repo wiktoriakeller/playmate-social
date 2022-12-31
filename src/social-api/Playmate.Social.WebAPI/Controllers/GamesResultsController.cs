@@ -20,7 +20,7 @@ public class GamesResultsController : BaseApiController
     public async Task<IActionResult> GetGameResultsForUser()
     {
         var response = await _mediator.Send(new GetResultsForUserQuery());
-        return GetStatusCode(response);
+        return GetStatusCode(response); 
     }
 
     [HttpPost]

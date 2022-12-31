@@ -4,6 +4,7 @@ import { IFriend } from "../slices/friendsListSlice";
 import { IGame } from "../api/games/responses/getGamesResponse";
 import { useLazyInitiateGameQuery } from "../api/games/gameIntegrationApi";
 import { addChatMessage } from "../slices/chatSlice";
+import { baseApiUrl } from "../api/baseReauthQuery";
 
 export const useInitiateGame = () => {
   const user = useAppSelector(selectUserIdentity);
@@ -18,7 +19,7 @@ export const useInitiateGame = () => {
         receiverName: opponent.username,
         senderId: user.id,
         senderName: user.username,
-        resultsUrl: ""
+        resultsUrl: baseApiUrl + "/results"
       }
     })
       .unwrap()
