@@ -5,6 +5,7 @@ import {
   LogLevel
 } from "@microsoft/signalr";
 import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
+import { friendsApi } from "../api/friends/friendsApi";
 import { IFriendRequestConfirmationResponse } from "../api/friends/responses/friendsRequestConfirmation";
 import { IUserSearchItem } from "../api/users/responses/searchUsersResponse";
 import { RootState } from "../app/store";
@@ -186,6 +187,7 @@ chatListenerMiddleware.startListening({
     );
 
     apiListener.dispatch(setFriendsList(newList));
+    apiListener.dispatch(friendsApi.util.invalidateTags(["friendsList"]));
   }
 });
 
@@ -205,7 +207,7 @@ sendFriendRequestListenerMiddleware.startListening({
 
 answerFriendRequestsListenerMiddleware.startListening({
   actionCreator: answerFriendRequests,
-  effect: (action: PayloadAction<IFriendRequestConfirmation>) => {
+  effect: (action: PayloadAction<IFriendRequestConfirmation>, apiListener) => {
     hubConnection.send("AnswerFriendRequest", action.payload).catch((error) => {
       console.error("Error while answering friend request: ", error);
     });

@@ -7,6 +7,7 @@ import { IGetFriendsListResponse } from "./responses/getFriendsListResponse";
 export const friendsApi = createApi({
   reducerPath: "friendsApi",
   baseQuery: baseReauthQuery,
+  tagTypes: ["friendsList"],
   endpoints: (builder) => ({
     getFriendsList: builder.query<
       IGetFriendsListResponse,
@@ -15,7 +16,8 @@ export const friendsApi = createApi({
       query: (request) => ({
         url: `/friends?search=${request.search}`,
         method: "GET"
-      })
+      }),
+      providesTags: ["friendsList"]
     }),
     getFriendRequests: builder.query<IGetFriendRequestsResponse, void>({
       query: () => ({

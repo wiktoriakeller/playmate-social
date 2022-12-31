@@ -41,9 +41,12 @@ const FriendsLits = () => {
   }, []);
 
   useEffect(() => {
-    getFriendsListLazy({
-      search: friendsSearchPhrase
-    })
+    getFriendsListLazy(
+      {
+        search: friendsSearchPhrase
+      },
+      true
+    )
       .unwrap()
       .then((response) => {
         if (!!response.data) {
