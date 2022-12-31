@@ -21,9 +21,13 @@ const ChatMessages = () => {
     useLazyGetChatMessagesListQuery();
 
   useEffect(() => {
-    getChatMessagesLazy({
-      friendId: selectedFriend.id
-    })
+    getChatMessagesLazy(
+      {
+        friendId: selectedFriend.id,
+        userId: user.id
+      },
+      true
+    )
       .unwrap()
       .then((response) => {
         if (

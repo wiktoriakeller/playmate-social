@@ -1,4 +1,5 @@
 import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
+import { chatMessagesApi } from "../api/chatMessages/chatMessagesApi";
 import { clearUserFromStorage, storeUser } from "../common/storage";
 import { clearChatState } from "../slices/chatSlice";
 import {
@@ -19,6 +20,11 @@ userIdentityListenerMiddleware.startListening({
   effect: (action: PayloadAction<IUserIdentityState>, apiListener) => {
     if (action.payload?.jwtToken === null) {
       clearUserFromStorage();
+
+      apiListener.dispatch(
+        chatMessagesApi.util.invalidateTags(["chatMessages"])
+      );
+
       apiListener.dispatch(setSelectedFriend(null));
       apiListener.dispatch(setCurrentTab(tabsDictionary[0]));
       apiListener.dispatch(clearChatState());

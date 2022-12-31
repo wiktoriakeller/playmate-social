@@ -6,6 +6,7 @@ import { IGetChatMessagesListResponse } from "./responses/getChatMessagesListRes
 export const chatMessagesApi = createApi({
   reducerPath: "chatMessagesApi",
   baseQuery: baseReauthQuery,
+  tagTypes: ["chatMessages"],
   endpoints: (builder) => ({
     getChatMessagesList: builder.query<
       IGetChatMessagesListResponse,
@@ -14,7 +15,13 @@ export const chatMessagesApi = createApi({
       query: (request) => ({
         url: `/chat-messages?friendId=${request.friendId}`,
         method: "GET"
-      })
+      }),
+      providesTags: (result, error, arg) => [
+        {
+          type: "chatMessages",
+          id: `${arg.userId}${arg.friendId}`
+        }
+      ]
     })
   })
 });
