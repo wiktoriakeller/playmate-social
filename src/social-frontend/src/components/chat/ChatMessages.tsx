@@ -16,8 +16,6 @@ const ChatMessages = () => {
   const selectedFriend = useAppSelector(selectSelectedFriend);
   const friendMessagesDictionary =
     useAppSelector(selectChatState)[selectedFriend.id];
-  const friendMessages =
-    useAppSelector(selectChatState)[selectedFriend.id]?.messages;
 
   const [getChatMessagesLazy, { isLoading }] =
     useLazyGetChatMessagesListQuery();
@@ -31,7 +29,7 @@ const ChatMessages = () => {
         if (
           !!response.data &&
           response.data.friendId === selectedFriend.id &&
-          (friendMessages === undefined ||
+          (friendMessagesDictionary?.messages === undefined ||
             friendMessagesDictionary?.canAddNewMessagesList)
         ) {
           dispatch(
@@ -57,13 +55,7 @@ const ChatMessages = () => {
           );
         }
       );
-  }, [
-    selectedFriend,
-    friendMessages,
-    friendMessagesDictionary?.canAddNewMessagesList,
-    dispatch,
-    getChatMessagesLazy
-  ]);
+  }, [selectedFriend, friendMessagesDictionary, dispatch, getChatMessagesLazy]);
 
   const messagesSkeletons = useMemo(() => {
     const skeletons: React.ReactNode[] = [];
@@ -76,8 +68,8 @@ const ChatMessages = () => {
 
   return (
     <StyledChatMessages>
-      {!!friendMessages && !isLoading
-        ? friendMessages.map((message, index) => (
+      {!!friendMessagesDictionary?.messages && !isLoading
+        ? friendMessagesDictionary.messages.map((message, index) => (
             <ChatMessage
               key={index}
               message={message.content}
