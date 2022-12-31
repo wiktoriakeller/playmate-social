@@ -74,7 +74,7 @@ const FriendsLits = () => {
 
   return (
     <StyledFriendsList>
-      {userFriends !== undefined && !isLoading
+      {!!userFriends && !isLoading
         ? userFriends.map((item) => <FriendListItem {...item} key={item.id} />)
         : skeletons.map((skeleton) => skeleton)}
     </StyledFriendsList>
