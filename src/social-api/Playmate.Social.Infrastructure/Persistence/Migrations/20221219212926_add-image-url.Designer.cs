@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Playmate.Social.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using Playmate.Social.Infrastructure.Persistence;
 namespace Playmate.Social.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221219212926_add-image-url")]
+    partial class addimageurl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +33,6 @@ namespace Playmate.Social.Infrastructure.Persistence.Migrations
 
                     b.Property<Guid>("AddresseeId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTimeOffset>("FriendsSince")
-                        .HasColumnType("datetimeoffset");
 
                     b.Property<Guid>("RequesterId")
                         .HasColumnType("uniqueidentifier");
@@ -165,10 +165,7 @@ namespace Playmate.Social.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsExternalUser")
-                        .HasColumnType("bit");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -176,15 +173,9 @@ namespace Playmate.Social.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("Username")
-                        .IsUnique();
 
                     b.ToTable("Users");
                 });
