@@ -258,7 +258,7 @@ const LoginPage = () => {
               context={"signin"}
               size={"large"}
               width={"400px"}
-              theme={themeMode.themeMode === "dark" ? "filled_blue" : "outline"}
+              theme={themeMode === "dark" ? "filled_blue" : "outline"}
             />
           </Box>
         </FormBox>

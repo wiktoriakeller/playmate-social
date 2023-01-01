@@ -49,7 +49,7 @@ const ChatEmojiPicker = (props: IChatEmojiPicker) => {
                 emojiVersion="1.0"
                 onEmojiClick={props.onEmojiClick}
                 emojiStyle={EmojiStyle.NATIVE}
-                theme={themeMode.themeMode as Theme}
+                theme={themeMode as Theme}
                 lazyLoadEmojis={false}
                 suggestedEmojisMode={SuggestionMode.RECENT}
               />

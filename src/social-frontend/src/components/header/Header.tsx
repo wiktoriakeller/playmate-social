@@ -21,22 +21,22 @@ import NotificationsButton from "../friendRequests/NotificationsButton";
 import UserMenu from "../user/UserMenu";
 import HeaderTabs from "./HeaderTabs";
 
+const getCurrentThemeIcon = (themeMode: ThemeModeType) => {
+  if (themeMode === "light") {
+    return <WbSunnyIcon sx={{ fontSize: "28px" }} />;
+  }
+
+  return <Brightness2Icon sx={{ fontSize: "28px" }} />;
+};
+
 export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode);
   const user = useAppSelector(selectUserIdentity);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const getCurrentThemeIcon = (themeMode: ThemeModeType) => {
-    if (themeMode === "light") {
-      return <WbSunnyIcon sx={{ fontSize: "28px" }} />;
-    }
-
-    return <Brightness2Icon sx={{ fontSize: "28px" }} />;
-  };
-
   const toggleTheme = () => {
-    if (themeMode.themeMode === "dark") {
+    if (themeMode === "dark") {
       dispatch(setThemeMode({ themeMode: "light" }));
     } else {
       dispatch(setThemeMode({ themeMode: "dark" }));
@@ -77,7 +77,7 @@ export const Header = () => {
       <HeaderRightSide isHomePage={user.jwtToken !== null}>
         <Tooltip title={"Toggle theme"}>
           <StyledIconButton onClick={toggleTheme}>
-            {getCurrentThemeIcon(themeMode.themeMode)}
+            {getCurrentThemeIcon(themeMode)}
           </StyledIconButton>
         </Tooltip>
         {getUserMenu()}

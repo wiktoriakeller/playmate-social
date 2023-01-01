@@ -10,6 +10,10 @@ export interface CustomPalette {
   border: string;
   link: string;
   linkHover: string;
+  chartColors: {
+    primaryText: string;
+    secondaryText: string;
+  };
 }
 
 declare module "@mui/material/styles" {

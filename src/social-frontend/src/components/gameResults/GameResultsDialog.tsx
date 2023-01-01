@@ -1,9 +1,18 @@
-import { Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
+} from "@mui/material";
 import { useCallback, useMemo, useState } from "react";
 import { Cell, Pie, PieChart, Sector } from "recharts";
 import { IGame } from "../../api/games/responses/getGamesResponse";
+import { getDesignTokens } from "../../app/providers/AppThemeProvider";
 import { useAppSelector } from "../../app/storeHooks";
 import { IGameResult, selectGameResults } from "../../slices/gameResultsSlice";
+import { selectThemeMode } from "../../slices/themeSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
 
 export interface IGameResultsPageProps {
@@ -56,91 +65,88 @@ const renderCustomizedLabel = ({
   );
 };
 
-const renderActiveShape = (props) => {
-  const {
-    cx,
-    cy,
-    midAngle,
-    innerRadius,
-    outerRadius,
-    startAngle,
-    endAngle,
-    fill,
-    payload,
-    percent
-  } = props;
-  const sin = Math.sin(-RADIAN * midAngle);
-  const cos = Math.cos(-RADIAN * midAngle);
-  const sx = cx + (outerRadius + 10) * cos;
-  const sy = cy + (outerRadius + 10) * sin;
-  const mx = cx + (outerRadius + 30) * cos;
-  const my = cy + (outerRadius + 30) * sin;
-  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
-  const ey = my;
-  const textAnchor = cos >= 0 ? "start" : "end";
-
-  return (
-    <g>
-      <Sector
-        cx={cx}
-        cy={cy}
-        innerRadius={innerRadius}
-        outerRadius={outerRadius}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        fill={fill}
-      />
-      <Sector
-        cx={cx}
-        cy={cy}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        innerRadius={outerRadius + 6}
-        outerRadius={outerRadius + 10}
-        fill={fill}
-      />
-      <path
-        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-        stroke={fill}
-        fill="none"
-      />
-      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        textAnchor={textAnchor}
-        fill="#333"
-      >{`${payload.name}`}</text>
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        dy={18}
-        textAnchor={textAnchor}
-        fill="#999"
-      >
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
-      </text>
-    </g>
-  );
-};
-
 const GameResultsDialog = (props: IGameResultsPageProps) => {
+  const themeMode = useAppSelector(selectThemeMode);
   const results = useAppSelector(selectGameResults)[props.game.id];
   const currentUserId = useAppSelector(selectUserIdentity).id;
   const [activeIndex, setActiveIndex] = useState(-1);
 
-  const onPieEnter = useCallback(
-    (_, index: number) => {
-      console.log(index);
-      setActiveIndex(index);
+  const currentTheme = useMemo(() => getDesignTokens(themeMode), [themeMode]);
+
+  const renderActiveShape = useCallback(
+    (props) => {
+      const {
+        cx,
+        cy,
+        midAngle,
+        innerRadius,
+        outerRadius,
+        startAngle,
+        endAngle,
+        fill,
+        payload,
+        percent
+      } = props;
+      const sin = Math.sin(-RADIAN * midAngle);
+      const cos = Math.cos(-RADIAN * midAngle);
+      const sx = cx + (outerRadius + 10) * cos;
+      const sy = cy + (outerRadius + 10) * sin;
+      const mx = cx + (outerRadius + 30) * cos;
+      const my = cy + (outerRadius + 30) * sin;
+      const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+      const ey = my;
+      const textAnchor = cos >= 0 ? "start" : "end";
+
+      return (
+        <g>
+          <Sector
+            cx={cx}
+            cy={cy}
+            innerRadius={innerRadius}
+            outerRadius={outerRadius}
+            startAngle={startAngle}
+            endAngle={endAngle}
+            fill={fill}
+          />
+          <Sector
+            cx={cx}
+            cy={cy}
+            startAngle={startAngle}
+            endAngle={endAngle}
+            innerRadius={outerRadius + 6}
+            outerRadius={outerRadius + 10}
+            fill={fill}
+          />
+          <path
+            d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
+            stroke={fill}
+            fill="none"
+          />
+          <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+          <text
+            x={ex + (cos >= 0 ? 1 : -1) * 12}
+            y={ey}
+            textAnchor={textAnchor}
+            fill={currentTheme.palette.chartColors.primaryText}
+          >{`${payload.name}`}</text>
+          <text
+            x={ex + (cos >= 0 ? 1 : -1) * 12}
+            y={ey}
+            dy={18}
+            textAnchor={textAnchor}
+            fill={currentTheme.palette.chartColors.secondaryText}
+          >
+            {`(Rate ${(percent * 100).toFixed(2)}%)`}
+          </text>
+        </g>
+      );
     },
-    [setActiveIndex]
+    [currentTheme]
   );
 
-  const handleCloseDialog = () => {
-    props.handleClose();
-    setActiveIndex(-1);
-  };
+  const onPieEnter = useCallback((_, index: number) => {
+    setActiveIndex(index);
+  }, []);
 
   const pieData = useMemo(() => {
     if (!!results) {
@@ -150,19 +156,34 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
     return [];
   }, [results, currentUserId]);
 
+  const handleCloseDialog = () => {
+    props.handleClose();
+    setActiveIndex(-1);
+  };
+
   return (
-    <Dialog open={props.open} onClose={handleCloseDialog}>
-      <DialogTitle>{props.game.name} - completed games</DialogTitle>
-      <DialogContent>
-        {pieData.length > 0 ? (
-          <PieChart width={400} height={400}>
+    <Dialog open={props.open} onClose={handleCloseDialog} maxWidth={"md"}>
+      <DialogTitle sx={{ textAlign: "center", paddingBottom: "0px" }}>
+        {props.game.name} statistics
+      </DialogTitle>
+      <DialogContent sx={{ paddingBottom: "0px" }}>
+        <Box
+          sx={{
+            width: "450px",
+            height: "350px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
+          }}
+        >
+          <PieChart width={425} height={300}>
             <Pie
               activeIndex={activeIndex}
               activeShape={renderActiveShape}
               data={pieData}
               cx="50%"
               cy="50%"
-              outerRadius={80}
+              outerRadius={100}
               dataKey="value"
               onMouseEnter={onPieEnter}
               label={renderCustomizedLabel}
@@ -177,10 +198,13 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
               ))}
             </Pie>
           </PieChart>
-        ) : (
-          <Typography>Not enough data to display chart!</Typography>
-        )}
+        </Box>
       </DialogContent>
+      <DialogActions sx={{ paddingTop: "0px" }}>
+        <Button onClick={handleCloseDialog} autoFocus>
+          Close
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 };

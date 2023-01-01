@@ -9,8 +9,11 @@ import {
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { IGame } from "../../api/games/responses/getGamesResponse";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
+import { selectGameResults } from "../../slices/gameResultsSlice";
+import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
 import GameResultsDialog from "../gameResults/GameResultsDialog";
 
 export interface IGameListItemProps {
@@ -19,19 +22,30 @@ export interface IGameListItemProps {
 }
 
 const GamesListItem = (props: IGameListItemProps) => {
+  const dispatch = useAppDispatch();
+  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const results = useAppSelector(selectGameResults)[props.game.id];
+
   const selectGame = () => {
     props.onSelect(props.game);
   };
 
-  const [detailsDialogOpen, setDetailsDialogOpen] = useState(false);
+  const handleClickResultsDialog = useCallback(() => {
+    if (results !== undefined && results.length > 0) {
+      setDetailsDialogOpen(true);
+    } else {
+      dispatch(
+        openSnackbar({
+          message: "Not enough data to display statistics!",
+          severity: SnackbarSeverity.Info
+        })
+      );
+    }
+  }, [dispatch, results]);
 
-  const handleClick = () => {
-    setDetailsDialogOpen(true);
-  };
-
-  const handleClose = () => {
+  const handleCloseResultsDialog = useCallback(() => {
     setDetailsDialogOpen(false);
-  };
+  }, []);
 
   return (
     <Card>
@@ -53,14 +67,14 @@ const GamesListItem = (props: IGameListItemProps) => {
         >
           Play
         </Button>
-        <Tooltip title="Game results">
-          <IconButton onClick={handleClick} color="secondary">
+        <Tooltip title="Game statistics">
+          <IconButton onClick={handleClickResultsDialog} color="secondary">
             <BarChartIcon fontSize="medium" />
           </IconButton>
         </Tooltip>
         <GameResultsDialog
           game={props.game}
-          handleClose={handleClose}
+          handleClose={handleCloseResultsDialog}
           open={Boolean(detailsDialogOpen)}
         />
       </CardActions>
