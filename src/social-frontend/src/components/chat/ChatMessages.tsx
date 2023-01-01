@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from "react";
 import { useLazyGetChatMessagesListQuery } from "../../api/chatMessages/chatMessagesApi";
 import { IGetChatMessagesListResponse } from "../../api/chatMessages/responses/getChatMessagesListResponse";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import { addChatMessagesList, selectChatState } from "../../slices/chatSlice";
 import { selectSelectedFriend } from "../../slices/friendsListSlice";
 import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
@@ -59,7 +59,13 @@ const ChatMessages = () => {
           );
         }
       );
-  }, [selectedFriend, friendMessagesDictionary, dispatch, getChatMessagesLazy]);
+  }, [
+    selectedFriend,
+    friendMessagesDictionary,
+    user.id,
+    dispatch,
+    getChatMessagesLazy
+  ]);
 
   const messagesSkeletons = useMemo(() => {
     const skeletons: React.ReactNode[] = [];

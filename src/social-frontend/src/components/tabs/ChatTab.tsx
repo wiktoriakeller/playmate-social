@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../app/storeHooks";
 import { selectSelectedFriend } from "../../slices/friendsListSlice";
 import { ChatContainer } from "../../styled/components/chat/ChatContainer";
 import { FriendsContainer } from "../../styled/components/friends/FriendsContainer";

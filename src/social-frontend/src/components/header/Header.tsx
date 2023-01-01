@@ -3,50 +3,54 @@ import PeopleIcon from "@mui/icons-material/People";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import { Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import { setCurrentTab, tabsDictionary } from "../../slices/tabSlice";
-import { selectTheme, setTheme, ThemeType } from "../../slices/themeSlice";
+import {
+  selectThemeMode,
+  setThemeMode,
+  ThemeModeType
+} from "../../slices/themeSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
+import { StyledIconButton } from "../../styled/components/common/StyledIconButton";
 import { HeaderCenter } from "../../styled/components/header/HeaderCenter";
 import { HeaderLeftSide } from "../../styled/components/header/HeaderLeftSide";
 import { HeaderRightSide } from "../../styled/components/header/HeaderRightSide";
 import { StyledHeader } from "../../styled/components/header/StyledHeader";
 import { StyledLogo } from "../../styled/components/header/StyledLogo";
-import { StyledIconButton } from "../../styled/components/common/StyledIconButton";
 import NotificationsButton from "../friendRequests/NotificationsButton";
 import UserMenu from "../user/UserMenu";
 import HeaderTabs from "./HeaderTabs";
 
+const getCurrentThemeIcon = (themeMode: ThemeModeType) => {
+  if (themeMode === "light") {
+    return <WbSunnyIcon sx={{ fontSize: "28px" }} />;
+  }
+
+  return <Brightness2Icon sx={{ fontSize: "28px" }} />;
+};
+
 export const Header = () => {
-  const theme = useAppSelector(selectTheme);
+  const themeMode = useAppSelector(selectThemeMode);
   const user = useAppSelector(selectUserIdentity);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const getCurrentThemeIcon = (theme: ThemeType) => {
-    if (theme === "light") {
-      return <WbSunnyIcon sx={{ fontSize: "28px" }} />;
-    }
-
-    return <Brightness2Icon sx={{ fontSize: "28px" }} />;
-  };
-
   const toggleTheme = () => {
-    if (theme.theme === "dark") {
-      dispatch(setTheme({ theme: "light" }));
+    if (themeMode === "dark") {
+      dispatch(setThemeMode({ themeMode: "light" }));
     } else {
-      dispatch(setTheme({ theme: "dark" }));
+      dispatch(setThemeMode({ themeMode: "dark" }));
     }
   };
 
   const getHeaderCenter = () => {
-    if (user.jwtToken) {
+    if (!!user.jwtToken) {
       return <HeaderTabs />;
     }
   };
 
   const getUserMenu = () => {
-    if (user.jwtToken) {
+    if (!!user.jwtToken) {
       return (
         <>
           <NotificationsButton />
@@ -73,7 +77,7 @@ export const Header = () => {
       <HeaderRightSide isHomePage={user.jwtToken !== null}>
         <Tooltip title={"Toggle theme"}>
           <StyledIconButton onClick={toggleTheme}>
-            {getCurrentThemeIcon(theme.theme)}
+            {getCurrentThemeIcon(themeMode)}
           </StyledIconButton>
         </Tooltip>
         {getUserMenu()}

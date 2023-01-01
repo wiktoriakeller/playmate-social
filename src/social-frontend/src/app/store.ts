@@ -22,6 +22,8 @@ import { tabSlice } from "../slices/tabSlice";
 import { themeSlice } from "../slices/themeSlice";
 import { userIdentitySlice } from "../slices/userIdentitySlice";
 import { userSearchSlice } from "../slices/userSearchSlice";
+import { gameResultsApi } from "../api/gameResults/gameResultsApi";
+import { gameResultsSlice } from "../slices/gameResultsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -39,7 +41,9 @@ export const store = configureStore({
     [friendsApi.reducerPath]: friendsApi.reducer,
     [gamesApi.reducerPath]: gamesApi.reducer,
     [gameIntegrationApi.reducerPath]: gameIntegrationApi.reducer,
-    [chatMessagesApi.reducerPath]: chatMessagesApi.reducer
+    [chatMessagesApi.reducerPath]: chatMessagesApi.reducer,
+    [gameResultsApi.reducerPath]: gameResultsApi.reducer,
+    [gameResultsSlice.name]: gameResultsSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -56,6 +60,7 @@ export const store = configureStore({
       .concat(gamesApi.middleware)
       .concat(gameIntegrationApi.middleware)
       .concat(chatMessagesApi.middleware)
+      .concat(gameResultsApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

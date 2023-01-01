@@ -3,7 +3,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
 import Tabs from "@mui/material/Tabs";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import {
   selectCurrentTab,
   setCurrentTab,

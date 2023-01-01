@@ -1,4 +1,4 @@
-import { ThemeType } from "../slices/themeSlice";
+import { ThemeModeType } from "../slices/themeSlice";
 import { IUserIdentityState } from "../slices/userIdentitySlice";
 
 const storeData = (key: string, value: string | null): void =>
@@ -21,7 +21,8 @@ export const getUserFromStorage = (): IUserIdentityState | null => {
 
 export const clearUserFromStorage = (): void => localStorage.removeItem("user");
 
-export const storeTheme = (theme: ThemeType): void => storeData("theme", theme);
+export const storeTheme = (theme: ThemeModeType): void =>
+  storeData("theme", theme);
 
-export const getThemeFromStorage = (): ThemeType | null =>
-  getData("theme") as ThemeType;
+export const getThemeFromStorage = (): ThemeModeType | null =>
+  getData("theme") as ThemeModeType;

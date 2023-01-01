@@ -1,7 +1,7 @@
 import { Avatar, Skeleton } from "@mui/material";
 import { useEffect, useMemo, useRef } from "react";
 import { useLazyGetFriendsListQuery } from "../../api/friends/friendsApi";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import {
   selectFriendsList,
   selectFriendsListSearchPhrase,

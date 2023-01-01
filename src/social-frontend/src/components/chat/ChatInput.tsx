@@ -1,7 +1,7 @@
 import SendIcon from "@mui/icons-material/Send";
 import { InputAdornment, Tooltip } from "@mui/material";
 import { useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import { addChatMessage } from "../../slices/chatSlice";
 import {
   selectSelectedFriend,

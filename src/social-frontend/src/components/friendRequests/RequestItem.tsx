@@ -1,7 +1,7 @@
 import CancelIcon from "@mui/icons-material/Cancel";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { Avatar, Box, IconButton, ListItem, Typography } from "@mui/material";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch } from "../../app/storeHooks";
 import {
   answerFriendRequests,
   IFriendRequest

@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLazyGetFriendRequestsQuery } from "../../api/friends/friendsApi";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import {
   selectFriendRequests,
   setFriendRequests

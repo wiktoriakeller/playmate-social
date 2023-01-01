@@ -1,4 +1,4 @@
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../app/storeHooks";
 import ChatTab from "../components/tabs/ChatTab";
 import GamesTab from "../components/tabs/GamesTab";
 import UsersSearchTab from "../components/tabs/UsersSearchTab";

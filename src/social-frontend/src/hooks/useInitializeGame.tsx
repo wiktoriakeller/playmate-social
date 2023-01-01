@@ -1,11 +1,12 @@
-import { useAppDispatch, useAppSelector } from "./hooks";
+import { useAppDispatch, useAppSelector } from "../app/storeHooks";
 import { selectUserIdentity } from "../slices/userIdentitySlice";
 import { IFriend } from "../slices/friendsListSlice";
 import { IGame } from "../api/games/responses/getGamesResponse";
 import { useLazyInitiateGameQuery } from "../api/games/gameIntegrationApi";
 import { addChatMessage } from "../slices/chatSlice";
+import { baseApiUrl } from "../api/baseReauthQuery";
 
-export const useInitiateGame = () => {
+export const useInitializeGame = () => {
   const user = useAppSelector(selectUserIdentity);
   const dispatch = useAppDispatch();
   const [initializeGame] = useLazyInitiateGameQuery();
@@ -18,7 +19,7 @@ export const useInitiateGame = () => {
         receiverName: opponent.username,
         senderId: user.id,
         senderName: user.username,
-        resultsUrl: ""
+        resultsUrl: baseApiUrl + "/results"
       }
     })
       .unwrap()

@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch } from "../../app/storeHooks";
 import {
   getEmptyUserIdentity,
   setUserIdentity
