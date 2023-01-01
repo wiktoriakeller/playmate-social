@@ -56,7 +56,7 @@ const NotificationsButton = () => {
 
   return (
     <Box>
-      <Tooltip title="Friendship requests">
+      <Tooltip title="Notifications">
         <IconButton onClick={handleOpenRequestsList} ref={anchorRef}>
           <StyledBadge badgeContent={pendingRequests.length} color="secondary">
             <NotificationsIcon sx={{ width: "28px", height: "28px" }} />
