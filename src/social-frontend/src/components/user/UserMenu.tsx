@@ -9,11 +9,13 @@ import {
 import UserAvatar from "./UserAvatar";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LogoutIcon from "@mui/icons-material/Logout";
+import UserProfileDialog from "./UserProfileDialog";
 
 const UserMenu = () => {
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const disptach = useAppDispatch();
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [isUserProfileOpen, setIsUserProfileOpen] = useState(false);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -29,14 +31,19 @@ const UserMenu = () => {
     navigate("/login");
   };
 
-  const handleUserProfile = () => {
+  const handleUserProfileOpen = () => {
     handleCloseUserMenu();
+    setIsUserProfileOpen(true);
+  };
+
+  const handleUserProfileClose = () => {
+    setIsUserProfileOpen(false);
   };
 
   const settings = [
     {
       name: "Profile",
-      handler: handleUserProfile,
+      handler: handleUserProfileOpen,
       icon: <AccountBoxIcon sx={{ marginLeft: "-2px" }} />
     },
     {
@@ -81,6 +88,10 @@ const UserMenu = () => {
           </MenuItem>
         ))}
       </Menu>
+      <UserProfileDialog
+        isOpen={isUserProfileOpen}
+        handleCloseDialog={handleUserProfileClose}
+      />
     </>
   );
 };
