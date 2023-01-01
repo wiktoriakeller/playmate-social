@@ -9,7 +9,7 @@ import { friendsListListenerMiddleware } from "../middleware/friendsListListener
 import {
   answerFriendRequestsListenerMiddleware,
   chatListenerMiddleware,
-  sendFriendRequestsListenerMiddleware,
+  sendFriendRequestListenerMiddleware,
   signalRListenerMiddleware
 } from "../middleware/signalRListenerMiddleware";
 import { themeListenerMiddleware } from "../middleware/themeListenerMiddleware";
@@ -50,7 +50,7 @@ export const store = configureStore({
       .concat(userIdentityListenerMiddleware.middleware)
       .concat(signalRListenerMiddleware.middleware)
       .concat(chatListenerMiddleware.middleware)
-      .concat(sendFriendRequestsListenerMiddleware.middleware)
+      .concat(sendFriendRequestListenerMiddleware.middleware)
       .concat(answerFriendRequestsListenerMiddleware.middleware)
       .concat(themeListenerMiddleware.middleware)
       .concat(friendsListListenerMiddleware.middleware)

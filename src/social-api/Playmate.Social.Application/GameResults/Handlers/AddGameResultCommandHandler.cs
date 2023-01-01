@@ -11,11 +11,11 @@ namespace Playmate.Social.Application.GameResults.Handlers;
 
 public class AddGameResultCommandHandler : IHandlerWrapper<AddGameResultCommand, AddGameResultResponse>
 {
-    private readonly IRepository<GameResult> _gamesResultsRepository;
+    private readonly IGameResultsRepository _gamesResultsRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IMapper _mapper;
 
-    public AddGameResultCommandHandler(IRepository<GameResult> gameResultsRepository, IMapper mapper, IDateTimeProvider dateTimeProvider)
+    public AddGameResultCommandHandler(IGameResultsRepository gameResultsRepository, IMapper mapper, IDateTimeProvider dateTimeProvider)
     {
         _gamesResultsRepository = gameResultsRepository;
         _dateTimeProvider = dateTimeProvider;

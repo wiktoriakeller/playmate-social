@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useLazyGetFriendRequestsQuery } from "../../api/friends/friendsApi";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import {
   selectFriendRequests,
   setFriendRequests
@@ -39,10 +39,10 @@ const NotificationsButton = () => {
   }, [setOpen]);
 
   useEffect(() => {
-    getFriendRequests({}).then((response) => {
+    getFriendRequests().then((response) => {
       dispatch(setFriendRequests(response.data.data.requests));
     });
-  }, []);
+  }, [getFriendRequests, dispatch]);
 
   const notificationsSkeleton = () => {
     return (

@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { Skeleton } from "@mui/material";
-import { StyledChatMessageProps } from "./StyledChatMessage";
+import { IStyledChatMessageProps } from "./StyledChatMessage";
 
-export const SkeletonChatMessage = styled(Skeleton)<StyledChatMessageProps>`
+export const SkeletonChatMessage = styled(Skeleton)<IStyledChatMessageProps>`
   width: 48%;
   max-width: 500px;
   height: 50px;

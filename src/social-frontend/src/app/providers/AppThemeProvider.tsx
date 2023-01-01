@@ -4,7 +4,7 @@ import { grey, indigo } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 import { useMemo } from "react";
 import { selectTheme } from "../../slices/themeSlice";
-import { useAppSelector } from "../hooks";
+import { useAppSelector } from "../storeHooks";
 
 const commonPalette = {
   white: grey[50],

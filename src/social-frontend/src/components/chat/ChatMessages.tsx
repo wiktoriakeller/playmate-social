@@ -1,11 +1,8 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { useLazyGetChatMessagesListQuery } from "../../api/chatMessages/chatMessagesApi";
 import { IGetChatMessagesListResponse } from "../../api/chatMessages/responses/getChatMessagesListResponse";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import {
-  addChatMessagesList,
-  selectChatMessages
-} from "../../slices/chatSlice";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
+import { addChatMessagesList, selectChatState } from "../../slices/chatSlice";
 import { selectSelectedFriend } from "../../slices/friendsListSlice";
 import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
@@ -17,25 +14,37 @@ const ChatMessages = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUserIdentity);
   const selectedFriend = useAppSelector(selectSelectedFriend);
+  const friendMessagesDictionary =
+    useAppSelector(selectChatState)[selectedFriend.id];
 
-  const paginatedMessages =
-    useAppSelector(selectChatMessages)[selectedFriend.id];
-
-  const [currentPageNumber] = useState(
-    paginatedMessages?.currentPageNumber ?? 1
-  );
-
-  const [getChatMessagesLazy, { isLoading, data }] =
+  const [getChatMessagesLazy, { isLoading }] =
     useLazyGetChatMessagesListQuery();
 
   useEffect(() => {
     getChatMessagesLazy(
       {
-        friendId: selectedFriend.id
+        friendId: selectedFriend.id,
+        userId: user.id
       },
       true
     )
       .unwrap()
+      .then((response) => {
+        if (
+          !!response.data &&
+          response.data.friendId === selectedFriend.id &&
+          (friendMessagesDictionary?.messages === undefined ||
+            friendMessagesDictionary?.canAddNewMessagesList)
+        ) {
+          dispatch(
+            addChatMessagesList({
+              ...response.data,
+              pageNumber: 0,
+              canAddNewMessagesList: true
+            })
+          );
+        }
+      })
       .catch(
         (error: {
           status: string | number;
@@ -50,18 +59,13 @@ const ChatMessages = () => {
           );
         }
       );
-  }, [selectedFriend, currentPageNumber]);
-
-  useEffect(() => {
-    if (!!data && currentPageNumber !== paginatedMessages?.currentPageNumber) {
-      dispatch(
-        addChatMessagesList({
-          ...data.data,
-          pageNumber: currentPageNumber
-        })
-      );
-    }
-  }, [data]);
+  }, [
+    selectedFriend,
+    friendMessagesDictionary,
+    user.id,
+    dispatch,
+    getChatMessagesLazy
+  ]);
 
   const messagesSkeletons = useMemo(() => {
     const skeletons: React.ReactNode[] = [];
@@ -74,16 +78,14 @@ const ChatMessages = () => {
 
   return (
     <StyledChatMessages>
-      {paginatedMessages?.messages !== undefined && !isLoading
-        ? paginatedMessages.messages.map((_, index) => (
+      {!!friendMessagesDictionary?.messages && !isLoading
+        ? friendMessagesDictionary.messages.map((message, index) => (
             <ChatMessage
               key={index}
-              message={paginatedMessages.messages[index].content}
-              isUserMessage={
-                user.id === paginatedMessages.messages[index].senderId
-              }
-              createdAt={paginatedMessages.messages[index].createdAt}
-              joinGameUrl={paginatedMessages.messages[index].joinGameUrl ?? ""}
+              message={message.content}
+              isUserMessage={user.id === message.senderId}
+              createdAt={message.createdAt}
+              joinGameUrl={message.joinGameUrl ?? ""}
             />
           ))
         : messagesSkeletons.map((item) => item)}

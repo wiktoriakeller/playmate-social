@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "./hooks";
+import { useAppDispatch, useAppSelector } from "../app/storeHooks";
 import { selectUserIdentity } from "../slices/userIdentitySlice";
 import { IFriend } from "../slices/friendsListSlice";
 import { IGame } from "../api/games/responses/getGamesResponse";
@@ -6,12 +6,12 @@ import { useLazyInitiateGameQuery } from "../api/games/gameIntegrationApi";
 import { addChatMessage } from "../slices/chatSlice";
 import { baseApiUrl } from "../api/baseReauthQuery";
 
-export const useInitiateGame = () => {
+export const useInitializeGame = () => {
   const user = useAppSelector(selectUserIdentity);
   const dispatch = useAppDispatch();
   const [initializeGame] = useLazyInitiateGameQuery();
 
-  const StartGame = (opponent: IFriend, game: IGame) => {
+  const startGame = (opponent: IFriend, game: IGame) => {
     initializeGame({
       gameUrl: game.serverUrl,
       payload: {
@@ -40,5 +40,5 @@ export const useInitiateGame = () => {
       .catch((rejected) => console.error(rejected));
   };
 
-  return { StartGame };
+  return { startGame };
 };

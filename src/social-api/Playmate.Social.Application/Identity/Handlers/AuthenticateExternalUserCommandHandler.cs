@@ -1,6 +1,7 @@
 ﻿using Playmate.Social.Application.Common;
 using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Identity;
+using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.Identity.Commands;
 using Playmate.Social.Application.Identity.Dtos;
 using Playmate.Social.Application.Identity.Responses;
@@ -10,15 +11,18 @@ namespace Playmate.Social.Application.Identity.Handlers;
 public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<AuthenticateExternalUserCommand, AuthenticateExternalUserResponse>
 {
     private readonly IIdentityService _identityService;
+    private readonly IUsersRepository _usersRepository;
     private readonly IJwtTokenService _jwtTokenService;
     private readonly IExternalIdentityService _externalIdentityService;
 
     public AuthenticateExternalUserCommandHandler(
         IIdentityService identityService,
+        IUsersRepository usersRepository,
         IJwtTokenService jwtTokenService,
         IExternalIdentityService externalIdentityService)
     {
         _identityService = identityService;
+        _usersRepository = usersRepository;
         _jwtTokenService = jwtTokenService;
         _externalIdentityService = externalIdentityService;
     }
@@ -41,29 +45,39 @@ public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<Authentica
             return ResponseResult.Unauthorized<AuthenticateExternalUserResponse>("Authentication with external provider failed");
         }
 
-        var externalUser = _identityService.GetUserByEmail(payload.Email);
+        var externalUserByEmail = await _usersRepository.FirstOrDefaultAsync(x => x.Email == payload.Email);
+        var externalUserByUsername = await _usersRepository.FirstOrDefaultAsync(x => x.Username == payload.Username);
 
-        if (externalUser is null)
+        if (externalUserByEmail is null && externalUserByUsername is null)
         {
             var newUser = new CreateUserCommand
             {
                 Email = payload.Email,
-                Username = payload.Email,
-                Password = string.Empty
+                Username = payload.Username,
+                Password = string.Empty,
+                IsExternalUser = true
             };
 
             await _identityService.CreateUserAsync(newUser);
-            externalUser = _identityService.GetUserByEmail(payload.Email);
+            externalUserByEmail = await _usersRepository.FirstOrDefaultAsync(x => x.Email == payload.Email);
+        }
+        else if (externalUserByEmail is not null && !externalUserByEmail.IsExternalUser)
+        {
+            return ResponseResult.ValidationError<AuthenticateExternalUserResponse>("User with that email already exists");
+        }
+        else if (externalUserByUsername is not null && externalUserByUsername.Email != payload.Email)
+        {
+            return ResponseResult.ValidationError<AuthenticateExternalUserResponse>("User with that username already exists");
         }
 
-        var jwtToken = _jwtTokenService.CreateJwtToken(externalUser!);
-        var refreshToken = await _identityService.CreateRefreshToken(jwtToken.Jti, externalUser);
+        var jwtToken = _jwtTokenService.CreateJwtToken(externalUserByEmail!);
+        var refreshToken = await _identityService.CreateRefreshToken(jwtToken.Jti, externalUserByEmail!);
 
         var response = new AuthenticateExternalUserResponse
         {
-            Id = externalUser.Id,
-            Username = externalUser.Username,
-            Email = externalUser.Email,
+            Id = externalUserByEmail!.Id,
+            Username = externalUserByEmail.Username,
+            Email = externalUserByEmail.Email,
             JwtToken = jwtToken.Token,
             RefreshToken = refreshToken
         };

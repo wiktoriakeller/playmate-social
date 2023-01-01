@@ -3,7 +3,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import { Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import { setCurrentTab, tabsDictionary } from "../../slices/tabSlice";
 import { selectTheme, setTheme, ThemeType } from "../../slices/themeSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
@@ -13,7 +13,7 @@ import { HeaderRightSide } from "../../styled/components/header/HeaderRightSide"
 import { StyledHeader } from "../../styled/components/header/StyledHeader";
 import { StyledLogo } from "../../styled/components/header/StyledLogo";
 import { StyledIconButton } from "../../styled/components/common/StyledIconButton";
-import NotificationsButton from "../friendsRequests/NotificationsButton";
+import NotificationsButton from "../friendRequests/NotificationsButton";
 import UserMenu from "../user/UserMenu";
 import HeaderTabs from "./HeaderTabs";
 

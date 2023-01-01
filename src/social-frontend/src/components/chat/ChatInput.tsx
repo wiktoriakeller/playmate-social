@@ -1,7 +1,7 @@
 import SendIcon from "@mui/icons-material/Send";
 import { InputAdornment, Tooltip } from "@mui/material";
 import { useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import { addChatMessage } from "../../slices/chatSlice";
 import {
   selectSelectedFriend,
@@ -74,7 +74,7 @@ const ChatInput = () => {
           placeholder={"Aa"}
           size="small"
           sx={{
-            padding: "0 1%"
+            paddingRight: "5px"
           }}
           onChange={changeInputMessage}
           InputProps={{
@@ -90,11 +90,7 @@ const ChatInput = () => {
         />
       </form>
       <Tooltip title="Send">
-        <StyledIconButton
-          sx={{ marginRight: "1%", padding: "5px" }}
-          size="large"
-          onClick={sendMessage}
-        >
+        <StyledIconButton size="medium" onClick={sendMessage}>
           <SendIcon />
         </StyledIconButton>
       </Tooltip>

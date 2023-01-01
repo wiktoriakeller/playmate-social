@@ -6,7 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "../api/identity/identityApi";
 import { ICreateUserResponse } from "../api/identity/responses/createUserResponse";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch } from "../app/storeHooks";
 import {
   validateAll,
   validateEquality,

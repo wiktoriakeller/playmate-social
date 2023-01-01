@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogTitle, Typography } from "@mui/material";
 import { useMemo } from "react";
 import { Cell, Pie, PieChart } from "recharts";
 import { IGame } from "../../api/games/responses/getGamesResponse";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../app/storeHooks";
 import { IGameResult, selectGameResults } from "../../slices/gameResultsSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
 

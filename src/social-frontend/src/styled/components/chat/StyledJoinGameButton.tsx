@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
 
-export interface StyledChatMessageProps {
+export interface IStyledJoinGameButtonProps {
   isUserMessage: boolean;
 }
 
-export const StyledJoinGameButton = styled.div<StyledChatMessageProps>`
+export const StyledJoinGameButton = styled.div<IStyledJoinGameButtonProps>`
   width: fit-content;
   max-width: 50%;
   margin: 5px 20px;

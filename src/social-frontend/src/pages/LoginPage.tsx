@@ -10,7 +10,7 @@ import {
   useAuthenticateUserMutation
 } from "../api/identity/identityApi";
 import { IAuthenticateUserResponse } from "../api/identity/responses/authenticateUserResponse";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../app/storeHooks";
 import {
   validateAll,
   validateMinLength,

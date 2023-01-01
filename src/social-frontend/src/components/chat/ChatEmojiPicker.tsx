@@ -8,7 +8,7 @@ import EmojiPicker, {
   Theme
 } from "emoji-picker-react";
 import { useCallback, useState } from "react";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../app/storeHooks";
 import { selectTheme } from "../../slices/themeSlice";
 import { EmojiPickerContainer } from "../../styled/components/chat/EmojiPickerContainer";
 import { StyledIconButton } from "../../styled/components/common/StyledIconButton";

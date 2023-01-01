@@ -1,6 +1,6 @@
 import Avatar from "@mui/material/Avatar";
 import { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import {
   IFriend,
   ILastChatMessage,
