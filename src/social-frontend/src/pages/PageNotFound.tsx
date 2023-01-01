@@ -12,7 +12,7 @@ export const PageNotFound = () => {
         <Typography variant="h3">Page not found</Typography>
         <Typography variant="h6">
           The Page you are looking for does not exist,{" "}
-          <StyledLink underline="hover" href="/">
+          <StyledLink underline="always" href="/">
             Go back
           </StyledLink>
           .
