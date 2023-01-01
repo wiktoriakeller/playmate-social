@@ -9,7 +9,7 @@ import EmojiPicker, {
 } from "emoji-picker-react";
 import { useCallback, useState } from "react";
 import { useAppSelector } from "../../app/storeHooks";
-import { selectTheme } from "../../slices/themeSlice";
+import { selectThemeMode } from "../../slices/themeSlice";
 import { EmojiPickerContainer } from "../../styled/components/chat/EmojiPickerContainer";
 import { StyledIconButton } from "../../styled/components/common/StyledIconButton";
 
@@ -19,7 +19,7 @@ export interface IChatEmojiPicker {
 }
 
 const ChatEmojiPicker = (props: IChatEmojiPicker) => {
-  const themeMode = useAppSelector(selectTheme);
+  const themeMode = useAppSelector(selectThemeMode);
   const [open, setOpen] = useState(false);
 
   const handleClick = useCallback(() => {
@@ -49,7 +49,7 @@ const ChatEmojiPicker = (props: IChatEmojiPicker) => {
                 emojiVersion="1.0"
                 onEmojiClick={props.onEmojiClick}
                 emojiStyle={EmojiStyle.NATIVE}
-                theme={themeMode.theme as Theme}
+                theme={themeMode.themeMode as Theme}
                 lazyLoadEmojis={false}
                 suggestedEmojisMode={SuggestionMode.RECENT}
               />

@@ -1,9 +1,9 @@
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline, PaletteMode, ThemeOptions } from "@mui/material";
-import { grey, indigo } from "@mui/material/colors";
+import { grey, indigo, red, green } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 import { useMemo } from "react";
-import { selectTheme } from "../../slices/themeSlice";
+import { selectThemeMode } from "../../slices/themeSlice";
 import { useAppSelector } from "../storeHooks";
 
 const commonPalette = {
@@ -12,7 +12,7 @@ const commonPalette = {
 };
 
 const AppThemeProvider = ({ children }) => {
-  const themeMode = useAppSelector(selectTheme);
+  const themeMode = useAppSelector(selectThemeMode);
 
   const theme = useMemo(() => {
     const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
@@ -22,6 +22,10 @@ const AppThemeProvider = ({ children }) => {
           ? {
               //palette for light mode
               ...commonPalette,
+              chartPalette: {
+                red: red[400],
+                green: green[500]
+              },
               primary: grey,
               secondary: indigo,
               divider: grey[300],
@@ -63,7 +67,7 @@ const AppThemeProvider = ({ children }) => {
       }
     });
 
-    return createTheme(getDesignTokens(themeMode.theme));
+    return createTheme(getDesignTokens(themeMode.themeMode));
   }, [themeMode]);
 
   return (

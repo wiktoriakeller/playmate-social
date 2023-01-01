@@ -1,9 +1,9 @@
-import { Theme as MuiTheme } from "@mui/material/styles";
 import "@emotion/react";
+import { Theme as MuiTheme } from "@mui/material/styles";
 
-interface CustomTheme {}
+export interface CustomTheme {}
 
-interface CustomPalette {
+export interface CustomPalette {
   white: string;
   black: string;
   header: string;
@@ -13,10 +13,10 @@ interface CustomPalette {
 }
 
 declare module "@mui/material/styles" {
-  interface MuiTheme extends CustomTheme {}
-  interface ThemeOptions extends CustomTheme {}
-  interface PaletteOptions extends CustomPalette {}
-  interface Palette extends CustomPalette {}
+  export interface MuiTheme extends CustomTheme {}
+  export interface ThemeOptions extends CustomTheme {}
+  export interface PaletteOptions extends CustomPalette {}
+  export interface Palette extends CustomPalette {}
 }
 
 declare module "@emotion/react" {

@@ -11,7 +11,7 @@ import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import { useState } from "react";
 import { IGame } from "../../api/games/responses/getGamesResponse";
-import GameResultsPage from "../gameResults/GameResultsPage";
+import GameResultsDialog from "../gameResults/GameResultsDialog";
 
 export interface IGameListItemProps {
   game: IGame;
@@ -58,7 +58,7 @@ const GamesListItem = (props: IGameListItemProps) => {
             <BarChartIcon fontSize="medium" />
           </IconButton>
         </Tooltip>
-        <GameResultsPage
+        <GameResultsDialog
           game={props.game}
           handleClose={handleClose}
           open={Boolean(detailsDialogOpen)}

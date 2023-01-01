@@ -17,7 +17,7 @@ import {
   ValidationFunc
 } from "../common/validators";
 import { openSnackbar, SnackbarSeverity } from "../slices/snackbarSlice";
-import { selectTheme } from "../slices/themeSlice";
+import { selectThemeMode } from "../slices/themeSlice";
 import { setUserIdentity } from "../slices/userIdentitySlice";
 import { FormBox } from "../styled/components/common/FormBox";
 import { FormContainer } from "../styled/components/common/FormContainer";
@@ -40,7 +40,7 @@ interface ILoginFormValidationState {
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const theme = useAppSelector(selectTheme);
+  const themeMode = useAppSelector(selectThemeMode);
   const [authenticate] = useAuthenticateUserMutation();
   const [authenticateExternalUser] = useAuthenticateExternalUserMutation();
   const [showPassword, setShowPassword] = useState(false);
@@ -258,7 +258,7 @@ const LoginPage = () => {
               context={"signin"}
               size={"large"}
               width={"400px"}
-              theme={theme.theme === "dark" ? "filled_blue" : "outline"}
+              theme={themeMode.themeMode === "dark" ? "filled_blue" : "outline"}
             />
           </Box>
         </FormBox>
