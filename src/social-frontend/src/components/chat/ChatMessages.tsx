@@ -69,7 +69,7 @@ const ChatMessages = () => {
 
   const messagesSkeletons = useMemo(() => {
     const skeletons: React.ReactNode[] = [];
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 15; i++) {
       skeletons.push(<SkeletonChatMessage isUserMessage={i % 2 === 0} />);
     }
 
