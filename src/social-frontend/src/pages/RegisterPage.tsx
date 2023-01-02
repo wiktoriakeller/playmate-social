@@ -10,7 +10,6 @@ import { useAppDispatch } from "../app/storeHooks";
 import {
   validateAll,
   validateEquality,
-  validateMinLength,
   validateRange,
   ValidationFunc
 } from "../common/validators";
@@ -63,10 +62,11 @@ const RegisterPage = () => {
   const validators: ValidationFunc[] = useMemo(
     () => [
       () =>
-        validateMinLength(
+        validateRange(
           registerState.email,
           1,
-          "Email is required",
+          20,
+          "Email is required and can have at most 20 characters",
           (value) =>
             setRegisterValidationState((prev) => ({
               ...prev,
@@ -74,10 +74,11 @@ const RegisterPage = () => {
             }))
         ),
       () =>
-        validateMinLength(
+        validateRange(
           registerState.username,
           2,
-          "Username must be at least 2 characters long",
+          20,
+          "Username must be 2-20 characters long",
           (value) =>
             setRegisterValidationState((prev) => ({
               ...prev,

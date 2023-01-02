@@ -68,6 +68,7 @@ const GamesListItem = (props: IGameListItemProps) => {
           size="large"
           onClick={selectGame}
           color="secondary"
+          variant="text"
           sx={{ marginRight: "auto" }}
         >
           Play

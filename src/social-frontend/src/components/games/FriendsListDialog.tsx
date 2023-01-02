@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Dialog,
   DialogTitle,
   List,
   ListItem,
@@ -11,10 +10,11 @@ import {
 import { useEffect } from "react";
 import { useLazyGetFriendsListQuery } from "../../api/friends/friendsApi";
 import { IFriend } from "../../slices/friendsListSlice";
+import { StyledDialog } from "../../styled/components/common/StyledDialog";
 
 export interface FriendsListDialogProps {
-  open: boolean;
   onClose: (value?: IFriend) => void;
+  open: boolean;
 }
 
 const FriendsListDialog = (props: FriendsListDialogProps) => {
@@ -40,7 +40,7 @@ const FriendsListDialog = (props: FriendsListDialogProps) => {
   }
 
   return (
-    <Dialog onClose={handleClose} open={props.open}>
+    <StyledDialog onClose={handleClose} open={props.open}>
       <DialogTitle>Select opponent</DialogTitle>
       <List>
         {friends?.data.friends.map((friend) => (
@@ -52,7 +52,7 @@ const FriendsListDialog = (props: FriendsListDialogProps) => {
           </ListItem>
         ))}
       </List>
-    </Dialog>
+    </StyledDialog>
   );
 };
 

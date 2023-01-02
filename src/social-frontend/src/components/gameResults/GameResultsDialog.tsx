@@ -1,11 +1,5 @@
-import {
-  Box,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle
-} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, DialogContent, DialogTitle, IconButton } from "@mui/material";
 import { useCallback, useMemo, useState } from "react";
 import { Cell, Pie, PieChart, Sector } from "recharts";
 import { IGame } from "../../api/games/responses/getGamesResponse";
@@ -14,6 +8,7 @@ import { useAppSelector } from "../../app/storeHooks";
 import { IGameResult, selectGameResults } from "../../slices/gameResultsSlice";
 import { selectThemeMode } from "../../slices/themeSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
+import { StyledDialog } from "../../styled/components/common/StyledDialog";
 
 export interface IGameResultsPageProps {
   open: boolean;
@@ -162,9 +157,22 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
   };
 
   return (
-    <Dialog open={props.open} onClose={handleCloseDialog} maxWidth={"md"}>
+    <StyledDialog open={props.open} onClose={handleCloseDialog} maxWidth={"md"}>
       <DialogTitle sx={{ textAlign: "center", paddingBottom: "0px" }}>
-        {props.game.name} statistics
+        {`${props.game.name} statistics`}
+        <IconButton
+          aria-label="close"
+          size={"small"}
+          onClick={handleCloseDialog}
+          sx={{
+            position: "absolute",
+            right: 10,
+            top: 15,
+            color: (theme) => theme.palette.grey[400]
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
       </DialogTitle>
       <DialogContent sx={{ paddingBottom: "0px" }}>
         <Box
@@ -200,12 +208,7 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
           </PieChart>
         </Box>
       </DialogContent>
-      <DialogActions sx={{ paddingTop: "0px" }}>
-        <Button onClick={handleCloseDialog} autoFocus>
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
+    </StyledDialog>
   );
 };
 
