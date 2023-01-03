@@ -10,6 +10,6 @@ export const FormContainer = styled.div`
   width: 480px;
 
   @media (max-width: 600px) {
-    width: 430px;
+    width: 440px;
   }
 `;

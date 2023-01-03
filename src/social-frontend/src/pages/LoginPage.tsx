@@ -265,7 +265,7 @@ const LoginPage = () => {
               ux_mode={"popup"}
               context={"signin"}
               size={"large"}
-              width={matches ? "350px" : "400px"}
+              width={matches ? "360px" : "400px"}
               theme={themeMode === "dark" ? "filled_blue" : "outline"}
             />
           </Box>
