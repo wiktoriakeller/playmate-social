@@ -198,6 +198,7 @@ const RegisterPage = () => {
               })
             }
             fullWidth
+            size="small"
           />
           <FormTextField
             error={registerValidationState.usernameError.length > 0}
@@ -211,6 +212,7 @@ const RegisterPage = () => {
               })
             }
             fullWidth
+            size="small"
           />
           <FormTextField
             error={registerValidationState.passwordError.length > 0}
@@ -232,11 +234,16 @@ const RegisterPage = () => {
                     aria-label="toggle password visibility"
                     onClick={toggleShowPassword}
                   >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                    {showPassword ? (
+                      <VisibilityOff fontSize="small" />
+                    ) : (
+                      <Visibility fontSize="small" />
+                    )}
                   </IconButton>
                 </InputAdornment>
               )
             }}
+            size="small"
           />
           <FormTextField
             error={registerValidationState.confirmPasswordError.length > 0}
@@ -258,16 +265,22 @@ const RegisterPage = () => {
                     aria-label="toggle password visibility"
                     onClick={toggleShowConfirmPassword}
                   >
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    {showConfirmPassword ? (
+                      <VisibilityOff fontSize="small" />
+                    ) : (
+                      <Visibility fontSize="small" />
+                    )}
                   </IconButton>
                 </InputAdornment>
               )
             }}
+            size="small"
           />
           <StyledButton
             type="submit"
             variant="contained"
             disabled={!isFormValid}
+            size="medium"
           >
             Register
           </StyledButton>

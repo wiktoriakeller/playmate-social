@@ -1,6 +1,6 @@
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Box, IconButton, InputAdornment } from "@mui/material";
+import { Box, IconButton, InputAdornment, Typography } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { GoogleLogin } from "@react-oauth/google";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -160,6 +160,7 @@ const LoginPage = () => {
             label="Email"
             type={"email"}
             variant="outlined"
+            size="small"
             onChange={(event) =>
               setLogin({ ...loginState, email: event.target.value })
             }
@@ -175,6 +176,7 @@ const LoginPage = () => {
               setLogin({ ...loginState, password: event.target.value })
             }
             fullWidth
+            size="small"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -182,7 +184,11 @@ const LoginPage = () => {
                     aria-label="toggle password visibility"
                     onClick={toggleShowPassword}
                   >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                    {showPassword ? (
+                      <VisibilityOff fontSize="small" />
+                    ) : (
+                      <Visibility fontSize="small" />
+                    )}
                   </IconButton>
                 </InputAdornment>
               )
@@ -192,6 +198,7 @@ const LoginPage = () => {
             type="submit"
             variant="contained"
             disabled={!isFormValid}
+            size="medium"
           >
             Login
           </StyledButton>
