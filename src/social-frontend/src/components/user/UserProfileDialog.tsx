@@ -110,7 +110,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
             id="profile-image-input"
             type="file"
             onChange={handleFileUpload}
-            accept="image/jpg, image/png, image/jpeg"
+            accept="image/png, image/jpeg"
           />
           <Button
             sx={{

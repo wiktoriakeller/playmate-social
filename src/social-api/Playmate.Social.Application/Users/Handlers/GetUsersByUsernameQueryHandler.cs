@@ -3,11 +3,11 @@ using Playmate.Social.Application.Common;
 using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
-using Playmate.Social.Application.Identity.Dtos;
-using Playmate.Social.Application.Identity.Queries;
-using Playmate.Social.Application.Identity.Responses;
+using Playmate.Social.Application.Users.Dtos;
+using Playmate.Social.Application.Users.Queries;
+using Playmate.Social.Application.Users.Responses;
 
-namespace Playmate.Social.Application.Identity.Handlers;
+namespace Playmate.Social.Application.Users.Handlers;
 
 public class GetUsersByUsernameQueryHandler : IHandlerWrapper<GetUsersByUsernameQuery, GetUsersByUsernameResponse>
 {

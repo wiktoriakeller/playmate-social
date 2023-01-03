@@ -1,7 +1,7 @@
 ﻿using Playmate.Social.Application.Common;
-using Playmate.Social.Application.Identity.Responses;
+using Playmate.Social.Application.Users.Responses;
 
-namespace Playmate.Social.Application.Identity.Queries;
+namespace Playmate.Social.Application.Users.Queries;
 
 public class GetUsersByUsernameQuery : IRequestWrapper<GetUsersByUsernameResponse>
 {

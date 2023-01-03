@@ -1,6 +1,6 @@
-﻿using Playmate.Social.Application.Identity.Dtos;
+﻿using Playmate.Social.Application.Users.Dtos;
 
-namespace Playmate.Social.Application.Identity.Responses;
+namespace Playmate.Social.Application.Users.Responses;
 
 public class GetUsersByUsernameResponse
 {
