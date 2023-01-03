@@ -6,5 +6,5 @@ export const FormBox = styled.form`
   align-items: center;
   justify-content: center;
   gap: 20px;
-  padding: 30px 40px;
+  padding: 40px 40px;
 `;

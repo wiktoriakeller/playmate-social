@@ -1,6 +1,5 @@
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import {
-  Box,
   ClickAwayListener,
   Grow,
   IconButton,
@@ -23,10 +22,10 @@ import RequestItem from "./RequestItem";
 
 const NotificationsButton = () => {
   const dispatch = useAppDispatch();
-  const anchorRef = useRef<HTMLButtonElement>(null);
-  const [open, setOpen] = useState(false);
   const pendingRequests = useAppSelector(selectFriendRequests);
   const [getFriendRequests, { isLoading }] = useLazyGetFriendRequestsQuery();
+  const anchorRef = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(false);
 
   const handleOpenRequestsList = useCallback(() => {
     if (pendingRequests.length > 0) {
@@ -55,7 +54,7 @@ const NotificationsButton = () => {
   };
 
   return (
-    <Box>
+    <>
       <Tooltip title="Notifications">
         <IconButton onClick={handleOpenRequestsList} ref={anchorRef}>
           <StyledBadge badgeContent={pendingRequests.length} color="secondary">
@@ -63,7 +62,6 @@ const NotificationsButton = () => {
           </StyledBadge>
         </IconButton>
       </Tooltip>
-
       <Popper
         open={open}
         anchorEl={anchorRef.current}
@@ -82,26 +80,24 @@ const NotificationsButton = () => {
             <NotificationsContainer>
               <Paper>
                 <ClickAwayListener onClickAway={handleClose}>
-                  <Box>
-                    <StyledList dense={false}>
-                      {isLoading
-                        ? notificationsSkeleton()
-                        : pendingRequests.map((item, index) => (
-                            <RequestItem
-                              request={item}
-                              isLast={index === pendingRequests.length - 1}
-                              key={item.requestId}
-                            />
-                          ))}
-                    </StyledList>
-                  </Box>
+                  <StyledList dense={false}>
+                    {isLoading
+                      ? notificationsSkeleton()
+                      : pendingRequests.map((item, index) => (
+                          <RequestItem
+                            request={item}
+                            isLast={index === pendingRequests.length - 1}
+                            key={item.requestId}
+                          />
+                        ))}
+                  </StyledList>
                 </ClickAwayListener>
               </Paper>
             </NotificationsContainer>
           </Grow>
         )}
       </Popper>
-    </Box>
+    </>
   );
 };
 

@@ -6,7 +6,7 @@ export const StyledHorizontalDivider = styled(Divider)`
     display: flex;
     align-items: center;
     width: 100%;
-    height: 2px;
+    height: 1px;
   }
 
   &.MuiDivider-vertical {

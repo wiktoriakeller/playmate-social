@@ -8,6 +8,7 @@ export const StyledUserAvatarBox = styled.div`
   border-radius: 25px;
   padding: 6px 5px;
   gap: 6px;
+  margin-left: 6px;
   border: 1px solid
     ${(props) =>
       props.theme.palette.mode === "dark"
