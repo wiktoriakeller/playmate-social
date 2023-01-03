@@ -25,10 +25,12 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
   const [username, setUsername] = useState(user.username ?? "");
   const [usernameError, setUsernameError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setUsername(user.username ?? "");
+      setUploadedFileUrl(null);
     }, 100);
 
     return () => clearTimeout(timeout);
@@ -44,6 +46,12 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
 
   const handleSaveChanges = () => {
     props.handleCloseDialog();
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files[0];
+    const url = URL.createObjectURL(file);
+    setUploadedFileUrl(url);
   };
 
   return (
@@ -93,13 +101,16 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
             justifyContent: "center"
           }}
         >
-          <Avatar sx={{ width: "180px", height: "180px" }} />
+          <Avatar
+            sx={{ width: "180px", height: "180px" }}
+            src={!!uploadedFileUrl ? uploadedFileUrl : ""}
+          />
           <StyledFileInput
             ref={fileInputRef}
             id="profile-image-input"
             type="file"
-            onChange={(event) => console.log(event.target.files[0])}
-            accept="image/jpg, image/png"
+            onChange={handleFileUpload}
+            accept="image/jpg, image/png, image/jpeg"
           />
           <Button
             sx={{
