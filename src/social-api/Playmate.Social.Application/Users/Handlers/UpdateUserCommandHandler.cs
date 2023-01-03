@@ -31,7 +31,19 @@ public class UpdateUserCommandHandler : IHandlerWrapper<UpdateUserCommand, Updat
             return ResponseResult.ValidationError<UpdateUserResponse>("User ID is invalid");
         }
 
+        var userByUsername = await _usersRepository.FirstOrDefaultAsync(x => x.Email == request.Username);
+
+        if (userByUsername is not null)
+        {
+            return ResponseResult.ValidationError<UpdateUserResponse>("User with that username already exists");
+        }
+
         var user = await _usersRepository.GetByIdAsync(request.UserId);
+
+        if (user == null)
+        {
+            return ResponseResult.ValidationError<UpdateUserResponse>("User does not exist");
+        }
 
         user.Username = request.Username;
         var newProfilePictureUrl = user.ProfilePictureUrl;
