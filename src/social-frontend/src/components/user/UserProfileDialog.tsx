@@ -9,10 +9,11 @@ import {
   IconButton,
   TextField
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "../../app/storeHooks";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
 import { StyledDialog } from "../../styled/components/common/StyledDialog";
+import { StyledFileInput } from "../../styled/components/common/StyledFileInput";
 
 export interface IUserProfileDialogProps {
   handleCloseDialog: () => void;
@@ -23,6 +24,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
   const user = useAppSelector(selectUserIdentity);
   const [username, setUsername] = useState(user.username ?? "");
   const [usernameError, setUsernameError] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -92,6 +94,13 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
           }}
         >
           <Avatar sx={{ width: "180px", height: "180px" }} />
+          <StyledFileInput
+            ref={fileInputRef}
+            id="profile-image-input"
+            type="file"
+            onChange={(event) => console.log(event.target.files[0])}
+            accept="image/jpg, image/png"
+          />
           <Button
             sx={{
               position: "absolute",
@@ -101,6 +110,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
             variant="contained"
             size="small"
             color="secondary"
+            onClick={() => fileInputRef.current.click()}
           >
             Edit
           </Button>
