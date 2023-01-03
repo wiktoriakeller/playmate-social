@@ -1,6 +1,6 @@
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Box, IconButton, InputAdornment, Typography } from "@mui/material";
+import { Box, IconButton, InputAdornment, useMediaQuery } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import { GoogleLogin } from "@react-oauth/google";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -46,6 +46,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isFormValid, setIsFormValid] = useState(true);
   const [isFirstRender, setIsFirstRender] = useState(true);
+  const matches = useMediaQuery("(max-width:600px)");
 
   const [loginState, setLogin] = useState<ILoginFormState>({
     email: "",
@@ -264,7 +265,7 @@ const LoginPage = () => {
               ux_mode={"popup"}
               context={"signin"}
               size={"large"}
-              width={"400px"}
+              width={matches ? "350px" : "400px"}
               theme={themeMode === "dark" ? "filled_blue" : "outline"}
             />
           </Box>
