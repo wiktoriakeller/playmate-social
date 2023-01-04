@@ -35,6 +35,9 @@ public class CassandraConnection : IAsyncDisposable, ICassandraConnection
 
         Cluster = clusterBuilder.WithPort(CassandraConfiguration.Port)
             .AddContactPoint(CassandraConfiguration.ContactPoints)
+            .WithExecutionProfiles(options => options
+                .WithProfile(CassandraConfiguration.ChatProfile, profile => profile
+                    .WithConsistencyLevel(ConsistencyLevel.LocalOne)))
             .Build();
 
         var session = await Cluster.ConnectAsync();
@@ -76,7 +79,7 @@ public class CassandraConnection : IAsyncDisposable, ICassandraConnection
         await session.ExecuteAsync(createChatMessagesTable);
     }
 
-    public static bool ValidateServerCertificate(
+    private static bool ValidateServerCertificate(
             object sender,
             X509Certificate certificate,
             X509Chain chain,

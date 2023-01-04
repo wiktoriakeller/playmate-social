@@ -24,11 +24,9 @@ app.ApplyMigrations();
 
 await app.ConnectCassandra();
 
-if (builder.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+
+app.UseSwaggerUI();
 
 app.UseAuthentication();
 

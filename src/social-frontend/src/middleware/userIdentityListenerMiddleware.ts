@@ -13,6 +13,7 @@ import {
   IUserIdentityState,
   setUserIdentity
 } from "../slices/userIdentitySlice";
+import { setUserSearch } from "../slices/userSearchSlice";
 
 export const userIdentityListenerMiddleware = createListenerMiddleware();
 
@@ -29,6 +30,7 @@ userIdentityListenerMiddleware.startListening({
       apiListener.dispatch(clearChatState());
       apiListener.dispatch(setFriendsList([]));
       apiListener.dispatch(setFriendsListSearchPhrase(""));
+      apiListener.dispatch(setUserSearch([]));
     }
 
     storeUser(action.payload);

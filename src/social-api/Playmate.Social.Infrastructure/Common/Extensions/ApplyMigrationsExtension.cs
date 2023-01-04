@@ -12,9 +12,12 @@ public static class ApplyMigrationsExtension
         using var scope = app.Services.CreateScope();
         var services = scope.ServiceProvider;
         var context = services.GetRequiredService<ApplicationDbContext>();
-        if (context.Database.GetPendingMigrations().Any())
+        if (context.Database.CanConnect())
         {
-            context.Database.Migrate();
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
         }
     }
 }
