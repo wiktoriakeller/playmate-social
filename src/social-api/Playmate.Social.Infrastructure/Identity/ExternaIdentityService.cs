@@ -31,7 +31,7 @@ public class ExternaIdentityService : IExternalIdentityService
         {
             Email = payload.Email,
             Username = payload.Name,
-            ProfilePictureUrl = payload.Picture
+            ProfilePictureUrl = payload.Picture ?? string.Empty
         };
     }
 }

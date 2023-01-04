@@ -55,7 +55,7 @@ public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<Authentica
                 Email = payload.Email,
                 Username = payload.Username,
                 Password = string.Empty,
-                ProfilePictureUrl = payload.ProfilePictureUrl ?? string.Empty,
+                ProfilePictureUrl = payload.ProfilePictureUrl,
                 IsExternalUser = true
             };
 
