@@ -35,6 +35,9 @@ public class CassandraConnection : IAsyncDisposable, ICassandraConnection
 
         Cluster = clusterBuilder.WithPort(CassandraConfiguration.Port)
             .AddContactPoint(CassandraConfiguration.ContactPoints)
+            .WithExecutionProfiles(options => options
+                .WithProfile(CassandraConfiguration.ChatProfile, profile => profile
+                    .WithConsistencyLevel(ConsistencyLevel.LocalOne)))
             .Build();
 
         var session = await Cluster.ConnectAsync();
