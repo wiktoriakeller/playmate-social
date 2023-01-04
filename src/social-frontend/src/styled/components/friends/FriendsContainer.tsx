@@ -6,6 +6,7 @@ export const FriendsContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 320px;
+  width: 315px;
   height: 100%;
+  box-sizing: border-box;
 `;

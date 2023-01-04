@@ -1,5 +1,4 @@
-﻿using Playmate.Social.Domain.Entities;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace Playmate.Social.Application.Common.Contracts.Persistence;
 

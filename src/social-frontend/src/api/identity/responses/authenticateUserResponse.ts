@@ -7,5 +7,6 @@ export interface IAuthenticateUserResponse extends IResponse {
     username: string;
     jwtToken: string;
     refreshToken: string;
+    profilePictureUrl?: string;
   };
 }

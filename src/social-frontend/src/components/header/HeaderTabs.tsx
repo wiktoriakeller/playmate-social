@@ -3,14 +3,14 @@ import PeopleIcon from "@mui/icons-material/People";
 import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
 import Tabs from "@mui/material/Tabs";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import {
   selectCurrentTab,
   setCurrentTab,
   TabName,
   tabsDictionary
 } from "../../slices/tabSlice";
-import { StyledTab } from "../../styled/components/mui/StyledTab";
+import { StyledTab } from "../../styled/components/common/StyledTab";
 
 const HeaderTabs = () => {
   const currentTab = useAppSelector(selectCurrentTab);

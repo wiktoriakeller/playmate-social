@@ -1,7 +1,7 @@
 import SendIcon from "@mui/icons-material/Send";
 import { InputAdornment, Tooltip } from "@mui/material";
 import { useRef, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import { addChatMessage } from "../../slices/chatSlice";
 import {
   selectSelectedFriend,
@@ -9,8 +9,8 @@ import {
 } from "../../slices/friendsListSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
 import { StyledChatInput } from "../../styled/components/chat/StyledChatInput";
-import { StyledIconButton } from "../../styled/components/mui/StyledIconButton";
-import { StyledTextField } from "../../styled/components/mui/StyledTextField";
+import { StyledIconButton } from "../../styled/components/common/StyledIconButton";
+import { StyledTextField } from "../../styled/components/common/StyledTextField";
 import ChatEmojiPicker from "./ChatEmojiPicker";
 import { EmojiClickData } from "emoji-picker-react";
 
@@ -74,24 +74,23 @@ const ChatInput = () => {
           placeholder={"Aa"}
           size="small"
           sx={{
-            padding: "0 1%"
+            paddingRight: "5px"
           }}
           onChange={changeInputMessage}
           InputProps={{
             endAdornment: (
               <InputAdornment position="end">
-                <ChatEmojiPicker onEmojiClick={handleOnEmojiClick} chatInputTextRef={inputRef}/>
+                <ChatEmojiPicker
+                  onEmojiClick={handleOnEmojiClick}
+                  chatInputTextRef={inputRef}
+                />
               </InputAdornment>
             )
           }}
         />
       </form>
       <Tooltip title="Send">
-        <StyledIconButton
-          sx={{ marginRight: "1%", padding: "5px" }}
-          size="large"
-          onClick={sendMessage}
-        >
+        <StyledIconButton size="medium" onClick={sendMessage}>
           <SendIcon />
         </StyledIconButton>
       </Tooltip>

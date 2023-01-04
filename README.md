@@ -35,8 +35,10 @@ Setup of social application with and without Compose.
 Create `.env` file in the `src` folder, it should contain the following variables:
 
 - `SA_PASSWORD` - password to the database,
-- `JWT_KEY` - secret key for the JWT tokens
-- `REACT_APP_BASE_API_URL` - base url to the API.
+- `JWT_KEY` - secret key for the JWT tokens,
+- `REACT_APP_BASE_API_URL` - base url to the API,
+- `GOOGLE_CLIENT_ID` - client id for Google OAuth,
+- `GOOGLE_CLIENT_SECRET` - client secret for Google OAuth.
 
 Example file:
 
@@ -44,6 +46,8 @@ Example file:
 SA_PASSWORD=Your_password123
 JWT_KEY=super_secret_key
 REACT_APP_BASE_API_URL=http://localhost:5000
+GOOGLE_CLIENT_ID=123456789
+GOOGLE_CLIENT_SECRET=123456789
 ```
 
 Then in the `src` folder run:
@@ -64,12 +68,15 @@ To force rebuild of the containers run:
 docker compose up --build
 ```
 
+You can access the API at: `localhost:5000/swagger` and the website application at: `localhost:4000`.
+
 ### Without Docker Compose
 
-To run the social-frontend application without docker compose create `.env` file in the `src/social-frontend` folder with the `REACT_APP_BASE_API_URL` variable, e.g.:
+To run the social-frontend application without docker compose create `.env` file in the `src/social-frontend` folder with the `REACT_APP_BASE_API_URL` and `REACT_APP_GOOGLE_CLIENT_ID` variables, e.g.:
 
 ```
 REACT_APP_BASE_API_URL=http://localhost:5000
+REACT_APP_GOOGLE_CLIENT_ID=123456789
 ```
 
 Next start Cassandra Docker container:

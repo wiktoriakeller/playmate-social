@@ -8,21 +8,17 @@ export interface IChatMessage {
   content: string;
   isCurrentUserReceiver: boolean;
   createdAt: string;
+  joinGameUrl?: string;
 }
 
-export interface IFriendChatMessagesList {
-  friendId: string;
-  messages: IChatMessage[];
+export interface IFriendMessages {
+  canAddNewMessagesList: boolean;
   pageNumber: number;
-}
-
-export interface IPaginatedChatMessages {
-  currentPageNumber: number;
   messages: IChatMessage[];
 }
 
 export interface IChatMessagesDictionary {
-  [key: string]: IPaginatedChatMessages;
+  [friendId: string]: IFriendMessages;
 }
 
 export interface IChatState {
@@ -58,8 +54,9 @@ export const chatSlice = createSlice({
 
       if (state.chatState[friendId] === undefined) {
         state.chatState[friendId] = {
-          currentPageNumber: 0,
-          messages: []
+          messages: [],
+          pageNumber: 0,
+          canAddNewMessagesList: false
         };
       }
 
@@ -70,31 +67,52 @@ export const chatSlice = createSlice({
     },
     addChatMessagesList(
       state: IChatState,
-      action: PayloadAction<IFriendChatMessagesList>
+      action: PayloadAction<IFriendMessages & { friendId: string }>
     ) {
       const friendId = action.payload.friendId;
       if (state.chatState[friendId] === undefined) {
         state.chatState[friendId] = {
-          currentPageNumber: 0,
-          messages: []
+          messages: [],
+          pageNumber: 0,
+          canAddNewMessagesList: true
         };
       }
 
-      const formattedMessages = action.payload.messages.map((message) =>
-        getChatMessageWithFormattedDate(message)
-      );
+      if (
+        state.chatState[friendId].canAddNewMessagesList &&
+        action.payload.canAddNewMessagesList
+      ) {
+        const formattedMessages = action.payload.messages.map((message) =>
+          getChatMessageWithFormattedDate(message)
+        );
 
-      state.chatState[friendId].messages =
-        state.chatState[friendId].messages.concat(formattedMessages);
-
-      state.chatState[friendId].currentPageNumber = action.payload.pageNumber;
+        state.chatState[friendId].messages =
+          state.chatState[friendId].messages.concat(formattedMessages);
+        state.chatState[friendId].pageNumber = action.payload.pageNumber;
+        state.chatState[friendId].canAddNewMessagesList = false;
+      }
+    },
+    clearChatState(state: IChatState) {
+      state.chatState = {};
+    },
+    setCanAddNewMessagesList(
+      state: IChatState,
+      action: PayloadAction<{ canAdd: boolean; friendId: string }>
+    ) {
+      state.chatState[action.payload.friendId].canAddNewMessagesList =
+        action.payload.canAdd;
     }
   }
 });
 
-export const { addChatMessage, addChatMessagesList } = chatSlice.actions;
+export const {
+  addChatMessage,
+  addChatMessagesList,
+  clearChatState,
+  setCanAddNewMessagesList
+} = chatSlice.actions;
 
-export const selectChatMessages = (state: RootState): IChatMessagesDictionary =>
+export const selectChatState = (state: RootState): IChatMessagesDictionary =>
   state.chat.chatState;
 
 export default chatSlice.reducer;

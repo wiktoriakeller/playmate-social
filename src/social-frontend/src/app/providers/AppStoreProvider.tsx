@@ -2,11 +2,11 @@ import { ReactNode } from "react";
 import { Provider } from "react-redux";
 import { store } from "../store";
 
-interface AppStoreProvider {
+export interface IAppStoreProviderProps {
   children: ReactNode;
 }
 
-const AppStoreProvider = ({ children }: AppStoreProvider) => {
+const AppStoreProvider = ({ children }: IAppStoreProviderProps) => {
   return <Provider store={store}>{children}</Provider>;
 };
 

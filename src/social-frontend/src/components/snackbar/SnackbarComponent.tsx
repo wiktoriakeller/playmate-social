@@ -1,6 +1,6 @@
 import { Alert, Snackbar } from "@mui/material";
 import React, { useCallback } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import { closeSnackbar, selectSnackbarState } from "../../slices/snackbarSlice";
 
 const SnackbarComponent = () => {
@@ -15,7 +15,7 @@ const SnackbarComponent = () => {
 
       dispatch(closeSnackbar());
     },
-    []
+    [dispatch]
   );
 
   return (

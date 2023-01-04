@@ -2,13 +2,13 @@ import SearchIcon from "@mui/icons-material/Search";
 import { InputAdornment, Typography } from "@mui/material";
 import _ from "lodash";
 import { useCallback, useMemo, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import {
   selectFriendsListSearchPhrase,
   setFriendsListSearchPhrase
 } from "../../slices/friendsListSlice";
 import { StyledFriendsSearch } from "../../styled/components/friends/StyledFriendsSearch";
-import { StyledTextField } from "../../styled/components/mui/StyledTextField";
+import { StyledTextField } from "../../styled/components/common/StyledTextField";
 
 const FriendsSearch = () => {
   const dispatch = useAppDispatch();

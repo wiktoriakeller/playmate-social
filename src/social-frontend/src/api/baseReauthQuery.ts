@@ -12,7 +12,7 @@ import {
 import { IRefreshTokenResponse } from "./identity/responses/refreshTokenResponse";
 
 const baseUrl = process.env.REACT_APP_BASE_API_URL;
-const baseApiUrl = `${baseUrl}/api/v1`;
+export const baseApiUrl = `${baseUrl}/api/v1`;
 
 const baseQuery = fetchBaseQuery({
   baseUrl: baseApiUrl,
@@ -35,8 +35,9 @@ export const baseReauthQuery: BaseQueryFn<
 > = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
 
-  if (result.error && result.error.status === 401) {
+  if (!!result.error && result.error.status === 401) {
     const user = getUserFromStorage();
+
     const refreshResponse = await baseQuery(
       {
         url: "/identity/refresh",

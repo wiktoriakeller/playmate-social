@@ -8,6 +8,7 @@ export interface IUserIdentityState {
   username?: string;
   jwtToken?: string;
   refreshToken?: string;
+  profilePictureUrl?: string;
 }
 
 export interface IUserTokens {
@@ -20,7 +21,8 @@ export const getEmptyUserIdentity = () => ({
   email: null,
   username: null,
   jwtToken: null,
-  refreshToken: null
+  refreshToken: null,
+  profilePictureUrl: null
 });
 
 export const userIdentitySlice = createSlice({

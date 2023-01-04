@@ -9,4 +9,5 @@ public class AddChatMessageCommand : IRequestWrapper<AddChatMessageResponse>
     public Guid ReceiverId { get; set; }
     public string Content { get; set; }
     public DateTimeOffset CreatedAt { get; set; }
+    public string JoinGameUrl { get; set; }
 }

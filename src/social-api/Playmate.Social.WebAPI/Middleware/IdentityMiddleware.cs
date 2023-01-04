@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Playmate.Social.Application.Common.Contracts.Identity;
-using System.Text.Json;
+using System.Net;
 
 namespace Playmate.Social.WebAPI.Middleware;
 
@@ -19,20 +19,19 @@ public class IdentityMiddleware
 
         if (token is not null)
         {
-            var response = identityService.GetUserByJwtToken(token);
+            var user = identityService.GetUserByJwtToken(token);
 
-            if (response.Succeeded)
+            if (user is not null)
             {
-                context.Items["User"] = response.Data;
+                context.Items["User"] = user;
                 await _next(context);
             }
             else
             {
                 var contextResponse = context.Response;
                 contextResponse.ContentType = "application/json";
-                contextResponse.StatusCode = (int)response.HttpStatusCode;
-                var result = JsonSerializer.Serialize(response);
-                await contextResponse.WriteAsync(result);
+                contextResponse.StatusCode = (int)HttpStatusCode.Unauthorized;
+                await contextResponse.WriteAsync("Unauthorized access");
             }
         }
         else

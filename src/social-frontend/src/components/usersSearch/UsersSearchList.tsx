@@ -1,4 +1,4 @@
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../app/storeHooks";
 import { selectUserSearch } from "../../slices/userSearchSlice";
 import { UsersList } from "../../styled/components/userSearch/UsersList";
 import UsersSearchItem from "./UsersSearchItem";

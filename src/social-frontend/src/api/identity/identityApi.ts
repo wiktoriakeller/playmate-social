@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseReauthQuery } from "../baseReauthQuery";
+import { IAuthenticateExternalUserRequest } from "./requests/authenticateExternalUserRequest";
 import { IAuthenticateUserRequest } from "./requests/authenticateUserRequest";
 import { ICreateUserRequest } from "./requests/createUserRequest";
 import { IRefreshTokenRequest } from "./requests/refreshTokenRequest";
@@ -17,6 +18,16 @@ export const identityApi = createApi({
     >({
       query: (request) => ({
         url: "/identity/login",
+        method: "POST",
+        body: request
+      })
+    }),
+    authenticateExternalUser: builder.mutation<
+      IAuthenticateUserResponse,
+      IAuthenticateExternalUserRequest
+    >({
+      query: (request) => ({
+        url: `/identity/external-login`,
         method: "POST",
         body: request
       })
@@ -42,6 +53,7 @@ export const identityApi = createApi({
 
 export const {
   useAuthenticateUserMutation,
+  useAuthenticateExternalUserMutation,
   useCreateUserMutation,
   useRefreshTokenMutation
 } = identityApi;

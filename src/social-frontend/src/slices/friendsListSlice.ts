@@ -11,6 +11,7 @@ export interface IFriend {
   id: string;
   username: string;
   lastChatMessage?: ILastChatMessage;
+  profilePictureUrl?: string;
 }
 
 export interface IFriendsListState {
@@ -33,7 +34,7 @@ export const friendsListSlice = createSlice({
       state.friends = action.payload;
     },
     addFriend(state: IFriendsListState, action: PayloadAction<IFriend>) {
-      state.friends.push(action.payload);
+      state.friends = [action.payload, ...state.friends];
     },
     setSelectedFriend(
       state: IFriendsListState,

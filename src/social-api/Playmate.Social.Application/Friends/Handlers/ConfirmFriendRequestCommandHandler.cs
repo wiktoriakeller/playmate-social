@@ -12,13 +12,13 @@ namespace Playmate.Social.Application.Friends.Handlers;
 
 public class ConfirmFriendRequestCommandHandler : IHandlerWrapper<ConfirmFriendRequestCommand, ConfirmFriendRequestResponse>
 {
-    private readonly IFriendsRequestsRepository _friendsRequestsRepository;
+    private readonly IFriendRequestsRepository _friendsRequestsRepository;
     private readonly IFriendsRepository _friendsRepository;
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
 
     public ConfirmFriendRequestCommandHandler(
-        IFriendsRequestsRepository friendsRequestsRepository,
+        IFriendRequestsRepository friendsRequestsRepository,
         IFriendsRepository friendsRepository,
         ICurrentUserService currentUserService,
         IMapper mapper)
@@ -47,7 +47,13 @@ public class ConfirmFriendRequestCommandHandler : IHandlerWrapper<ConfirmFriendR
 
         if (request.Accept)
         {
-            var friend = new Friend() { AddresseeId = friendRequest.AddresseeId, RequesterId = friendRequest.RequesterId };
+            var friend = new Friend
+            {
+                AddresseeId = friendRequest.AddresseeId,
+                RequesterId = friendRequest.RequesterId,
+                FriendsSince = DateTimeOffset.UtcNow,
+            };
+
             await _friendsRepository.AddAsync(friend);
             response.CreatedFriend = _mapper.Map<FriendDto>(currentUser);
         }

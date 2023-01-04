@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Playmate.Social.Application.Common.Contracts.Identity;
+using Playmate.Social.Application.Identity.Dtos;
 using Playmate.Social.Domain.Entities;
 using Playmate.Social.Infrastructure.Common.Configurations;
-using Playmate.Social.Infrastructure.Identity.Dtos;
-using Playmate.Social.Infrastructure.Identity.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -50,7 +50,6 @@ public class JwtTokenService : IJwtTokenService
     public (bool success, string? jti, string? userId) IsJwtTokenValid(string jwtToken, bool validateLifetime)
     {
         var validatedJwt = GetPrincipalFromJwtToken(jwtToken, validateLifetime);
-
         var jti = validatedJwt?.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Jti)?.Value;
         var userId = validatedJwt?.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 
@@ -69,6 +68,7 @@ public class JwtTokenService : IJwtTokenService
         {
             var validationParameters = GetJwtValidationParameters(validateLifetime);
             var principal = tokenHandler.ValidateToken(jwtToken, validationParameters, out var validatedToken);
+
             if (!IsJwtWithValidSecurityAlgorithm(validatedToken))
             {
                 return null;
@@ -108,6 +108,7 @@ public class JwtTokenService : IJwtTokenService
             ValidIssuer = _tokenValidationParameters.ValidIssuer,
             ValidAudience = _tokenValidationParameters.ValidAudience,
             IssuerSigningKey = _tokenValidationParameters.IssuerSigningKey,
+            AlgorithmValidator= _tokenValidationParameters.AlgorithmValidator,
             ValidateLifetime = validateLifetime ? true : false,
             ClockSkew = _tokenValidationParameters.ClockSkew,
         };

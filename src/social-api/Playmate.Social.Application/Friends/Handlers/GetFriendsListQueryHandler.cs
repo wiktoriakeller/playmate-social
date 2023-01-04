@@ -7,7 +7,6 @@ using Playmate.Social.Application.Common.Contracts.Services;
 using Playmate.Social.Application.Friends.Dtos;
 using Playmate.Social.Application.Friends.Queries;
 using Playmate.Social.Application.Friends.Responses;
-using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Application.Friends.Handlers;
 
@@ -36,42 +35,40 @@ public class GetFriendsListQueryHandler : IHandlerWrapper<GetFriendsListQuery, G
     public async Task<Response<GetFriendsListResponse>> Handle(GetFriendsListQuery request, CancellationToken cancellationToken)
     {
         var search = request.Search.ToLower().Trim();
-        var user = _currentUserService.CurrentUser;
-        
-        var friends = await _friendsRepository.GetFriendsWhereAsync(user,
-            friend => (!string.IsNullOrWhiteSpace(search) 
-            && friend.Username.ToLower().Contains(search)) || string.IsNullOrWhiteSpace(search));
+        var currentUser = _currentUserService.CurrentUser;
 
-        var mappedFriends = _mapper.Map<IEnumerable<User>, IEnumerable<FriendListItemDto>>(friends);
+        var friends = await _friendsRepository.GetFriendDtosWhereAsync(currentUser,
+            friend => (!string.IsNullOrWhiteSpace(search) && friend.Username.ToLower().Contains(search)) || string.IsNullOrWhiteSpace(search));
 
-        foreach(var friend in mappedFriends)
+        var mappedFriends = _mapper.Map<IEnumerable<FriendDto>, IEnumerable<FriendListItemDto>>(friends);
+
+        foreach (var friend in mappedFriends)
         {
             var roomIdResponse = await _roomIdProvider.GetRoomIdByFriendId(friend.Id);
-            
-            if(roomIdResponse.Succeeded)
+
+            if (roomIdResponse.Succeeded)
             {
-                var messages = await _chatMessagesRepository.GetChatMessagesForRoomIdAsync(roomIdResponse.Data, 2);
+                var messages = await _chatMessagesRepository.GetChatMessagesForRoomIdAsync(roomIdResponse.Data!, 2);
                 var lastMessage = messages?.FirstOrDefault();
-                
-                if(lastMessage is not null)
+
+                if (lastMessage is not null)
                 {
                     var mappedMessage = new LastChatMessageDto
                     {
                         Content = lastMessage.Content,
                         SenderId = lastMessage.SenderId,
                         CreatedAt = lastMessage.CreatedAt,
-                        SenderUsername = friend.Username
+                        SenderUsername = lastMessage.SenderId == currentUser.Id ? currentUser.Username : friend.Username
                     };
-                    
+
                     friend.LastChatMessage = mappedMessage;
+                    friend.SortBy = mappedMessage.CreatedAt;
                 }
             }
         }
 
-        mappedFriends = mappedFriends.OrderByDescending(x => x.LastChatMessage?.CreatedAt);
-
+        mappedFriends = mappedFriends.OrderByDescending(x => x.SortBy);
         var response = new GetFriendsListResponse(mappedFriends);
-
         return ResponseResult.Ok(response);
     }
 }

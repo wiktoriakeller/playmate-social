@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch } from "../app/storeHooks";
 import { getUserFromStorage } from "../common/storage";
 import {
   getEmptyUserIdentity,

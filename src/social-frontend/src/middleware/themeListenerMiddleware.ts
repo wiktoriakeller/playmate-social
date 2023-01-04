@@ -1,12 +1,12 @@
 import { createListenerMiddleware, PayloadAction } from "@reduxjs/toolkit";
 import { storeTheme } from "../common/storage";
-import { IThemeState, setTheme } from "../slices/themeSlice";
+import { IThemeState, setThemeMode } from "../slices/themeSlice";
 
 export const themeListenerMiddleware = createListenerMiddleware();
 
 themeListenerMiddleware.startListening({
-  actionCreator: setTheme,
+  actionCreator: setThemeMode,
   effect: (action: PayloadAction<IThemeState>) => {
-    storeTheme(action.payload.theme);
+    storeTheme(action.payload.themeMode);
   }
 });

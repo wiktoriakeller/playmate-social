@@ -1,24 +1,21 @@
-import {
-  Avatar,
-  Box,
-  IconButton,
-  Menu,
-  MenuItem,
-  Tooltip,
-  Typography
-} from "@mui/material";
+import { Box, Menu, MenuItem, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch } from "../../app/storeHooks";
 import {
   getEmptyUserIdentity,
   setUserIdentity
 } from "../../slices/userIdentitySlice";
+import UserAvatar from "./UserAvatar";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import LogoutIcon from "@mui/icons-material/Logout";
+import UserProfileDialog from "./UserProfileDialog";
 
 const UserMenu = () => {
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const disptach = useAppDispatch();
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [isUserProfileOpen, setIsUserProfileOpen] = useState(false);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -34,28 +31,31 @@ const UserMenu = () => {
     navigate("/login");
   };
 
-  const handleUserProfile = () => {
+  const handleUserProfileOpen = () => {
     handleCloseUserMenu();
+    setIsUserProfileOpen(true);
+  };
+
+  const handleUserProfileClose = () => {
+    setIsUserProfileOpen(false);
   };
 
   const settings = [
     {
       name: "Profile",
-      handler: handleUserProfile
+      handler: handleUserProfileOpen,
+      icon: <AccountBoxIcon sx={{ marginLeft: "-2px" }} />
     },
     {
       name: "Logout",
-      handler: handleUserLogout
+      handler: handleUserLogout,
+      icon: <LogoutIcon />
     }
   ];
 
   return (
-    <Box>
-      <Tooltip title="Open settings">
-        <IconButton onClick={handleOpenUserMenu}>
-          <Avatar sx={{ width: "28px", height: "28px" }} />
-        </IconButton>
-      </Tooltip>
+    <>
+      <UserAvatar onAvatarClick={handleOpenUserMenu} />
       <Menu
         sx={{ mt: "45px" }}
         id="menu-appbar"
@@ -74,11 +74,25 @@ const UserMenu = () => {
       >
         {settings.map((setting) => (
           <MenuItem key={setting.name} onClick={setting.handler}>
-            <Typography textAlign="center">{setting.name}</Typography>
+            <Box
+              sx={{
+                display: "flex",
+                gap: "8px",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              {setting.icon}
+              <span>{setting.name}</span>
+            </Box>
           </MenuItem>
         ))}
       </Menu>
-    </Box>
+      <UserProfileDialog
+        isOpen={isUserProfileOpen}
+        handleCloseDialog={handleUserProfileClose}
+      />
+    </>
   );
 };
 

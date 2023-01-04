@@ -6,12 +6,13 @@ export interface IFriendRequest {
   from: {
     id: string;
     username: string;
+    profilePictureUrl?: string;
   };
 }
 
 export interface IFriendRequestConfirmation {
   requestId: string;
-  requesterid: string;
+  requesterId: string;
   accept: boolean;
 }
 

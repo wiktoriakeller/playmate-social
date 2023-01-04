@@ -8,12 +8,12 @@ export interface IMainLayoutProps {
 
 const MainLayout = ({ children }: IMainLayoutProps) => {
   return (
-    <div>
+    <>
       <Header />
       <main>
         <AuthRedirector>{children}</AuthRedirector>
       </main>
-    </div>
+    </>
   );
 };
 

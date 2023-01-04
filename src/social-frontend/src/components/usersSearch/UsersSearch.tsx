@@ -1,8 +1,8 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { InputAdornment, TextField } from "@mui/material";
+import { InputAdornment } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLazySearchUsersQuery } from "../../api/users/usersApi";
-import { useAppDispatch } from "../../app/hooks";
+import { useAppDispatch } from "../../app/storeHooks";
 import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
 import { setUserSearch } from "../../slices/userSearchSlice";
 import { StyledUserSearch } from "../../styled/components/userSearch/StyledUserSearch";
@@ -37,7 +37,7 @@ const UsersSearch = () => {
     return () => {
       clearTimeout(debounce);
     };
-  }, [username]);
+  }, [username, dispatch, isLoading, searchQuery]);
 
   return (
     <StyledUserSearch

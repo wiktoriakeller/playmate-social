@@ -1,23 +1,24 @@
 ﻿using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Identity;
+using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.Common.Contracts.Services;
 
 namespace Playmate.Social.Application.Common.Services;
 
 public class RoomIdProvider : IRoomIdProvider
 {
-    private readonly IIdentityService _identityService;
+    private readonly IUsersRepository _usersRepository;
     private readonly ICurrentUserService _currentUserService;
 
-    public RoomIdProvider(IIdentityService identityService, ICurrentUserService currentUserService)
+    public RoomIdProvider(IUsersRepository usersRepository, ICurrentUserService currentUserService)
     {
-        _identityService = identityService;
+        _usersRepository = usersRepository;
         _currentUserService = currentUserService;
     }
 
     public async Task<Response<string>> GetRoomIdByFriendId(Guid friendId)
     {
-        var friend = await _identityService.GetUserById(friendId);
+        var friend = await _usersRepository.FirstOrDefaultAsync(u => u.Id == friendId);
 
         if (friend is null)
         {

@@ -1,5 +1,5 @@
 import { Avatar } from "@mui/material";
-import { useAppSelector } from "../../app/hooks";
+import { useAppSelector } from "../../app/storeHooks";
 import { selectSelectedFriend } from "../../slices/friendsListSlice";
 import { StyledChatHeader } from "../../styled/components/chat/StyledChatHeader";
 
@@ -8,7 +8,10 @@ const ChatHeader = () => {
 
   return (
     <StyledChatHeader>
-      <Avatar alt={selectedUser.username} />
+      <Avatar
+        alt={selectedUser.username}
+        src={selectedUser.profilePictureUrl ?? ""}
+      />
       <span>{selectedUser?.username}</span>
     </StyledChatHeader>
   );

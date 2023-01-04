@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +10,6 @@ using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Domain.Entities;
 using Playmate.Social.Infrastructure.Common.Configurations;
 using Playmate.Social.Infrastructure.Identity;
-using Playmate.Social.Infrastructure.Identity.Interfaces;
 using Playmate.Social.Infrastructure.Persistence;
 using Playmate.Social.Infrastructure.Persistence.Interfaces;
 using Playmate.Social.Infrastructure.Repositories;
@@ -26,6 +26,7 @@ public static class ConfigureServicesExtension
         AddAuthentication(services, configuration);
         AddRepositories(services);
         AddServices(services);
+        AddBlobStorage(services, configuration);
 
         services.AddAutoMapper(typeof(ConfigureServicesExtension).Assembly);
         return services;
@@ -46,6 +47,14 @@ public static class ConfigureServicesExtension
         services.AddScoped<IChatMessagesRepository, ChatMessagesRepository>();
     }
 
+    private static void AddBlobStorage(IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration["BlobStorage:ConnectionString"];
+        services.Configure<BlobStorageConfiguration>(configuration.GetSection(BlobStorageConfiguration.Section));
+        services.AddSingleton(x => new BlobServiceClient(connectionString));
+        services.AddScoped<IFileStorageService, BlobStorageService>();
+    }
+
     private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)
     {
         var tokenValidationParameters = new TokenValidationParameters
@@ -54,6 +63,7 @@ public static class ConfigureServicesExtension
             ValidIssuer = configuration["Authentication:JwtTokensConfiguration:Issuer"],
             ValidAudience = configuration["Authentication:JwtTokensConfiguration:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Authentication:JwtTokensConfiguration:Key"]!)),
+            ValidAlgorithms = new List<string> { SecurityAlgorithms.HmacSha256 },
             ValidateLifetime = true,
             ClockSkew = TimeSpan.Zero
         };
@@ -91,23 +101,24 @@ public static class ConfigureServicesExtension
 
         services.AddSingleton(tokenValidationParameters);
         services.Configure<JwtTokensConfiguration>(configuration.GetSection(JwtTokensConfiguration.Section));
+        services.Configure<GoogleAuthConfiguration>(configuration.GetSection(GoogleAuthConfiguration.Section));
     }
 
     private static void AddRepositories(IServiceCollection services)
     {
         services.AddScoped<IRepository<RefreshToken>, BaseRepository<RefreshToken>>();
-        services.AddScoped<IRepository<User>, BaseRepository<User>>();
-        services.AddScoped<IFriendsRequestsRepository, FriendsRequestsRepository>();
+        services.AddScoped<IUsersRepository, UsersRepository>();
+        services.AddScoped<IFriendRequestsRepository, FriendRequestsRepository>();
         services.AddScoped<IFriendsRepository, FriendsRepository>();
-        services.AddScoped<IRepository<Game>, BaseRepository<Game>>();
-        services.AddScoped<IRepository<GameResult>, BaseRepository<GameResult>>();
+        services.AddScoped<IGamesRepository, GamesRepository>();
+        services.AddScoped<IGameResultsRepository, GameResultsRepository>();
     }
 
     private static void AddServices(IServiceCollection services)
     {
         services.AddHttpContextAccessor();
-
         services.AddScoped<IIdentityService, IdentityService>();
+        services.AddScoped<IExternalIdentityService, ExternaIdentityService>();
         services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();

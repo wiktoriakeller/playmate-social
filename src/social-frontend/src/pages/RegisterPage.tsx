@@ -6,21 +6,20 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateUserMutation } from "../api/identity/identityApi";
 import { ICreateUserResponse } from "../api/identity/responses/createUserResponse";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch } from "../app/storeHooks";
 import {
   validateAll,
   validateEquality,
-  validateMinLength,
   validateRange,
   ValidationFunc
 } from "../common/validators";
 import { openSnackbar, SnackbarSeverity } from "../slices/snackbarSlice";
-import { FormTextField } from "../styled/components/mui/FormTextField";
-import { StyledButton } from "../styled/components/mui/StyledButton";
-import { StyledDivider } from "../styled/components/mui/StyledDivider";
-import { StyledLink } from "../styled/components/mui/StyledLink";
-import { FormBox } from "../styled/pages/FormBox";
-import { FormContainer } from "../styled/pages/FormContainer";
+import { FormBox } from "../styled/components/common/FormBox";
+import { FormContainer } from "../styled/components/common/FormContainer";
+import { FormTextField } from "../styled/components/common/FormTextField";
+import { StyledButton } from "../styled/components/common/StyledButton";
+import { StyledLink } from "../styled/components/common/StyledLink";
+import { StyledSpan } from "../styled/components/common/StyledSpan";
 
 interface IRegisterFormState {
   email: string;
@@ -60,50 +59,59 @@ const RegisterPage = () => {
       confirmPasswordError: ""
     });
 
-  const validators: ValidationFunc[] = [
-    () =>
-      validateMinLength(registerState.email, 1, "Email is required", (value) =>
-        setRegisterValidationState((prev) => ({
-          ...prev,
-          emailError: value
-        }))
-      ),
-    () =>
-      validateMinLength(
-        registerState.username,
-        2,
-        "Username must be at least 2 characters long",
-        (value) =>
-          setRegisterValidationState((prev) => ({
-            ...prev,
-            usernameError: value
-          }))
-      ),
-    () =>
-      validateEquality(
-        registerState.confirmPassword,
-        registerState.password,
-        "Password and confirm password must be equal",
-        (value) => {
-          setRegisterValidationState((prev) => ({
-            ...prev,
-            confirmPasswordError: value
-          }));
-        }
-      ),
-    () =>
-      validateRange(
-        registerState.password,
-        6,
-        20,
-        "Password must be 6-20 characters long",
-        (value) =>
-          setRegisterValidationState((prev) => ({
-            ...prev,
-            passwordError: value
-          }))
-      )
-  ];
+  const validators: ValidationFunc[] = useMemo(
+    () => [
+      () =>
+        validateRange(
+          registerState.email,
+          1,
+          20,
+          "Email is required and can have at most 20 characters",
+          (value) =>
+            setRegisterValidationState((prev) => ({
+              ...prev,
+              emailError: value
+            }))
+        ),
+      () =>
+        validateRange(
+          registerState.username,
+          2,
+          20,
+          "Username must be 2-20 characters long",
+          (value) =>
+            setRegisterValidationState((prev) => ({
+              ...prev,
+              usernameError: value
+            }))
+        ),
+      () =>
+        validateEquality(
+          registerState.confirmPassword,
+          registerState.password,
+          "Password and confirm password must be equal",
+          (value) => {
+            setRegisterValidationState((prev) => ({
+              ...prev,
+              confirmPasswordError: value
+            }));
+          }
+        ),
+      () =>
+        validateRange(
+          registerState.password,
+          6,
+          20,
+          "Password must be 6-20 characters long",
+          (value) =>
+            setRegisterValidationState((prev) => ({
+              ...prev,
+              passwordError: value
+            }))
+        )
+    ],
+    [registerState]
+  );
 
   const validateForm = useCallback(
     (validate: boolean) => {
@@ -115,12 +123,12 @@ const RegisterPage = () => {
 
       return false;
     },
-    [registerState]
+    [validators]
   );
 
   useEffect(() => {
     validateForm(!isFirstRender);
-  }, [registerState]);
+  }, [registerState, isFirstRender, validateForm]);
 
   const toggleShowPassword = useCallback(() => {
     setShowPassword((prev) => !prev);
@@ -159,12 +167,24 @@ const RegisterPage = () => {
           );
         }
       );
-  }, [registerState]);
+  }, [
+    registerState,
+    createUser,
+    dispatch,
+    isFirstRender,
+    navigate,
+    validateForm
+  ]);
 
   return (
     <FormContainer>
       <Paper elevation={3}>
-        <FormBox>
+        <FormBox
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleRegister();
+          }}
+        >
           <FormTextField
             error={registerValidationState.emailError.length > 0}
             helperText={registerValidationState.emailError}
@@ -178,6 +198,7 @@ const RegisterPage = () => {
               })
             }
             fullWidth
+            size="small"
           />
           <FormTextField
             error={registerValidationState.usernameError.length > 0}
@@ -191,6 +212,7 @@ const RegisterPage = () => {
               })
             }
             fullWidth
+            size="small"
           />
           <FormTextField
             error={registerValidationState.passwordError.length > 0}
@@ -212,11 +234,16 @@ const RegisterPage = () => {
                     aria-label="toggle password visibility"
                     onClick={toggleShowPassword}
                   >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                    {showPassword ? (
+                      <VisibilityOff fontSize="small" />
+                    ) : (
+                      <Visibility fontSize="small" />
+                    )}
                   </IconButton>
                 </InputAdornment>
               )
             }}
+            size="small"
           />
           <FormTextField
             error={registerValidationState.confirmPasswordError.length > 0}
@@ -238,23 +265,31 @@ const RegisterPage = () => {
                     aria-label="toggle password visibility"
                     onClick={toggleShowConfirmPassword}
                   >
-                    {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                    {showConfirmPassword ? (
+                      <VisibilityOff fontSize="small" />
+                    ) : (
+                      <Visibility fontSize="small" />
+                    )}
                   </IconButton>
                 </InputAdornment>
               )
             }}
+            size="small"
           />
           <StyledButton
+            type="submit"
             variant="contained"
-            onClick={handleRegister}
             disabled={!isFormValid}
+            size="medium"
           >
             Register
           </StyledButton>
-          <StyledDivider variant="middle" />
-          <StyledLink href="/login" underline="hover">
-            Already have an account?
-          </StyledLink>
+          <StyledSpan>
+            {"Already have an account? "}
+            <StyledLink href="/login" underline="hover">
+              Sign In
+            </StyledLink>
+          </StyledSpan>
         </FormBox>
       </Paper>
     </FormContainer>
