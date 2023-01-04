@@ -6,6 +6,7 @@ export interface IFriendRequest {
   from: {
     id: string;
     username: string;
+    profilePictureUrl?: string;
   };
 }
 
