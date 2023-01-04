@@ -31,7 +31,7 @@ public class UpdateUserCommandHandler : IHandlerWrapper<UpdateUserCommand, Updat
             return ResponseResult.ValidationError<UpdateUserResponse>("User ID is invalid");
         }
 
-        var userByUsername = await _usersRepository.FirstOrDefaultAsync(x => x.Email == request.Username);
+        var userByUsername = await _usersRepository.FirstOrDefaultAsync(x => x.Username == request.Username && x.Id != request.UserId);
 
         if (userByUsername is not null)
         {

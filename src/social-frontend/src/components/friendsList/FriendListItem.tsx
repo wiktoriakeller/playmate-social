@@ -1,5 +1,4 @@
 import Avatar from "@mui/material/Avatar";
-import { useCallback } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import {
   IFriend,
@@ -23,20 +22,15 @@ const FriendListItem = (props: IFriendsListItemProps) => {
   const currentUser = useAppSelector(selectUserIdentity);
   const selectedFriend = useAppSelector(selectSelectedFriend);
 
-  const getLastMessage = useCallback(
-    (message?: ILastChatMessage) => {
-      if (!!message) {
-        const senderName =
-          currentUser.username === message.senderUsername
-            ? "You"
-            : message.senderUsername;
-        return `${senderName}: ${message.content}`;
-      }
+  const getLastMessage = (message?: ILastChatMessage) => {
+    if (!!message) {
+      const senderName =
+        currentUser.id === message.senderId ? "You" : message.senderUsername;
+      return `${senderName}: ${message.content}`;
+    }
 
-      return "You:";
-    },
-    [currentUser.username]
-  );
+    return "You:";
+  };
 
   const setCurrentFriend = () => dispatch(setSelectedFriend(props as IFriend));
 

@@ -15,10 +15,13 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
             .MaximumLength(20);
 
         RuleFor(x => x.PictureSize)
-            .LessThanOrEqualTo(MaxFileSize);
+            .LessThanOrEqualTo(MaxFileSize)
+            .When(x => x.Picture is not null)
+            .WithMessage("Provided file is bigger than 1MB");
 
         RuleFor(x => x.PictureType)
             .Must(x => PermittedExtensions.Contains(x))
+            .When(x => x.Picture is not null)
             .WithMessage("Only '.jpg' and '.png' are valid extensions");
     }
 }

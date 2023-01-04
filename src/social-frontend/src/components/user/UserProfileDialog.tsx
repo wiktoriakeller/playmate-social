@@ -10,8 +10,14 @@ import {
   TextField
 } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
-import { useAppSelector } from "../../app/storeHooks";
-import { selectUserIdentity } from "../../slices/userIdentitySlice";
+import { IUpdateUserResponse } from "../../api/users/responses/updateUserResponse";
+import { useUpdateUserMutation } from "../../api/users/usersApi";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
+import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
+import {
+  selectUserIdentity,
+  setUserIdentity
+} from "../../slices/userIdentitySlice";
 import { StyledDialog } from "../../styled/components/common/StyledDialog";
 import { StyledFileInput } from "../../styled/components/common/StyledFileInput";
 
@@ -21,6 +27,8 @@ export interface IUserProfileDialogProps {
 }
 
 const UserProfileDialog = (props: IUserProfileDialogProps) => {
+  const dispatch = useAppDispatch();
+  const [updateUser] = useUpdateUserMutation();
   const user = useAppSelector(selectUserIdentity);
   const [username, setUsername] = useState(user.username ?? "");
   const [usernameError, setUsernameError] = useState(false);
@@ -28,15 +36,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
   const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(
     user.profilePictureUrl
   );
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setUsername(user.username ?? "");
-      setUploadedFileUrl(user.profilePictureUrl);
-    }, 100);
-
-    return () => clearTimeout(timeout);
-  }, [props.isOpen]);
+  const [uploadedFile, setUploadedFile] = useState<null | File>(null);
 
   useEffect(() => {
     if (username.length < 2 || username.length > 20) {
@@ -46,20 +46,68 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
     }
   }, [username]);
 
-  const handleSaveChanges = () => {
+  const handleCloseDialog = () => {
+    const timeout = setTimeout(() => {
+      setUsername(user.username ?? "");
+      setUploadedFileUrl(user.profilePictureUrl);
+      setUploadedFile(null);
+    }, 100);
     props.handleCloseDialog();
+  };
+
+  const handleSaveChanges = () => {
+    if (username === user.username && uploadedFile === null) {
+      handleCloseDialog();
+    }
+
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("picture", uploadedFile);
+
+    updateUser({
+      userId: user.id,
+      formData: formData
+    })
+      .unwrap()
+      .then((response) => {
+        if (!!response) {
+          dispatch(
+            setUserIdentity({
+              ...user,
+              username: response.data.username,
+              profilePictureUrl: response.data.profilePictureUrl
+            })
+          );
+          handleCloseDialog();
+        }
+      })
+      .catch(
+        (error: { status: string | number; data: IUpdateUserResponse }) => {
+          dispatch(
+            openSnackbar({
+              message:
+                error.data?.errors.length > 0
+                  ? error.data.errors[0]
+                  : "Provided data is invalid",
+              severity: SnackbarSeverity.Error,
+              status: error.status
+            })
+          );
+        }
+      );
   };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files[0];
     const url = URL.createObjectURL(file);
     setUploadedFileUrl(url);
+    setUploadedFile(file);
   };
 
   return (
     <StyledDialog
       open={props.isOpen}
-      onClose={props.handleCloseDialog}
+      onClose={handleCloseDialog}
       fullWidth={true}
       maxWidth="sm"
       scroll="paper"
@@ -70,7 +118,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
         <IconButton
           aria-label="close"
           size="small"
-          onClick={props.handleCloseDialog}
+          onClick={handleCloseDialog}
           sx={{
             position: "absolute",
             right: 10,
