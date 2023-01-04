@@ -79,7 +79,7 @@ public class CassandraConnection : IAsyncDisposable, ICassandraConnection
         await session.ExecuteAsync(createChatMessagesTable);
     }
 
-    public static bool ValidateServerCertificate(
+    private static bool ValidateServerCertificate(
             object sender,
             X509Certificate certificate,
             X509Chain chain,

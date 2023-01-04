@@ -28,8 +28,8 @@ export interface IUserProfileDialogProps {
 
 const UserProfileDialog = (props: IUserProfileDialogProps) => {
   const dispatch = useAppDispatch();
-  const [updateUser] = useUpdateUserMutation();
   const user = useAppSelector(selectUserIdentity);
+  const [updateUser] = useUpdateUserMutation();
   const [username, setUsername] = useState(user.username ?? "");
   const [usernameError, setUsernameError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -47,7 +47,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
   }, [username]);
 
   const handleCloseDialog = () => {
-    const timeout = setTimeout(() => {
+    setTimeout(() => {
       setUsername(user.username ?? "");
       setUploadedFileUrl(user.profilePictureUrl);
       setUploadedFile(null);
