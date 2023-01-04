@@ -11,6 +11,7 @@ export interface IFriend {
   id: string;
   username: string;
   lastChatMessage?: ILastChatMessage;
+  profilePictureUrl?: string;
 }
 
 export interface IFriendsListState {

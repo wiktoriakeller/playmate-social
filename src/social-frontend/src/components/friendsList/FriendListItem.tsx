@@ -15,7 +15,7 @@ export interface IFriendsListItemProps {
   id: string;
   username: string;
   lastChatMessage?: ILastChatMessage;
-  logoPath?: string;
+  profilePictureUrl?: string;
 }
 
 const FriendListItem = (props: IFriendsListItemProps) => {
@@ -45,7 +45,7 @@ const FriendListItem = (props: IFriendsListItemProps) => {
       onClick={setCurrentFriend}
       isSelected={selectedFriend?.id === props.id}
     >
-      <Avatar alt={props.username} src={props.logoPath} />
+      <Avatar alt={props.username} src={props.profilePictureUrl ?? ""} />
       <FriendData isSelected={selectedFriend?.id === props.id}>
         <span>{props.username}</span>
         <span>{getLastMessage(props.lastChatMessage)}</span>

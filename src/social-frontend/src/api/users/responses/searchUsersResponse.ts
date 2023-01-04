@@ -11,4 +11,5 @@ export interface IUserSearchItem {
   username: string;
   isFriend: boolean;
   pendingRequest: boolean;
+  profilePictureUrl?: string;
 }

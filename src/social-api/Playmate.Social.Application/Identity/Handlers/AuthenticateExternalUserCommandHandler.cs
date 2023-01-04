@@ -55,6 +55,7 @@ public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<Authentica
                 Email = payload.Email,
                 Username = payload.Username,
                 Password = string.Empty,
+                ProfilePictureUrl = payload.ProfilePictureUrl ?? string.Empty,
                 IsExternalUser = true
             };
 
@@ -78,6 +79,7 @@ public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<Authentica
             Id = externalUserByEmail!.Id,
             Username = externalUserByEmail.Username,
             Email = externalUserByEmail.Email,
+            ProfilePictureUrl = externalUserByEmail.ProfilePictureUrl,
             JwtToken = jwtToken.Token,
             RefreshToken = refreshToken
         };

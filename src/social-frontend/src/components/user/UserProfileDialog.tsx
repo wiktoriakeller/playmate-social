@@ -25,12 +25,14 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
   const [username, setUsername] = useState(user.username ?? "");
   const [usernameError, setUsernameError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(null);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState<string | null>(
+    user.profilePictureUrl
+  );
 
   useEffect(() => {
     const timeout = setTimeout(() => {
       setUsername(user.username ?? "");
-      setUploadedFileUrl(null);
+      setUploadedFileUrl(user.profilePictureUrl);
     }, 100);
 
     return () => clearTimeout(timeout);
