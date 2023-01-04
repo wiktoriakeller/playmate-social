@@ -8,7 +8,10 @@ const ChatHeader = () => {
 
   return (
     <StyledChatHeader>
-      <Avatar alt={selectedUser.username} />
+      <Avatar
+        alt={selectedUser.username}
+        src={selectedUser.profilePictureUrl ?? ""}
+      />
       <span>{selectedUser?.username}</span>
     </StyledChatHeader>
   );

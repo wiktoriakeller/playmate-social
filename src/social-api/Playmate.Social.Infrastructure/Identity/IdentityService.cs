@@ -52,6 +52,7 @@ public class IdentityService : IIdentityService
         {
             Email = createUserCommand.Email,
             Username = createUserCommand.Username,
+            ProfilePictureUrl = createUserCommand.ProfilePictureUrl,
             IsExternalUser = createUserCommand.IsExternalUser
         };
 
@@ -86,6 +87,7 @@ public class IdentityService : IIdentityService
             Id = user.Id,
             Username = user.Username,
             Email = user.Email,
+            ProfilePictureUrl = user.ProfilePictureUrl,
             JwtToken = newJwt.Token,
             RefreshToken = newRefreshToken
         };

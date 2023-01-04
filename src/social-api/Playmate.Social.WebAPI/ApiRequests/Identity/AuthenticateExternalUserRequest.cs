@@ -1,4 +1,4 @@
-﻿namespace Playmate.Social.WebAPI.ApiRequests.Users;
+﻿namespace Playmate.Social.WebAPI.ApiRequests.Identity;
 
 public class AuthenticateExternalUserRequest
 {

@@ -39,7 +39,8 @@ public class FriendsRepository : BaseRepository<Friend>, IFriendsRepository
             {
                 Id = f.Addressee.Id,
                 Username = f.Addressee.Username,
-                FriendsSince = f.FriendsSince
+                FriendsSince = f.FriendsSince,
+                ProfilePictureUrl = f.Addressee.ProfilePictureUrl
             });
 
         var friends2 = _dbContext.Set<Friend>()
@@ -49,7 +50,8 @@ public class FriendsRepository : BaseRepository<Friend>, IFriendsRepository
             {
                 Id = f.Requester.Id,
                 Username = f.Requester.Username,
-                FriendsSince = f.FriendsSince
+                FriendsSince = f.FriendsSince,
+                ProfilePictureUrl = f.Requester.ProfilePictureUrl
             })
             .Concat(friends);
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Azure.Storage.Blobs;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,7 @@ public static class ConfigureServicesExtension
         AddAuthentication(services, configuration);
         AddRepositories(services);
         AddServices(services);
+        AddBlobStorage(services, configuration);
 
         services.AddAutoMapper(typeof(ConfigureServicesExtension).Assembly);
         return services;
@@ -43,6 +45,14 @@ public static class ConfigureServicesExtension
         services.Configure<CassandraConfiguration>(configuration.GetSection(CassandraConfiguration.Section));
         services.AddSingleton<ICassandraConnection, CassandraConnection>();
         services.AddScoped<IChatMessagesRepository, ChatMessagesRepository>();
+    }
+
+    private static void AddBlobStorage(IServiceCollection services, IConfiguration configuration)
+    {
+        var connectionString = configuration["BlobStorage:ConnectionString"];
+        services.Configure<BlobStorageConfiguration>(configuration.GetSection(BlobStorageConfiguration.Section));
+        services.AddSingleton(x => new BlobServiceClient(connectionString));
+        services.AddScoped<IFileStorageService, BlobStorageService>();
     }
 
     private static void AddAuthentication(IServiceCollection services, IConfiguration configuration)

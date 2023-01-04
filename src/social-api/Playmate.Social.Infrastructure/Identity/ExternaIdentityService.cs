@@ -30,7 +30,8 @@ public class ExternaIdentityService : IExternalIdentityService
         return new ExternalAuthPayloadDto
         {
             Email = payload.Email,
-            Username = payload.Name
+            Username = payload.Name,
+            ProfilePictureUrl = payload.Picture ?? string.Empty
         };
     }
 }

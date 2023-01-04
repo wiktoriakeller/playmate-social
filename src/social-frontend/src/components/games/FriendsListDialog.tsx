@@ -40,13 +40,16 @@ const FriendsListDialog = (props: FriendsListDialogProps) => {
   }
 
   return (
-    <StyledDialog onClose={handleClose} open={props.open}>
+    <StyledDialog onClose={handleClose} open={props.open} scroll="paper">
       <DialogTitle>Select opponent</DialogTitle>
       <List>
         {friends?.data.friends.map((friend) => (
           <ListItem onClick={() => handleListItemClick(friend)} key={friend.id}>
             <ListItemAvatar>
-              <Avatar></Avatar>
+              <Avatar
+                alt={friend.username}
+                src={friend.profilePictureUrl ?? ""}
+              />
             </ListItemAvatar>
             <ListItemText primary={friend.username} />
           </ListItem>

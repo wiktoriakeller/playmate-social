@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Playmate.Social.Application.Identity.Commands;
-using Playmate.Social.WebAPI.ApiRequests.Users;
+using Playmate.Social.WebAPI.ApiRequests.Identity;
 
 namespace Playmate.Social.WebAPI.Controllers;
 
