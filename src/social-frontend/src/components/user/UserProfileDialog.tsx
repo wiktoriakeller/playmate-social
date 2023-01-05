@@ -94,7 +94,12 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
               profilePictureUrl: response.data.profilePictureUrl
             })
           );
-
+          dispatch(
+            openSnackbar({
+              message: "Successfully updated user profile",
+              severity: SnackbarSeverity.Success
+            })
+          );
           setIsLoading(false);
           handleCloseDialog(
             response.data.username,
