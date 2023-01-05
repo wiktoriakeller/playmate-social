@@ -5,4 +5,5 @@ namespace Playmate.Social.Application.Common.Contracts.Persistence;
 public interface IFileStorageService
 {
     Task<string> UploadUserAvatarAsync(FileDto file);
+    Task DeleteUserAvatarAsync(string fileName);
 }
