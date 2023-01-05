@@ -29,6 +29,6 @@ public class BlobStorageService : IFileStorageService
     {
         var containerClient = _blobServiceClient.GetBlobContainerClient(_blobStorageConfiguration.UsersAvatarsContainerName);
         var blobClient = containerClient.GetBlobClient(fileName);
-        await blobClient.DeleteIfExistsAsync();
+        await blobClient.DeleteIfExistsAsync(Azure.Storage.Blobs.Models.DeleteSnapshotsOption.IncludeSnapshots);
     }
 }

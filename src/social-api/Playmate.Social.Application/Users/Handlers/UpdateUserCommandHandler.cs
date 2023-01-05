@@ -48,24 +48,27 @@ public class UpdateUserCommandHandler : IHandlerWrapper<UpdateUserCommand, Updat
 
         user.Username = request.Username;
         var newProfilePictureUrl = user.ProfilePictureUrl;
+        var newProfilePictureName = user.ProfilePictureName;
 
         if (request.Picture is not null)
         {
             var randomToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(10));
-            var fileName = $"avatars/{user.Id}/{user.Email}-{randomToken}.jpg";
+            newProfilePictureName = $"avatars/{user.Id}/{user.Email}-{randomToken}.jpg";
             newProfilePictureUrl = await _fileStorageService.UploadUserAvatarAsync(new FileDto
             {
                 Content = request.Picture,
-                Name = fileName
+                Name = newProfilePictureName
             });
-            
-            if(!string.IsNullOrEmpty(user.ProfilePictureUrl))
+
+            if (!string.IsNullOrEmpty(user.ProfilePictureUrl) && !string.IsNullOrEmpty(user.ProfilePictureName))
             {
-                await _fileStorageService.DeleteUserAvatarAsync(user.ProfilePictureUrl);
+                await _fileStorageService.DeleteUserAvatarAsync(user.ProfilePictureName);
             }
         }
 
         user.ProfilePictureUrl = newProfilePictureUrl;
+        user.ProfilePictureName = newProfilePictureName;
+
         await _usersRepository.UpdateAsync(user);
 
         var response = new UpdateUserResponse
