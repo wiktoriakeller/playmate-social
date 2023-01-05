@@ -2,13 +2,12 @@ import styled from "@emotion/styled";
 
 export const StyledHeader = styled.div`
   top: 0;
-  height: 56px;
+  height: 55px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-around;
   flex-direction: row;
-  align-self: flex-start;
   flex-wrap: wrap;
   position: sticky;
   margin-bottom: auto;

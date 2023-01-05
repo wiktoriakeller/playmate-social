@@ -42,7 +42,7 @@ const UsersSearchItem = (props: IUserSearchItem) => {
       }
     >
       <ListItemAvatar>
-        <Avatar alt={props.username} src={props.profilePictureUrl ?? ""} />
+        <Avatar src={props.profilePictureUrl ?? ""} />
       </ListItemAvatar>
       <ListItemText
         sx={{

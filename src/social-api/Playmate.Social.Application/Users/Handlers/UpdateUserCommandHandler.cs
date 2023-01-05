@@ -5,6 +5,7 @@ using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.Common.Dtos;
 using Playmate.Social.Application.Users.Commands;
 using Playmate.Social.Application.Users.Responses;
+using System.Security.Cryptography;
 
 namespace Playmate.Social.Application.Users.Handlers;
 
@@ -47,19 +48,27 @@ public class UpdateUserCommandHandler : IHandlerWrapper<UpdateUserCommand, Updat
 
         user.Username = request.Username;
         var newProfilePictureUrl = user.ProfilePictureUrl;
+        var newProfilePictureName = user.ProfilePictureName;
 
         if (request.Picture is not null)
         {
-            var extension = Path.GetExtension(request.PictureName);
-            var fileName = $"avatars/{user.Email}{extension}";
+            var randomToken = Convert.ToBase64String(RandomNumberGenerator.GetBytes(10));
+            newProfilePictureName = $"avatars/{user.Id}/{user.Email}-{randomToken}.jpg";
             newProfilePictureUrl = await _fileStorageService.UploadUserAvatarAsync(new FileDto
             {
                 Content = request.Picture,
-                Name = fileName
+                Name = newProfilePictureName
             });
+
+            if (!string.IsNullOrEmpty(user.ProfilePictureUrl) && !string.IsNullOrEmpty(user.ProfilePictureName))
+            {
+                await _fileStorageService.DeleteUserAvatarAsync(user.ProfilePictureName);
+            }
         }
 
         user.ProfilePictureUrl = newProfilePictureUrl;
+        user.ProfilePictureName = newProfilePictureName;
+
         await _usersRepository.UpdateAsync(user);
 
         var response = new UpdateUserResponse

@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   Button,
+  CircularProgress,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -20,6 +21,7 @@ import {
 } from "../../slices/userIdentitySlice";
 import { StyledDialog } from "../../styled/components/common/StyledDialog";
 import { StyledFileInput } from "../../styled/components/common/StyledFileInput";
+import { StyledLoadingButton } from "../../styled/components/common/StyledLoadingButton";
 
 export interface IUserProfileDialogProps {
   handleCloseDialog: () => void;
@@ -37,6 +39,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
     user.profilePictureUrl
   );
   const [uploadedFile, setUploadedFile] = useState<null | File>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (username.length < 2 || username.length > 20) {
@@ -46,13 +49,25 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
     }
   }, [username]);
 
-  const handleCloseDialog = () => {
-    setTimeout(() => {
-      setUsername(user.username ?? "");
-      setUploadedFileUrl(user.profilePictureUrl);
-      setUploadedFile(null);
-    }, 100);
-    props.handleCloseDialog();
+  const handleCloseDialog = (username?: string, profilePictureUrl?: string) => {
+    if (!isLoading) {
+      username = username ?? user.username;
+      profilePictureUrl = profilePictureUrl ?? user.profilePictureUrl;
+
+      setTimeout(() => {
+        setUsername(username);
+        setUploadedFileUrl(profilePictureUrl);
+        setUploadedFile(null);
+      }, 100);
+      props.handleCloseDialog();
+    }
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files[0];
+    const url = URL.createObjectURL(file);
+    setUploadedFileUrl(url);
+    setUploadedFile(file);
   };
 
   const handleSaveChanges = () => {
@@ -63,6 +78,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
     const formData = new FormData();
     formData.append("username", username);
     formData.append("picture", uploadedFile);
+    setIsLoading(true);
 
     updateUser({
       userId: user.id,
@@ -78,7 +94,17 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
               profilePictureUrl: response.data.profilePictureUrl
             })
           );
-          handleCloseDialog();
+          dispatch(
+            openSnackbar({
+              message: "Successfully updated user profile",
+              severity: SnackbarSeverity.Success
+            })
+          );
+          setIsLoading(false);
+          handleCloseDialog(
+            response.data.username,
+            response.data.profilePictureUrl
+          );
         }
       })
       .catch(
@@ -93,21 +119,15 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
               status: error.status
             })
           );
+          setIsLoading(false);
         }
       );
-  };
-
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files[0];
-    const url = URL.createObjectURL(file);
-    setUploadedFileUrl(url);
-    setUploadedFile(file);
   };
 
   return (
     <StyledDialog
       open={props.isOpen}
-      onClose={handleCloseDialog}
+      onClose={() => handleCloseDialog()}
       fullWidth={true}
       maxWidth="sm"
       scroll="paper"
@@ -118,7 +138,8 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
         <IconButton
           aria-label="close"
           size="small"
-          onClick={handleCloseDialog}
+          onClick={() => handleCloseDialog()}
+          disabled={isLoading}
           sx={{
             position: "absolute",
             right: 10,
@@ -148,7 +169,8 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
             width: "100%",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
+            position: "relative"
           }}
         >
           <Avatar
@@ -166,12 +188,17 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
             sx={{
               position: "absolute",
               marginTop: "120px",
-              marginLeft: "150px"
+              marginLeft: "150px",
+              "&.Mui-disabled": {
+                backgroundColor: "primary.main",
+                color: "#fff"
+              }
             }}
             variant="contained"
             size="small"
             color="secondary"
             onClick={() => fileInputRef.current.click()}
+            disabled={isLoading}
           >
             Edit
           </Button>
@@ -187,17 +214,20 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
           }
           error={usernameError}
           defaultValue={username}
+          disabled={isLoading}
         />
       </DialogContent>
       <DialogActions>
-        <Button
+        <StyledLoadingButton
           autoFocus
-          disabled={usernameError}
+          isLoading={isLoading}
+          disabled={usernameError || isLoading}
           onClick={handleSaveChanges}
           color="secondary"
         >
-          Save changes
-        </Button>
+          <CircularProgress color="secondary" />
+          <span>Save changes</span>
+        </StyledLoadingButton>
       </DialogActions>
     </StyledDialog>
   );

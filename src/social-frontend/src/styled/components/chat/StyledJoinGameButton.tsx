@@ -7,7 +7,7 @@ export interface IStyledJoinGameButtonProps {
 export const StyledJoinGameButton = styled.div<IStyledJoinGameButtonProps>`
   width: fit-content;
   max-width: 50%;
-  margin: 5px 20px;
+  padding: 4px 10px;
   overflow-wrap: break-word;
   white-space: pre-wrap;
   align-self: ${(props) => (props.isUserMessage ? "flex-end" : "flex-start")};

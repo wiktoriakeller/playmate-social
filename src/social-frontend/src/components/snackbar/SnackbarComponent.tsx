@@ -30,7 +30,13 @@ const SnackbarComponent = () => {
           onClose={handleSnackbarClose}
           severity={snackbarState.severity}
           variant="filled"
-          sx={{ width: "100%" }}
+          sx={{
+            width: "100%",
+            "&.MuiAlert-filledSuccess": {
+              backgroundColor: (theme) => theme.palette.success.main,
+              color: (theme) => theme.palette.common.white
+            }
+          }}
         >
           {snackbarState.message}
         </Alert>

@@ -42,9 +42,9 @@ const HeaderTabs = () => {
       onChange={handleTabChange}
       indicatorColor={"secondary"}
     >
-      <StyledTab icon={<ChatIcon sx={{ fontSize: "32px" }} />} />
-      <StyledTab icon={<VideogameAssetIcon sx={{ fontSize: "32px" }} />} />
-      <StyledTab icon={<PeopleIcon sx={{ fontSize: "32px" }} />} />
+      <StyledTab icon={<ChatIcon sx={{ fontSize: "31px" }} />} />
+      <StyledTab icon={<VideogameAssetIcon sx={{ fontSize: "31px" }} />} />
+      <StyledTab icon={<PeopleIcon sx={{ fontSize: "31px" }} />} />
     </Tabs>
   );
 };
