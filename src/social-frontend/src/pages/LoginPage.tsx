@@ -218,7 +218,10 @@ const LoginPage = () => {
           <StyledHorizontalDivider variant="middle" textAlign="center">
             <StyledSpan>Or</StyledSpan>
           </StyledHorizontalDivider>
-          <GoogleSignInButton />
+          <GoogleSignInButton
+            isLoading={isLoading}
+            setIsLoading={(value: boolean) => setIsLoading(value)}
+          />
         </FormBox>
       </Paper>
     </FormContainer>

@@ -9,7 +9,12 @@ import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
 import { selectThemeMode } from "../../slices/themeSlice";
 import { setUserIdentity } from "../../slices/userIdentitySlice";
 
-const GoogleSignInButton = () => {
+export interface IGoogleSignInButtonProps {
+  isLoading: boolean;
+  setIsLoading: (value: boolean) => void;
+}
+
+const GoogleSignInButton = (props: IGoogleSignInButtonProps) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [authenticateExternalUser] = useAuthenticateExternalUserMutation();
@@ -30,34 +35,40 @@ const GoogleSignInButton = () => {
     >
       <GoogleLogin
         onSuccess={(responseToken) => {
-          authenticateExternalUser({
-            token: responseToken.credential,
-            provider: "Google"
-          })
-            .unwrap()
-            .then((response) => {
-              dispatch(setUserIdentity(response.data));
-              navigate("/");
+          if (!props.isLoading) {
+            props.setIsLoading(true);
+            authenticateExternalUser({
+              token: responseToken.credential,
+              provider: "Google"
             })
-            .catch(
-              (error: {
-                status: string | number;
-                data: IAuthenticateUserResponse;
-              }) => {
-                dispatch(
-                  openSnackbar({
-                    message:
-                      error.data?.errors.length > 0
-                        ? error.data.errors[0]
-                        : "Invalid credentials",
-                    severity: SnackbarSeverity.Error,
-                    status: error.status
-                  })
-                );
-              }
-            );
+              .unwrap()
+              .then((response) => {
+                props.setIsLoading(false);
+                dispatch(setUserIdentity(response.data));
+                navigate("/");
+              })
+              .catch(
+                (error: {
+                  status: string | number;
+                  data: IAuthenticateUserResponse;
+                }) => {
+                  props.setIsLoading(false);
+                  dispatch(
+                    openSnackbar({
+                      message:
+                        error.data?.errors.length > 0
+                          ? error.data.errors[0]
+                          : "Invalid credentials",
+                      severity: SnackbarSeverity.Error,
+                      status: error.status
+                    })
+                  );
+                }
+              );
+          }
         }}
         onError={() => {
+          props.setIsLoading(false);
           dispatch(
             openSnackbar({
               message: "Sign in with Google failed",
