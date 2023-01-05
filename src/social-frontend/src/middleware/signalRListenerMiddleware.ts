@@ -106,6 +106,7 @@ signalRListenerMiddleware.startListening({
 
         listenerApi.dispatch(
           setFriendLastChatMessage({
+            friendId: request.senderId,
             senderId: request.senderId,
             senderUsername: request.senderUsername,
             content: request.content
@@ -207,7 +208,7 @@ sendFriendRequestListenerMiddleware.startListening({
 
 answerFriendRequestsListenerMiddleware.startListening({
   actionCreator: answerFriendRequests,
-  effect: (action: PayloadAction<IFriendRequestConfirmation>, apiListener) => {
+  effect: (action: PayloadAction<IFriendRequestConfirmation>) => {
     hubConnection.send("AnswerFriendRequest", action.payload).catch((error) => {
       console.error("Error while answering friend request: ", error);
     });

@@ -44,10 +44,10 @@ export const friendsListSlice = createSlice({
     },
     setFriendLastChatMessage(
       state: IFriendsListState,
-      action: PayloadAction<ILastChatMessage>
+      action: PayloadAction<ILastChatMessage & { friendId: string }>
     ) {
       state.friends = state.friends.map((friend) =>
-        friend.id !== action.payload.senderId
+        friend.id !== action.payload.friendId
           ? friend
           : { ...friend, lastChatMessage: action.payload }
       );
