@@ -1,4 +1,6 @@
-import { Box, Menu, MenuItem, Typography } from "@mui/material";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { Box, Menu, MenuItem } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../app/storeHooks";
@@ -7,8 +9,6 @@ import {
   setUserIdentity
 } from "../../slices/userIdentitySlice";
 import UserAvatar from "./UserAvatar";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import LogoutIcon from "@mui/icons-material/Logout";
 import UserProfileDialog from "./UserProfileDialog";
 
 const UserMenu = () => {
