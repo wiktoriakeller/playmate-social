@@ -39,7 +39,7 @@ const FriendListItem = (props: IFriendsListItemProps) => {
       onClick={setCurrentFriend}
       isSelected={selectedFriend?.id === props.id}
     >
-      <Avatar alt={props.username} src={props.profilePictureUrl ?? ""} />
+      <Avatar src={props.profilePictureUrl ?? ""} />
       <FriendData isSelected={selectedFriend?.id === props.id}>
         <span>{props.username}</span>
         <span>{getLastMessage(props.lastChatMessage)}</span>

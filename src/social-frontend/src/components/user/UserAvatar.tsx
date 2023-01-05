@@ -21,7 +21,6 @@ const UserAvatar = (props: IUserAvatarProps) => {
           <StyledUserAvatarBox>
             <Avatar
               sx={{ width: "28px", height: "28px" }}
-              alt={user.username}
               src={user.profilePictureUrl ?? ""}
             />
             <StyledUsernameBox>
@@ -45,7 +44,6 @@ const UserAvatar = (props: IUserAvatarProps) => {
           <IconButton>
             <Avatar
               sx={{ width: "28px", height: "28px" }}
-              alt={user.username}
               src={user.profilePictureUrl ?? ""}
             />
           </IconButton>

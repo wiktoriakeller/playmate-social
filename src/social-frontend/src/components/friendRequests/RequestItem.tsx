@@ -45,10 +45,7 @@ const RequestItem = (props: IRequestItemProps) => {
               gap: "10px"
             }}
           >
-            <Avatar
-              alt={props.request.from.username}
-              src={props.request.from.profilePictureUrl ?? ""}
-            />
+            <Avatar src={props.request.from.profilePictureUrl ?? ""} />
             <Typography textAlign="center">
               {props.request.from.username}
             </Typography>
