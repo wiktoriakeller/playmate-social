@@ -1,5 +1,5 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
-import PeopleIcon from "@mui/icons-material/People";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import { Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -69,7 +69,7 @@ export const Header = () => {
     <StyledHeader>
       <HeaderLeftSide>
         <StyledLogo onClick={onLogoClick}>
-          <PeopleIcon sx={{ fontSize: "32px" }} />
+          <SportsEsportsIcon sx={{ fontSize: "32px" }} />
           <span>playmate</span>
         </StyledLogo>
       </HeaderLeftSide>

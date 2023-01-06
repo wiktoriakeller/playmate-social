@@ -86,7 +86,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
     })
       .unwrap()
       .then((response) => {
-        if (!!response) {
+        if (!!response.data) {
           dispatch(
             setUserIdentity({
               ...user,

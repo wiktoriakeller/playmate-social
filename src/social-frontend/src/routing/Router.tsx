@@ -3,6 +3,7 @@ import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import { PageNotFound } from "../pages/PageNotFound";
 import RegisterPage from "../pages/RegisterPage";
+import FormPageLayout from "./layouts/FormPageLayout";
 import MainLayout from "./layouts/MainLayout";
 
 function Router() {
@@ -20,17 +21,17 @@ function Router() {
         <Route
           path="/login"
           element={
-            <MainLayout>
+            <FormPageLayout>
               <LoginPage />
-            </MainLayout>
+            </FormPageLayout>
           }
         />
         <Route
           path="/register"
           element={
-            <MainLayout>
+            <FormPageLayout>
               <RegisterPage />
-            </MainLayout>
+            </FormPageLayout>
           }
         />
         <Route path="*" element={<PageNotFound />} />
