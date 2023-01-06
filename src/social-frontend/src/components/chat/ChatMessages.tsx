@@ -130,7 +130,7 @@ const ChatMessages = () => {
 
   return (
     <StyledChatMessages>
-      {!!friendMessagesDictionary?.messages && isLoading
+      {!!friendMessagesDictionary?.messages && !isLoading
         ? friendMessagesDictionary.messages.map((message, index) => (
             <ChatMessage
               key={index}
