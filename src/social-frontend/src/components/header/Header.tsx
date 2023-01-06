@@ -69,7 +69,7 @@ export const Header = () => {
     <StyledHeader>
       <HeaderLeftSide>
         <StyledLogo onClick={onLogoClick}>
-          <SportsEsportsIcon sx={{ fontSize: "32px" }} />
+          <SportsEsportsIcon sx={{ fontSize: "32px", marginTop: "3px" }} />
           <span>playmate</span>
         </StyledLogo>
       </HeaderLeftSide>
