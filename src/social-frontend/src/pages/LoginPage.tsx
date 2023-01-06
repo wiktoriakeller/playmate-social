@@ -147,7 +147,7 @@ const LoginPage = () => {
   return (
     <FormContainer>
       <FormTitleContainer>
-        <IconButton disableRipple={true} onClick={() => navigate("/")}>
+        <IconButton disableRipple={true}>
           <MainLogo />
         </IconButton>
         <FormTitle>Sign In to Playmate</FormTitle>
