@@ -1,10 +1,9 @@
 import styled from "@emotion/styled";
 
-export const FormBox = styled.form`
+export const FormTitleContainer = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
-  padding: 40px 40px;
+  flex-direction: column;
+  margin-bottom: 20px;
 `;

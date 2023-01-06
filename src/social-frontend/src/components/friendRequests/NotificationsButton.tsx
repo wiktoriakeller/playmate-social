@@ -39,7 +39,9 @@ const NotificationsButton = () => {
 
   useEffect(() => {
     getFriendRequests().then((response) => {
-      dispatch(setFriendRequests(response.data.data.requests));
+      if (!!response.data) {
+        dispatch(setFriendRequests(response.data.data.requests));
+      }
     });
   }, [getFriendRequests, dispatch]);
 

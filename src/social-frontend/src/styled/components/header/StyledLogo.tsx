@@ -7,6 +7,6 @@ export const StyledLogo = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 3px;
+  gap: 6px;
   cursor: pointer;
 `;

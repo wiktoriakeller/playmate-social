@@ -21,7 +21,9 @@ const GamesList = () => {
 
   useEffect(() => {
     getGameResults({}).then((response) => {
-      dispatch(setGameResults(response.data.data.results));
+      if (!!response.data) {
+        dispatch(setGameResults(response.data.data.results));
+      }
     });
   }, [dispatch, getGameResults]);
 

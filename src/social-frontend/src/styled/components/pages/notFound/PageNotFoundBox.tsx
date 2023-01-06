@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const PageNotFoundBox = styled.div`
+export const PageNotFoundBox = styled.main`
   margin: 80px 25px 0px 25px;
   display: flex;
   flex-direction: column;

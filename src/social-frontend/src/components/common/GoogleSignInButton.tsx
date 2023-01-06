@@ -19,7 +19,25 @@ const GoogleSignInButton = (props: IGoogleSignInButtonProps) => {
   const dispatch = useAppDispatch();
   const [authenticateExternalUser] = useAuthenticateExternalUserMutation();
   const themeMode = useAppSelector(selectThemeMode);
-  const matchesMaxWidth = useMediaQuery("(max-width:600px)");
+  const matchesMediumWidth = useMediaQuery("(max-width:600px)");
+  const matchedSmallWidth = useMediaQuery("(max-width:450px)");
+  const matchesVerySmallWidth = useMediaQuery("(max-width:380px)");
+
+  const getButtonWidth = () => {
+    if (matchesVerySmallWidth) {
+      return "300px";
+    }
+
+    if (matchedSmallWidth) {
+      return "315px";
+    }
+
+    if (matchesMediumWidth) {
+      return "350px";
+    }
+
+    return "390px";
+  };
 
   return (
     <Box
@@ -81,7 +99,7 @@ const GoogleSignInButton = (props: IGoogleSignInButtonProps) => {
         ux_mode={"popup"}
         context={"signin"}
         size={"large"}
-        width={matchesMaxWidth ? "360px" : "400px"}
+        width={getButtonWidth()}
         theme={themeMode === "dark" ? "filled_blue" : "outline"}
       />
     </Box>

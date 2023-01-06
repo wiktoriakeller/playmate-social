@@ -14,12 +14,15 @@ import {
   ValidationFunc
 } from "../common/validators";
 import { openSnackbar, SnackbarSeverity } from "../slices/snackbarSlice";
-import { FormBox } from "../styled/components/common/FormBox";
-import { FormContainer } from "../styled/components/common/FormContainer";
 import { FormTextField } from "../styled/components/common/FormTextField";
 import { StyledLink } from "../styled/components/common/StyledLink";
 import { StyledLoadingButton } from "../styled/components/common/StyledLoadingButton";
 import { StyledSpan } from "../styled/components/common/StyledSpan";
+import { FormBox } from "../styled/components/pages/common/FormBox";
+import { FormContainer } from "../styled/components/pages/common/FormContainer";
+import { FormTitle } from "../styled/components/pages/common/FormTitle";
+import { FormTitleContainer } from "../styled/components/pages/common/FormTitleContainer";
+import { MainLogo } from "../styled/components/pages/common/MainLogo";
 
 interface IRegisterFormState {
   email: string;
@@ -180,6 +183,12 @@ const RegisterPage = () => {
 
   return (
     <FormContainer>
+      <FormTitleContainer>
+        <IconButton disableRipple={true} onClick={() => navigate("/login")}>
+          <MainLogo />
+        </IconButton>
+        <FormTitle>Sign Up to Playmate</FormTitle>
+      </FormTitleContainer>
       <Paper elevation={3}>
         <FormBox
           onSubmit={(e) => {

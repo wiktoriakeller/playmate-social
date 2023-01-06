@@ -15,13 +15,16 @@ import {
 import GoogleSignInButton from "../components/common/GoogleSignInButton";
 import { openSnackbar, SnackbarSeverity } from "../slices/snackbarSlice";
 import { setUserIdentity } from "../slices/userIdentitySlice";
-import { FormBox } from "../styled/components/common/FormBox";
-import { FormContainer } from "../styled/components/common/FormContainer";
 import { FormTextField } from "../styled/components/common/FormTextField";
 import { StyledHorizontalDivider } from "../styled/components/common/StyledDivider";
 import { StyledLink } from "../styled/components/common/StyledLink";
 import { StyledLoadingButton } from "../styled/components/common/StyledLoadingButton";
 import { StyledSpan } from "../styled/components/common/StyledSpan";
+import { FormBox } from "../styled/components/pages/common/FormBox";
+import { FormContainer } from "../styled/components/pages/common/FormContainer";
+import { FormTitle } from "../styled/components/pages/common/FormTitle";
+import { FormTitleContainer } from "../styled/components/pages/common/FormTitleContainer";
+import { MainLogo } from "../styled/components/pages/common/MainLogo";
 
 interface ILoginFormState {
   email: string;
@@ -143,6 +146,12 @@ const LoginPage = () => {
 
   return (
     <FormContainer>
+      <FormTitleContainer>
+        <IconButton disableRipple={true}>
+          <MainLogo />
+        </IconButton>
+        <FormTitle>Sign In to Playmate</FormTitle>
+      </FormTitleContainer>
       <Paper elevation={3}>
         <FormBox
           onSubmit={(e) => {
