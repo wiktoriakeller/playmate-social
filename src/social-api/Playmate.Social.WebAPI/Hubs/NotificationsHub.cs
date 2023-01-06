@@ -2,11 +2,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
+using Playmate.Social.Application.ChatMessages.Commands;
 using Playmate.Social.Application.Friends.Commands;
 using Playmate.Social.WebAPI.ApiRequests.Friends;
-using Playmate.Social.Application.ChatMessages.Commands;
-using Playmate.Social.WebAPI.HubRequests.ChatMessages;
 using Playmate.Social.WebAPI.Hubs.Clients;
+using Playmate.Social.WebAPI.Hubs.Requests.ChatMessages;
+using Playmate.Social.WebAPI.Hubs.Responses.FriendsRequests;
 
 namespace Playmate.Social.WebAPI.Hubs;
 
@@ -39,9 +40,17 @@ public class NotificationsHub : Hub<INotificationsClient>
         var command = _mapper.Map<ConfirmFriendRequestCommand>(confirmRequest);
         var response = await _mediator.Send(command);
 
-        if (response.Succeeded)
+        if (response.Succeeded && response.Data?.RequestAccepted == true)
         {
-            await Clients.User(confirmRequest.RequesterId.ToString()).ReceiveFriendsRequestConfirmation(response.Data);
+            await Clients.User(confirmRequest.RequesterId.ToString()).ReceiveFriendsRequestConfirmation(new ConfirmFriendRequestResponse
+            {
+                CreatedFriend = response.Data.CreatedFriend,
+            });
+
+            await Clients.User(response.Data.CreatedFriend.Id.ToString()).ReceiveFriendsRequestConfirmation(new ConfirmFriendRequestResponse
+            {
+                CreatedFriend = response.Data.RequestFrom
+            });
         }
     }
 

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Playmate.Social.Application.ChatMessages.Commands;
-using Playmate.Social.WebAPI.HubRequests.ChatMessages;
+using Playmate.Social.WebAPI.Hubs.Requests.ChatMessages;
 
-namespace Playmate.Social.WebAPI.HubRequests.Mappings;
+namespace Playmate.Social.WebAPI.Hubs.Requests.Mappings;
 
 public class ChatMessagesMappingProfile : Profile
 {

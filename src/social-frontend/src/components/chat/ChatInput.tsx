@@ -37,7 +37,8 @@ const ChatInput = () => {
 
       dispatch(
         setFriendLastChatMessage({
-          senderId: selectedFriend.id,
+          friendId: selectedFriend.id,
+          senderId: user.id,
           senderUsername: user.username,
           content: currentInput
         })
@@ -52,6 +53,7 @@ const ChatInput = () => {
   ) => {
     setCurrentInput(event.target.value);
   };
+
   const handleOnEmojiClick = (emoji: EmojiClickData) => {
     setCurrentInput(currentInput + emoji.emoji);
   };

@@ -1,10 +1,16 @@
 import styled from "@emotion/styled";
-import { Skeleton } from "@mui/material";
-import { IStyledChatMessageProps } from "./StyledChatMessage";
+import { Skeleton, SkeletonProps } from "@mui/material";
 
-export const SkeletonChatMessage = styled(Skeleton)<IStyledChatMessageProps>`
-  width: 49%;
+export interface ISkeletonChatMessageProps extends SkeletonProps {
+  width: string;
+  height: string;
+  withAvatar: boolean;
+  isUserMessage: boolean;
+}
+
+export const SkeletonChatMessage = styled(Skeleton)<ISkeletonChatMessageProps>`
+  width: 30%;
   height: 45px;
-  padding: 0px 14px;
-  align-self: ${(props) => (props.isUserMessage ? "flex-end" : "flex-start")};
+  margin: 0px
+    ${(props) => (props.withAvatar || props.isUserMessage ? "7px" : "47px")};
 `;

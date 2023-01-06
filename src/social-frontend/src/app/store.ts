@@ -1,11 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { chatMessagesApi } from "../api/chatMessages/chatMessagesApi";
 import { friendsApi } from "../api/friends/friendsApi";
+import { gameResultsApi } from "../api/gameResults/gameResultsApi";
 import { gameIntegrationApi } from "../api/games/gameIntegrationApi";
 import { gamesApi } from "../api/games/gamesApi";
 import { identityApi } from "../api/identity/identityApi";
 import { usersApi } from "../api/users/usersApi";
-import { friendsListListenerMiddleware } from "../middleware/friendsListListenerMiddleware";
 import {
   answerFriendRequestsListenerMiddleware,
   chatListenerMiddleware,
@@ -17,13 +17,12 @@ import { userIdentityListenerMiddleware } from "../middleware/userIdentityListen
 import { chatSlice } from "../slices/chatSlice";
 import { friendRequestsSlice } from "../slices/friendRequestsSlice";
 import { friendsListSlice } from "../slices/friendsListSlice";
+import { gameResultsSlice } from "../slices/gameResultsSlice";
 import { snackbarSlice } from "../slices/snackbarSlice";
 import { tabSlice } from "../slices/tabSlice";
 import { themeSlice } from "../slices/themeSlice";
 import { userIdentitySlice } from "../slices/userIdentitySlice";
 import { userSearchSlice } from "../slices/userSearchSlice";
-import { gameResultsApi } from "../api/gameResults/gameResultsApi";
-import { gameResultsSlice } from "../slices/gameResultsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -53,7 +52,6 @@ export const store = configureStore({
       .concat(sendFriendRequestListenerMiddleware.middleware)
       .concat(answerFriendRequestsListenerMiddleware.middleware)
       .concat(themeListenerMiddleware.middleware)
-      .concat(friendsListListenerMiddleware.middleware)
       .concat(identityApi.middleware)
       .concat(usersApi.middleware)
       .concat(friendsApi.middleware)
