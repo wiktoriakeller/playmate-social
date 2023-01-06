@@ -45,7 +45,7 @@ const FriendsLits = () => {
       {
         search: friendsSearchPhrase
       },
-      false
+      true
     )
       .unwrap()
       .then((response) => {

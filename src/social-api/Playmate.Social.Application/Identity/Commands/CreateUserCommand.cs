@@ -10,4 +10,5 @@ public class CreateUserCommand : IRequestWrapper<CreateUserResponse>
     public string Password { get; set; }
     public bool IsExternalUser { get; set; }
     public string ProfilePictureUrl { get; set; } = string.Empty;
+    public string ProfilePictureName { get; set; } = string.Empty;
 }

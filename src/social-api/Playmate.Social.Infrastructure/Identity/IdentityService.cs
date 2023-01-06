@@ -53,6 +53,7 @@ public class IdentityService : IIdentityService
             Email = createUserCommand.Email,
             Username = createUserCommand.Username,
             ProfilePictureUrl = createUserCommand.ProfilePictureUrl,
+            ProfilePictureName = createUserCommand.ProfilePictureName,
             IsExternalUser = createUserCommand.IsExternalUser
         };
 

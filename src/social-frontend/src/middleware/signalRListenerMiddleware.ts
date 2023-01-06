@@ -121,9 +121,8 @@ signalRListenerMiddleware.startListening({
       hubConnection.on(
         "ReceiveFriendsRequestConfirmation",
         (request: IFriendRequestConfirmationResponse) => {
-          if (request.requestAccepted) {
-            listenerApi.dispatch(addFriend(request.createdFriend));
-          }
+          listenerApi.dispatch(addFriend(request.createdFriend));
+          listenerApi.dispatch(friendsApi.util.invalidateTags(["friendsList"]));
         }
       );
 

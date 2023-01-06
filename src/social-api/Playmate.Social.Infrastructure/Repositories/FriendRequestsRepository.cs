@@ -12,10 +12,13 @@ public class FriendRequestsRepository : BaseRepository<FriendRequest>, IFriendRe
     {
     }
 
-    public override IEnumerable<FriendRequest> GetWhere(Expression<Func<FriendRequest, bool>> predicate)
-    {
-        return _dbContext.Set<FriendRequest>().Where(predicate).Include(r => r.Requester);
-    }
+    public async ValueTask<FriendRequest?> GetByIdAsync(Guid id) => await _dbContext.Set<FriendRequest>()
+        .Include(x => x.Addressee)
+        .Include(x => x.Requester)
+        .FirstOrDefaultAsync(x => x.Id == id);
+
+    public override IEnumerable<FriendRequest> GetWhere(Expression<Func<FriendRequest, bool>> predicate) =>
+        _dbContext.Set<FriendRequest>().Where(predicate).Include(r => r.Requester);
 
     public async Task<IEnumerable<Guid>> GetUsersWithPendingRequestsAsync(User currentUser)
     {

@@ -47,11 +47,17 @@ public class ConfirmFriendRequestCommandHandler : IHandlerWrapper<ConfirmFriendR
             ResponseResult.ValidationError<ConfirmFriendRequestResponse>("Current user is not the addressee of the request");
         }
 
-        var requestAdresse = await _usersRepository.GetByIdAsync(_currentUserService.CurrentUser.Id);
+        var requester = friendRequest.Requester;
+        var addressee = friendRequest.Addressee;
 
-        if (requestAdresse is null)
+        if (addressee is null)
         {
-            ResponseResult.ValidationError<ConfirmFriendRequestResponse>("Request adresse was not found");
+            ResponseResult.ValidationError<ConfirmFriendRequestResponse>("Request addressee was not found");
+        }
+
+        if (requester is null)
+        {
+            ResponseResult.ValidationError<ConfirmFriendRequestResponse>("Requester was not found");
         }
 
         var response = new ConfirmFriendRequestResponse() { RequestAccepted = request.Accept };
@@ -67,9 +73,11 @@ public class ConfirmFriendRequestCommandHandler : IHandlerWrapper<ConfirmFriendR
             };
 
             await _friendsRepository.AddAsync(friend);
-            response.CreatedFriend = _mapper.Map<FriendDto>(requestAdresse);
+            response.CreatedFriend = _mapper.Map<FriendDto>(addressee);
             response.CreatedFriend.FriendsSince = friendsSince;
-            response.CreatedFriend.ProfilePictureUrl = requestAdresse?.ProfilePictureUrl ?? "";
+
+            response.RequestFrom = _mapper.Map<FriendDto>(requester);
+            response.RequestFrom.FriendsSince = friendsSince;
         }
 
         await _friendsRequestsRepository.DeleteAsync(friendRequest);
