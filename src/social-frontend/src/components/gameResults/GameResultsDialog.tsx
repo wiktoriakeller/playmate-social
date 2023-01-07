@@ -8,6 +8,7 @@ import { useAppSelector } from "../../app/storeHooks";
 import { IGameResult, selectGameResults } from "../../slices/gameResultsSlice";
 import { selectThemeMode } from "../../slices/themeSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
+import { selectWindowSizeState } from "../../slices/windowSizeSlice";
 import { StyledDialog } from "../../styled/components/common/StyledDialog";
 
 export interface IGameResultsPageProps {
@@ -25,8 +26,8 @@ const getMappedData = (data: IGameResult[], currentUserId: string) => {
 
   const winCount = mappedResults.filter((x) => x.won === true).length;
   const pieChartData = [
-    { name: "Won Games", value: winCount },
-    { name: "Lost Games", value: mappedResults.length - winCount }
+    { name: "Wins", value: winCount },
+    { name: "Loses", value: mappedResults.length - winCount }
   ];
 
   return pieChartData;
@@ -35,36 +36,12 @@ const getMappedData = (data: IGameResult[], currentUserId: string) => {
 const chartColors = ["#4caf50", "#ef5350"];
 const RADIAN = Math.PI / 180;
 
-const renderCustomizedLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  value
-}) => {
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
-
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central"
-    >
-      {`${value}`}
-    </text>
-  );
-};
-
 const GameResultsDialog = (props: IGameResultsPageProps) => {
   const themeMode = useAppSelector(selectThemeMode);
   const results = useAppSelector(selectGameResults)[props.game.id];
   const currentUserId = useAppSelector(selectUserIdentity).id;
   const [activeIndex, setActiveIndex] = useState(-1);
+  const windowsSize = useAppSelector(selectWindowSizeState);
 
   const currentTheme = useMemo(() => getDesignTokens(themeMode), [themeMode]);
 
@@ -139,6 +116,35 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
     [currentTheme]
   );
 
+  const renderCustomizedLabel = useCallback(
+    ({ cx, cy, midAngle, innerRadius, outerRadius, payload, value }) => {
+      const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+      let x = cx + radius * Math.cos(-midAngle * RADIAN);
+      const y = cy + radius * Math.sin(-midAngle * RADIAN);
+      const textValue = windowsSize.matchesMediumWidth
+        ? `${payload.name} - ${value}`
+        : `${value}`;
+
+      if (windowsSize.matchesMediumWidth) {
+        x += payload.name === "Wins" ? 24 : -24;
+      }
+
+      return (
+        <text
+          x={x}
+          y={y}
+          fill="white"
+          textAnchor={x > cx ? "start" : "end"}
+          dominantBaseline="central"
+          fontSize={windowsSize.matchesMediumWidth ? 16 : 20}
+        >
+          {textValue}
+        </text>
+      );
+    },
+    [windowsSize.matchesMediumWidth]
+  );
+
   const onPieEnter = useCallback((_, index: number) => {
     setActiveIndex(index);
   }, []);
@@ -156,8 +162,25 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
     setActiveIndex(-1);
   };
 
+  const getCharMinWidth = () => {
+    if (windowsSize.matchesSmallWidth) {
+      return "250px";
+    }
+
+    if (windowsSize.matchesMediumWidth) {
+      return "300px";
+    }
+
+    return "450px";
+  };
+
   return (
-    <StyledDialog open={props.open} onClose={handleCloseDialog} maxWidth={"md"}>
+    <StyledDialog
+      open={props.open}
+      onClose={handleCloseDialog}
+      maxWidth={"md"}
+      fullWidth={windowsSize.matchesSmallWidth ? true : false}
+    >
       <DialogTitle sx={{ textAlign: "center", paddingBottom: "0px" }}>
         {`${props.game.name} statistics`}
         <IconButton
@@ -177,17 +200,23 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
       <DialogContent sx={{ paddingBottom: "0px" }}>
         <Box
           sx={{
-            width: "450px",
-            height: "350px",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
+            overflow: "hidden",
+            minWidth: getCharMinWidth(),
+            minHeight: windowsSize.matchesMediumWidth ? "300px" : "350px"
           }}
         >
-          <PieChart width={425} height={300}>
+          <PieChart
+            width={windowsSize.matchesMediumWidth ? 250 : 400}
+            height={windowsSize.matchesMediumWidth ? 200 : 300}
+          >
             <Pie
               activeIndex={activeIndex}
-              activeShape={renderActiveShape}
+              activeShape={
+                windowsSize.matchesMediumWidth ? null : renderActiveShape
+              }
               data={pieData}
               cx="50%"
               cy="50%"
