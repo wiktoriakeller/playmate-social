@@ -10,7 +10,7 @@ export const StyledTab = styled(Tab)`
     font-size: 31px;
   }
 
-  @media (max-width: 450px) {
+  @media only screen and (max-width: 450px) {
     &.MuiButtonBase-root {
       min-width: 55px;
     }

@@ -6,7 +6,7 @@ export const UserDialogContentAvatar = styled(Avatar)`
     width: 180px;
     height: 180px;
 
-    @media (max-width: 450px) {
+    @media only screen and (max-width: 450px) {
       width: 150px;
       height: 150px;
     }

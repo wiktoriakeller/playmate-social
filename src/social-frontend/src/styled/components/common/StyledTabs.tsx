@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Tabs } from "@mui/material";
 
 export const StyledTabs = styled(Tabs)`
-  @media (max-width: 450px) {
+  @media only screen and (max-width: 450px) {
     &.MuiTabs-root {
       max-width: 165;
     }

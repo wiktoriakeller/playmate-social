@@ -44,8 +44,8 @@ const FriendsSearch = () => {
         placeholder={"Search"}
         fullWidth
         InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
+          endAdornment: (
+            <InputAdornment position="end">
               <SearchIcon />
             </InputAdornment>
           )

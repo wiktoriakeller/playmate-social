@@ -9,7 +9,7 @@ export const HeaderCenter = styled.div`
   margin-left: auto;
   margin-right: auto;
 
-  @media (max-width: 450px) {
+  @media only screen and (max-width: 450px) {
     margin-right: 7%;
   }
 

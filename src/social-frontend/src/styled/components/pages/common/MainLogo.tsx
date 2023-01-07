@@ -12,13 +12,13 @@ export const MainLogo = styled(SportsEsportsIcon)`
     }
   }
 
-  @media (max-width: 450px) {
+  @media only screen and (max-width: 450px) {
     &.MuiSvgIcon-root {
       font-size: 55px;
     }
   }
 
-  @media (max-width: 380px) {
+  @media only screen and (max-width: 380px) {
     &.MuiSvgIcon-root {
       font-size: 52px;
     }

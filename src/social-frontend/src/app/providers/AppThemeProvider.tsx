@@ -1,7 +1,7 @@
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline, PaletteMode, ThemeOptions } from "@mui/material";
 import { green, grey, indigo } from "@mui/material/colors";
-import { createTheme, responsiveFontSizes } from "@mui/material/styles";
+import { createTheme } from "@mui/material/styles";
 import { useMemo } from "react";
 import { selectThemeMode } from "../../slices/themeSlice";
 import { useAppSelector } from "../storeHooks";
@@ -77,8 +77,7 @@ const AppThemeProvider = ({ children }) => {
   const themeMode = useAppSelector(selectThemeMode);
 
   const theme = useMemo(() => {
-    const createdTheme = createTheme(getDesignTokens(themeMode));
-    return responsiveFontSizes(createdTheme);
+    return createTheme(getDesignTokens(themeMode));
   }, [themeMode]);
 
   return (
