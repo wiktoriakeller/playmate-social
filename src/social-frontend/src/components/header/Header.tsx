@@ -11,6 +11,7 @@ import {
   ThemeModeType
 } from "../../slices/themeSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
+import { selectWindowSizeState } from "../../slices/windowSizeSlice";
 import { StyledIconButton } from "../../styled/components/common/StyledIconButton";
 import { HeaderCenter } from "../../styled/components/header/HeaderCenter";
 import { HeaderLeftSide } from "../../styled/components/header/HeaderLeftSide";
@@ -21,19 +22,28 @@ import NotificationsButton from "../friendRequests/NotificationsButton";
 import UserMenu from "../user/UserMenu";
 import HeaderTabs from "./HeaderTabs";
 
-const getCurrentThemeIcon = (themeMode: ThemeModeType) => {
-  if (themeMode === "light") {
-    return <WbSunnyIcon sx={{ fontSize: "28px" }} />;
+export const getCurrentThemeIcon = (
+  themeMode: ThemeModeType,
+  matchesMediumWidth: boolean,
+  fontSize: string
+) => {
+  if (matchesMediumWidth) {
+    return <></>;
   }
 
-  return <Brightness2Icon sx={{ fontSize: "28px" }} />;
+  if (themeMode === "light") {
+    return <WbSunnyIcon sx={{ fontSize: fontSize }} />;
+  }
+
+  return <Brightness2Icon sx={{ fontSize: fontSize }} />;
 };
 
 export const Header = () => {
-  const themeMode = useAppSelector(selectThemeMode);
-  const user = useAppSelector(selectUserIdentity);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const themeMode = useAppSelector(selectThemeMode);
+  const windowSize = useAppSelector(selectWindowSizeState);
+  const user = useAppSelector(selectUserIdentity);
 
   const toggleTheme = () => {
     if (themeMode === "dark") {
@@ -76,8 +86,12 @@ export const Header = () => {
       <HeaderCenter>{getHeaderCenter()}</HeaderCenter>
       <HeaderRightSide isHomePage={user.jwtToken !== null}>
         <Tooltip title={"Toggle theme"}>
-          <StyledIconButton onClick={toggleTheme}>
-            {getCurrentThemeIcon(themeMode)}
+          <StyledIconButton onClick={toggleTheme} sx={{ marginRight: "-2px" }}>
+            {getCurrentThemeIcon(
+              themeMode,
+              windowSize.matchesMediumWidth,
+              "28px"
+            )}
           </StyledIconButton>
         </Tooltip>
         {getUserMenu()}

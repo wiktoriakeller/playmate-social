@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 
-export const StyledHeader = styled.div`
+export const StyledHeader = styled.nav`
   top: 0;
   height: 55px;
   width: 100%;

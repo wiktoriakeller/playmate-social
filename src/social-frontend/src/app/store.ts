@@ -23,6 +23,7 @@ import { tabSlice } from "../slices/tabSlice";
 import { themeSlice } from "../slices/themeSlice";
 import { userIdentitySlice } from "../slices/userIdentitySlice";
 import { userSearchSlice } from "../slices/userSearchSlice";
+import { windowSizeSlice } from "../slices/windowSizeSlice";
 
 export const store = configureStore({
   reducer: {
@@ -42,7 +43,8 @@ export const store = configureStore({
     [gameIntegrationApi.reducerPath]: gameIntegrationApi.reducer,
     [chatMessagesApi.reducerPath]: chatMessagesApi.reducer,
     [gameResultsApi.reducerPath]: gameResultsApi.reducer,
-    [gameResultsSlice.name]: gameResultsSlice.reducer
+    [gameResultsSlice.name]: gameResultsSlice.reducer,
+    [windowSizeSlice.name]: windowSizeSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

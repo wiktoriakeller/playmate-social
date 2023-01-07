@@ -1,19 +1,24 @@
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { Box, Menu, MenuItem } from "@mui/material";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../app/storeHooks";
+import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
+import { selectThemeMode, setThemeMode } from "../../slices/themeSlice";
 import {
   getEmptyUserIdentity,
   setUserIdentity
 } from "../../slices/userIdentitySlice";
+import { selectWindowSizeState } from "../../slices/windowSizeSlice";
+import { getCurrentThemeIcon } from "../header/Header";
 import UserAvatar from "./UserAvatar";
 import UserProfileDialog from "./UserProfileDialog";
 
 const UserMenu = () => {
   const navigate = useNavigate();
-  const disptach = useAppDispatch();
+  const dispatch = useAppDispatch();
+  const themeMode = useAppSelector(selectThemeMode);
+  const windowSize = useAppSelector(selectWindowSizeState);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [isUserProfileOpen, setIsUserProfileOpen] = useState(false);
 
@@ -21,37 +26,66 @@ const UserMenu = () => {
     setAnchorElUser(event.currentTarget);
   };
 
-  const handleCloseUserMenu = () => {
+  const handleCloseUserMenu = useCallback(() => {
     setAnchorElUser(null);
-  };
+  }, []);
 
-  const handleUserLogout = () => {
-    disptach(setUserIdentity(getEmptyUserIdentity()));
+  const handleToggleTheme = useCallback(() => {
+    if (themeMode === "dark") {
+      dispatch(setThemeMode({ themeMode: "light" }));
+    } else {
+      dispatch(setThemeMode({ themeMode: "dark" }));
+    }
+  }, [themeMode, dispatch]);
+
+  const handleUserLogout = useCallback(() => {
+    dispatch(setUserIdentity(getEmptyUserIdentity()));
     handleCloseUserMenu();
     navigate("/login");
-  };
+  }, [dispatch, navigate, handleCloseUserMenu]);
 
-  const handleUserProfileOpen = () => {
+  const handleUserProfileOpen = useCallback(() => {
     handleCloseUserMenu();
     setIsUserProfileOpen(true);
-  };
+  }, [handleCloseUserMenu]);
 
   const handleUserProfileClose = () => {
     setIsUserProfileOpen(false);
   };
 
-  const settings = [
-    {
-      name: "Profile",
-      handler: handleUserProfileOpen,
-      icon: <AccountBoxIcon sx={{ marginLeft: "-2px" }} />
-    },
-    {
-      name: "Logout",
-      handler: handleUserLogout,
-      icon: <LogoutIcon />
+  const settings = useMemo(() => {
+    let commonSettings = [
+      {
+        name: "Profile",
+        handler: handleUserProfileOpen,
+        icon: <AccountBoxIcon sx={{ marginLeft: "-2px" }} />
+      },
+      {
+        name: "Logout",
+        handler: handleUserLogout,
+        icon: <LogoutIcon />
+      }
+    ];
+
+    if (windowSize.matchesSmallWidth) {
+      commonSettings = [
+        ...commonSettings,
+        {
+          name: "Theme",
+          handler: handleToggleTheme,
+          icon: getCurrentThemeIcon(themeMode, false, "24px")
+        }
+      ];
     }
-  ];
+
+    return commonSettings;
+  }, [
+    handleUserProfileOpen,
+    handleUserLogout,
+    handleToggleTheme,
+    themeMode,
+    windowSize.matchesSmallWidth
+  ]);
 
   return (
     <>
