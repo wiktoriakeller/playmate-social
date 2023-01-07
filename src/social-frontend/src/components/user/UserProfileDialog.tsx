@@ -1,11 +1,8 @@
 import CloseIcon from "@mui/icons-material/Close";
 import {
-  Avatar,
   Box,
-  Button,
   CircularProgress,
   DialogActions,
-  DialogContent,
   DialogTitle,
   IconButton,
   TextField
@@ -19,10 +16,12 @@ import {
   selectUserIdentity,
   setUserIdentity
 } from "../../slices/userIdentitySlice";
-import { selectWindowSizeState } from "../../slices/windowSizeSlice";
 import { StyledDialog } from "../../styled/components/common/StyledDialog";
 import { StyledFileInput } from "../../styled/components/common/StyledFileInput";
 import { StyledLoadingButton } from "../../styled/components/common/StyledLoadingButton";
+import { UserDialogContent } from "../../styled/components/user/UserDialogContent";
+import { UserDialogContentAvatar } from "../../styled/components/user/UserDialogContentAvatar";
+import { UserDialogEditButton } from "../../styled/components/user/UserDialogEditButton";
 
 export interface IUserProfileDialogProps {
   handleCloseDialog: () => void;
@@ -32,7 +31,6 @@ export interface IUserProfileDialogProps {
 const UserProfileDialog = (props: IUserProfileDialogProps) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUserIdentity);
-  const windowSize = useAppSelector(selectWindowSizeState);
   const [updateUser] = useUpdateUserMutation();
   const [username, setUsername] = useState(user.username ?? "");
   const [usernameError, setUsernameError] = useState(false);
@@ -152,20 +150,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent
-        dividers={true}
-        sx={{
-          paddingBottom: "20px",
-          paddingTop: "20px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          flexDirection: "column",
-          gap: "30px",
-          paddingLeft: windowSize.matchesSmallWidth ? "20px" : "80px",
-          paddingRight: windowSize.matchesSmallWidth ? "20px" : "80px"
-        }}
-      >
+      <UserDialogContent dividers={true}>
         <Box
           sx={{
             width: "100%",
@@ -175,11 +160,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
             position: "relative"
           }}
         >
-          <Avatar
-            sx={{
-              width: windowSize.matchesSmallWidth ? "150px" : "180px",
-              height: windowSize.matchesSmallWidth ? "150px" : "180px"
-            }}
+          <UserDialogContentAvatar
             src={!!uploadedFileUrl ? uploadedFileUrl : ""}
           />
           <StyledFileInput
@@ -189,16 +170,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
             onChange={handleFileUpload}
             accept="image/png, image/jpeg, image/jpg"
           />
-          <Button
-            sx={{
-              position: "absolute",
-              marginTop: "120px",
-              marginLeft: "150px",
-              "&.Mui-disabled": {
-                backgroundColor: "primary.main",
-                color: "#fff"
-              }
-            }}
+          <UserDialogEditButton
             variant="contained"
             size="small"
             color="secondary"
@@ -206,7 +178,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
             disabled={isLoading}
           >
             Edit
-          </Button>
+          </UserDialogEditButton>
         </Box>
         <TextField
           size="small"
@@ -221,7 +193,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
           defaultValue={username}
           disabled={isLoading}
         />
-      </DialogContent>
+      </UserDialogContent>
       <DialogActions>
         <StyledLoadingButton
           autoFocus

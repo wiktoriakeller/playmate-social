@@ -69,12 +69,12 @@ const UserMenu = () => {
 
     if (windowSize.matchesSmallWidth) {
       commonSettings = [
-        ...commonSettings,
         {
           name: "Theme",
           handler: handleToggleTheme,
           icon: getCurrentThemeIcon(themeMode, false, "24px")
-        }
+        },
+        ...commonSettings
       ];
     }
 
