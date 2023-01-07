@@ -19,6 +19,7 @@ import {
   selectUserIdentity,
   setUserIdentity
 } from "../../slices/userIdentitySlice";
+import { selectWindowSizeState } from "../../slices/windowSizeSlice";
 import { StyledDialog } from "../../styled/components/common/StyledDialog";
 import { StyledFileInput } from "../../styled/components/common/StyledFileInput";
 import { StyledLoadingButton } from "../../styled/components/common/StyledLoadingButton";
@@ -31,6 +32,7 @@ export interface IUserProfileDialogProps {
 const UserProfileDialog = (props: IUserProfileDialogProps) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUserIdentity);
+  const windowSize = useAppSelector(selectWindowSizeState);
   const [updateUser] = useUpdateUserMutation();
   const [username, setUsername] = useState(user.username ?? "");
   const [usernameError, setUsernameError] = useState(false);
@@ -160,8 +162,8 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
           justifyContent: "center",
           flexDirection: "column",
           gap: "30px",
-          paddingLeft: "80px",
-          paddingRight: "80px"
+          paddingLeft: windowSize.matchesSmallWidth ? "20px" : "80px",
+          paddingRight: windowSize.matchesSmallWidth ? "20px" : "80px"
         }}
       >
         <Box
@@ -174,7 +176,10 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
           }}
         >
           <Avatar
-            sx={{ width: "180px", height: "180px" }}
+            sx={{
+              width: windowSize.matchesSmallWidth ? "150px" : "180px",
+              height: windowSize.matchesSmallWidth ? "150px" : "180px"
+            }}
             src={!!uploadedFileUrl ? uploadedFileUrl : ""}
           />
           <StyledFileInput
