@@ -10,10 +10,10 @@ export const HeaderCenter = styled.div`
   margin-right: auto;
 
   @media (max-width: 450px) {
-    margin-right: 9%;
+    margin-right: 7%;
   }
 
   @media (max-width: 400px) {
-    margin-right: 5%;
+    margin-right: 4%;
   }
 `;
