@@ -8,4 +8,12 @@ export const HeaderCenter = styled.div`
   align-self: center;
   margin-left: auto;
   margin-right: auto;
+
+  @media (max-width: 450px) {
+    margin-right: 7%;
+  }
+
+  @media (max-width: 400px) {
+    margin-right: 4%;
+  }
 `;

@@ -8,7 +8,6 @@ export const StyledUserAvatarBox = styled.div`
   border-radius: 25px;
   padding: 6px 5px;
   gap: 6px;
-  margin-left: 6px;
   border: 1px solid
     ${(props) =>
       props.theme.palette.mode === "dark"
@@ -20,5 +19,10 @@ export const StyledUserAvatarBox = styled.div`
       props.theme.palette.mode === "dark"
         ? props.theme.palette.grey[800]
         : props.theme.palette.grey[300]};
+  }
+
+  .MuiAvatar-root {
+    width: 28px;
+    height: 28px;
   }
 `;

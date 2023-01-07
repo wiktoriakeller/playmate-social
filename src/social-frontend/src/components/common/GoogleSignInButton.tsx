@@ -1,4 +1,3 @@
-import { useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
 import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
@@ -8,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
 import { selectThemeMode } from "../../slices/themeSlice";
 import { setUserIdentity } from "../../slices/userIdentitySlice";
+import { selectWindowSizeState } from "../../slices/windowSizeSlice";
 
 export interface IGoogleSignInButtonProps {
   isLoading: boolean;
@@ -19,20 +19,18 @@ const GoogleSignInButton = (props: IGoogleSignInButtonProps) => {
   const dispatch = useAppDispatch();
   const [authenticateExternalUser] = useAuthenticateExternalUserMutation();
   const themeMode = useAppSelector(selectThemeMode);
-  const matchesMediumWidth = useMediaQuery("(max-width:600px)");
-  const matchedSmallWidth = useMediaQuery("(max-width:450px)");
-  const matchesVerySmallWidth = useMediaQuery("(max-width:380px)");
+  const windowSize = useAppSelector(selectWindowSizeState);
 
   const getButtonWidth = () => {
-    if (matchesVerySmallWidth) {
+    if (windowSize.matchesExtraSmallWidth) {
       return "300px";
     }
 
-    if (matchedSmallWidth) {
+    if (windowSize.matchesSmallWidth) {
       return "315px";
     }
 
-    if (matchesMediumWidth) {
+    if (windowSize.matchesMediumWidth) {
       return "350px";
     }
 
