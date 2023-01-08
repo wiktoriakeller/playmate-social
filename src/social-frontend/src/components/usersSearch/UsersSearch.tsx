@@ -47,9 +47,10 @@ const UsersSearch = () => {
       variant="outlined"
       onChange={(e) => setUsername(e.target.value)}
       fullWidth
+      size={"small"}
       InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
+        endAdornment: (
+          <InputAdornment position="end">
             <SearchIcon />
           </InputAdornment>
         )

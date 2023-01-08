@@ -6,7 +6,7 @@ import {
 
 export const EmojiPickerContainer = styled.div`
   padding-bottom: 10px;
-  padding-right: 30px;
+  padding-right: 8px;
 
   .epr-body {
     scroll-behavior: smooth;
@@ -28,8 +28,6 @@ export const EmojiPickerContainer = styled.div`
 
   @media only screen and (max-width: 450px),
     (hover: none) and (pointer: coarse) {
-    padding-right: 8px;
-
     .EmojiPickerReact {
       max-width: 280px !important;
       max-height: 340px !important;

@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 
 export const StyledSmallUserAvatar = styled.div`
   display: none;
-  margin-left: 8px;
 
   .MuiAvatar-root {
     width: 28px;
