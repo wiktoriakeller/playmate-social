@@ -29,24 +29,24 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
-          name: api-artifact-prod
+          name: api-artifact-test
           path: ${{env.DOTNET_ROOT}}/api
 
   deploy-test:
     runs-on: ubuntu-latest
     needs: dotnet-build-and-publish
     environment:
-      name: "Prod"
+      name: "test"
       url: ${{ steps.deploy-to-azure.outputs.webapp-url }}
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v3
         with:
-          name: api-artifact-prod
+          name: api-artifact-test
 
       - name: Deploy to Azure Web App
         id: deploy-to-azure
         uses: azure/webapps-deploy@v2
         with:
           app-name: playmate-social-api
-          publish-profile: ${{ secrets.PUBLISH_PROFILE_PROD }}
+          publish-profile: ${{ secrets.PUBLISH_PROFILE_TEST }}
