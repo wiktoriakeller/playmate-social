@@ -12,7 +12,7 @@ export const UserDialogEditButton = styled(Button)`
       color: ${(props) => props.theme.palette.common.white};
     }
 
-    @media (max-width: 450px) {
+    @media only screen and (max-width: 450px) {
       margin-top: 100px;
       margin-left: 130px;
     }

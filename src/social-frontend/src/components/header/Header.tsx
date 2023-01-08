@@ -24,13 +24,8 @@ import HeaderTabs from "./HeaderTabs";
 
 export const getCurrentThemeIcon = (
   themeMode: ThemeModeType,
-  matchesMediumWidth: boolean,
   fontSize: string
 ) => {
-  if (matchesMediumWidth) {
-    return <></>;
-  }
-
   if (themeMode === "light") {
     return <WbSunnyIcon sx={{ fontSize: fontSize }} />;
   }
@@ -59,8 +54,16 @@ export const Header = () => {
     }
   };
 
-  const getUserMenu = () => {
+  const getUserMenu = (side: "left" | "right") => {
     if (!!user.jwtToken) {
+      if (windowSize.matchesSmallWidth && side === "left") {
+        return <UserMenu />;
+      }
+
+      if (windowSize.matchesSmallWidth && side === "right") {
+        return <NotificationsButton />;
+      }
+
       return (
         <>
           <NotificationsButton />
@@ -78,23 +81,27 @@ export const Header = () => {
   return (
     <StyledHeader>
       <HeaderLeftSide>
-        <StyledLogo onClick={onLogoClick}>
-          <SportsEsportsIcon sx={{ fontSize: "32px", marginTop: "3px" }} />
-          <span>playmate</span>
-        </StyledLogo>
+        {windowSize.matchesMediumWidth ? (
+          getUserMenu("left")
+        ) : (
+          <StyledLogo onClick={onLogoClick}>
+            <SportsEsportsIcon sx={{ fontSize: "32px", marginTop: "3px" }} />
+            <span>playmate</span>
+          </StyledLogo>
+        )}
       </HeaderLeftSide>
       <HeaderCenter>{getHeaderCenter()}</HeaderCenter>
       <HeaderRightSide isHomePage={user.jwtToken !== null}>
         <Tooltip title={"Toggle theme"}>
-          <StyledIconButton onClick={toggleTheme} sx={{ marginRight: "-2px" }}>
-            {getCurrentThemeIcon(
-              themeMode,
-              windowSize.matchesMediumWidth,
-              "28px"
-            )}
+          <StyledIconButton
+            onClick={toggleTheme}
+            sx={{ marginRight: "-2px" }}
+            id="theme-toggle-button"
+          >
+            {getCurrentThemeIcon(themeMode, "28px")}
           </StyledIconButton>
         </Tooltip>
-        {getUserMenu()}
+        {getUserMenu("right")}
       </HeaderRightSide>
     </StyledHeader>
   );

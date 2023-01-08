@@ -26,4 +26,13 @@ export const FriendData = styled.div<IFriendsDataProps>`
         ? props.theme.palette.common.white
         : props.theme.palette.text.secondary};
   }
+
+  @media only screen and (max-width: 450px),
+    (hover: none) and (pointer: coarse) {
+    color: ${(props) => props.theme.palette.text.primary};
+
+    span:nth-of-type(2) {
+      color: ${(props) => props.theme.palette.text.secondary};
+    }
+  }
 `;

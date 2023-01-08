@@ -30,4 +30,9 @@ export const StyledFriendsListItem = styled.div<IStyledFriendsListItemProps>`
   &:last-child {
     margin-bottom: auto;
   }
+
+  @media only screen and (max-width: 450px),
+    (hover: none) and (pointer: coarse) {
+    background-color: inherit;
+  }
 `;

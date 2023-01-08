@@ -17,7 +17,12 @@ export const HeaderRightSide = styled.div<IHeaderRightSideProps>`
     margin-right: 10px;
   }
 
-  @media (max-width: 450px) {
+  @media only screen and (max-width: 450px) {
     display: flex;
+    margin-right: 12px;
+
+    #theme-toggle-button {
+      display: none;
+    }
   }
 `;

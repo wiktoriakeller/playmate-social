@@ -1,4 +1,6 @@
+import { useMediaQuery } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
+import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import {
   IFriend,
@@ -7,6 +9,7 @@ import {
   setSelectedFriend
 } from "../../slices/friendsListSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
+import { selectWindowSizeState } from "../../slices/windowSizeSlice";
 import { FriendData } from "../../styled/components/friends/FriendData";
 import { StyledFriendsListItem } from "../../styled/components/friends/StyledFriendsListItem";
 
@@ -19,8 +22,13 @@ export interface IFriendsListItemProps {
 
 const FriendListItem = (props: IFriendsListItemProps) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const windowSize = useAppSelector(selectWindowSizeState);
   const currentUser = useAppSelector(selectUserIdentity);
   const selectedFriend = useAppSelector(selectSelectedFriend);
+  const deviceWithPointer = useMediaQuery(
+    "only screen and (hover: none) and (pointer: coarse)"
+  );
 
   const getLastMessage = (message?: ILastChatMessage) => {
     if (!!message) {
@@ -32,11 +40,17 @@ const FriendListItem = (props: IFriendsListItemProps) => {
     return "You:";
   };
 
-  const setCurrentFriend = () => dispatch(setSelectedFriend(props as IFriend));
+  const handleFriendClick = () => {
+    dispatch(setSelectedFriend(props as IFriend));
+
+    if (deviceWithPointer || windowSize.matchesSmallWidth) {
+      navigate("/chats");
+    }
+  };
 
   return (
     <StyledFriendsListItem
-      onClick={setCurrentFriend}
+      onClick={handleFriendClick}
       isSelected={selectedFriend?.id === props.id}
     >
       <Avatar src={props.profilePictureUrl ?? ""} />

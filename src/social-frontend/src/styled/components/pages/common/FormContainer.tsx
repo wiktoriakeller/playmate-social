@@ -11,12 +11,12 @@ export const FormContainer = styled.div`
     width: 440px;
   }
 
-  @media (max-width: 450px) {
+  @media only screen and (max-width: 450px) {
     margin-top: 20%;
     width: 370px;
   }
 
-  @media (max-width: 380px) {
+  @media only screen and (max-width: 380px) {
     width: 340px;
   }
 `;

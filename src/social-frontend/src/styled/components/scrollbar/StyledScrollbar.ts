@@ -29,10 +29,10 @@ export const StyledScrollbar = styled.div`
   }
 
   ::-webkit-scrollbar-thumb {
-    background: ${(props) => getScrollbarColor(props.theme)};
+    background-color: ${(props) => getScrollbarColor(props.theme)};
   }
 
   ::-webkit-scrollbar-corner {
-    ${(props) => getScrollbarBackgroundColor(props.theme)}
+    background-color: ${(props) => getScrollbarBackgroundColor(props.theme)};
   }
 `;

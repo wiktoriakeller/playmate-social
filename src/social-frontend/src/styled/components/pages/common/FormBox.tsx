@@ -8,11 +8,11 @@ export const FormBox = styled.form`
   gap: 20px;
   padding: 45px 45px;
 
-  @media (max-width: 450px) {
+  @media only screen and (max-width: 450px) {
     padding: 35px 25px;
   }
 
-  @media (max-width: 380px) {
+  @media only screen and (max-width: 380px) {
     padding: 30px 20px;
   }
 `;

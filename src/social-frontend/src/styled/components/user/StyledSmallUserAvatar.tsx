@@ -2,7 +2,6 @@ import styled from "@emotion/styled";
 
 export const StyledSmallUserAvatar = styled.div`
   display: none;
-  margin-left: 8px;
 
   .MuiAvatar-root {
     width: 28px;
@@ -13,12 +12,12 @@ export const StyledSmallUserAvatar = styled.div`
     display: flex;
   }
 
-  @media (max-width: 450px) {
-    margin-left: 3px;
+  @media only screen and (max-width: 450px) {
+    margin-left: 12px;
 
     .MuiAvatar-root {
-      width: 24px;
-      height: 24px;
+      width: 27px;
+      height: 27px;
     }
   }
 `;

@@ -7,11 +7,11 @@ export const FormTitle = styled.div`
       ? props.theme.palette.grey[300]
       : props.theme.palette.text.secondary};
 
-  @media (max-width: 450px) {
+  @media only screen and (max-width: 450px) {
     font-size: 24px;
   }
 
-  @media (max-width: 380px) {
+  @media only screen and (max-width: 380px) {
     font-size: 23px;
   }
 `;

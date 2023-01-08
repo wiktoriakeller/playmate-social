@@ -2,6 +2,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import PeopleIcon from "@mui/icons-material/People";
 import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import {
   selectCurrentTab,
@@ -12,6 +13,8 @@ import { StyledTab } from "../../styled/components/common/StyledTab";
 import { StyledTabs } from "../../styled/components/common/StyledTabs";
 
 const HeaderTabs = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const currentTab = useAppSelector(selectCurrentTab);
   const disptach = useAppDispatch();
 
@@ -27,6 +30,10 @@ const HeaderTabs = () => {
         name: newTab.name
       })
     );
+
+    if (location.pathname === "/chats") {
+      navigate("/");
+    }
   };
 
   return (

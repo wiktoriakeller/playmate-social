@@ -13,7 +13,7 @@ export const UserDialogContent = styled(DialogContent)`
     padding-left: 80px;
     padding-right: 80px;
 
-    @media (max-width: 450px) {
+    @media only screen and (max-width: 450px) {
       padding-left: 20px;
       padding-right: 20px;
       gap: 20px;
