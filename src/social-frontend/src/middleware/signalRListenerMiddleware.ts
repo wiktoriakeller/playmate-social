@@ -19,8 +19,11 @@ import {
 import {
   addFriend,
   IFriend,
+  IUpdateFriendData,
   setFriendLastChatMessage,
-  setFriendsList
+  setFriendsList,
+  updateFriendData,
+  updateSelectedFriend
 } from "../slices/friendsListSlice";
 import {
   IUserIdentityState,
@@ -122,6 +125,15 @@ signalRListenerMiddleware.startListening({
         "ReceiveFriendsRequestConfirmation",
         (request: IFriendRequestConfirmationResponse) => {
           listenerApi.dispatch(addFriend(request.createdFriend));
+          listenerApi.dispatch(friendsApi.util.invalidateTags(["friendsList"]));
+        }
+      );
+
+      hubConnection.on(
+        "ReceiveFriendDataUpdate",
+        (request: IUpdateFriendData) => {
+          listenerApi.dispatch(updateFriendData(request));
+          listenerApi.dispatch(updateSelectedFriend(request));
           listenerApi.dispatch(friendsApi.util.invalidateTags(["friendsList"]));
         }
       );

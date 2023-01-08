@@ -1,4 +1,4 @@
-import { Avatar, Box, Skeleton } from "@mui/material";
+import { Avatar, Skeleton } from "@mui/material";
 import { useEffect, useMemo } from "react";
 import { useLazyGetChatMessagesListQuery } from "../../api/chatMessages/chatMessagesApi";
 import { IGetChatMessagesListResponse } from "../../api/chatMessages/responses/getChatMessagesListResponse";
@@ -77,7 +77,7 @@ const ChatMessages = () => {
           <SkeletonChatMessage
             width={`${5 * (i + (i % 2)) + 5}%`}
             height={"45px"}
-            withAvatar={i == 0}
+            withAvatar={i === 0}
             isUserMessage={true}
           />
         </ChatSkeletonDiv>
@@ -92,7 +92,7 @@ const ChatMessages = () => {
             isUserMessage={false}
             width={`${5 * (i + (i % 3)) + 5}%`}
             height={"45px"}
-            withAvatar={i == 0}
+            withAvatar={i === 0}
           />
         </ChatSkeletonDiv>
       );
@@ -105,7 +105,7 @@ const ChatMessages = () => {
             isUserMessage={true}
             width={`${6 * (i + (i % 3)) + 5}%`}
             height={"45px"}
-            withAvatar={i == 0}
+            withAvatar={i === 0}
           />
         </ChatSkeletonDiv>
       );
@@ -119,7 +119,7 @@ const ChatMessages = () => {
             isUserMessage={false}
             width={"22%"}
             height={"45px"}
-            withAvatar={i == 0}
+            withAvatar={i === 0}
           />
         </ChatSkeletonDiv>
       );

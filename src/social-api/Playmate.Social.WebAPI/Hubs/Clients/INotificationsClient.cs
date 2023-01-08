@@ -1,14 +1,16 @@
-using Playmate.Social.Application.Friends.Dtos;
 using Playmate.Social.Application.ChatMessages.Responses;
-using Playmate.Social.WebAPI.Hubs.Responses.FriendsRequests;
+using Playmate.Social.Application.Friends.Dtos;
+using Playmate.Social.WebAPI.Hubs.Responses;
 
 namespace Playmate.Social.WebAPI.Hubs.Clients;
 
 public interface INotificationsClient
 {
-    Task ReceiveFriendsRequest(FriendRequestDto request);
+    Task ReceiveFriendsRequest(FriendRequestDto response);
 
-    Task ReceiveFriendsRequestConfirmation(ConfirmFriendRequestResponse confirmation);
+    Task ReceiveFriendsRequestConfirmation(ConfirmFriendRequestResponse response);
 
-    Task ReceiveChatMessage(AddChatMessageResponse request);
+    Task ReceiveChatMessage(AddChatMessageResponse response);
+
+    Task ReceiveFriendDataUpdate(UpdateFriendDataResponse response);
 }
