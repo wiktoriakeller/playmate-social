@@ -2,5 +2,5 @@
 
 public class GetChatMessagesListRequest
 {
-    public Guid FriendId { get; set; }
+    public Guid FriendId { get; init; }
 }

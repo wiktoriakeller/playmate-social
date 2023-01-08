@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Playmate.Social.Application.Common.Dtos;
 using Playmate.Social.Application.Users.Commands;
 using Playmate.Social.Application.Users.Queries;
 using Playmate.Social.WebAPI.ApiRequests.Users;
@@ -31,11 +32,21 @@ public class UsersController : BaseApiController
         {
             Username = request.Username,
             UserId = Guid.Parse(userId),
-            Picture = request.Picture?.OpenReadStream(),
-            PictureName = request.Picture?.FileName,
-            PictureSize = request.Picture?.Length,
-            PictureType = request.Picture?.ContentType
         };
+
+        if (request.Picture is not null)
+        {
+            var fileMetadata = new FileMetadataDto
+            {
+                Content = request.Picture?.OpenReadStream(),
+                Name = request.Picture?.FileName,
+                Size = request.Picture?.Length,
+                FileType = request.Picture?.ContentType
+            };
+
+            command.FileMetadata = fileMetadata;
+        }
+
         var response = await _mediator.Send(command);
         return GetStatusCode(response);
     }

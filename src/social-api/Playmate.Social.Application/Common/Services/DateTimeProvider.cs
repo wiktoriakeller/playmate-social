@@ -4,5 +4,7 @@ namespace Playmate.Social.Application.Common.Services;
 
 public class DateTimeProvider : IDateTimeProvider
 {
-    public DateTime CurrentTime => DateTime.UtcNow;
+    public DateTime CurrentTimeUtc => DateTime.UtcNow;
+
+    public DateTimeOffset CurrentOffsetTimeUtc => DateTimeOffset.UtcNow;
 }
