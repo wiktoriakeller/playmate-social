@@ -6,8 +6,8 @@ using Playmate.Social.Application.ChatMessages.Commands;
 using Playmate.Social.Application.Friends.Commands;
 using Playmate.Social.WebAPI.ApiRequests.Friends;
 using Playmate.Social.WebAPI.Hubs.Clients;
-using Playmate.Social.WebAPI.Hubs.Requests.ChatMessages;
-using Playmate.Social.WebAPI.Hubs.Responses.FriendsRequests;
+using Playmate.Social.WebAPI.Hubs.Requests;
+using Playmate.Social.WebAPI.Hubs.Responses;
 
 namespace Playmate.Social.WebAPI.Hubs;
 

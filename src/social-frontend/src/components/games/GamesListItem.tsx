@@ -67,9 +67,8 @@ const GamesListItem = (props: IGameListItemProps) => {
         <Button
           size="large"
           onClick={selectGame}
-          color="secondary"
           variant="text"
-          sx={{ marginRight: "auto" }}
+          sx={{ marginRight: "auto", color: "text.primary" }}
         >
           Play
         </Button>

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using Playmate.Social.Application.Common.BaseResponse;
-using Playmate.Social.Application.Common.Constants;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
 using Playmate.Social.Application.Identity.Commands;
@@ -19,6 +18,9 @@ public class IdentityService : IIdentityService
     private readonly IUsersRepository _usersRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly JwtTokensConfiguration _jwtOptions;
+
+    private const string InvalidToken = "Token is invalid";
+    private const string IncorrectCredentials = "Incorrect credentials";
 
     public IdentityService(
         IJwtTokenService jwtTokenService,
@@ -70,14 +72,14 @@ public class IdentityService : IIdentityService
 
         if (user == null)
         {
-            return ResponseResult.ValidationError<AuthenticateUserResponse>(ErrorMessages.Identity.IncorrectCredentials);
+            return ResponseResult.ValidationError<AuthenticateUserResponse>(IncorrectCredentials);
         }
 
         var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, authenticateUserCommand.Password);
 
         if (passwordVerification == PasswordVerificationResult.Failed)
         {
-            return ResponseResult.ValidationError<AuthenticateUserResponse>(ErrorMessages.Identity.IncorrectCredentials);
+            return ResponseResult.ValidationError<AuthenticateUserResponse>(IncorrectCredentials);
         }
 
         var newJwt = _jwtTokenService.CreateJwtToken(user);
@@ -102,7 +104,7 @@ public class IdentityService : IIdentityService
 
         if (!result.success)
         {
-            return ResponseResult.Unauthorized<RefreshTokenResponse>(ErrorMessages.Identity.InvalidToken);
+            return ResponseResult.Unauthorized<RefreshTokenResponse>(InvalidToken);
         }
 
         var refreshTokens = _refreshTokenRepository
@@ -111,14 +113,14 @@ public class IdentityService : IIdentityService
 
         if (refreshTokens.Count != 1)
         {
-            return ResponseResult.Unauthorized<RefreshTokenResponse>(ErrorMessages.Identity.InvalidToken);
+            return ResponseResult.Unauthorized<RefreshTokenResponse>(InvalidToken);
         }
 
         var currentRefreshToken = refreshTokens.First();
 
         if (currentRefreshToken.ExpiryDate < DateTime.UtcNow || currentRefreshToken.JwtId != result.jti)
         {
-            return ResponseResult.Unauthorized<RefreshTokenResponse>(ErrorMessages.Identity.InvalidToken);
+            return ResponseResult.Unauthorized<RefreshTokenResponse>(InvalidToken);
         }
 
         var user = _usersRepository.GetWhere(u => u.Id.ToString() == result.userId).FirstOrDefault();

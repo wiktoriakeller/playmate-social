@@ -4,7 +4,7 @@ using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Application.Games;
 
-public class GamesMappingProfile : Profile
+internal class GamesMappingProfile : Profile
 {
     public GamesMappingProfile()
     {

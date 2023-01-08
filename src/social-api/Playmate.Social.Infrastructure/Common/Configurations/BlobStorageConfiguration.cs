@@ -6,4 +6,5 @@ public class BlobStorageConfiguration
 
     public string ConnectionString { get; init; }
     public string UsersAvatarsContainerName { get; init; }
+    public string GamesAvatarsContainerName { get; init; }
 }

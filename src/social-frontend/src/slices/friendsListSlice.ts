@@ -20,6 +20,12 @@ export interface IFriendsListState {
   searchPhrase: string;
 }
 
+export interface IUpdateFriendData {
+  friendId: string;
+  profilePictureUrl: string;
+  username: string;
+}
+
 const friendsListInitialState: IFriendsListState = {
   friends: [],
   selectedFriend: null,
@@ -57,6 +63,29 @@ export const friendsListSlice = createSlice({
       action: PayloadAction<string>
     ) {
       state.searchPhrase = action.payload;
+    },
+    updateFriendData(
+      state: IFriendsListState,
+      action: PayloadAction<IUpdateFriendData>
+    ) {
+      state.friends = state.friends.map((friend) =>
+        friend.id === action.payload.friendId
+          ? { ...friend, ...action.payload }
+          : friend
+      );
+    },
+    updateSelectedFriend(
+      state: IFriendsListState,
+      action: PayloadAction<IUpdateFriendData>
+    ) {
+      if (
+        !!state.selectedFriend &&
+        action.payload.friendId === state.selectedFriend?.id
+      ) {
+        state.selectedFriend.profilePictureUrl =
+          action.payload.profilePictureUrl;
+        state.selectedFriend.username = action.payload.username;
+      }
     }
   }
 });
@@ -66,7 +95,9 @@ export const {
   setSelectedFriend,
   setFriendsListSearchPhrase,
   addFriend,
-  setFriendLastChatMessage
+  setFriendLastChatMessage,
+  updateFriendData,
+  updateSelectedFriend
 } = friendsListSlice.actions;
 
 export const selectFriendsList = (state: RootState): IFriend[] =>

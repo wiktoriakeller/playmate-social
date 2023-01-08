@@ -31,12 +31,12 @@ public class AddGameResultCommandHandler : IHandlerWrapper<AddGameResultCommand,
     public async Task<Response<AddGameResultResponse>> Handle(AddGameResultCommand request, CancellationToken cancellationToken)
     {
         var mappedResult = _mapper.Map<GameResult>(request);
-        mappedResult.Date = _dateTimeProvider.CurrentTime;
+        mappedResult.Date = _dateTimeProvider.CurrentOffsetTimeUtc;
 
         var game = await _gamesRepository.GetByIdAsync(mappedResult.GameId);
         if (game == null)
         {
-            return ResponseResult.ValidationError<AddGameResultResponse>("Provided game does not exist");
+            return ResponseResult.ValidationError<AddGameResultResponse>("Game with the provided ID does not exist");
         }
 
         var created = await _gamesResultsRepository.AddAsync(mappedResult);

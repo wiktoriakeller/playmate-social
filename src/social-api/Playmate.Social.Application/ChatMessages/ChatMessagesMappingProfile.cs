@@ -5,7 +5,7 @@ using Playmate.Social.Domain.Entities;
 
 namespace Playmate.Social.Application.ChatMessages;
 
-public class ChatMessagesMappingProfile : Profile
+internal class ChatMessagesMappingProfile : Profile
 {
     public ChatMessagesMappingProfile()
     {

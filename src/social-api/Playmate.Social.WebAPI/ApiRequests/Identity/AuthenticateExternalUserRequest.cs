@@ -2,6 +2,6 @@
 
 public class AuthenticateExternalUserRequest
 {
-    public string Token { get; set; }
-    public string Provider { get; set; }
+    public string Token { get; init; }
+    public string Provider { get; init; }
 }

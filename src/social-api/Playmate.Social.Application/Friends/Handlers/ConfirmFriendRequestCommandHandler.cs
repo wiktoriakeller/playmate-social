@@ -3,6 +3,7 @@ using Playmate.Social.Application.Common;
 using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
+using Playmate.Social.Application.Common.Contracts.Services;
 using Playmate.Social.Application.Friends.Commands;
 using Playmate.Social.Application.Friends.Dtos;
 using Playmate.Social.Application.Friends.Responses;
@@ -15,20 +16,20 @@ public class ConfirmFriendRequestCommandHandler : IHandlerWrapper<ConfirmFriendR
     private readonly IFriendRequestsRepository _friendsRequestsRepository;
     private readonly IFriendsRepository _friendsRepository;
     private readonly ICurrentUserService _currentUserService;
-    private readonly IUsersRepository _usersRepository;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IMapper _mapper;
 
     public ConfirmFriendRequestCommandHandler(
         IFriendRequestsRepository friendsRequestsRepository,
         IFriendsRepository friendsRepository,
         ICurrentUserService currentUserService,
-        IUsersRepository usersRepository,
+        IDateTimeProvider dateTimeProvider,
         IMapper mapper)
     {
         _friendsRequestsRepository = friendsRequestsRepository;
         _friendsRepository = friendsRepository;
         _currentUserService = currentUserService;
-        _usersRepository = usersRepository;
+        _dateTimeProvider = dateTimeProvider;
         _mapper = mapper;
     }
 
@@ -64,7 +65,7 @@ public class ConfirmFriendRequestCommandHandler : IHandlerWrapper<ConfirmFriendR
 
         if (request.Accept)
         {
-            var friendsSince = DateTimeOffset.UtcNow;
+            var friendsSince = _dateTimeProvider.CurrentOffsetTimeUtc;
             var friend = new Friend
             {
                 AddresseeId = friendRequest.AddresseeId,

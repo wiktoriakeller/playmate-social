@@ -7,4 +7,5 @@ public class Game
     public string Description { get; set; }
     public string ServerUrl { get; set; }
     public string ImageUrl { get; set; }
+    public string ImageName { get; set; }
 }
