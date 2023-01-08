@@ -20,6 +20,7 @@ public class WhitelistingMiddleware
             var connectionIp = context.Connection.RemoteIpAddress;
             var games = gamesRepository.GetAll();
             var registeredIpAddresses = games
+                .Where(g => !string.IsNullOrWhiteSpace(g.Name))
                 .Select(g => Dns.GetHostEntry(new Uri(g.ServerUrl).Host).AddressList)
                 .SelectMany(ip => ip);
 
