@@ -11,8 +11,7 @@ export const UsersList = styled(List)`
   max-width: 1000px;
   padding: 12px 10%;
 
-  @media only screen and (max-width: 450px),
-    (hover: none) and (pointer: coarse) {
+  @media only screen and (max-width: 450px) {
     width: 100%;
   }
 `;
