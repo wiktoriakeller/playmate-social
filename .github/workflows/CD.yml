@@ -24,13 +24,13 @@ jobs:
         run: dotnet build ./src/social-api/Playmate.Social.sln --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish ./src/social-api/Playmate.Social.sln -c Rlease -o ${{ env.DOTNET_ROOT }}/api
+        run: dotnet publish ./src/social-api/Playmate.Social.sln -c Rlease -o ${{ env.DOTNET_ROOT }}/social-api
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
         with:
           name: api-artifact-test
-          path: ${{env.DOTNET_ROOT}}/api
+          path: ${{env.DOTNET_ROOT}}/social-api
 
   deploy-test:
     runs-on: ubuntu-latest
