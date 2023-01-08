@@ -16,8 +16,8 @@ export const StyledTab = styled(Tab)`
     }
 
     .MuiSvgIcon-root {
-      font-size: 25px;
-      margin-top: 6px;
+      font-size: 26px;
+      margin-top: 5px;
     }
   }
 `;

@@ -2,6 +2,7 @@ import { useMediaQuery } from "@mui/material";
 import { useEffect } from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useAppDispatch } from "../app/storeHooks";
+import MobileChatMessages from "../components/chat/MobileChatMessages";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import { PageNotFound } from "../pages/PageNotFound";
@@ -16,9 +17,11 @@ import MainLayout from "./layouts/MainLayout";
 
 function Router() {
   const dispatch = useAppDispatch();
-  const matchesMediumWidth = useMediaQuery("(max-width:600px)");
-  const matchesSmallWidth = useMediaQuery("(max-width:450px)");
-  const matchesExtraSmallWidth = useMediaQuery("(max-width:380px)");
+  const matchesMediumWidth = useMediaQuery("only screen and (max-width:600px)");
+  const matchesSmallWidth = useMediaQuery("only screen and (max-width:450px)");
+  const matchesExtraSmallWidth = useMediaQuery(
+    "only screen and (max-width:380px)"
+  );
 
   useEffect(() => {
     dispatch(setMatchesMediumWidth(matchesMediumWidth));
@@ -57,6 +60,14 @@ function Router() {
             <FormPageLayout>
               <RegisterPage />
             </FormPageLayout>
+          }
+        />
+        <Route
+          path="/chats"
+          element={
+            <MainLayout>
+              <MobileChatMessages />
+            </MainLayout>
           }
         />
         <Route path="*" element={<PageNotFound />} />

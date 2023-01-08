@@ -25,4 +25,31 @@ export const EmojiPickerContainer = styled.div`
       ${(props) => getScrollbarBackgroundColor(props.theme)}
     }
   }
+
+  @media only screen and (max-width: 450px),
+    (hover: none) and (pointer: coarse) {
+    padding-right: 8px;
+
+    .EmojiPickerReact {
+      max-width: 280px !important;
+      max-height: 340px !important;
+    }
+
+    .Flex.epr-preview.FlexRow {
+      display: none;
+    }
+
+    .epr-emoji-category-label {
+      display: none !important;
+    }
+
+    .Flex.epr-header-overlay.FlexRow {
+      padding-bottom: 5px;
+    }
+
+    .epr-category-nav {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+  }
 `;

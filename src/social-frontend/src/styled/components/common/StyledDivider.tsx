@@ -16,4 +16,9 @@ export const StyledHorizontalDivider = styled(Divider)`
   .MuiDivider-wrapper {
     padding-top: 4px;
   }
+
+  @media only screen and (max-width: 450px),
+    (hover: none) and (pointer: coarse) {
+    display: none;
+  }
 `;

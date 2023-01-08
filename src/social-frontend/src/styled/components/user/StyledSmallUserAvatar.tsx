@@ -14,11 +14,11 @@ export const StyledSmallUserAvatar = styled.div`
   }
 
   @media only screen and (max-width: 450px) {
-    margin-left: 3px;
+    margin-left: 12px;
 
     .MuiAvatar-root {
-      width: 25px;
-      height: 25px;
+      width: 27px;
+      height: 27px;
     }
   }
 `;

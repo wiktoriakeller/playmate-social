@@ -72,7 +72,7 @@ const UserMenu = () => {
         {
           name: "Theme",
           handler: handleToggleTheme,
-          icon: getCurrentThemeIcon(themeMode, false, "24px")
+          icon: getCurrentThemeIcon(themeMode, "24px")
         },
         ...commonSettings
       ];

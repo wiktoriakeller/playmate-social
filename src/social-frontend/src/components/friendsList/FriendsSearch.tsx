@@ -1,5 +1,5 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { InputAdornment, Typography } from "@mui/material";
+import { InputAdornment, Typography, useMediaQuery } from "@mui/material";
 import _ from "lodash";
 import { useCallback, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
@@ -7,13 +7,18 @@ import {
   selectFriendsListSearchPhrase,
   setFriendsListSearchPhrase
 } from "../../slices/friendsListSlice";
-import { StyledFriendsSearch } from "../../styled/components/friends/StyledFriendsSearch";
+import { selectWindowSizeState } from "../../slices/windowSizeSlice";
 import { StyledTextField } from "../../styled/components/common/StyledTextField";
+import { StyledFriendsSearch } from "../../styled/components/friends/StyledFriendsSearch";
 
 const FriendsSearch = () => {
   const dispatch = useAppDispatch();
   const storedSearchPhrase = useAppSelector(selectFriendsListSearchPhrase);
+  const windowSize = useAppSelector(selectWindowSizeState);
   const [searchPhrase, setSearchPhrase] = useState(storedSearchPhrase);
+  const deviceWithPointer = useMediaQuery(
+    "only screen and (hover: none) and (pointer: coarse)"
+  );
 
   const debouncedChangeSearchPhrase = useMemo(
     () => (newSerchPhrase: string) =>
@@ -35,7 +40,15 @@ const FriendsSearch = () => {
 
   return (
     <StyledFriendsSearch>
-      <Typography variant="h6" sx={{ fontWeight: "bold", paddingLeft: "4px" }}>
+      <Typography
+        variant="h6"
+        sx={{
+          fontWeight: "bold",
+          paddingLeft: "4px",
+          display:
+            windowSize.matchesSmallWidth || deviceWithPointer ? "none" : "flex"
+        }}
+      >
         Friends
       </Typography>
       <StyledTextField

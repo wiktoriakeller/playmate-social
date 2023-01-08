@@ -19,5 +19,10 @@ export const HeaderRightSide = styled.div<IHeaderRightSideProps>`
 
   @media only screen and (max-width: 450px) {
     display: flex;
+    margin-right: 12px;
+
+    #theme-toggle-button {
+      display: none;
+    }
   }
 `;
