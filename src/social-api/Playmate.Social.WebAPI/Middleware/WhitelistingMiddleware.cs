@@ -15,7 +15,7 @@ public class WhitelistingMiddleware
 
     public async Task Invoke(HttpContext context, IGamesRepository gamesRepository)
     {
-        if(context.Request.Method == HttpMethod.Post.Method && context.Request.Path.ToString().Contains("results"))
+        if (context.Request.Method == HttpMethod.Post.Method && context.Request.Path.ToString().Contains("results"))
         {
             var connectionIp = context.Connection.RemoteIpAddress;
             var games = gamesRepository.GetAll();
@@ -35,7 +35,6 @@ public class WhitelistingMiddleware
                 await contextResponse.WriteAsync("Unauthorized access");
             }
         }
-
         else
         {
             await _next(context);
