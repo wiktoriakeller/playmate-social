@@ -1,5 +1,6 @@
-﻿using Playmate.Social.Application.Common.Contracts.Persistence;
-using System.Linq;
+﻿using Microsoft.Extensions.Options;
+using Playmate.Social.Application.Common.Contracts.Persistence;
+using Playmate.Social.WebAPI.Configurations;
 using System.Net;
 
 namespace Playmate.Social.WebAPI.Middleware;
@@ -13,16 +14,22 @@ public class WhitelistingMiddleware
         _next = next;
     }
 
-    public async Task Invoke(HttpContext context, IGamesRepository gamesRepository)
+    public async Task Invoke(
+        HttpContext context,
+        IGamesRepository gamesRepository,
+        IOptions<WhitelistingConfiguration> whitelistingConfiguration)
     {
-        if (context.Request.Method == HttpMethod.Post.Method && context.Request.Path.ToString().Contains("results"))
+        if (context.Request.Method == HttpMethod.Post.Method
+            && context.Request.Path.ToString().Contains("results")
+            && whitelistingConfiguration.Value.UseWhitelisting)
         {
             var connectionIp = context.Connection.RemoteIpAddress;
             var games = gamesRepository.GetAll();
             var registeredIpAddresses = games
                 .Where(g => !string.IsNullOrWhiteSpace(g.ServerUrl))
                 .Select(g => Dns.GetHostEntry(new Uri(g.ServerUrl).Host).AddressList)
-                .SelectMany(ip => ip);
+                .SelectMany(ip => ip)
+                .Distinct();
 
             if (registeredIpAddresses.Contains(connectionIp))
             {
