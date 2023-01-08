@@ -22,7 +22,7 @@ jobs:
         run: dotnet build ./src/social-api/Playmate.Social.sln --configuration Release --no-restore
 
       - name: Run unit tests
-          run: dotnet test ./src/social-api/Playmate.Social.UnitTests/Playmate.Social.UnitTests.csproj --verbosity normal
+        run: dotnet test ./src/social-api/Playmate.Social.UnitTests/Playmate.Social.UnitTests.csproj --verbosity normal
 
   node-build:
     runs-on: ubuntu-latest
