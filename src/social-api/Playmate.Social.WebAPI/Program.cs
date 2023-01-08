@@ -34,6 +34,8 @@ app.UseAuthorization();
 
 app.UseIdentityMiddleware();
 
+app.UseWhitelistingMiddleware();
+
 app.UseErrorHandlingMiddleware();
 
 app.MapControllers();
