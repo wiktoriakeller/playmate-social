@@ -11,10 +11,18 @@ export const HeaderRightSide = styled.div<IHeaderRightSideProps>`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 1px;
 
   @media (max-width: 620px) {
-    display: ${(props) => (props.isHomePage ? "none" : "inherit")};
-    margin-left: 0px;
+    display: none;
+    margin-right: 10px;
+  }
+
+  @media only screen and (max-width: 450px) {
+    display: flex;
+    margin-right: 12px;
+
+    #theme-toggle-button {
+      display: none;
+    }
   }
 `;

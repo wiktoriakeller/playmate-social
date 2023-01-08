@@ -7,4 +7,23 @@ export const StyledBadge = styled(Badge)`
     top: 5px;
     padding: 0px 4px;
   }
+
+  .MuiSvgIcon-root {
+    width: 28px;
+    height: 28px;
+  }
+
+  @media only screen and (max-width: 450px) {
+    .MuiSvgIcon-root {
+      width: 27px;
+      height: 27px;
+    }
+
+    .MuiBadge-badge {
+      min-width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      right: 5px;
+    }
+  }
 `;

@@ -1,5 +1,5 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
-import PeopleIcon from "@mui/icons-material/People";
+import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import { Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -11,6 +11,7 @@ import {
   ThemeModeType
 } from "../../slices/themeSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
+import { selectWindowSizeState } from "../../slices/windowSizeSlice";
 import { StyledIconButton } from "../../styled/components/common/StyledIconButton";
 import { HeaderCenter } from "../../styled/components/header/HeaderCenter";
 import { HeaderLeftSide } from "../../styled/components/header/HeaderLeftSide";
@@ -21,19 +22,23 @@ import NotificationsButton from "../friendRequests/NotificationsButton";
 import UserMenu from "../user/UserMenu";
 import HeaderTabs from "./HeaderTabs";
 
-const getCurrentThemeIcon = (themeMode: ThemeModeType) => {
+export const getCurrentThemeIcon = (
+  themeMode: ThemeModeType,
+  fontSize: string
+) => {
   if (themeMode === "light") {
-    return <WbSunnyIcon sx={{ fontSize: "28px" }} />;
+    return <WbSunnyIcon sx={{ fontSize: fontSize }} />;
   }
 
-  return <Brightness2Icon sx={{ fontSize: "28px" }} />;
+  return <Brightness2Icon sx={{ fontSize: fontSize }} />;
 };
 
 export const Header = () => {
-  const themeMode = useAppSelector(selectThemeMode);
-  const user = useAppSelector(selectUserIdentity);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const themeMode = useAppSelector(selectThemeMode);
+  const windowSize = useAppSelector(selectWindowSizeState);
+  const user = useAppSelector(selectUserIdentity);
 
   const toggleTheme = () => {
     if (themeMode === "dark") {
@@ -49,8 +54,16 @@ export const Header = () => {
     }
   };
 
-  const getUserMenu = () => {
+  const getUserMenu = (side: "left" | "right") => {
     if (!!user.jwtToken) {
+      if (windowSize.matchesSmallWidth && side === "left") {
+        return <UserMenu />;
+      }
+
+      if (windowSize.matchesSmallWidth && side === "right") {
+        return <NotificationsButton />;
+      }
+
       return (
         <>
           <NotificationsButton />
@@ -68,19 +81,27 @@ export const Header = () => {
   return (
     <StyledHeader>
       <HeaderLeftSide>
-        <StyledLogo onClick={onLogoClick}>
-          <PeopleIcon sx={{ fontSize: "32px" }} />
-          <span>playmate</span>
-        </StyledLogo>
+        {windowSize.matchesMediumWidth ? (
+          getUserMenu("left")
+        ) : (
+          <StyledLogo onClick={onLogoClick}>
+            <SportsEsportsIcon sx={{ fontSize: "32px", marginTop: "3px" }} />
+            <span>playmate</span>
+          </StyledLogo>
+        )}
       </HeaderLeftSide>
       <HeaderCenter>{getHeaderCenter()}</HeaderCenter>
       <HeaderRightSide isHomePage={user.jwtToken !== null}>
         <Tooltip title={"Toggle theme"}>
-          <StyledIconButton onClick={toggleTheme}>
-            {getCurrentThemeIcon(themeMode)}
+          <StyledIconButton
+            onClick={toggleTheme}
+            sx={{ marginRight: "-2px" }}
+            id="theme-toggle-button"
+          >
+            {getCurrentThemeIcon(themeMode, "28px")}
           </StyledIconButton>
         </Tooltip>
-        {getUserMenu()}
+        {getUserMenu("right")}
       </HeaderRightSide>
     </StyledHeader>
   );

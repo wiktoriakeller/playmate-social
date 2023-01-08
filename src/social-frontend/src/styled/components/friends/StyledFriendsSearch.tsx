@@ -11,4 +11,10 @@ export const StyledFriendsSearch = styled.div`
   padding: 0px 10px;
   height: 60px;
   box-sizing: border-box;
+
+  @media only screen and (max-width: 450px),
+    (hover: none) and (pointer: coarse) {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
 `;

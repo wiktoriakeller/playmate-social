@@ -20,7 +20,9 @@ const UsersSearch = () => {
         })
           .unwrap()
           .then((response) => {
-            dispatch(setUserSearch(response?.data?.users));
+            if (!!response.data) {
+              dispatch(setUserSearch(response.data.users));
+            }
           })
           .catch((error: { status: string | number }) => {
             dispatch(
@@ -45,9 +47,10 @@ const UsersSearch = () => {
       variant="outlined"
       onChange={(e) => setUsername(e.target.value)}
       fullWidth
+      size={"small"}
       InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
+        endAdornment: (
+          <InputAdornment position="end">
             <SearchIcon />
           </InputAdornment>
         )

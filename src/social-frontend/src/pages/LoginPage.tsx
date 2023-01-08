@@ -1,31 +1,30 @@
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { Box, IconButton, InputAdornment, useMediaQuery } from "@mui/material";
+import { CircularProgress, IconButton, InputAdornment } from "@mui/material";
 import Paper from "@mui/material/Paper";
-import { GoogleLogin } from "@react-oauth/google";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  useAuthenticateExternalUserMutation,
-  useAuthenticateUserMutation
-} from "../api/identity/identityApi";
+import { useAuthenticateUserMutation } from "../api/identity/identityApi";
 import { IAuthenticateUserResponse } from "../api/identity/responses/authenticateUserResponse";
-import { useAppDispatch, useAppSelector } from "../app/storeHooks";
+import { useAppDispatch } from "../app/storeHooks";
 import {
   validateAll,
   validateMinLength,
   ValidationFunc
 } from "../common/validators";
+import GoogleSignInButton from "../components/common/GoogleSignInButton";
 import { openSnackbar, SnackbarSeverity } from "../slices/snackbarSlice";
-import { selectThemeMode } from "../slices/themeSlice";
 import { setUserIdentity } from "../slices/userIdentitySlice";
-import { FormBox } from "../styled/components/common/FormBox";
-import { FormContainer } from "../styled/components/common/FormContainer";
 import { FormTextField } from "../styled/components/common/FormTextField";
-import { StyledButton } from "../styled/components/common/StyledButton";
 import { StyledHorizontalDivider } from "../styled/components/common/StyledDivider";
 import { StyledLink } from "../styled/components/common/StyledLink";
+import { StyledLoadingButton } from "../styled/components/common/StyledLoadingButton";
 import { StyledSpan } from "../styled/components/common/StyledSpan";
+import { FormBox } from "../styled/components/pages/common/FormBox";
+import { FormContainer } from "../styled/components/pages/common/FormContainer";
+import { FormTitle } from "../styled/components/pages/common/FormTitle";
+import { FormTitleContainer } from "../styled/components/pages/common/FormTitleContainer";
+import { MainLogo } from "../styled/components/pages/common/MainLogo";
 
 interface ILoginFormState {
   email: string;
@@ -40,13 +39,11 @@ interface ILoginFormValidationState {
 const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const themeMode = useAppSelector(selectThemeMode);
   const [authenticate] = useAuthenticateUserMutation();
-  const [authenticateExternalUser] = useAuthenticateExternalUserMutation();
   const [showPassword, setShowPassword] = useState(false);
   const [isFormValid, setIsFormValid] = useState(true);
-  const [isFirstRender, setIsFirstRender] = useState(true);
-  const matches = useMediaQuery("(max-width:600px)");
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFirstAuth, setIsFirstAuth] = useState(true);
 
   const [loginState, setLogin] = useState<ILoginFormState>({
     email: "",
@@ -97,26 +94,33 @@ const LoginPage = () => {
   );
 
   useEffect(() => {
-    validateForm(!isFirstRender);
-  }, [loginState, isFirstRender, validateForm]);
+    validateForm(!isFirstAuth);
+  }, [loginState, isFirstAuth, validateForm]);
 
   const toggleShowPassword = useCallback(() => {
     setShowPassword((prev) => !prev);
   }, []);
 
-  const handleLoginSubmit = useCallback(() => {
-    if (isFirstRender) {
-      const isError = validateForm(true);
-      setIsFirstRender(false);
-
-      if (isError) {
-        return;
-      }
+  const handleLoginSubmit = () => {
+    if (isLoading) {
+      return;
     }
 
+    let isError = false;
+    if (isFirstAuth) {
+      isError = validateForm(true);
+      setIsFirstAuth(false);
+    }
+
+    if (isError) {
+      return;
+    }
+
+    setIsLoading(true);
     authenticate(loginState)
       .unwrap()
       .then((response) => {
+        setIsLoading(false);
         dispatch(setUserIdentity(response.data));
         navigate("/");
       })
@@ -125,6 +129,7 @@ const LoginPage = () => {
           status: string | number;
           data: IAuthenticateUserResponse;
         }) => {
+          setIsLoading(false);
           dispatch(
             openSnackbar({
               message:
@@ -137,17 +142,16 @@ const LoginPage = () => {
           );
         }
       );
-  }, [
-    loginState,
-    authenticate,
-    dispatch,
-    isFirstRender,
-    navigate,
-    validateForm
-  ]);
+  };
 
   return (
     <FormContainer>
+      <FormTitleContainer>
+        <IconButton disableRipple={true}>
+          <MainLogo />
+        </IconButton>
+        <FormTitle>Sign In to Playmate</FormTitle>
+      </FormTitleContainer>
       <Paper elevation={3}>
         <FormBox
           onSubmit={(e) => {
@@ -162,6 +166,7 @@ const LoginPage = () => {
             type={"email"}
             variant="outlined"
             size="small"
+            disabled={isLoading}
             onChange={(event) =>
               setLogin({ ...loginState, email: event.target.value })
             }
@@ -177,13 +182,15 @@ const LoginPage = () => {
               setLogin({ ...loginState, password: event.target.value })
             }
             fullWidth
+            disabled={isLoading}
             size="small"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
                   <IconButton
-                    aria-label="toggle password visibility"
+                    aria-label="toggle-password-visibility"
                     onClick={toggleShowPassword}
+                    disableRipple={true}
                   >
                     {showPassword ? (
                       <VisibilityOff fontSize="small" />
@@ -195,80 +202,35 @@ const LoginPage = () => {
               )
             }}
           />
-          <StyledButton
+          <StyledLoadingButton
             type="submit"
             variant="contained"
-            disabled={!isFormValid}
+            disabled={!isFormValid || isLoading}
             size="medium"
+            fullWidth={true}
+            isLoading={isLoading}
+            color="secondary"
           >
-            Login
-          </StyledButton>
+            <CircularProgress color="secondary" />
+            <span>Login</span>
+          </StyledLoadingButton>
           <StyledSpan>
             {"Don't have an account? "}
-            <StyledLink href="/register" underline="hover">
-              Sign Up
-            </StyledLink>
+            {isLoading ? (
+              "Sign Up"
+            ) : (
+              <StyledLink href="/register" underline="hover">
+                Sign Up
+              </StyledLink>
+            )}
           </StyledSpan>
           <StyledHorizontalDivider variant="middle" textAlign="center">
             <StyledSpan>Or</StyledSpan>
           </StyledHorizontalDivider>
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              maxWidth: "100%",
-              width: "100%",
-              overflow: "hidden",
-              height: "40px"
-            }}
-          >
-            <GoogleLogin
-              onSuccess={(responseToken) => {
-                authenticateExternalUser({
-                  token: responseToken.credential,
-                  provider: "Google"
-                })
-                  .unwrap()
-                  .then((response) => {
-                    dispatch(setUserIdentity(response.data));
-                    navigate("/");
-                  })
-                  .catch(
-                    (error: {
-                      status: string | number;
-                      data: IAuthenticateUserResponse;
-                    }) => {
-                      dispatch(
-                        openSnackbar({
-                          message:
-                            error.data?.errors.length > 0
-                              ? error.data.errors[0]
-                              : "Invalid credentials",
-                          severity: SnackbarSeverity.Error,
-                          status: error.status
-                        })
-                      );
-                    }
-                  );
-              }}
-              onError={() => {
-                dispatch(
-                  openSnackbar({
-                    message: "Sign in with Google failed",
-                    severity: SnackbarSeverity.Error
-                  })
-                );
-              }}
-              shape={"rectangular"}
-              type={"standard"}
-              ux_mode={"popup"}
-              context={"signin"}
-              size={"large"}
-              width={matches ? "360px" : "400px"}
-              theme={themeMode === "dark" ? "filled_blue" : "outline"}
-            />
-          </Box>
+          <GoogleSignInButton
+            isLoading={isLoading}
+            setIsLoading={(value: boolean) => setIsLoading(value)}
+          />
         </FormBox>
       </Paper>
     </FormContainer>

@@ -2,8 +2,8 @@
 
 public class RegisterGameRequest
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public string ServerUrl { get; set; }
-    public string ImageUrl { get; set; }
+    public string Name { get; init; }
+    public string Description { get; init; }
+    public string ServerUrl { get; init; }
+    public IFormFile? Picture { get; init; }
 }

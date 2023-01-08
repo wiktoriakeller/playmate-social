@@ -46,10 +46,7 @@ const FriendsListDialog = (props: FriendsListDialogProps) => {
         {friends?.data.friends.map((friend) => (
           <ListItem onClick={() => handleListItemClick(friend)} key={friend.id}>
             <ListItemAvatar>
-              <Avatar
-                alt={friend.username}
-                src={friend.profilePictureUrl ?? ""}
-              />
+              <Avatar src={friend.profilePictureUrl ?? ""} />
             </ListItemAvatar>
             <ListItemText primary={friend.username} />
           </ListItem>

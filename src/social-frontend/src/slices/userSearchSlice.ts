@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IUserSearchItem } from "../api/users/responses/searchUsersResponse";
 import { RootState } from "../app/store";
 
-export interface ISearchUsers {
+export interface ISearchUsersState {
   users: IUserSearchItem[];
 }
 
-const userSearchInitialState: ISearchUsers = {
+const userSearchInitialState: ISearchUsersState = {
   users: null
 };
 
@@ -15,13 +15,13 @@ export const userSearchSlice = createSlice({
   initialState: userSearchInitialState,
   reducers: {
     setUserSearch(
-      state: ISearchUsers,
+      state: ISearchUsersState,
       action: PayloadAction<IUserSearchItem[]>
     ) {
       state.users = action.payload;
     },
     sendFriendRequest(
-      state: ISearchUsers,
+      state: ISearchUsersState,
       action: PayloadAction<IUserSearchItem>
     ) {
       const index = state.users.findIndex((e) => e.id === action.payload.id);
@@ -32,7 +32,7 @@ export const userSearchSlice = createSlice({
 
 export const { setUserSearch, sendFriendRequest } = userSearchSlice.actions;
 
-export const selectUserSearch = (state: RootState): ISearchUsers =>
+export const selectUserSearch = (state: RootState): ISearchUsersState =>
   state.userSearch;
 
 export default userSearchSlice.reducer;

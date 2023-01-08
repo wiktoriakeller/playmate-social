@@ -1,3 +1,4 @@
+import { Avatar, Skeleton } from "@mui/material";
 import { useEffect, useMemo } from "react";
 import { useLazyGetChatMessagesListQuery } from "../../api/chatMessages/chatMessagesApi";
 import { IGetChatMessagesListResponse } from "../../api/chatMessages/responses/getChatMessagesListResponse";
@@ -6,6 +7,7 @@ import { addChatMessagesList, selectChatState } from "../../slices/chatSlice";
 import { selectSelectedFriend } from "../../slices/friendsListSlice";
 import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
+import { ChatSkeletonDiv } from "../../styled/components/chat/ChatSkeletonDiv";
 import { SkeletonChatMessage } from "../../styled/components/chat/SkeletonChatMessage";
 import { StyledChatMessages } from "../../styled/components/chat/StyledChatMessages";
 import ChatMessage from "./ChatMessage";
@@ -69,8 +71,58 @@ const ChatMessages = () => {
 
   const messagesSkeletons = useMemo(() => {
     const skeletons: React.ReactNode[] = [];
-    for (let i = 0; i < 15; i++) {
-      skeletons.push(<SkeletonChatMessage isUserMessage={i % 2 === 0} />);
+    for (let i = 0; i < 3; i++) {
+      skeletons.push(
+        <ChatSkeletonDiv isUserMessage={true}>
+          <SkeletonChatMessage
+            width={`${5 * (i + (i % 2)) + 5}%`}
+            height={"45px"}
+            withAvatar={i === 0}
+            isUserMessage={true}
+          />
+        </ChatSkeletonDiv>
+      );
+    }
+
+    for (let i = 0; i < 5; i++) {
+      skeletons.push(
+        <ChatSkeletonDiv isUserMessage={false}>
+          <Skeleton variant="circular">{i === 0 ? <Avatar /> : <></>}</Skeleton>
+          <SkeletonChatMessage
+            isUserMessage={false}
+            width={`${5 * (i + (i % 3)) + 5}%`}
+            height={"45px"}
+            withAvatar={i === 0}
+          />
+        </ChatSkeletonDiv>
+      );
+    }
+
+    for (let i = 0; i < 4; i++) {
+      skeletons.push(
+        <ChatSkeletonDiv isUserMessage={true}>
+          <SkeletonChatMessage
+            isUserMessage={true}
+            width={`${6 * (i + (i % 3)) + 5}%`}
+            height={"45px"}
+            withAvatar={i === 0}
+          />
+        </ChatSkeletonDiv>
+      );
+    }
+
+    for (let i = 0; i < 2; i++) {
+      skeletons.push(
+        <ChatSkeletonDiv isUserMessage={false}>
+          <Skeleton variant="circular">{i === 0 ? <Avatar /> : <></>}</Skeleton>
+          <SkeletonChatMessage
+            isUserMessage={false}
+            width={"22%"}
+            height={"45px"}
+            withAvatar={i === 0}
+          />
+        </ChatSkeletonDiv>
+      );
     }
 
     return skeletons;

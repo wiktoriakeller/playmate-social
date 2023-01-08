@@ -34,6 +34,6 @@ public class GetResultsForUserQueryHandler : IHandlerWrapper<GetResultsForUserQu
             .GroupBy(r => r.GameId).
             ToDictionary(group => group.Key, group => group.Select(gameResult => _mapper.Map<GameResultDto>(gameResult)));
 
-        return ResponseResult.Created(new GetResultsForUserResponse(grouped));
+        return ResponseResult.Ok(new GetResultsForUserResponse(grouped));
     }
 }

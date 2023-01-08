@@ -16,7 +16,7 @@ const HomePage = () => {
     if (user === null || user === undefined || user?.jwtToken === null) {
       navigate("/login");
     }
-  }, [user]);
+  }, [user, navigate]);
 
   const getCurrentTabComponent = () => {
     switch (currentTab.name) {

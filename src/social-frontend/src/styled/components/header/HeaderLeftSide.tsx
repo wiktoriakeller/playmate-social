@@ -8,4 +8,8 @@ export const HeaderLeftSide = styled.div`
     display: none;
     margin-left: 0px;
   }
+
+  @media (max-width: 450px) {
+    display: flex;
+  }
 `;

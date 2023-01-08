@@ -19,11 +19,7 @@ const UserAvatar = (props: IUserAvatarProps) => {
       <StyledNormalUserAvatar onClick={props.onAvatarClick}>
         <Tooltip title={`${user.email}`}>
           <StyledUserAvatarBox>
-            <Avatar
-              sx={{ width: "28px", height: "28px" }}
-              alt={user.username}
-              src={user.profilePictureUrl ?? ""}
-            />
+            <Avatar src={user.profilePictureUrl ?? ""} />
             <StyledUsernameBox>
               <Box
                 sx={{
@@ -43,11 +39,7 @@ const UserAvatar = (props: IUserAvatarProps) => {
       <StyledSmallUserAvatar onClick={props.onAvatarClick}>
         <Tooltip title={user.email}>
           <IconButton>
-            <Avatar
-              sx={{ width: "28px", height: "28px" }}
-              alt={user.username}
-              src={user.profilePictureUrl ?? ""}
-            />
+            <Avatar src={user.profilePictureUrl ?? ""} />
           </IconButton>
         </Tooltip>
       </StyledSmallUserAvatar>

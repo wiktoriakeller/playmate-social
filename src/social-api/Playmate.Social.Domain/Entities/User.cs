@@ -8,5 +8,6 @@ public class User
     public string PasswordHash { get; set; }
     public bool IsExternalUser { get; set; }
     public string ProfilePictureUrl { get; set; }
+    public string ProfilePictureName { get; set; }
     public RefreshToken? RefreshToken { get; set; }
 }

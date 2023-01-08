@@ -7,4 +7,9 @@ export const ChatContainer = styled.div`
   justify-content: flex-start;
   width: calc(100vw - 320px);
   height: 100%;
+
+  @media only screen and (max-width: 450px),
+    (hover: none) and (pointer: coarse) {
+    display: none;
+  }
 `;
