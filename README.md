@@ -26,6 +26,14 @@ Project backlog can be accessed [here](https://github.com/users/wiktoriakeller/p
 - MUI
 - Emotion
 
+## Cloud
+
+- Azure
+- Azure Cosmos DB
+- Blob storage
+- Azure SQL Database
+- Cloudflare
+
 ## Setup
 
 Setup of social application with and without Compose.
