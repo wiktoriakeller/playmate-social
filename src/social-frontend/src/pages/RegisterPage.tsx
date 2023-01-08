@@ -162,6 +162,12 @@ const RegisterPage = () => {
       .unwrap()
       .then(() => {
         setIsLoading(false);
+        dispatch(
+          openSnackbar({
+            message: "Successfully created a new account",
+            severity: SnackbarSeverity.Success
+          })
+        );
         navigate("/login");
       })
       .catch(
