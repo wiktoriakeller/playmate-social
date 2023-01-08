@@ -4,6 +4,11 @@ Bachelor's degree final project - social platform that allows its users to play 
 
 Project backlog can be accessed [here](https://github.com/users/wiktoriakeller/projects/3).
 
+## Deployments
+
+- [Social App](https://test-playmate.pages.dev/),
+- [Social API](https://playmate-social-api.azurewebsites.net/)
+
 ## Social API Technologies
 
 - C#
