@@ -2,7 +2,7 @@ import { ThemeProvider } from "@emotion/react";
 import { CssBaseline, PaletteMode, ThemeOptions } from "@mui/material";
 import { green, grey, indigo } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { selectThemeMode } from "../../slices/themeSlice";
 import { useAppSelector } from "../storeHooks";
 
@@ -75,6 +75,14 @@ export const getDesignTokens = (mode: PaletteMode): ThemeOptions => ({
 
 const AppThemeProvider = ({ children }) => {
   const themeMode = useAppSelector(selectThemeMode);
+
+  useEffect(() => {
+    if (themeMode === "dark") {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [themeMode]);
 
   const theme = useMemo(() => {
     return createTheme(getDesignTokens(themeMode));
