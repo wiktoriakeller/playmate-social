@@ -6,7 +6,7 @@ Project backlog can be accessed [here](https://github.com/users/wiktoriakeller/p
 
 ## Deployments
 
-- [Social App](https://test-playmate.pages.dev/),
+- [Social App](https://test-playmate.pages.dev/)
 - [Social API](https://playmate-social-api.azurewebsites.net/)
 
 ## Social API Technologies
