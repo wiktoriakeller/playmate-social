@@ -73,6 +73,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
   const handleSaveChanges = () => {
     if (username === user.username && uploadedFile === null) {
       handleCloseDialog();
+      return;
     }
 
     const formData = new FormData();
@@ -200,7 +201,7 @@ const UserProfileDialog = (props: IUserProfileDialogProps) => {
           isLoading={isLoading}
           disabled={usernameError || isLoading}
           onClick={handleSaveChanges}
-          color="secondary"
+          sx={{ color: "text.primary" }}
         >
           <CircularProgress color="secondary" />
           <span>Save changes</span>

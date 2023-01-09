@@ -5,6 +5,7 @@ import { IGame } from "../api/games/responses/getGamesResponse";
 import { useLazyInitiateGameQuery } from "../api/games/gameIntegrationApi";
 import { addChatMessage } from "../slices/chatSlice";
 import { baseApiUrl } from "../api/baseReauthQuery";
+import { openSnackbar, SnackbarSeverity } from "../slices/snackbarSlice";
 
 export const useInitializeGame = () => {
   const user = useAppSelector(selectUserIdentity);
@@ -35,9 +36,17 @@ export const useInitializeGame = () => {
             joinGameUrl: urls.receiverGameUrl
           })
         );
+
         window.open(urls.senderGameUrl, "_blank");
       })
-      .catch((rejected) => console.error(rejected));
+      .catch((rejected) => {
+        dispatch(
+          openSnackbar({
+            message: "Could not start the game",
+            severity: SnackbarSeverity.Warning
+          })
+        );
+      });
   };
 
   return { startGame };
