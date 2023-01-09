@@ -1,6 +1,5 @@
 import {
   Avatar,
-  DialogContent,
   DialogTitle,
   List,
   ListItem,
