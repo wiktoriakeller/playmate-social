@@ -35,6 +35,10 @@ const SnackbarComponent = () => {
             "&.MuiAlert-filledSuccess": {
               backgroundColor: (theme) => theme.palette.success.main,
               color: (theme) => theme.palette.common.white
+            },
+            "&.MuiAlert-filledWarning": {
+              backgroundColor: (theme) => theme.palette.warning.main,
+              color: (theme) => theme.palette.common.white
             }
           }}
         >

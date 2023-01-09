@@ -14,10 +14,5 @@ export const StyledSmallUserAvatar = styled.div`
 
   @media only screen and (max-width: 450px) {
     margin-left: 12px;
-
-    .MuiAvatar-root {
-      width: 27px;
-      height: 27px;
-    }
   }
 `;

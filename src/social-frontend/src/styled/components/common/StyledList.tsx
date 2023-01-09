@@ -8,7 +8,7 @@ import {
 export const StyledList = styled(List)`
   overflow-x: hidden;
   max-height: 200px;
-  overflow-y: scroll;
+  overflow-y: auto;
   scroll-behavior: smooth;
 
   ::-webkit-scrollbar {

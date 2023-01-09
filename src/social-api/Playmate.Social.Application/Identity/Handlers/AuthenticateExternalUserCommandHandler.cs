@@ -46,10 +46,20 @@ public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<Authentica
         }
 
         var externalUserByEmail = await _usersRepository.FirstOrDefaultAsync(x => x.Email == payload.Email);
-        var externalUserByUsername = await _usersRepository.FirstOrDefaultAsync(x => x.Username == payload.Username);
 
-        if (externalUserByEmail is null && externalUserByUsername is null)
+        if (externalUserByEmail is not null && !externalUserByEmail.IsExternalUser)
         {
+            return ResponseResult.ValidationError<AuthenticateExternalUserResponse>("User with that email already exists");
+        }
+        else if (externalUserByEmail is null)
+        {
+            var externalUserByUsername = await _usersRepository.FirstOrDefaultAsync(x => x.Username == payload.Username);
+
+            if (externalUserByUsername is not null)
+            {
+                return ResponseResult.ValidationError<AuthenticateExternalUserResponse>("User with that username already exists");
+            }
+
             var newUser = new CreateUserCommand
             {
                 Email = payload.Email,
@@ -62,14 +72,8 @@ public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<Authentica
             await _identityService.CreateUserAsync(newUser);
             externalUserByEmail = await _usersRepository.FirstOrDefaultAsync(x => x.Email == payload.Email);
         }
-        else if (externalUserByEmail is not null && !externalUserByEmail.IsExternalUser)
-        {
-            return ResponseResult.ValidationError<AuthenticateExternalUserResponse>("User with that email already exists");
-        }
-        else if (externalUserByUsername is not null && externalUserByUsername.Email != payload.Email)
-        {
-            return ResponseResult.ValidationError<AuthenticateExternalUserResponse>("User with that username already exists");
-        }
+
+        //user is not null and there is account in the db
 
         var jwtToken = _jwtTokenService.CreateJwtToken(externalUserByEmail!);
         var refreshToken = await _identityService.CreateRefreshToken(jwtToken.Jti, externalUserByEmail!);

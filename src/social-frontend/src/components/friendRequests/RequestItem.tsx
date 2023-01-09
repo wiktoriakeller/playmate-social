@@ -6,7 +6,6 @@ import {
   answerFriendRequests,
   IFriendRequest
 } from "../../slices/friendRequestsSlice";
-import { addFriend } from "../../slices/friendsListSlice";
 import { ListDivider } from "../../styled/components/notifications/ListDivider";
 import { NotificationsButtons } from "../../styled/components/notifications/NotificationsButtons";
 import { UserReuquestData } from "../../styled/components/notifications/UserRequestData";

@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { useLazyGetFriendsListQuery } from "../../api/friends/friendsApi";
 import { IFriend } from "../../slices/friendsListSlice";
 import { StyledDialog } from "../../styled/components/common/StyledDialog";
+import { StyledDialogContent } from "../../styled/components/common/StyledDialogContent";
 
 export interface FriendsListDialogProps {
   onClose: (value?: IFriend) => void;
@@ -40,18 +41,29 @@ const FriendsListDialog = (props: FriendsListDialogProps) => {
   }
 
   return (
-    <StyledDialog onClose={handleClose} open={props.open} scroll="paper">
+    <StyledDialog
+      onClose={handleClose}
+      open={props.open}
+      scroll="paper"
+      maxWidth="xs"
+      fullWidth
+    >
       <DialogTitle>Select opponent</DialogTitle>
-      <List>
-        {friends?.data.friends.map((friend) => (
-          <ListItem onClick={() => handleListItemClick(friend)} key={friend.id}>
-            <ListItemAvatar>
-              <Avatar src={friend.profilePictureUrl ?? ""} />
-            </ListItemAvatar>
-            <ListItemText primary={friend.username} />
-          </ListItem>
-        ))}
-      </List>
+      <StyledDialogContent sx={{ maxHeight: "300px" }}>
+        <List>
+          {friends?.data.friends.map((friend) => (
+            <ListItem
+              onClick={() => handleListItemClick(friend)}
+              key={friend.id}
+            >
+              <ListItemAvatar>
+                <Avatar src={friend.profilePictureUrl ?? ""} />
+              </ListItemAvatar>
+              <ListItemText primary={friend.username} />
+            </ListItem>
+          ))}
+        </List>
+      </StyledDialogContent>
     </StyledDialog>
   );
 };
