@@ -5,7 +5,6 @@ export const MainLogo = styled(SportsEsportsIcon)`
   &.MuiSvgIcon-root {
     font-size: 65px;
     color: ${(props) => props.theme.palette.secondary.main};
-    margin-bottom: -10px;
 
     :hover {
       color: ${(props) => props.theme.palette.secondary.light};

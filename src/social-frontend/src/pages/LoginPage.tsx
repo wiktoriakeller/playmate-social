@@ -147,9 +147,7 @@ const LoginPage = () => {
   return (
     <FormContainer>
       <FormTitleContainer>
-        <IconButton disableRipple={true}>
-          <MainLogo />
-        </IconButton>
+        <MainLogo />
         <FormTitle>Sign In to Playmate</FormTitle>
       </FormTitleContainer>
       <Paper elevation={3}>

@@ -1,8 +1,17 @@
 import styled from "@emotion/styled";
+import { Theme } from "@mui/material";
 
 export interface IStyledFriendsListItemProps {
   isSelected: boolean;
 }
+
+const getHoverColor = (theme: Theme, isSelected: boolean) => {
+  if (theme.palette.mode === "dark" && !isSelected) {
+    return theme.palette.grey[800];
+  } else if (theme.palette.mode === "light" && !isSelected) {
+    return theme.palette.grey[400];
+  }
+};
 
 export const StyledFriendsListItem = styled.div<IStyledFriendsListItemProps>`
   display: flex;
@@ -16,15 +25,8 @@ export const StyledFriendsListItem = styled.div<IStyledFriendsListItemProps>`
   box-sizing: border-box;
 
   &:hover {
-    background-color: ${(props) => {
-      if (props.theme.palette.mode === "dark" && !props.isSelected) {
-        return props.theme.palette.grey[800];
-      } else if (props.theme.palette.mode === "light" && !props.isSelected) {
-        return props.theme.palette.grey[400];
-      }
-
-      return "";
-    }};
+    background-color: ${(props) =>
+      getHoverColor(props.theme, props.isSelected)};
   }
 
   &:last-child {
@@ -34,5 +36,9 @@ export const StyledFriendsListItem = styled.div<IStyledFriendsListItemProps>`
   @media only screen and (max-width: 450px),
     (hover: none) and (pointer: coarse) {
     background-color: inherit;
+
+    &:hover {
+      background-color: ${(props) => getHoverColor(props.theme, false)};
+    }
   }
 `;

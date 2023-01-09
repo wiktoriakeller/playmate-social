@@ -14,11 +14,6 @@ export const StyledBadge = styled(Badge)`
   }
 
   @media only screen and (max-width: 450px) {
-    .MuiSvgIcon-root {
-      width: 27px;
-      height: 27px;
-    }
-
     .MuiBadge-badge {
       min-width: 16px;
       height: 16px;

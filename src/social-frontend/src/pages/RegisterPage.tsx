@@ -190,9 +190,7 @@ const RegisterPage = () => {
   return (
     <FormContainer>
       <FormTitleContainer>
-        <IconButton disableRipple={true} onClick={() => navigate("/login")}>
-          <MainLogo />
-        </IconButton>
+        <MainLogo />
         <FormTitle>Sign Up to Playmate</FormTitle>
       </FormTitleContainer>
       <Paper elevation={3}>

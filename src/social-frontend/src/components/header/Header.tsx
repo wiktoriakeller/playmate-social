@@ -95,7 +95,7 @@ export const Header = () => {
         <Tooltip title={"Toggle theme"}>
           <StyledIconButton
             onClick={toggleTheme}
-            sx={{ marginRight: "-2px" }}
+            sx={{ marginRight: "-2px", marginLeft: "-8px" }}
             id="theme-toggle-button"
           >
             {getCurrentThemeIcon(themeMode, "28px")}
