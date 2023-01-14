@@ -41,8 +41,7 @@ const ChatMessages = () => {
           dispatch(
             addChatMessagesList({
               ...response.data,
-              pageNumber: 0,
-              canAddNewMessagesList: true
+              pageNumber: 0
             })
           );
         }

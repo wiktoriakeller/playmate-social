@@ -108,7 +108,7 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
             textAnchor={textAnchor}
             fill={currentTheme.palette.chartColors.secondaryText}
           >
-            {`(Rate ${(percent * 100).toFixed(2)}%)`}
+            {`${(percent * 100).toFixed(2)}%`}
           </text>
         </g>
       );
@@ -117,16 +117,16 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
   );
 
   const renderCustomizedLabel = useCallback(
-    ({ cx, cy, midAngle, innerRadius, outerRadius, payload, value }) => {
+    ({ cx, cy, midAngle, innerRadius, outerRadius, percent, value }) => {
       const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
       let x = cx + radius * Math.cos(-midAngle * RADIAN);
       const y = cy + radius * Math.sin(-midAngle * RADIAN);
-      const textValue = windowsSize.matchesMediumWidth
-        ? `${payload.name} - ${value}`
+      let textValue = windowsSize.matchesMediumWidth
+        ? `${(percent * 100).toFixed(0)}%`
         : `${value}`;
 
-      if (windowsSize.matchesMediumWidth) {
-        x += payload.name === "Wins" ? 24 : -24;
+      if (windowsSize.matchesMediumWidth && value === 0) {
+        textValue = "";
       }
 
       return (
@@ -178,8 +178,8 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
     <StyledDialog
       open={props.open}
       onClose={handleCloseDialog}
-      maxWidth={"md"}
-      fullWidth={windowsSize.matchesSmallWidth ? true : false}
+      maxWidth={"sm"}
+      fullWidth={true}
     >
       <DialogTitle sx={{ textAlign: "center", paddingBottom: "0px" }}>
         {`${props.game.name} statistics`}
@@ -209,7 +209,7 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
           }}
         >
           <PieChart
-            width={windowsSize.matchesMediumWidth ? 250 : 400}
+            width={windowsSize.matchesMediumWidth ? 250 : 450}
             height={windowsSize.matchesMediumWidth ? 200 : 300}
           >
             <Pie
