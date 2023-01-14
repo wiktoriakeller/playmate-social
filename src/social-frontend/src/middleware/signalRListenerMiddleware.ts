@@ -9,7 +9,12 @@ import { friendsApi } from "../api/friends/friendsApi";
 import { IFriendRequestConfirmationResponse } from "../api/friends/responses/friendsRequestConfirmation";
 import { IUserSearchItem } from "../api/users/responses/searchUsersResponse";
 import { RootState } from "../app/store";
-import { addChatMessage, IChatMessage } from "../slices/chatSlice";
+import {
+  addChatMessage,
+  IChatMessage,
+  setCanAddNewMessagesList,
+  setOverridePreviousMessages
+} from "../slices/chatSlice";
 import {
   addFriendRequest,
   answerFriendRequests,
@@ -100,12 +105,35 @@ signalRListenerMiddleware.startListening({
       });
 
       hubConnection.on("ReceiveChatMessage", (request: IReceiveChatMessage) => {
+        let canAddNewMessages = false;
+        const currentState = listenerApi.getState() as RootState;
+
+        if (currentState.chat.chatState[request.senderId] === undefined) {
+          canAddNewMessages = true;
+        }
+
         listenerApi.dispatch(
           addChatMessage({
             ...request,
             isCurrentUserReceiver: true
           })
         );
+
+        if (canAddNewMessages) {
+          listenerApi.dispatch(
+            setCanAddNewMessagesList({
+              canAddNewMessagesList: true,
+              friendId: request.senderId
+            })
+          );
+
+          listenerApi.dispatch(
+            setOverridePreviousMessages({
+              overridePreviousMessages: true,
+              friendId: request.senderId
+            })
+          );
+        }
 
         listenerApi.dispatch(
           setFriendLastChatMessage({
