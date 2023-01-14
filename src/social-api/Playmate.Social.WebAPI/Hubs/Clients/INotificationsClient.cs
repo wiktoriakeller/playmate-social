@@ -13,4 +13,8 @@ public interface INotificationsClient
     Task ReceiveChatMessage(AddChatMessageResponse response);
 
     Task ReceiveFriendDataUpdate(UpdateFriendDataResponse response);
+
+    Task ReceiveUserOnlineStatus(UpdateUserOnlineStatusResponse response);
+
+    Task ReceiveOnlineUsersList(GetOnlineUsersResponse response);
 }

@@ -9,6 +9,7 @@ import { usersApi } from "../api/users/usersApi";
 import {
   answerFriendRequestsListenerMiddleware,
   chatListenerMiddleware,
+  friendsListListenerMiddleware,
   sendFriendRequestListenerMiddleware,
   signalRListenerMiddleware
 } from "../middleware/signalRListenerMiddleware";
@@ -18,6 +19,7 @@ import { chatSlice } from "../slices/chatSlice";
 import { friendRequestsSlice } from "../slices/friendRequestsSlice";
 import { friendsListSlice } from "../slices/friendsListSlice";
 import { gameResultsSlice } from "../slices/gameResultsSlice";
+import { onlineUsersSlice } from "../slices/onlineUsersSlice";
 import { snackbarSlice } from "../slices/snackbarSlice";
 import { tabSlice } from "../slices/tabSlice";
 import { themeSlice } from "../slices/themeSlice";
@@ -44,7 +46,8 @@ export const store = configureStore({
     [chatMessagesApi.reducerPath]: chatMessagesApi.reducer,
     [gameResultsApi.reducerPath]: gameResultsApi.reducer,
     [gameResultsSlice.name]: gameResultsSlice.reducer,
-    [windowSizeSlice.name]: windowSizeSlice.reducer
+    [windowSizeSlice.name]: windowSizeSlice.reducer,
+    [onlineUsersSlice.name]: onlineUsersSlice.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -61,6 +64,7 @@ export const store = configureStore({
       .concat(gameIntegrationApi.middleware)
       .concat(chatMessagesApi.middleware)
       .concat(gameResultsApi.middleware)
+      .concat(friendsListListenerMiddleware.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

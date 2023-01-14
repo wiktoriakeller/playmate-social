@@ -9,6 +9,7 @@ import {
   setFriendsList,
   setSelectedFriend
 } from "../../slices/friendsListSlice";
+import { selectOnlineUsers } from "../../slices/onlineUsersSlice";
 import { openSnackbar, SnackbarSeverity } from "../../slices/snackbarSlice";
 import { SkeletonsContainer } from "../../styled/components/common/SkeletonsContainer";
 import { StyledFriendsList } from "../../styled/components/friends/StyledFriendsList";
@@ -20,6 +21,7 @@ const FriendsLits = () => {
   const userFriends = useAppSelector(selectFriendsList);
   const [getFriendsListLazy, { isLoading }] = useLazyGetFriendsListQuery();
   const selectedFriend = useAppSelector(selectSelectedFriend);
+  const onlineUsers = new Set(useAppSelector(selectOnlineUsers));
   const isFirstRender = useRef<boolean>(true);
 
   const skeletons = useMemo(() => {
@@ -75,7 +77,9 @@ const FriendsLits = () => {
   return (
     <StyledFriendsList>
       {!!userFriends && !isLoading
-        ? userFriends.map((item) => <FriendListItem {...item} key={item.id} />)
+        ? userFriends.map((item) => (
+            <FriendListItem {...item} onlineUsers={onlineUsers} key={item.id} />
+          ))
         : skeletons.map((skeleton) => skeleton)}
     </StyledFriendsList>
   );

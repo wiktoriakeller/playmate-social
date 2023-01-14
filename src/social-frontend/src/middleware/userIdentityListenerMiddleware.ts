@@ -8,6 +8,7 @@ import {
   setFriendsListSearchPhrase,
   setSelectedFriend
 } from "../slices/friendsListSlice";
+import { setOnlineUsers } from "../slices/onlineUsersSlice";
 import { setCurrentTab, tabsDictionary } from "../slices/tabSlice";
 import {
   IUserIdentityState,
@@ -31,6 +32,7 @@ userIdentityListenerMiddleware.startListening({
       apiListener.dispatch(setFriendsList([]));
       apiListener.dispatch(setFriendsListSearchPhrase(""));
       apiListener.dispatch(setUserSearch([]));
+      apiListener.dispatch(setOnlineUsers([]));
     }
 
     storeUser(action.payload);

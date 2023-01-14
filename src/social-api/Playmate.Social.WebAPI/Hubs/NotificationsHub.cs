@@ -6,6 +6,7 @@ using Playmate.Social.Application.ChatMessages.Commands;
 using Playmate.Social.Application.Friends.Commands;
 using Playmate.Social.WebAPI.ApiRequests.Friends;
 using Playmate.Social.WebAPI.Hubs.Clients;
+using Playmate.Social.WebAPI.Hubs.Interfaces;
 using Playmate.Social.WebAPI.Hubs.Requests;
 using Playmate.Social.WebAPI.Hubs.Responses;
 
@@ -14,14 +15,19 @@ namespace Playmate.Social.WebAPI.Hubs;
 [Authorize]
 public class NotificationsHub : Hub<INotificationsClient>
 {
-    public static string HubPath = "/hubs/notifications";
+    public const string HubPath = "/hubs/notifications";
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
+    private readonly IHubUsersDictionary _hubUsersDictionary;
 
-    public NotificationsHub(IMediator mediator, IMapper mapper)
+    public NotificationsHub(
+        IMediator mediator,
+        IMapper mapper,
+        IHubUsersDictionary hubUsersDictionary)
     {
         _mediator = mediator;
         _mapper = mapper;
+        _hubUsersDictionary = hubUsersDictionary;
     }
 
     public async Task SendChatMessage(SendChatMessageRequest request)
@@ -61,7 +67,59 @@ public class NotificationsHub : Hub<INotificationsClient>
 
         if (response.Succeeded)
         {
-            await Clients.User(request.ReceiverId.ToString()).ReceiveFriendsRequest(response.Data.Request);
+            await Clients.User(request.ReceiverId.ToString()).ReceiveFriendsRequest(response.Data.Request!);
         }
+    }
+
+    public async Task GetOnlineUsers()
+    {
+        var userIdentifier = Context.UserIdentifier;
+        if (userIdentifier is not null)
+        {
+            var users = _hubUsersDictionary.GetConnectedUsers();
+            await Clients.User(userIdentifier).ReceiveOnlineUsersList(new GetOnlineUsersResponse { UserIds = users });
+        }
+    }
+
+    public override async Task OnConnectedAsync()
+    {
+        var userIdentifier = Context.UserIdentifier;
+        if (userIdentifier is not null)
+        {
+            _hubUsersDictionary.AddUserConnection(userIdentifier);
+            var count = _hubUsersDictionary.GetConnectionsCountByUserId(userIdentifier);
+
+            if (count > 0)
+            {
+                await Clients.AllExcept(Context.ConnectionId).ReceiveUserOnlineStatus(new UpdateUserOnlineStatusResponse
+                {
+                    UserId = userIdentifier,
+                    IsOnline = true
+                });
+            }
+        }
+
+        await base.OnConnectedAsync();
+    }
+
+    public override async Task OnDisconnectedAsync(Exception? exception)
+    {
+        var userIdentifier = Context.UserIdentifier;
+        if (userIdentifier is not null)
+        {
+            _hubUsersDictionary.RemoveUserConnection(userIdentifier);
+            var count = _hubUsersDictionary.GetConnectionsCountByUserId(userIdentifier);
+
+            if (count == 0)
+            {
+                await Clients.AllExcept(Context.ConnectionId).ReceiveUserOnlineStatus(new UpdateUserOnlineStatusResponse
+                {
+                    UserId = userIdentifier,
+                    IsOnline = false
+                });
+            }
+        }
+
+        await base.OnDisconnectedAsync(exception);
     }
 }

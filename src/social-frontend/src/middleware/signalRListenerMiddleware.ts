@@ -26,6 +26,10 @@ import {
   updateSelectedFriend
 } from "../slices/friendsListSlice";
 import {
+  addUserToOnlineList,
+  setOnlineUsers
+} from "../slices/onlineUsersSlice";
+import {
   IUserIdentityState,
   setUserIdentity
 } from "../slices/userIdentitySlice";
@@ -34,6 +38,7 @@ import { sendFriendRequest } from "../slices/userSearchSlice";
 export const signalRListenerMiddleware = createListenerMiddleware();
 export const chatListenerMiddleware = createListenerMiddleware();
 export const sendFriendRequestListenerMiddleware = createListenerMiddleware();
+export const friendsListListenerMiddleware = createListenerMiddleware();
 export const answerFriendRequestsListenerMiddleware =
   createListenerMiddleware();
 
@@ -58,7 +63,7 @@ const stopHubConnection = () => {
     hubConnection
       .stop()
       .then(() => {
-        console.log("Closed hub connection, user logout");
+        console.log("Closed hub connection");
       })
       .catch((error) => {
         console.error("Error while closing hub connection: ", error);
@@ -83,18 +88,18 @@ signalRListenerMiddleware.startListening({
 
       hubConnection.onclose((error) => {
         console.assert(hubConnection.state === HubConnectionState.Disconnected);
-        console.log("Connection closed due to error.", error);
+        console.log("Connection closed due to an error.", error);
       });
 
       hubConnection.onreconnecting((error) => {
         console.assert(hubConnection.state === HubConnectionState.Reconnecting);
-        console.log("Connection lost due to error. Reconnecting.", error);
+        console.log("Connection lost due to an error. Reconnecting.", error);
       });
 
       hubConnection.onreconnected((connectionId) => {
         console.assert(hubConnection.state === HubConnectionState.Connected);
         console.log(
-          "Connection reestablished. Connected with connectionId",
+          "Connection reestablished. Connected with connectionId: ",
           connectionId
         );
       });
@@ -138,6 +143,20 @@ signalRListenerMiddleware.startListening({
         }
       );
 
+      hubConnection.on(
+        "ReceiveOnlineUsersList",
+        (request: { userIds: string[] }) => {
+          listenerApi.dispatch(setOnlineUsers(request.userIds));
+        }
+      );
+
+      hubConnection.on(
+        "ReceiveUserOnlineStatus",
+        (request: { userId: string; isOnline: boolean }) => {
+          listenerApi.dispatch(addUserToOnlineList(request));
+        }
+      );
+
       hubConnection
         .start()
         .then(() => {
@@ -148,7 +167,7 @@ signalRListenerMiddleware.startListening({
           console.assert(
             hubConnection.state === HubConnectionState.Disconnected
           );
-          console.error("SignalR Connection Error: ", error);
+          console.error("SignalR connection Error: ", error);
         });
     } else if (
       !!hubConnection &&
@@ -166,62 +185,77 @@ const getFriendsListWithNewestMessageAtTheTop = (
   receiverId: string
 ): IFriend[] => {
   const friendsList = state.friendsList.friends;
-  let friendToMove: IFriend | null = null;
+  const friendToMoveId = isCurrentUserReceiver ? senderId : receiverId;
+  const friendToMove = friendsList.filter((x) => x.id === friendToMoveId)[0];
 
-  if (isCurrentUserReceiver) {
-    friendToMove = friendsList.filter((x) => x.id === senderId)[0];
-  } else {
-    friendToMove = friendsList.filter((x) => x.id === receiverId)[0];
-  }
-
-  const newList = [
-    friendToMove,
-    ...friendsList.filter((x) => x.id !== friendToMove?.id)
-  ];
-  return newList;
+  return [friendToMove, ...friendsList.filter((x) => x.id !== friendToMoveId)];
 };
+
+const isConnectionReady = () =>
+  !!hubConnection && hubConnection.state === "Connected";
 
 chatListenerMiddleware.startListening({
   actionCreator: addChatMessage,
   effect: (action: PayloadAction<IChatMessage>, apiListener) => {
-    if (!action.payload.isCurrentUserReceiver) {
-      hubConnection.send("SendChatMessage", action.payload).catch((error) => {
-        console.error("Error while sending chat message: ", error);
-      });
+    if (isConnectionReady()) {
+      if (!action.payload.isCurrentUserReceiver) {
+        hubConnection.send("SendChatMessage", action.payload).catch((error) => {
+          console.error("Error while sending chat message: ", error);
+        });
+      }
+
+      const currentState = apiListener.getState() as RootState;
+      const newList = getFriendsListWithNewestMessageAtTheTop(
+        currentState,
+        action.payload.isCurrentUserReceiver,
+        action.payload.senderId,
+        action.payload.receiverId
+      );
+
+      apiListener.dispatch(setFriendsList(newList));
+      apiListener.dispatch(friendsApi.util.invalidateTags(["friendsList"]));
     }
-
-    const currentState = apiListener.getState() as RootState;
-    const newList = getFriendsListWithNewestMessageAtTheTop(
-      currentState,
-      action.payload.isCurrentUserReceiver,
-      action.payload.senderId,
-      action.payload.receiverId
-    );
-
-    apiListener.dispatch(setFriendsList(newList));
-    apiListener.dispatch(friendsApi.util.invalidateTags(["friendsList"]));
   }
 });
 
 sendFriendRequestListenerMiddleware.startListening({
   actionCreator: sendFriendRequest,
   effect: (action: PayloadAction<IUserSearchItem>) => {
-    hubConnection
-      .send("SendFriendRequest", {
-        username: action.payload.username,
-        receiverId: action.payload.id
-      })
-      .catch((error) => {
-        console.error("Error while sending friend request: ", error);
-      });
+    if (isConnectionReady()) {
+      hubConnection
+        .send("SendFriendRequest", {
+          username: action.payload.username,
+          receiverId: action.payload.id
+        })
+        .catch((error) => {
+          console.error("Error while sending friend request: ", error);
+        });
+    }
   }
 });
 
 answerFriendRequestsListenerMiddleware.startListening({
   actionCreator: answerFriendRequests,
   effect: (action: PayloadAction<IFriendRequestConfirmation>) => {
-    hubConnection.send("AnswerFriendRequest", action.payload).catch((error) => {
-      console.error("Error while answering friend request: ", error);
-    });
+    if (isConnectionReady()) {
+      hubConnection
+        .send("AnswerFriendRequest", action.payload)
+        .catch((error) => {
+          console.error("Error while answering friend request: ", error);
+        });
+    }
+  }
+});
+
+friendsListListenerMiddleware.startListening({
+  predicate: (action) => {
+    return addFriend.match(action) || setFriendsList.match(action);
+  },
+  effect: () => {
+    if (isConnectionReady()) {
+      hubConnection.send("GetOnlineUsers").catch((error) => {
+        console.error("Error while fetching online users: ", error);
+      });
+    }
   }
 });

@@ -11,11 +11,13 @@ import {
 import { selectUserIdentity } from "../../slices/userIdentitySlice";
 import { selectWindowSizeState } from "../../slices/windowSizeSlice";
 import { FriendData } from "../../styled/components/friends/FriendData";
+import { FriendListItemBadge } from "../../styled/components/friends/FriendListItemBadge";
 import { StyledFriendsListItem } from "../../styled/components/friends/StyledFriendsListItem";
 
 export interface IFriendsListItemProps {
   id: string;
   username: string;
+  onlineUsers: Set<string>;
   lastChatMessage?: ILastChatMessage;
   profilePictureUrl?: string;
 }
@@ -53,7 +55,14 @@ const FriendListItem = (props: IFriendsListItemProps) => {
       onClick={handleFriendClick}
       isSelected={selectedFriend?.id === props.id}
     >
-      <Avatar src={props.profilePictureUrl ?? ""} />
+      <FriendListItemBadge
+        overlap="circular"
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        variant="dot"
+        color={props.onlineUsers.has(props.id) ? "success" : "primary"}
+      >
+        <Avatar src={props.profilePictureUrl ?? ""} />
+      </FriendListItemBadge>
       <FriendData isSelected={selectedFriend?.id === props.id}>
         <span>{props.username}</span>
         <span>{getLastMessage(props.lastChatMessage)}</span>
