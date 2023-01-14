@@ -14,7 +14,7 @@ namespace Playmate.Social.WebAPI.Hubs;
 [Authorize]
 public class NotificationsHub : Hub<INotificationsClient>
 {
-    public static string HubPath = "/hubs/notifications";
+    public const string HubPath = "/hubs/notifications";
     private readonly IMediator _mediator;
     private readonly IMapper _mapper;
 

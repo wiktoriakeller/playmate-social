@@ -12,9 +12,10 @@ export interface IChatMessage {
 }
 
 export interface IFriendMessages {
-  canAddNewMessagesList: boolean;
   pageNumber: number;
   messages: IChatMessage[];
+  canAddNewMessagesList: boolean;
+  overridePreviousMessages: boolean;
 }
 
 export interface IChatMessagesDictionary {
@@ -56,7 +57,8 @@ export const chatSlice = createSlice({
         state.chatState[friendId] = {
           messages: [],
           pageNumber: 0,
-          canAddNewMessagesList: false
+          canAddNewMessagesList: false,
+          overridePreviousMessages: false
         };
       }
 
@@ -67,27 +69,36 @@ export const chatSlice = createSlice({
     },
     addChatMessagesList(
       state: IChatState,
-      action: PayloadAction<IFriendMessages & { friendId: string }>
+      action: PayloadAction<{
+        messages: IChatMessage[];
+        pageNumber: number;
+        friendId: string;
+      }>
     ) {
       const friendId = action.payload.friendId;
       if (state.chatState[friendId] === undefined) {
         state.chatState[friendId] = {
           messages: [],
           pageNumber: 0,
-          canAddNewMessagesList: true
+          canAddNewMessagesList: true,
+          overridePreviousMessages: false
         };
       }
 
-      if (
-        state.chatState[friendId].canAddNewMessagesList &&
-        action.payload.canAddNewMessagesList
-      ) {
+      if (state.chatState[friendId].canAddNewMessagesList) {
         const formattedMessages = action.payload.messages.map((message) =>
           getChatMessageWithFormattedDate(message)
         );
 
-        state.chatState[friendId].messages =
-          state.chatState[friendId].messages.concat(formattedMessages);
+        if (state.chatState[friendId].overridePreviousMessages) {
+          state.chatState[friendId].messages = formattedMessages;
+        } else {
+          state.chatState[friendId].messages = formattedMessages.concat(
+            state.chatState[friendId].messages
+          );
+          state.chatState[friendId].overridePreviousMessages = false;
+        }
+
         state.chatState[friendId].pageNumber = action.payload.pageNumber;
         state.chatState[friendId].canAddNewMessagesList = false;
       }
@@ -97,10 +108,23 @@ export const chatSlice = createSlice({
     },
     setCanAddNewMessagesList(
       state: IChatState,
-      action: PayloadAction<{ canAdd: boolean; friendId: string }>
+      action: PayloadAction<{
+        canAddNewMessagesList: boolean;
+        friendId: string;
+      }>
     ) {
       state.chatState[action.payload.friendId].canAddNewMessagesList =
-        action.payload.canAdd;
+        action.payload.canAddNewMessagesList;
+    },
+    setOverridePreviousMessages(
+      state: IChatState,
+      action: PayloadAction<{
+        overridePreviousMessages: boolean;
+        friendId: string;
+      }>
+    ) {
+      state.chatState[action.payload.friendId].overridePreviousMessages =
+        action.payload.overridePreviousMessages;
     }
   }
 });
@@ -109,7 +133,8 @@ export const {
   addChatMessage,
   addChatMessagesList,
   clearChatState,
-  setCanAddNewMessagesList
+  setCanAddNewMessagesList,
+  setOverridePreviousMessages
 } = chatSlice.actions;
 
 export const selectChatState = (state: RootState): IChatMessagesDictionary =>
