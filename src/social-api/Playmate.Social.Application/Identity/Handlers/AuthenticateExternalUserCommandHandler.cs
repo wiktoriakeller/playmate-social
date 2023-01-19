@@ -10,14 +10,14 @@ namespace Playmate.Social.Application.Identity.Handlers;
 
 public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<AuthenticateExternalUserCommand, AuthenticateExternalUserResponse>
 {
+    private const string ExternalAuthtenticationFailed = "Authentication with external provider failed";
+    private const string UsernameMustBeUnique = "User with that username already exists";
+    private const string EmailMustBeUnique = "User with that email already exists";
+
     private readonly IIdentityService _identityService;
     private readonly IUsersRepository _usersRepository;
     private readonly IJwtTokenService _jwtTokenService;
     private readonly IExternalIdentityService _externalIdentityService;
-
-    private const string ExternalAuthtenticationFailed = "Authentication with external provider failed";
-    private const string UsernameMustBeUnique = "User with that username already exists";
-    private const string EmailMustBeUnique = "User with that email already exists";
 
     public AuthenticateExternalUserCommandHandler(
         IIdentityService identityService,
@@ -77,7 +77,7 @@ public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<Authentica
             {
                 await _identityService.CreateUserAsync(newUser);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return ResponseResult.ValidationError<AuthenticateExternalUserResponse>(ExternalAuthtenticationFailed);
             }

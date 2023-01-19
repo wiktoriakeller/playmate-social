@@ -6,6 +6,8 @@ namespace Playmate.Social.Application.Common.Validators.Games;
 
 public class RegisterGameCommandValidator : AbstractValidator<RegisterGameCommand>
 {
+    private const string InvalidServerUrl = "Provided game server URL is invalid";
+
     public RegisterGameCommandValidator()
     {
         RuleFor(x => x.FileMetadata)
@@ -32,6 +34,6 @@ public class RegisterGameCommandValidator : AbstractValidator<RegisterGameComman
 
                 return false;
             })
-            .WithMessage("Provided game server URL is invalid");
+            .WithMessage(InvalidServerUrl);
     }
 }

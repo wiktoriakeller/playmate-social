@@ -13,16 +13,16 @@ namespace Playmate.Social.Application.Friends.Handlers;
 
 public class ConfirmFriendRequestCommandHandler : IHandlerWrapper<ConfirmFriendRequestCommand, ConfirmFriendRequestResponse>
 {
+    private const string RequestNotFound = "Friend request was not found";
+    private const string AddresseeNotFound = "Request addressee was not found";
+    private const string RequesterNotFound = "Requester was not found";
+    private const string InvalidUserId = "User ID is invalid";
+
     private readonly IFriendRequestsRepository _friendsRequestsRepository;
     private readonly IFriendsRepository _friendsRepository;
     private readonly ICurrentUserService _currentUserService;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IMapper _mapper;
-
-    private const string RequestNotFound = "Friend request was not found";
-    private const string AddresseeNotFound = "Request addressee was not found";
-    private const string RequesterNotFound = "Requester was not found";
-    private const string InvalidUserId = "User ID is invalid";
 
     public ConfirmFriendRequestCommandHandler(
         IFriendRequestsRepository friendsRequestsRepository,

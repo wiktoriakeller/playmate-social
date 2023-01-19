@@ -12,13 +12,13 @@ namespace Playmate.Social.Application.Users.Handlers;
 
 public class UpdateUserCommandHandler : IHandlerWrapper<UpdateUserCommand, UpdateUserResponse>
 {
-    private readonly IUsersRepository _usersRepository;
-    private readonly IFileStorageService _fileStorageService;
-    private readonly ICurrentUserService _currentUserService;
-
     private const string InvalidUserId = "User ID is invalid";
     private const string UsernameMustBeUnique = "User with that username already exists";
     private const string UserNotFound = "User with the provided ID was not found";
+
+    private readonly IUsersRepository _usersRepository;
+    private readonly IFileStorageService _fileStorageService;
+    private readonly ICurrentUserService _currentUserService;
 
     public UpdateUserCommandHandler(
         IUsersRepository usersRepository,

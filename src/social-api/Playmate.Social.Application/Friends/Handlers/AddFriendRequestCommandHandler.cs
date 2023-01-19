@@ -11,14 +11,14 @@ namespace Playmate.Social.Application.Friends.Handlers;
 
 public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCommand, AddFriendRequestResponse>
 {
+    private const string UserNotFound = "User was not found";
+    private const string UsersAreFriends = "Users are already friends";
+    private const string RequestExists = "Request was already sent";
+
     private readonly IFriendRequestsRepository _friendsRequestsRepository;
     private readonly IUsersRepository _usersRepository;
     private readonly IFriendsRepository _friendsRepository;
     private readonly ICurrentUserService _currentUserService;
-
-    private const string UserNotFound = "User was not found";
-    private const string UsersAreFriends = "Users are already friends";
-    private const string RequestExists = "Request was already sent";
 
     public AddFriendRequestCommandHandler(
         IFriendRequestsRepository requestsRepository,

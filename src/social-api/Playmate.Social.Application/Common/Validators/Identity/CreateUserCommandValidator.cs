@@ -10,8 +10,7 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         RuleFor(x => x.Email)
             .NotEmpty()
             .MaximumLength(100)
-            .EmailAddress()
-            .WithMessage("Incorrect email address");
+            .EmailAddress();
 
         RuleFor(x => x.Password)
             .MinimumLength(6)

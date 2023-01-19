@@ -9,8 +9,7 @@ public class AuthenticateUserCommandValidator : AbstractValidator<AuthenticateUs
     {
         RuleFor(x => x.Email)
             .NotEmpty()
-            .EmailAddress()
-            .WithMessage("Incorrect email address");
+            .EmailAddress();
 
         RuleFor(x => x.Password)
             .NotEmpty();

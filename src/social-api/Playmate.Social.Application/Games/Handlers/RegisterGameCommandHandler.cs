@@ -11,11 +11,11 @@ namespace Playmate.Social.Application.Games.Handlers;
 
 public class RegisterGameCommandHandler : IHandlerWrapper<RegisterGameCommand, RegisterGameResponse>
 {
+    private const string GameNameShouldBeUnique = "Game name should be unique";
+
     private readonly IGamesRepository _gamesRepository;
     private readonly IFileStorageService _fileStorageService;
     private readonly IMapper _mapper;
-
-    private const string GameNameShouldBeUnique = "Game name should be unique";
 
     public RegisterGameCommandHandler(
         IGamesRepository gamesRepository,
