@@ -41,7 +41,7 @@ public class ConfirmFriendRequestCommandHandler : IHandlerWrapper<ConfirmFriendR
     public async Task<Response<ConfirmFriendRequestResponse>> Handle(ConfirmFriendRequestCommand request, CancellationToken cancellationToken)
     {
         var friendRequest = await _friendsRequestsRepository.GetByIdAsync(request.RequestId);
-        if (friendRequest == null)
+        if (friendRequest is null)
         {
             return ResponseResult.NotFound<ConfirmFriendRequestResponse>(RequestNotFound);
         }
