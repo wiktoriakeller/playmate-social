@@ -12,6 +12,9 @@ public class CreateUserCommandHandler : IHandlerWrapper<CreateUserCommand, Creat
     private readonly IUsersRepository _usersRepository;
     private readonly IIdentityService _identityService;
 
+    private const string UsernameMustBeUnique = "User with that username already exists";
+    private const string EmailMustBeUnique = "User with that email already exists";
+
     public CreateUserCommandHandler(IUsersRepository usersRepository, IIdentityService identityService)
     {
         _usersRepository = usersRepository;
@@ -20,18 +23,17 @@ public class CreateUserCommandHandler : IHandlerWrapper<CreateUserCommand, Creat
 
     public async Task<Response<CreateUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var userByEmail = await _usersRepository.FirstOrDefaultAsync(x => x.Email == request.Email);
+        var userByEmail = _usersRepository.FirstOrDefaultAsync(x => x.Email == request.Email);
+        var userByUsername = _usersRepository.FirstOrDefaultAsync(x => x.Email == request.Username);
 
-        if (userByEmail is not null)
+        if (await userByEmail is not null)
         {
-            return ResponseResult.ValidationError<CreateUserResponse>("User with that email already exists");
+            return ResponseResult.ValidationError<CreateUserResponse>(EmailMustBeUnique);
         }
 
-        var userByUsername = await _usersRepository.FirstOrDefaultAsync(x => x.Email == request.Username);
-
-        if (userByUsername is not null)
+        if (await userByUsername is not null)
         {
-            return ResponseResult.ValidationError<CreateUserResponse>("User with that username already exists");
+            return ResponseResult.ValidationError<CreateUserResponse>(UsernameMustBeUnique);
         }
 
         request.IsExternalUser = false;

@@ -16,6 +16,10 @@ public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCo
     private readonly IFriendsRepository _friendsRepository;
     private readonly ICurrentUserService _currentUserService;
 
+    private const string UserNotFound = "User was not found";
+    private const string UsersAreFriends = "Users are already friends";
+    private const string RequestExists = "Request was already sent";
+
     public AddFriendRequestCommandHandler(
         IFriendRequestsRepository requestsRepository,
         ICurrentUserService currentUserService,
@@ -31,24 +35,23 @@ public class AddFriendRequestCommandHandler : IHandlerWrapper<AddFriendRequestCo
     public async Task<Response<AddFriendRequestResponse>> Handle(AddFriendRequestCommand request, CancellationToken cancellationToken)
     {
         var currentUser = _currentUserService.CurrentUser;
-        var addressee = _usersRepository.GetWhere(u => u.Username == request.Username).FirstOrDefault();
 
-        if (addressee == null)
+        var addressee = await _usersRepository.FirstOrDefaultAsync(u => u.Username == request.Username);
+        if (addressee is null)
         {
-            return ResponseResult.NotFound<AddFriendRequestResponse>("Could not find user");
+            return ResponseResult.NotFound<AddFriendRequestResponse>(UserNotFound);
         }
 
         var friend = await _friendsRepository.GetFriendByIdAsync(currentUser, addressee.Id);
-
-        if (friend != null)
+        if (friend is not null)
         {
-            return ResponseResult.ValidationError<AddFriendRequestResponse>("Users are friends");
+            return ResponseResult.ValidationError<AddFriendRequestResponse>(UsersAreFriends);
         }
 
         var currentRequests = await _friendsRequestsRepository.GetUsersWithPendingRequestsAsync(currentUser);
         if (currentRequests.Contains(addressee.Id))
         {
-            return ResponseResult.ValidationError<AddFriendRequestResponse>("Request already exists");
+            return ResponseResult.ValidationError<AddFriendRequestResponse>(RequestExists);
         }
 
         var friendRequest = new FriendRequest() { RequesterId = currentUser.Id, AddresseeId = addressee.Id };

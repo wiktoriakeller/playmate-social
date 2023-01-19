@@ -15,6 +15,10 @@ public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<Authentica
     private readonly IJwtTokenService _jwtTokenService;
     private readonly IExternalIdentityService _externalIdentityService;
 
+    private const string ExternalAuthtenticationFailed = "Authentication with external provider failed";
+    private const string UsernameMustBeUnique = "User with that username already exists";
+    private const string EmailMustBeUnique = "User with that email already exists";
+
     public AuthenticateExternalUserCommandHandler(
         IIdentityService identityService,
         IUsersRepository usersRepository,
@@ -37,19 +41,19 @@ public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<Authentica
         }
         catch (Exception)
         {
-            return ResponseResult.Unauthorized<AuthenticateExternalUserResponse>("Authentication with external provider failed");
+            return ResponseResult.Unauthorized<AuthenticateExternalUserResponse>(ExternalAuthtenticationFailed);
         }
 
         if (payload is null || string.IsNullOrEmpty(payload.Email))
         {
-            return ResponseResult.Unauthorized<AuthenticateExternalUserResponse>("Authentication with external provider failed");
+            return ResponseResult.Unauthorized<AuthenticateExternalUserResponse>(ExternalAuthtenticationFailed);
         }
 
         var externalUserByEmail = await _usersRepository.FirstOrDefaultAsync(x => x.Email == payload.Email);
 
         if (externalUserByEmail is not null && !externalUserByEmail.IsExternalUser)
         {
-            return ResponseResult.ValidationError<AuthenticateExternalUserResponse>("User with that email already exists");
+            return ResponseResult.ValidationError<AuthenticateExternalUserResponse>(EmailMustBeUnique);
         }
         else if (externalUserByEmail is null)
         {
@@ -57,7 +61,7 @@ public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<Authentica
 
             if (externalUserByUsername is not null)
             {
-                return ResponseResult.ValidationError<AuthenticateExternalUserResponse>("User with that username already exists");
+                return ResponseResult.ValidationError<AuthenticateExternalUserResponse>(UsernameMustBeUnique);
             }
 
             var newUser = new CreateUserCommand
@@ -69,11 +73,17 @@ public class AuthenticateExternalUserCommandHandler : IHandlerWrapper<Authentica
                 IsExternalUser = true
             };
 
-            await _identityService.CreateUserAsync(newUser);
+            try
+            {
+                await _identityService.CreateUserAsync(newUser);
+            }
+            catch(Exception)
+            {
+                return ResponseResult.ValidationError<AuthenticateExternalUserResponse>(ExternalAuthtenticationFailed);
+            }
+
             externalUserByEmail = await _usersRepository.FirstOrDefaultAsync(x => x.Email == payload.Email);
         }
-
-        //user is not null and there is account in the db
 
         var jwtToken = _jwtTokenService.CreateJwtToken(externalUserByEmail!);
         var refreshToken = await _identityService.CreateRefreshToken(jwtToken.Jti, externalUserByEmail!);

@@ -15,6 +15,8 @@ public class RegisterGameCommandHandler : IHandlerWrapper<RegisterGameCommand, R
     private readonly IFileStorageService _fileStorageService;
     private readonly IMapper _mapper;
 
+    private const string GameNameShouldBeUnique = "Game name should be unique";
+
     public RegisterGameCommandHandler(
         IGamesRepository gamesRepository,
         IFileStorageService fileStorageService,
@@ -28,10 +30,9 @@ public class RegisterGameCommandHandler : IHandlerWrapper<RegisterGameCommand, R
     public async Task<Response<RegisterGameResponse>> Handle(RegisterGameCommand request, CancellationToken cancellationToken)
     {
         var gameByName = await _gamesRepository.FirstOrDefaultAsync(x => x.Name == request.Name);
-
         if (gameByName is not null)
         {
-            return ResponseResult.ValidationError<RegisterGameResponse>("Game name should be unique");
+            return ResponseResult.ValidationError<RegisterGameResponse>(GameNameShouldBeUnique);
         }
 
         var fileMetadata = request.FileMetadata;
@@ -51,12 +52,6 @@ public class RegisterGameCommandHandler : IHandlerWrapper<RegisterGameCommand, R
         }
 
         var createdGame = await _gamesRepository.AddAsync(game);
-
-        if (createdGame == null)
-        {
-            return ResponseResult.ValidationError<RegisterGameResponse>("Could not register the game");
-        }
-
         return ResponseResult.Created(new RegisterGameResponse(createdGame.Id));
     }
 }

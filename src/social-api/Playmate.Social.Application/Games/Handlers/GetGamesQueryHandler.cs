@@ -18,7 +18,6 @@ public class GetGamesQueryHandler : IHandlerWrapper<GetGamesQuery, GetGamesRespo
     public Task<Response<GetGamesResponse>> Handle(GetGamesQuery request, CancellationToken cancellationToken)
     {
         var games = _gamesRepository.GetAll();
-
         var response = new GetGamesResponse(games);
         return Task.FromResult(ResponseResult.Ok(response));
     }

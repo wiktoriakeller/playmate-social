@@ -12,6 +12,8 @@ public class RemoveFriendCommandHandler : IHandlerWrapper<RemoveFriendCommand, R
     private readonly IFriendsRepository _friendsRepository;
     private readonly ICurrentUserService _currentUserService;
 
+    private const string FriendNotFound = "Could not find friend";
+
     public RemoveFriendCommandHandler(IFriendsRepository friendsRepository, ICurrentUserService currentUserService)
     {
         _friendsRepository = friendsRepository;
@@ -25,11 +27,10 @@ public class RemoveFriendCommandHandler : IHandlerWrapper<RemoveFriendCommand, R
 
         if (friend == null)
         {
-            return ResponseResult.NotFound<RemoveFriendResponse>("Could not find friend");
+            return ResponseResult.NotFound<RemoveFriendResponse>(FriendNotFound);
         }
 
         await _friendsRepository.DeleteAsync(friend);
-
         return ResponseResult.Deleted(new RemoveFriendResponse(request.FriendId));
     }
 }
