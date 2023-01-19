@@ -30,5 +30,11 @@ export const StyledTextField = styled(TextField)`
         ${(props) => getScrollbarBackgroundColor(props.theme)}
       }
     }
+
+    #friends-search-input-adornment {
+      @media only screen and (max-width: 700px) and (min-width: 451px) and (hover: hover) and (pointer: fine) {
+        display: none;
+      }
+    }
   }
 `;

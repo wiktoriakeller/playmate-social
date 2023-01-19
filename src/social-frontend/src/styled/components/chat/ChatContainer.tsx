@@ -8,6 +8,10 @@ export const ChatContainer = styled.div`
   width: calc(100vw - 320px);
   height: 100%;
 
+  @media only screen and (max-width: 700px) {
+    width: calc(100vw - 95px);
+  }
+
   @media only screen and (max-width: 450px),
     (hover: none) and (pointer: coarse) {
     display: none;
