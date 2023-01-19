@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace Playmate.Social.Infrastructure.Repositories;
 
-public class BaseRepository<TEntity> : IRepository<TEntity>
+public class BaseRepository<TEntity> : IRepository<TEntity> 
     where TEntity : class
 {
     protected readonly ApplicationDbContext _dbContext;
@@ -15,12 +15,14 @@ public class BaseRepository<TEntity> : IRepository<TEntity>
         _dbContext = dbContext;
     }
 
-    public async ValueTask<TEntity?> GetByIdAsync(Guid id) => await _dbContext.Set<TEntity>().FindAsync(id);
+    public virtual async ValueTask<TEntity?> GetByIdAsync(Guid id) => await _dbContext.Set<TEntity>().FindAsync(id);
 
-    public IEnumerable<TEntity> GetAll() => _dbContext.Set<TEntity>();
+    public virtual IEnumerable<TEntity> GetAll() => _dbContext.Set<TEntity>().AsNoTracking();
 
     public virtual IEnumerable<TEntity> GetWhere(Expression<Func<TEntity, bool>> predicate) =>
-        _dbContext.Set<TEntity>().Where(predicate);
+        _dbContext.Set<TEntity>()
+        .AsNoTracking()
+        .Where(predicate);
 
     public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate) =>
         await _dbContext.Set<TEntity>().FirstOrDefaultAsync(predicate);

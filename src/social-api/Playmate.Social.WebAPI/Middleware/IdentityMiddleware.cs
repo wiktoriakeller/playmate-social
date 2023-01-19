@@ -19,7 +19,7 @@ public class IdentityMiddleware
 
         if (token is not null)
         {
-            var user = identityService.GetUserByJwtToken(token);
+            var user = await identityService.GetUserByJwtToken(token);
 
             if (user is not null)
             {

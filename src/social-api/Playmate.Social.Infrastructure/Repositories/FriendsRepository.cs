@@ -15,11 +15,13 @@ public class FriendsRepository : BaseRepository<Friend>, IFriendsRepository
     public async Task<IEnumerable<User>> GetFriendsAsync(User user)
     {
         var friends = _dbContext.Set<Friend>()
+            .AsNoTracking()
             .Where(f => f.RequesterId == user.Id)
             .Include(f => f.Addressee)
             .Select(f => f.Addressee);
 
         var friends2 = _dbContext.Set<Friend>()
+            .AsNoTracking()
             .Where(f => f.AddresseeId == user.Id)
             .Include(f => f.Requester)
             .Select(f => f.Requester)
@@ -33,6 +35,7 @@ public class FriendsRepository : BaseRepository<Friend>, IFriendsRepository
     public async Task<IEnumerable<FriendDto>> GetFriendDtosAsync(User user)
     {
         var friends = _dbContext.Set<Friend>()
+            .AsNoTracking()
             .Where(f => f.RequesterId == user.Id)
             .Include(f => f.Addressee)
             .Select(f => new FriendDto
@@ -44,6 +47,7 @@ public class FriendsRepository : BaseRepository<Friend>, IFriendsRepository
             });
 
         var friends2 = _dbContext.Set<Friend>()
+            .AsNoTracking()
             .Where(f => f.AddresseeId == user.Id)
             .Include(f => f.Requester)
             .Select(f => new FriendDto

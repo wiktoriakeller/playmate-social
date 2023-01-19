@@ -13,5 +13,7 @@ public class GameEntityTypeConfiguration : IEntityTypeConfiguration<Game>
 
         builder.Property(x => x.Description)
             .HasMaxLength(100);
+
+        builder.HasIndex(x => x.Name).IsUnique();
     }
 }

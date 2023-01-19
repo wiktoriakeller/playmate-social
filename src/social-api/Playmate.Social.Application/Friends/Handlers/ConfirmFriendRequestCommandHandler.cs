@@ -13,6 +13,11 @@ namespace Playmate.Social.Application.Friends.Handlers;
 
 public class ConfirmFriendRequestCommandHandler : IHandlerWrapper<ConfirmFriendRequestCommand, ConfirmFriendRequestResponse>
 {
+    private const string RequestNotFound = "Friend request was not found";
+    private const string AddresseeNotFound = "Request addressee was not found";
+    private const string RequesterNotFound = "Requester was not found";
+    private const string InvalidUserId = "User ID is invalid";
+
     private readonly IFriendRequestsRepository _friendsRequestsRepository;
     private readonly IFriendsRepository _friendsRepository;
     private readonly ICurrentUserService _currentUserService;
@@ -36,16 +41,15 @@ public class ConfirmFriendRequestCommandHandler : IHandlerWrapper<ConfirmFriendR
     public async Task<Response<ConfirmFriendRequestResponse>> Handle(ConfirmFriendRequestCommand request, CancellationToken cancellationToken)
     {
         var friendRequest = await _friendsRequestsRepository.GetByIdAsync(request.RequestId);
-        if (friendRequest == null)
+        if (friendRequest is null)
         {
-            return ResponseResult.NotFound<ConfirmFriendRequestResponse>("Friend request was not found");
+            return ResponseResult.NotFound<ConfirmFriendRequestResponse>(RequestNotFound);
         }
 
         var currentUser = _currentUserService.CurrentUser;
-
         if (friendRequest.AddresseeId != currentUser?.Id)
         {
-            ResponseResult.ValidationError<ConfirmFriendRequestResponse>("Current user is not the addressee of the request");
+            ResponseResult.ValidationError<ConfirmFriendRequestResponse>(InvalidUserId);
         }
 
         var requester = friendRequest.Requester;
@@ -53,12 +57,12 @@ public class ConfirmFriendRequestCommandHandler : IHandlerWrapper<ConfirmFriendR
 
         if (addressee is null)
         {
-            ResponseResult.ValidationError<ConfirmFriendRequestResponse>("Request addressee was not found");
+            ResponseResult.ValidationError<ConfirmFriendRequestResponse>(AddresseeNotFound);
         }
 
         if (requester is null)
         {
-            ResponseResult.ValidationError<ConfirmFriendRequestResponse>("Requester was not found");
+            ResponseResult.ValidationError<ConfirmFriendRequestResponse>(RequesterNotFound);
         }
 
         var response = new ConfirmFriendRequestResponse() { RequestAccepted = request.Accept };

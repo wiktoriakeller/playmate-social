@@ -1,4 +1,5 @@
-﻿using Playmate.Social.Application.Common;
+﻿using MediatR;
+using Playmate.Social.Application.Common;
 using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
@@ -11,6 +12,10 @@ namespace Playmate.Social.Application.Users.Handlers;
 
 public class UpdateUserCommandHandler : IHandlerWrapper<UpdateUserCommand, UpdateUserResponse>
 {
+    private const string InvalidUserId = "User ID is invalid";
+    private const string UsernameMustBeUnique = "User with that username already exists";
+    private const string UserNotFound = "User with the provided ID was not found";
+
     private readonly IUsersRepository _usersRepository;
     private readonly IFileStorageService _fileStorageService;
     private readonly ICurrentUserService _currentUserService;
@@ -29,21 +34,19 @@ public class UpdateUserCommandHandler : IHandlerWrapper<UpdateUserCommand, Updat
     {
         if (_currentUserService.CurrentUser.Id != request.UserId)
         {
-            return ResponseResult.ValidationError<UpdateUserResponse>("User ID is invalid");
+            return ResponseResult.ValidationError<UpdateUserResponse>(InvalidUserId);
         }
 
         var userByUsername = await _usersRepository.FirstOrDefaultAsync(x => x.Username == request.Username && x.Id != request.UserId);
-
         if (userByUsername is not null)
         {
-            return ResponseResult.ValidationError<UpdateUserResponse>("User with that username already exists");
+            return ResponseResult.ValidationError<UpdateUserResponse>(UsernameMustBeUnique);
         }
 
         var user = await _usersRepository.GetByIdAsync(request.UserId);
-
         if (user is null)
         {
-            return ResponseResult.ValidationError<UpdateUserResponse>("User was not found");
+            return ResponseResult.ValidationError<UpdateUserResponse>(UserNotFound);
         }
 
         user.Username = request.Username;

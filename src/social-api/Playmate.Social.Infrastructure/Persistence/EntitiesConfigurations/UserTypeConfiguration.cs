@@ -14,5 +14,8 @@ public class UserTypeConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(x => x.Username)
             .HasMaxLength(20);
+
+        builder.Property(x => x.Email)
+            .HasMaxLength(100);
     }
 }

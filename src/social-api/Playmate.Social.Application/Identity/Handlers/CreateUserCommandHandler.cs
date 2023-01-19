@@ -9,6 +9,9 @@ namespace Playmate.Social.Application.Identity.Handlers;
 
 public class CreateUserCommandHandler : IHandlerWrapper<CreateUserCommand, CreateUserResponse>
 {
+    private const string UsernameMustBeUnique = "User with that username already exists";
+    private const string EmailMustBeUnique = "User with that email already exists";
+
     private readonly IUsersRepository _usersRepository;
     private readonly IIdentityService _identityService;
 
@@ -21,17 +24,15 @@ public class CreateUserCommandHandler : IHandlerWrapper<CreateUserCommand, Creat
     public async Task<Response<CreateUserResponse>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         var userByEmail = await _usersRepository.FirstOrDefaultAsync(x => x.Email == request.Email);
-
         if (userByEmail is not null)
         {
-            return ResponseResult.ValidationError<CreateUserResponse>("User with that email already exists");
+            return ResponseResult.ValidationError<CreateUserResponse>(EmailMustBeUnique);
         }
 
         var userByUsername = await _usersRepository.FirstOrDefaultAsync(x => x.Email == request.Username);
-
         if (userByUsername is not null)
         {
-            return ResponseResult.ValidationError<CreateUserResponse>("User with that username already exists");
+            return ResponseResult.ValidationError<CreateUserResponse>(UsernameMustBeUnique);
         }
 
         request.IsExternalUser = false;
