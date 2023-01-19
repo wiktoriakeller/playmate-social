@@ -9,7 +9,7 @@ const getHoverColor = (theme: Theme, isSelected: boolean) => {
   if (theme.palette.mode === "dark" && !isSelected) {
     return theme.palette.grey[800];
   } else if (theme.palette.mode === "light" && !isSelected) {
-    return theme.palette.grey[400];
+    return theme.palette.grey[300];
   }
 };
 
