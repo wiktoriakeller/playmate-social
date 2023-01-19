@@ -12,7 +12,7 @@ export const gameResultsApi = createApi({
       IGetGameResultsRequest
     >({
       query: () => ({
-        url: "results",
+        url: "game-results",
         method: "GET"
       })
     })
