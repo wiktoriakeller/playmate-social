@@ -5,6 +5,10 @@ namespace Playmate.Social.Application.Common.Validators.Common;
 
 public class FileMetadataDtoValidator : AbstractValidator<FileMetadataDto>
 {
+    private const string UnsuporrtedExtension = "Only '.jpg' and '.png' are valid extensions";
+    private const string TooBigFileSize = "Provided file is bigger than 1MB";
+    private const string EmptyFileXontent = "File content should not be null";
+
     private const long MaxFileSize = 1048576;
     private static readonly string[] PermittedExtensions = new string[] { "image/jpeg", "image/jpg", "image/png" };
 
@@ -13,15 +17,15 @@ public class FileMetadataDtoValidator : AbstractValidator<FileMetadataDto>
         RuleFor(x => x.Size)
             .NotNull()
             .LessThanOrEqualTo(MaxFileSize)
-            .WithMessage("Provided file is bigger than 1MB");
+            .WithMessage(TooBigFileSize);
 
         RuleFor(x => x.FileType)
             .NotNull()
             .Must(x => PermittedExtensions.Contains(x))
-            .WithMessage("Only '.jpg' and '.png' are valid extensions");
+            .WithMessage(UnsuporrtedExtension);
 
         RuleFor(x => x.Content)
             .NotNull()
-            .WithMessage("File content should not be null");
+            .WithMessage(EmptyFileXontent);
     }
 }

@@ -20,7 +20,7 @@ export const useInitializeGame = () => {
         receiverName: opponent.username,
         senderId: user.id,
         senderName: user.username,
-        resultsUrl: baseApiUrl + "/results"
+        resultsUrl: baseApiUrl + "/game-results"
       }
     })
       .unwrap()

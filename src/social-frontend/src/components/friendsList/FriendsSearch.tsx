@@ -58,7 +58,7 @@ const FriendsSearch = () => {
         fullWidth
         InputProps={{
           endAdornment: (
-            <InputAdornment position="end">
+            <InputAdornment position="end" id="friends-search-input-adornment">
               <SearchIcon />
             </InputAdornment>
           )

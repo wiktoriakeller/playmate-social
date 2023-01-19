@@ -10,6 +10,10 @@ export const StyledFriendsList = styled(StyledScrollbar)`
   height: calc(100vh - 148px);
   box-sizing: border-box;
 
+  @media only screen and (max-width: 700px) {
+    width: 90px;
+  }
+
   @media only screen and (max-width: 450px),
     (hover: none) and (pointer: coarse) {
     width: 100%;

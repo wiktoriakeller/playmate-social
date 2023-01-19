@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Playmate.Social.Application.Common.BaseResponse;
 using Playmate.Social.Application.Common.Contracts.Identity;
 using Playmate.Social.Application.Common.Contracts.Persistence;
+using Playmate.Social.Application.Common.Contracts.Services;
 using Playmate.Social.Application.Identity.Commands;
 using Playmate.Social.Application.Identity.Responses;
 using Playmate.Social.Domain.Entities;
@@ -17,32 +18,36 @@ public class IdentityService : IIdentityService
     private readonly IRepository<RefreshToken> _refreshTokenRepository;
     private readonly IUsersRepository _usersRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
+    private readonly IDateTimeProvider _dateTimeProvider;
     private readonly JwtTokensConfiguration _jwtOptions;
 
     private const string InvalidToken = "Token is invalid";
     private const string IncorrectCredentials = "Incorrect credentials";
+    private const string UserNotFound = "User does not exists";
 
     public IdentityService(
         IJwtTokenService jwtTokenService,
         IRepository<RefreshToken> refreshTokenRepository,
         IOptions<JwtTokensConfiguration> jwtOptions,
         IUsersRepository userRepository,
-        IPasswordHasher<User> passwordHasher)
+        IPasswordHasher<User> passwordHasher,
+        IDateTimeProvider dateTimeProvider)
     {
         _jwtTokenService = jwtTokenService;
         _refreshTokenRepository = refreshTokenRepository;
         _jwtOptions = jwtOptions.Value;
         _usersRepository = userRepository;
         _passwordHasher = passwordHasher;
+        _dateTimeProvider = dateTimeProvider;
     }
 
-    public User? GetUserByJwtToken(string jwtToken)
+    public async Task<User?> GetUserByJwtToken(string jwtToken)
     {
         var (success, jti, userId) = _jwtTokenService.IsJwtTokenValid(jwtToken, true);
 
         if (success)
         {
-            return _usersRepository.GetWhere(u => u.Id.ToString() == userId).FirstOrDefault();
+            return await _usersRepository.FirstOrDefaultAsync(u => u.Id.ToString() == userId);
         }
 
         return null;
@@ -68,15 +73,13 @@ public class IdentityService : IIdentityService
 
     public async Task<Response<AuthenticateUserResponse>> AuthenticateUserAync(AuthenticateUserCommand authenticateUserCommand)
     {
-        var user = _usersRepository.GetWhere(u => u.Email == authenticateUserCommand.Email).FirstOrDefault();
-
-        if (user == null)
+        var user = await _usersRepository.FirstOrDefaultAsync(u => u.Email == authenticateUserCommand.Email);
+        if (user is null)
         {
             return ResponseResult.ValidationError<AuthenticateUserResponse>(IncorrectCredentials);
         }
 
         var passwordVerification = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, authenticateUserCommand.Password);
-
         if (passwordVerification == PasswordVerificationResult.Failed)
         {
             return ResponseResult.ValidationError<AuthenticateUserResponse>(IncorrectCredentials);
@@ -101,29 +104,29 @@ public class IdentityService : IIdentityService
     public async Task<Response<RefreshTokenResponse>> RefreshTokenAsync(RefreshTokenCommand refreshTokenCommand)
     {
         var result = _jwtTokenService.IsJwtTokenValid(refreshTokenCommand.JwtToken, false);
-
         if (!result.success)
         {
             return ResponseResult.Unauthorized<RefreshTokenResponse>(InvalidToken);
         }
 
-        var refreshTokens = _refreshTokenRepository
-            .GetWhere(x => x.Token == refreshTokenCommand.RefreshToken)
-            .ToList();
-
+        var refreshTokens = _refreshTokenRepository.GetWhere(x => x.Token == refreshTokenCommand.RefreshToken).ToList();
         if (refreshTokens.Count != 1)
         {
             return ResponseResult.Unauthorized<RefreshTokenResponse>(InvalidToken);
         }
 
         var currentRefreshToken = refreshTokens.First();
-
         if (currentRefreshToken.ExpiryDate < DateTime.UtcNow || currentRefreshToken.JwtId != result.jti)
         {
             return ResponseResult.Unauthorized<RefreshTokenResponse>(InvalidToken);
         }
 
-        var user = _usersRepository.GetWhere(u => u.Id.ToString() == result.userId).FirstOrDefault();
+        var user = await _usersRepository.FirstOrDefaultAsync(u => u.Id.ToString() == result.userId);
+        if(user is null)
+        {
+            return ResponseResult.ValidationError<RefreshTokenResponse>(UserNotFound);
+        }
+        
         var newJwt = _jwtTokenService.CreateJwtToken(user);
         var newRefreshToken = await CreateRefreshToken(newJwt.Jti, user);
 
@@ -139,8 +142,7 @@ public class IdentityService : IIdentityService
     public async Task<string> CreateRefreshToken(string jti, User user)
     {
         var currentRefresh = await _refreshTokenRepository.FirstOrDefaultAsync(t => t.UserId == user.Id);
-
-        if (currentRefresh != null)
+        if (currentRefresh is not null)
         {
             await _refreshTokenRepository.DeleteAsync(currentRefresh);
         }
@@ -149,8 +151,8 @@ public class IdentityService : IIdentityService
         {
             Token = GetUniqueToken(),
             JwtId = jti,
-            CreationDate = DateTime.UtcNow,
-            ExpiryDate = DateTime.UtcNow.AddDays(_jwtOptions.RefreshTokenExpirationInDays),
+            CreationDate = _dateTimeProvider.CurrentTimeUtc,
+            ExpiryDate = _dateTimeProvider.CurrentTimeUtc.AddDays(_jwtOptions.RefreshTokenExpirationInDays),
             UserId = user.Id,
             User = user
         };

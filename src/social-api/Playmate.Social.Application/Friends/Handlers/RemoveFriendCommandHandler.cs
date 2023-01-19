@@ -9,6 +9,8 @@ namespace Playmate.Social.Application.Friends.Handlers;
 
 public class RemoveFriendCommandHandler : IHandlerWrapper<RemoveFriendCommand, RemoveFriendResponse>
 {
+    private const string FriendNotFound = "Could not find friend";
+
     private readonly IFriendsRepository _friendsRepository;
     private readonly ICurrentUserService _currentUserService;
 
@@ -25,11 +27,10 @@ public class RemoveFriendCommandHandler : IHandlerWrapper<RemoveFriendCommand, R
 
         if (friend == null)
         {
-            return ResponseResult.NotFound<RemoveFriendResponse>("Could not find friend");
+            return ResponseResult.NotFound<RemoveFriendResponse>(FriendNotFound);
         }
 
         await _friendsRepository.DeleteAsync(friend);
-
         return ResponseResult.Deleted(new RemoveFriendResponse(request.FriendId));
     }
 }

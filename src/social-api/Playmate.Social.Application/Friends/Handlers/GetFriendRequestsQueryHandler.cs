@@ -30,7 +30,7 @@ public class GetFriendRequestsQueryHandler : IHandlerWrapper<GetFriendRequestsQu
     {
         var user = _currentUserService.CurrentUser;
 
-        var requests = _friendsRequestsRepository.GetWhere(r => r.AddresseeId == user.Id).ToList();
+        var requests = _friendsRequestsRepository.GetWhere(r => r.AddresseeId == user.Id);
         var mappedRequests = _mapper.Map<IEnumerable<FriendRequest>, IEnumerable<FriendRequestDto>>(requests);
 
         var response = new GetFriendRequestsResponse(mappedRequests);

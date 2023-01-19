@@ -7,7 +7,7 @@ namespace Playmate.Social.Application.Common.Contracts.Identity;
 
 public interface IIdentityService
 {
-    User? GetUserByJwtToken(string token);
+    Task<User?> GetUserByJwtToken(string token);
 
     Task<Guid> CreateUserAsync(CreateUserCommand createUserCommand);
 
