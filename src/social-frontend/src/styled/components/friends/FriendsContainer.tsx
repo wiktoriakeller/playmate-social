@@ -10,7 +10,7 @@ export const FriendsContainer = styled.div`
   height: 100%;
   box-sizing: border-box;
 
-  @media only screen and (max-width: 700px) {
+  @media only screen and (max-width: 700px) and (min-width: 451px) and (hover: hover) and (pointer: fine) {
     width: 90px;
   }
 

@@ -33,6 +33,22 @@ export const StyledFriendsListItem = styled.div<IStyledFriendsListItemProps>`
     margin-bottom: auto;
   }
 
+  @media only screen and (max-width: 700px) and (min-width: 451px) and (hover: hover) and (pointer: fine) {
+    span {
+      color: ${(props) =>
+        props.isSelected
+          ? props.theme.palette.secondary.dark
+          : props.theme.palette.background.default} !important;
+    }
+
+    &:hover {
+      span {
+        color: ${(props) =>
+          getHoverColor(props.theme, props.isSelected)} !important;
+      }
+    }
+  }
+
   @media only screen and (max-width: 450px),
     (hover: none) and (pointer: coarse) {
     background-color: inherit;
