@@ -1,5 +1,5 @@
 import SearchIcon from "@mui/icons-material/Search";
-import { InputAdornment, Typography, useMediaQuery } from "@mui/material";
+import { InputAdornment, Typography } from "@mui/material";
 import _ from "lodash";
 import { useCallback, useMemo, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
@@ -16,9 +16,6 @@ const FriendsSearch = () => {
   const storedSearchPhrase = useAppSelector(selectFriendsListSearchPhrase);
   const windowSize = useAppSelector(selectWindowSizeState);
   const [searchPhrase, setSearchPhrase] = useState(storedSearchPhrase);
-  const deviceWithPointer = useMediaQuery(
-    "only screen and (hover: none) and (pointer: coarse)"
-  );
 
   const debouncedChangeSearchPhrase = useMemo(
     () => (newSerchPhrase: string) =>
@@ -45,8 +42,7 @@ const FriendsSearch = () => {
         sx={{
           fontWeight: "bold",
           paddingLeft: "4px",
-          display:
-            windowSize.matchesSmallWidth || deviceWithPointer ? "none" : "flex"
+          display: windowSize.matchesSmallWidth ? "none" : "flex"
         }}
       >
         Friends

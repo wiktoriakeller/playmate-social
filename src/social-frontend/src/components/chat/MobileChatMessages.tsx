@@ -1,4 +1,3 @@
-import { useMediaQuery } from "@mui/material";
 import { Navigate } from "react-router-dom";
 import { useAppSelector } from "../../app/storeHooks";
 import { selectSelectedFriend } from "../../slices/friendsListSlice";
@@ -12,11 +11,8 @@ const MobileChatMessages = () => {
   const user = useAppSelector(selectUserIdentity);
   const windowSize = useAppSelector(selectWindowSizeState);
   const selectedFriend = useAppSelector(selectSelectedFriend);
-  const deviceWithPointer = useMediaQuery(
-    "only screen and (hover: none) and (pointer: coarse)"
-  );
 
-  if (!windowSize.matchesSmallWidth && !deviceWithPointer) {
+  if (!windowSize.matchesSmallWidth) {
     return <Navigate to="/not-found" />;
   }
 

@@ -1,4 +1,3 @@
-import { useMediaQuery } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
@@ -26,9 +25,6 @@ const FriendListItem = (props: IFriendsListItemProps) => {
   const windowSize = useAppSelector(selectWindowSizeState);
   const currentUser = useAppSelector(selectUserIdentity);
   const selectedFriend = useAppSelector(selectSelectedFriend);
-  const deviceWithPointer = useMediaQuery(
-    "only screen and (hover: none) and (pointer: coarse)"
-  );
 
   const getLastMessage = (message?: ILastChatMessage) => {
     if (!!message) {
@@ -43,7 +39,7 @@ const FriendListItem = (props: IFriendsListItemProps) => {
   const handleFriendClick = () => {
     dispatch(setSelectedFriend(props as IFriend));
 
-    if (deviceWithPointer || windowSize.matchesSmallWidth) {
+    if (windowSize.matchesSmallWidth) {
       navigate("/chats");
     }
   };
