@@ -8,7 +8,7 @@ export const ChatContainer = styled.div`
   width: calc(100vw - 320px);
   height: 100%;
 
-  @media only screen and (max-width: 700px) {
+  @media only screen and (max-width: 700px) and (min-width: 451px) and (hover: hover) and (pointer: fine) {
     width: calc(100vw - 95px);
   }
 
