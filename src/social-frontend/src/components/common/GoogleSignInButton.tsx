@@ -1,3 +1,4 @@
+import { useMediaQuery } from "@mui/material";
 import { Box } from "@mui/system";
 import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
@@ -20,6 +21,7 @@ const GoogleSignInButton = (props: IGoogleSignInButtonProps) => {
   const [authenticateExternalUser] = useAuthenticateExternalUserMutation();
   const themeMode = useAppSelector(selectThemeMode);
   const windowSize = useAppSelector(selectWindowSizeState);
+  const matchesMediumWidth = useMediaQuery("only screen and (max-width:600px)");
 
   const getButtonWidth = () => {
     if (windowSize.matchesExtraSmallWidth) {
@@ -30,7 +32,7 @@ const GoogleSignInButton = (props: IGoogleSignInButtonProps) => {
       return "315px";
     }
 
-    if (windowSize.matchesMediumWidth) {
+    if (matchesMediumWidth) {
       return "350px";
     }
 

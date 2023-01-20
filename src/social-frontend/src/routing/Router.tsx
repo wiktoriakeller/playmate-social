@@ -9,7 +9,6 @@ import { PageNotFound } from "../pages/PageNotFound";
 import RegisterPage from "../pages/RegisterPage";
 import {
   setMatchesExtraSmallWidth,
-  setMatchesMediumWidth,
   setMatchesSmallWidth
 } from "../slices/windowSizeSlice";
 import FormPageLayout from "./layouts/FormPageLayout";
@@ -17,17 +16,12 @@ import MainLayout from "./layouts/MainLayout";
 
 function Router() {
   const dispatch = useAppDispatch();
-  const matchesMediumWidth = useMediaQuery("only screen and (max-width:600px)");
   const matchesSmallWidth = useMediaQuery(
     "only screen and (max-width:450px), only screen and (hover: none) and (pointer: coarse)"
   );
   const matchesExtraSmallWidth = useMediaQuery(
     "only screen and (max-width:380px), only screen and (hover: none) and (pointer: coarse)"
   );
-
-  useEffect(() => {
-    dispatch(setMatchesMediumWidth(matchesMediumWidth));
-  }, [matchesMediumWidth, dispatch]);
 
   useEffect(() => {
     dispatch(setMatchesSmallWidth(matchesSmallWidth));
