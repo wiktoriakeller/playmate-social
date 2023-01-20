@@ -1,5 +1,11 @@
 import CloseIcon from "@mui/icons-material/Close";
-import { Box, DialogContent, DialogTitle, IconButton } from "@mui/material";
+import {
+  Box,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  useMediaQuery
+} from "@mui/material";
 import { useCallback, useMemo, useState } from "react";
 import { Cell, Pie, PieChart, Sector } from "recharts";
 import { IGame } from "../../api/games/responses/getGamesResponse";
@@ -41,7 +47,8 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
   const results = useAppSelector(selectGameResults)[props.game.id];
   const currentUserId = useAppSelector(selectUserIdentity).id;
   const [activeIndex, setActiveIndex] = useState(-1);
-  const windowsSize = useAppSelector(selectWindowSizeState);
+  const windowSize = useAppSelector(selectWindowSizeState);
+  const matchesMediumWidth = useMediaQuery("only screen and (max-width:600px)");
 
   const currentTheme = useMemo(() => getDesignTokens(themeMode), [themeMode]);
 
@@ -121,11 +128,11 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
       const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
       let x = cx + radius * Math.cos(-midAngle * RADIAN);
       const y = cy + radius * Math.sin(-midAngle * RADIAN);
-      let textValue = windowsSize.matchesMediumWidth
+      let textValue = matchesMediumWidth
         ? `${(percent * 100).toFixed(0)}%`
         : `${value}`;
 
-      if (windowsSize.matchesMediumWidth && value === 0) {
+      if (matchesMediumWidth && value === 0) {
         textValue = "";
       }
 
@@ -136,13 +143,13 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
           fill="white"
           textAnchor={x > cx ? "start" : "end"}
           dominantBaseline="central"
-          fontSize={windowsSize.matchesMediumWidth ? 16 : 20}
+          fontSize={matchesMediumWidth ? 16 : 20}
         >
           {textValue}
         </text>
       );
     },
-    [windowsSize.matchesMediumWidth]
+    [matchesMediumWidth]
   );
 
   const onPieEnter = useCallback((_, index: number) => {
@@ -163,11 +170,11 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
   };
 
   const getCharMinWidth = () => {
-    if (windowsSize.matchesSmallWidth) {
+    if (windowSize.matchesSmallWidth) {
       return "250px";
     }
 
-    if (windowsSize.matchesMediumWidth) {
+    if (matchesMediumWidth) {
       return "300px";
     }
 
@@ -205,18 +212,16 @@ const GameResultsDialog = (props: IGameResultsPageProps) => {
             justifyContent: "center",
             overflow: "hidden",
             minWidth: getCharMinWidth(),
-            minHeight: windowsSize.matchesMediumWidth ? "300px" : "350px"
+            minHeight: matchesMediumWidth ? "300px" : "350px"
           }}
         >
           <PieChart
-            width={windowsSize.matchesMediumWidth ? 250 : 450}
-            height={windowsSize.matchesMediumWidth ? 200 : 300}
+            width={matchesMediumWidth ? 250 : 450}
+            height={matchesMediumWidth ? 200 : 300}
           >
             <Pie
               activeIndex={activeIndex}
-              activeShape={
-                windowsSize.matchesMediumWidth ? null : renderActiveShape
-              }
+              activeShape={matchesMediumWidth ? null : renderActiveShape}
               data={pieData}
               cx="50%"
               cy="50%"

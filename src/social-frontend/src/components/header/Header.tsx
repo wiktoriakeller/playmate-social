@@ -1,7 +1,7 @@
 import Brightness2Icon from "@mui/icons-material/Brightness2";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
-import { Tooltip } from "@mui/material";
+import { Tooltip, useMediaQuery } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/storeHooks";
 import { setCurrentTab, tabsDictionary } from "../../slices/tabSlice";
@@ -39,6 +39,7 @@ export const Header = () => {
   const themeMode = useAppSelector(selectThemeMode);
   const windowSize = useAppSelector(selectWindowSizeState);
   const user = useAppSelector(selectUserIdentity);
+  const matchesMediumWidth = useMediaQuery("only screen and (max-width:600px)");
 
   const toggleTheme = () => {
     if (themeMode === "dark") {
@@ -81,7 +82,7 @@ export const Header = () => {
   return (
     <StyledHeader>
       <HeaderLeftSide>
-        {windowSize.matchesMediumWidth ? (
+        {matchesMediumWidth ? (
           getUserMenu("left")
         ) : (
           <StyledLogo onClick={onLogoClick}>
