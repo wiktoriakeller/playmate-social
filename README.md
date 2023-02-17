@@ -1,6 +1,9 @@
 # 🎮 Playmate
+[![.github/workflows/CI.yml](https://github.com/wiktoriakeller/playmate-social/actions/workflows/CI.yml/badge.svg?branch=develop)](https://github.com/wiktoriakeller/playmate-social/actions/workflows/CI.yml)
+[![CD](https://github.com/wiktoriakeller/playmate-social/actions/workflows/CD.yml/badge.svg?branch=main)](https://github.com/wiktoriakeller/playmate-social/actions/workflows/CD.yml)
 
-Bachelor's degree final project - social platform that allows its users to play games with each other and gather statistics from gameplays.
+Real time web application that allows its users to play games with each other and gather statistics from gameplays.
+Users can exchange messages with each other in real time, upload profile pictures, send invitations, play games with each other and view statistics. Web application supports external Google accounts and is accessible from both desktop and mobile devices. Social Platform API implements the Onion architecture and CQRS pattern. User's and games images are stored using Azure Blob Storage service. Real time functionalities of the application were implemented using SignalR. Chat messages are stored in the Apache Cassandra database.
 
 Project backlog can be accessed [here](https://github.com/users/wiktoriakeller/projects/3).
 
@@ -17,7 +20,7 @@ Project backlog can be accessed [here](https://github.com/users/wiktoriakeller/p
 - SignalR
 - Entity Framework Core
 - MSSQL
-- Cassandra
+- Apache Cassandra
 - FluentValidation
 - AutoMapper
 - MediatR
@@ -33,10 +36,10 @@ Project backlog can be accessed [here](https://github.com/users/wiktoriakeller/p
 
 ## Cloud
 
-- Azure
 - Azure Cosmos DB
-- Blob storage
+- Azure Blob storage
 - Azure SQL Database
+- Azure App Service
 - Cloudflare
 
 ## Setup
@@ -97,3 +100,16 @@ Next start Cassandra Docker container:
 ```
 docker run --name cassandra-test -p 9044:9042 -d cassandra:latest
 ```
+
+## Screenshots
+
+<img src="https://github.com/wiktoriakeller/playmate-social/blob/develop/screenshots/signin.png" width="800"/> 
+<img src="https://github.com/wiktoriakeller/playmate-social/blob/develop/screenshots/registration.png" width="800"/> 
+<img src="https://github.com/wiktoriakeller/playmate-social/blob/develop/screenshots/chat.png" width="800"/> 
+<img src="https://github.com/wiktoriakeller/playmate-social/blob/develop/screenshots/games.png" width="800"/> 
+<img src="https://github.com/wiktoriakeller/playmate-social/blob/develop/screenshots/statistics.png" width="800"/> 
+
+<img src="https://github.com/wiktoriakeller/playmate-social/blob/develop/screenshots/dark-chat-mobile.jpg" width="300"/> <img src="https://github.com/wiktoriakeller/playmate-social/blob/develop/screenshots/games-mobile.jpg" width="300"/> 
+
+<img src="https://github.com/wiktoriakeller/playmate-social/blob/develop/screenshots/mobile-profile.jpg" width="300"/> <img src="https://github.com/wiktoriakeller/playmate-social/blob/develop/screenshots/friends.jpg" width="300"/> 
+
