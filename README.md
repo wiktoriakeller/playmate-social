@@ -2,7 +2,7 @@
 [![.github/workflows/CI.yml](https://github.com/wiktoriakeller/playmate-social/actions/workflows/CI.yml/badge.svg?branch=develop)](https://github.com/wiktoriakeller/playmate-social/actions/workflows/CI.yml)
 [![CD](https://github.com/wiktoriakeller/playmate-social/actions/workflows/CD.yml/badge.svg?branch=main)](https://github.com/wiktoriakeller/playmate-social/actions/workflows/CD.yml)
 
-Bachelor's degree final project - social platform that allows its users to play games with each other and gather statistics from gameplays.
+Real time web application that allows its users to play games with each other and gather statistics from gameplays.
 Users can exchange messages with each other in real time, upload profile pictures, send invitations, play games with each other and view statistics. Web application supports external Google accounts and is accessible from both desktop and mobile devices. Social Platform API implements the Onion architecture and CQRS pattern. User's and games images are stored using Azure Blob Storage service. Real time functionalities of the application were implemented using SignalR. Chat messages are stored in the Apache Cassandra database.
 
 Project backlog can be accessed [here](https://github.com/users/wiktoriakeller/projects/3).
@@ -37,7 +37,7 @@ Project backlog can be accessed [here](https://github.com/users/wiktoriakeller/p
 ## Cloud
 
 - Azure Cosmos DB
-- Blob storage
+- Azure Blob storage
 - Azure SQL Database
 - Azure App Service
 - Cloudflare
